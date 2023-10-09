@@ -55,4 +55,10 @@ internal object ApiModule {
             .create(ApiService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideJson(): Json = Json {
+        ignoreUnknownKeys = true
+    }
+
 }
