@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ConnectDog"
 include(":app")
- 
+include(":core:data")
