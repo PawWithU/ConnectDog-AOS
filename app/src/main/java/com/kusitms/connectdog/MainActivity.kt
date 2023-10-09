@@ -1,4 +1,4 @@
-package com.example.connectdog
+package com.kusitms.connectdog
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.connectdog.ui.theme.ConnectDogTheme
+import com.kusitms.connectdog.ui.theme.ConnectDogTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

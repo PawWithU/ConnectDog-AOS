@@ -1,4 +1,4 @@
-package com.example.connectdog.ui.theme
+package com.kusitms.connectdog.ui.theme
 
 import android.app.Activity
 import android.os.Build

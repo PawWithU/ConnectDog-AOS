@@ -1,4 +1,4 @@
-package com.example.connectdog
+package com.kusitms.connectdog
 
 import org.junit.Test
 

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.connectdog"
+    namespace = "com.kusitms.connectdog"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.connectdog"
+        applicationId = "com.kusitms.connectdog"
         minSdk = 30
         targetSdk = 33
         versionCode = 1
