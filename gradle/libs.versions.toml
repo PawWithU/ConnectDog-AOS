@@ -17,13 +17,15 @@ hiltNavigationCompose = "1.0.0"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
-kotlinxSerializationJson = "1.9.0"
+kotlinxSerializationJson = "1.5.1"
 kotlinxDatetime = "0.4.1"
 
 landscapist = "2.2.10"
 composeShimmer = "1.0.5"
 
 dependencyGraph = "0.9.0-SNAPSHOT"
+
+kotlin = "1.8.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "andoroidCoreKtx" }
@@ -81,6 +83,7 @@ com-android-application = { id = "com.android.application", version.ref = "agp" 
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 [bundles]
 
