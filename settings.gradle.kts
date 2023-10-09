@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "ConnectDog"
 include(":app")
 include(":core:data")
+include(":core:model")
