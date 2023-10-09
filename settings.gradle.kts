@@ -17,3 +17,4 @@ rootProject.name = "ConnectDog"
 include(":app")
 include(":core:data")
 include(":core:model")
+include(":core:designsystem")
