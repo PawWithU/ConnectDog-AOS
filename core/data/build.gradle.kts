@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("kapt")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -36,4 +38,10 @@ android {
 dependencies {
     implementation(project(":core:model"))
 
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+}
+
+kapt {
+    correctErrorTypes = true
 }
