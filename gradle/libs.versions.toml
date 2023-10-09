@@ -22,6 +22,7 @@ kotlinxDatetime = "0.4.1"
 
 landscapist = "2.2.10"
 composeShimmer = "1.0.5"
+material = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "andoroidCoreKtx" }
@@ -70,6 +71,7 @@ compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer",
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 [plugins]
