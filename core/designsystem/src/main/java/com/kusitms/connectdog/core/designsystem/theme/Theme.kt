@@ -1,7 +1,8 @@
-package com.kusitms.connectdog.ui.theme
+package com.kusitms.connectdog.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -37,6 +38,8 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+
+@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @Composable
 fun ConnectDogTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

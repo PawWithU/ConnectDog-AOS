@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.ui.theme
+package com.kusitms.connectdog.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
