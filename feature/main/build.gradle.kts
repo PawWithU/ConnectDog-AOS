@@ -35,8 +35,10 @@ android {
 
 dependencies {
 
+    // Navigation을 위해 모든 feature 의존성 추가 필요
+    implementation(project(":feature:home"))
+
     implementation(project(":core:model"))
-    implementation(project(":core:data"))
     implementation(project(":core:designsystem"))
 
     implementation(libs.androidx.core.ktx)
