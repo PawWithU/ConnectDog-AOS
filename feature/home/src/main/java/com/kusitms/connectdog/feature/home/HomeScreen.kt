@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -44,12 +45,17 @@ private fun HomeScreen(
 ) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.padding(padding)
+        modifier = Modifier
+            .padding(padding)
             .padding(horizontal = 8.dp)
             .verticalScroll(scrollState)
             .padding(bottom = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
+        Text(
+            text = "Hello HOME!",
+            modifier = Modifier.padding(padding)
+        )
+        ExampleCard(uiState = exampleUiState)
     }
 }
