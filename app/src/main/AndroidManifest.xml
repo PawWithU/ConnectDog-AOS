@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectDog"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
-            android:name=".MainActivity"
+            android:name=".feature.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ConnectDog">
