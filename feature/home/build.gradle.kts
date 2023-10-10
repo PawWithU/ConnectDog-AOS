@@ -55,7 +55,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.lifecycle.viewModelKtx)
 
     // compose
     implementation(platform(libs.androidx.compose.bom))
