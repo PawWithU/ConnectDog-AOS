@@ -19,6 +19,7 @@ retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
 kotlinxSerializationJson = "1.5.1"
 kotlinxDatetime = "0.4.1"
+kotlinxImmutable = "0.3.6"
 
 landscapist = "2.2.10"
 composeShimmer = "1.0.5"
@@ -61,7 +62,7 @@ retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.r
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
-
+kotlinx-collection-imuutable = {group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable"}
 
 landscapist-bom = { group = "com.github.skydoves", name = "landscapist-bom", version.ref = "landscapist" }
 landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
