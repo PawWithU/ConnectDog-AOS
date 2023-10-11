@@ -36,6 +36,12 @@
 
 자세한 내용은 [libs.versions.toml](https://github.com/PawWithU/ConnectDog-AOS/blob/main/gradle/libs.versions.toml) 를 참고해 주세요.
 
+## 🧩 Architecture
+### Module Dependency Graph
+<p align="center">
+  <img src="previews/project-dependency-graph.png" width="35%">
+</p>
+
 ## 🤝 협업 규칙
 ### Coding Convention & Tool
 
