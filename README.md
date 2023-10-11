@@ -38,6 +38,7 @@
 
 ## 🧩 Architecture
 ### Module Dependency Graph
+본 프로젝트는 Multi-module 구조이며 각 Feature마다 모듈 형태로 구성되어 있습니다.
 <p align="center">
   <img src="previews/project-dependency-graph.png" width="35%">
 </p>
