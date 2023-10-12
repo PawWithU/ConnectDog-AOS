@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.com.android.library) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.hilt) apply false
-    id("org.jlleitschuh.gradle.ktlint") version "11.6.1"
+    alias(libs.plugins.ktlint)
 }
 true // Needed to make the Suppress annotation work for the plugins block
 

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.org.jetbrains.kotlin.android)
     kotlin("kapt")
     alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 
 android {

@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -18,5 +19,4 @@ android {
 }
 
 dependencies {
-
 }
