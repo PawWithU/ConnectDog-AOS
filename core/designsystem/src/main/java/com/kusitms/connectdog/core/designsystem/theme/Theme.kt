@@ -38,7 +38,6 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
-
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @Composable
 fun ConnectDogTheme(

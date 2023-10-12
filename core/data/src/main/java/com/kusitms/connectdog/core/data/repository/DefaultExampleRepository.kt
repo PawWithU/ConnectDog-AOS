@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 internal class DefaultExampleRepository @Inject constructor(
     private val api: ApiService
-): ExampleRepository {
+) : ExampleRepository {
     override suspend fun getExample(): List<Example> {
         return api.getExample().map { it.toData() }
     }

@@ -2,10 +2,10 @@ package com.kusitms.connectdog.feature.main
 
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 
-internal enum class MainTab (
+internal enum class MainTab(
     val iconResId: Int,
     internal val contentDescription: String,
-    val route: String,
+    val route: String
 ) {
     HOME(
         iconResId = R.drawable.ic_home,

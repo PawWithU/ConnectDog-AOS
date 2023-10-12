@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.kusitms.connectdog.feature.home.HomeRoute
 
-fun NavController.navigateHome(navOptions: NavOptions){
+fun NavController.navigateHome(navOptions: NavOptions) {
     navigate(HomeRoute.route, navOptions)
 }
 
@@ -16,7 +16,7 @@ fun NavGraphBuilder.homeNavGraph(
     onClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
-    composable(route= HomeRoute.route) {
+    composable(route = HomeRoute.route) {
         HomeRoute(
             padding,
             onClick,

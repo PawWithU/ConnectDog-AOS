@@ -37,7 +37,7 @@ internal object ApiModule {
     @Provides
     @Singleton
     fun provideConverterFactory(
-        json: Json,
+        json: Json
     ): Converter.Factory {
         return json.asConverterFactory("application/json".toMediaType())
     }
@@ -46,7 +46,7 @@ internal object ApiModule {
     @Singleton
     fun provideApiService(
         okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
+        converterFactory: Converter.Factory
     ): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -60,5 +60,4 @@ internal object ApiModule {
     fun provideJson(): Json = Json {
         ignoreUnknownKeys = true
     }
-
 }

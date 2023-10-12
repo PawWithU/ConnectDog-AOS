@@ -7,7 +7,7 @@ sealed interface ExampleUiState {
     object Empty : ExampleUiState
     data class Examples(
         val examples: List<Example>
-    ): ExampleUiState {
+    ) : ExampleUiState {
         val platinumCount: Int
             get() = examples.count { it.grade == Example.Grade.PLATINUM }
 

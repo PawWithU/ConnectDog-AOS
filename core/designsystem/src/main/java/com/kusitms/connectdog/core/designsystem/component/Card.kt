@@ -20,6 +20,6 @@ fun ConnectDogCard(
         color = color,
         shape = RoundedCornerShape(32.dp),
         shadowElevation = 2.dp,
-        content = content,
+        content = content
     )
 }

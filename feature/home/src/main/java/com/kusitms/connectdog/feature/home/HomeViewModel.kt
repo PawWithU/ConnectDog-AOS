@@ -33,8 +33,8 @@ class HomeViewModel @Inject constructor(
     }.catch {
         _errorFlow.emit(it)
     }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ExampleUiState.Loading
-        )
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ExampleUiState.Loading
+    )
 }

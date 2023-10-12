@@ -22,7 +22,6 @@ private fun ExampleCardContent(uiState: ExampleUiState.Examples) {
     ConnectDogCard {
         Column(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-
             }
         }
     }
@@ -30,5 +29,4 @@ private fun ExampleCardContent(uiState: ExampleUiState.Examples) {
 
 @Composable
 private fun ExampleCardSkeleton() {
-
 }

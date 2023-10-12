@@ -37,20 +37,21 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator()
 ) {
-    Scaffold(content = {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape)
-        ) {
-            NavHost(
-                navController = navigator.navController,
-                startDestination = navigator.startDestination
+    Scaffold(
+        content = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape)
             ) {
-                homeNavGraph(padding = it, onClick = {}, onShowErrorSnackBar = {})
+                NavHost(
+                    navController = navigator.navController,
+                    startDestination = navigator.startDestination
+                ) {
+                    homeNavGraph(padding = it, onClick = {}, onShowErrorSnackBar = {})
+                }
             }
-        }
-    },
+        },
         bottomBar = {
             MainBottomBar(
                 visible = navigator.shouldShowBottomBar(),
@@ -67,7 +68,7 @@ private fun MainBottomBar(
     visible: Boolean,
     tabs: PersistentList<MainTab>,
     currentTab: MainTab?,
-    onTabSelected: (MainTab) -> Unit,
+    onTabSelected: (MainTab) -> Unit
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -88,13 +89,13 @@ private fun MainBottomBar(
                     color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(28.dp)
                 )
-                .padding(horizontal = 28.dp),
+                .padding(horizontal = 28.dp)
         ) {
             tabs.forEach { tab ->
                 MainBottomBarItem(
                     tab = tab,
                     selected = tab == currentTab,
-                    onClick = { onTabSelected(tab) },
+                    onClick = { onTabSelected(tab) }
                 )
             }
         }
@@ -105,7 +106,7 @@ private fun MainBottomBar(
 private fun RowScope.MainBottomBarItem(
     tab: MainTab,
     selected: Boolean,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Box(
         modifier = Modifier

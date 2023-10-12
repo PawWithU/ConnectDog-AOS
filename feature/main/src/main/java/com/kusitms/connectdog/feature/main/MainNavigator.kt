@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 
-internal class MainNavigator (
+internal class MainNavigator(
     val navController: NavHostController
 ) {
     private val currentDestination: NavDestination?
@@ -24,16 +24,16 @@ internal class MainNavigator (
             ?.route
             ?.let(MainTab::find)
 
-    fun navigate(tab: MainTab){
+    fun navigate(tab: MainTab) {
         val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id){
+            popUpTo(navController.graph.findStartDestination().id) {
                 saveState = true
             }
             launchSingleTop = true
             restoreState = true
         }
 
-        when(tab) {
+        when (tab) {
             MainTab.HOME -> navController.navigateHome(navOptions)
         }
     }
