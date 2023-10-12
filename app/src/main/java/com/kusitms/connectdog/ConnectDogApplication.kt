@@ -4,4 +4,4 @@ import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class ConnectDogApplication: Application()
+class ConnectDogApplication : Application()
