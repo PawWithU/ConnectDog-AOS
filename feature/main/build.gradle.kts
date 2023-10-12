@@ -51,7 +51,6 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
 
-
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
@@ -72,7 +71,7 @@ dependencies {
 
     implementation(libs.kotlinx.collection.imuutable)
 
-    //test
+    // test
     implementation(libs.androidx.junit.ktx)
 }
 
