@@ -51,6 +51,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
 
+
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
@@ -70,6 +71,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     implementation(libs.kotlinx.collection.imuutable)
+
+    //test
+    implementation(libs.androidx.junit.ktx)
 }
 
 kapt {
