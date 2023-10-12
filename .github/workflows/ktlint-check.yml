@@ -19,6 +19,7 @@ jobs:
         java-version: 17
 
     - name: Run ktlint
-      run: ./gradlew ktlintCheck --daemon
-
+      run: 
+          ./gradlew ktlint --daemon
+          ./gradlew ktlintCheck --daemon
    
