@@ -11,7 +11,7 @@ import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 
 internal class MainNavigator(
-    val navController: NavHostController,
+    val navController: NavHostController
 ) {
     private val currentDestination: NavDestination?
         @Composable get() =

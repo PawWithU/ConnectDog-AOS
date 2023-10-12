@@ -9,8 +9,8 @@ internal fun ExampleResponse.toData(): Example =
         imageUrl = imageUrl,
         homepage = homepage,
         grade =
-            when (grade) {
-                ExampleResponse.Grade.PLATINUM -> Example.Grade.PLATINUM
-                ExampleResponse.Grade.GOLD -> Example.Grade.GOLD
-            },
+        when (grade) {
+            ExampleResponse.Grade.PLATINUM -> Example.Grade.PLATINUM
+            ExampleResponse.Grade.GOLD -> Example.Grade.GOLD
+        }
     )

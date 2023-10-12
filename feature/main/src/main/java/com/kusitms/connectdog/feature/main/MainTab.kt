@@ -5,13 +5,13 @@ import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 internal enum class MainTab(
     val iconResId: Int,
     internal val contentDescription: String,
-    val route: String,
+    val route: String
 ) {
     HOME(
         iconResId = R.drawable.ic_home,
         contentDescription = "홈",
-        route = HomeRoute.route,
-    ),
+        route = HomeRoute.route
+    )
     ;
 
     companion object {
