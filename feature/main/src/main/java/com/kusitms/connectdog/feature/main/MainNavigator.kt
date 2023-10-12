@@ -11,27 +11,30 @@ import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 
 internal class MainNavigator(
-    val navController: NavHostController
+    val navController: NavHostController,
 ) {
     private val currentDestination: NavDestination?
-        @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination
+        @Composable get() =
+            navController
+                .currentBackStackEntryAsState().value?.destination
 
     val startDestination = MainTab.HOME.route
 
     val currentTab: MainTab?
-        @Composable get() = currentDestination
-            ?.route
-            ?.let(MainTab::find)
+        @Composable get() =
+            currentDestination
+                ?.route
+                ?.let(MainTab::find)
 
     fun navigate(tab: MainTab) {
-        val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
+        val navOptions =
+            navOptions {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
             }
-            launchSingleTop = true
-            restoreState = true
-        }
 
         when (tab) {
             MainTab.HOME -> navController.navigateHome(navOptions)
@@ -46,8 +49,7 @@ internal class MainNavigator(
 }
 
 @Composable
-internal fun rememberMainNavigator(
-    navController: NavHostController = rememberNavController()
-): MainNavigator = remember(navController) {
-    MainNavigator(navController)
-}
+internal fun rememberMainNavigator(navController: NavHostController = rememberNavController()): MainNavigator =
+    remember(navController) {
+        MainNavigator(navController)
+    }

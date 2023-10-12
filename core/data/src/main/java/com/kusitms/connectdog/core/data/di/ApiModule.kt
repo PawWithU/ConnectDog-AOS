@@ -23,9 +23,10 @@ internal object ApiModule {
     @Provides
     @Singleton
     fun provideOkhttpClient(): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+        val httpLoggingInterceptor =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
         return OkHttpClient.Builder()
             .addNetworkInterceptor(httpLoggingInterceptor)
             .connectTimeout(10, TimeUnit.SECONDS)
@@ -36,9 +37,7 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideConverterFactory(
-        json: Json
-    ): Converter.Factory {
+    fun provideConverterFactory(json: Json): Converter.Factory {
         return json.asConverterFactory("application/json".toMediaType())
     }
 
@@ -46,7 +45,7 @@ internal object ApiModule {
     @Singleton
     fun provideApiService(
         okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory
+        converterFactory: Converter.Factory,
     ): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -57,7 +56,8 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideJson(): Json = Json {
-        ignoreUnknownKeys = true
-    }
+    fun provideJson(): Json =
+        Json {
+            ignoreUnknownKeys = true
+        }
 }

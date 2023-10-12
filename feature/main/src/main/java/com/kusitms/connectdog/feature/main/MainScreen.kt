@@ -34,19 +34,18 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-internal fun MainScreen(
-    navigator: MainNavigator = rememberMainNavigator()
-) {
+internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
     Scaffold(
         content = {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape),
             ) {
                 NavHost(
                     navController = navigator.navController,
-                    startDestination = navigator.startDestination
+                    startDestination = navigator.startDestination,
                 ) {
                     homeNavGraph(padding = it, onClick = {}, onShowErrorSnackBar = {})
                 }
@@ -57,9 +56,9 @@ internal fun MainScreen(
                 visible = navigator.shouldShowBottomBar(),
                 tabs = MainTab.values().toList().toPersistentList(),
                 currentTab = navigator.currentTab,
-                onTabSelected = { navigator.navigate(it) }
+                onTabSelected = { navigator.navigate(it) },
             )
-        }
+        },
     )
 }
 
@@ -68,34 +67,35 @@ private fun MainBottomBar(
     visible: Boolean,
     tabs: PersistentList<MainTab>,
     currentTab: MainTab?,
-    onTabSelected: (MainTab) -> Unit
+    onTabSelected: (MainTab) -> Unit,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
-        exit = fadeOut() + slideOut { IntOffset(0, it.height) }
+        exit = fadeOut() + slideOut { IntOffset(0, it.height) },
     ) {
         Row(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .fillMaxWidth()
-                .height(56.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(size = 28.dp)
-                )
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(28.dp)
-                )
-                .padding(horizontal = 28.dp)
+            modifier =
+                Modifier
+                    .navigationBarsPadding()
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = RoundedCornerShape(size = 28.dp),
+                    )
+                    .background(
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = RoundedCornerShape(28.dp),
+                    )
+                    .padding(horizontal = 28.dp),
         ) {
             tabs.forEach { tab ->
                 MainBottomBarItem(
                     tab = tab,
                     selected = tab == currentTab,
-                    onClick = { onTabSelected(tab) }
+                    onClick = { onTabSelected(tab) },
                 )
             }
         }
@@ -106,26 +106,28 @@ private fun MainBottomBar(
 private fun RowScope.MainBottomBarItem(
     tab: MainTab,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .weight(1f)
-            .fillMaxHeight()
-            .selectable(
-                selected = selected,
-                onClick = onClick
-            )
+        modifier =
+            Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .selectable(
+                    selected = selected,
+                    onClick = onClick,
+                ),
     ) {
         Icon(
             painter = painterResource(id = tab.iconResId),
             contentDescription = tab.contentDescription,
-            tint = if (selected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.outline
-            },
-            modifier = Modifier.size(34.dp)
+            tint =
+                if (selected) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.outline
+                },
+            modifier = Modifier.size(34.dp),
         )
     }
 }

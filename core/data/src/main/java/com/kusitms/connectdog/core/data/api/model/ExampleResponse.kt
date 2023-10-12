@@ -8,13 +8,13 @@ internal data class ExampleResponse(
     @SerialName("name") val name: String,
     @SerialName("imageUrl") val imageUrl: String,
     @SerialName("homepage") val homepage: String,
-    @SerialName("grade") val grade: Grade
+    @SerialName("grade") val grade: Grade,
 ) {
     enum class Grade {
         @SerialName("platinum")
         PLATINUM,
 
         @SerialName("gold")
-        GOLD
+        GOLD,
     }
 }
