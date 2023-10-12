@@ -6,19 +6,19 @@ on:
       - main
       - develop
 jobs:
-  ktlint:
-    name: Check Code Quality
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clone repo
-        uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-      - name: ktlint
-        uses: ScaCap/action-ktlint@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-check # Change reporter
-          android: true
-          level: warning
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: 17
+
+    - name: Run ktlint
+      run: ./gradlew ktlintCheck --daemon
+
+   
