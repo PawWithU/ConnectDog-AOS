@@ -19,7 +19,12 @@ jobs:
         java-version: 17
         distribution: 'adopt'
 
+    - name: Sync Gradle
+      run: ./gradlew --refresh-dependencies
+
+    - name: List Gradle tasks
+      run: ./gradlew tasks
+
     - name: Run ktlint
-      run: 
-          ./gradlew ktlint --daemon
+      run: |
           ./gradlew ktlintCheck --daemon
