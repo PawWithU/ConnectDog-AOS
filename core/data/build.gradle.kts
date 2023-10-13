@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("kapt")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -25,15 +28,27 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
     implementation(project(":core:model"))
 
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.okhttp.logging)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
+}
+
+kapt {
+    correctErrorTypes = true
 }

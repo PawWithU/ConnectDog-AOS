@@ -17,19 +17,26 @@ hiltNavigationCompose = "1.0.0"
 okhttp = "4.11.0"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
-kotlinxSerializationJson = "1.9.0"
+kotlinxSerializationJson = "1.5.1"
 kotlinxDatetime = "0.4.1"
+kotlinxImmutable = "0.3.6"
 
 landscapist = "2.2.10"
 composeShimmer = "1.0.5"
 
 dependencyGraph = "0.9.0-SNAPSHOT"
+ktlint = "11.6.1"
+
+kotlin = "1.8.10"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "andoroidCoreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
@@ -57,7 +64,7 @@ retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.r
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
-
+kotlinx-collection-imuutable = {group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable"}
 
 landscapist-bom = { group = "com.github.skydoves", name = "landscapist-bom", version.ref = "landscapist" }
 landscapist-coil = { group = "com.github.skydoves", name = "landscapist-coil" }
@@ -74,12 +81,16 @@ dependency-graph = {group = "com.vanniktech", name = "gradle-dependency-graph-ge
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version = "1.1.5" }
 
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktlint = {id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
 
 [bundles]
 

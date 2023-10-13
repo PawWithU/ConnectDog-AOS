@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("kapt")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 
 android {
@@ -31,11 +34,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     packaging {
@@ -49,7 +52,14 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:home"))
 
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+kapt {
+    correctErrorTypes = true
 }

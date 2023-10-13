@@ -4,12 +4,16 @@ plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.com.android.library) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ktlint)
 }
 true // Needed to make the Suppress annotation work for the plugins block
 
 buildscript {
     repositories {
         maven("https://oss.sonatype.org/content/repositories/snapshots")
+        mavenCentral()
     }
     dependencies {
         // gradlew generateProjectDependencyGraph
@@ -17,4 +21,4 @@ buildscript {
     }
 }
 
-apply(plugin="com.vanniktech.dependency.graph.generator")
+apply(plugin = "com.vanniktech.dependency.graph.generator")
