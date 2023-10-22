@@ -2,11 +2,6 @@ package com.kusitms.connectdog.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-
 val PetOrange = Color(0xFFFFAC60)
 val Orange_container = Color(0xFFFFF3E8) //todo 임의의 이름
 val Red1 = Color(0xFFFA5050)
