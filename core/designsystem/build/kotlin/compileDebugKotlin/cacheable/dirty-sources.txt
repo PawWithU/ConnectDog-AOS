@@ -1,4 +1,0 @@
-/Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/theme/Type.kt
-/Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/component/Card.kt
-/Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/theme/Theme.kt
-/Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/theme/Color.kt
