@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+drawable ic_right
 font pretendard_bold
 font pretendard_medium
 font pretendard_regular

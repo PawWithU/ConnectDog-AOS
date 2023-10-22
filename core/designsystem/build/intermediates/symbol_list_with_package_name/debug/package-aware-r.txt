@@ -1,4 +1,5 @@
 com.kusitms.connectdog.core.designsystem
+drawable ic_right
 font pretendard_bold
 font pretendard_medium
 font pretendard_regular

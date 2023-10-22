@@ -1,3 +1,4 @@
+int drawable ic_right 0x0
 int font pretendard_bold 0x0
 int font pretendard_medium 0x0
 int font pretendard_regular 0x0
