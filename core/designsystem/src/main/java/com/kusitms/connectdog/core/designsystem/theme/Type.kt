@@ -12,7 +12,7 @@ val fonts = FontFamily(
     Font(R.font.pretendard_bold, weight = FontWeight.Bold),
     Font(R.font.pretendard_semibold, weight = FontWeight.SemiBold),
     Font(R.font.pretendard_medium, weight = FontWeight.Medium),
-    Font(R.font.pretendard_regular),
+    Font(R.font.pretendard_regular)
 )
 
 val Typography = Typography(
@@ -33,7 +33,7 @@ val Typography = Typography(
     titleSmall = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.SemiBold,
-        fontSize =  16.sp,
+        fontSize = 16.sp,
         lineHeight = 20.sp,
         letterSpacing = 0.sp
     ),

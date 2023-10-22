@@ -1,0 +1,4 @@
+int font pretendard_bold 0x0
+int font pretendard_medium 0x0
+int font pretendard_regular 0x0
+int font pretendard_semibold 0x0
