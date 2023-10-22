@@ -2,7 +2,6 @@ package com.kusitms.connectdog.core.designsystem.theme
 
 import android.app.Activity
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -20,9 +19,12 @@ private val LightColorScheme =
     lightColorScheme(
         primary = PetOrange,
         onPrimary = Color.White,
+        secondary = PetOrange,
+        onSecondary = Color.White,
         background = Color.White,
         onBackground = Color.Black,
-        primaryContainer = Orange_container
+        primaryContainer = Orange_container,
+        surface = Color.White
     /* Other default colors to override
     surface = Color(0xFFFFFBFE),
     onSecondary = Color.White,
@@ -31,7 +33,6 @@ private val LightColorScheme =
      */
     )
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 @Composable
 fun ConnectDogTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -57,7 +58,7 @@ fun ConnectDogTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme, // todo 확인필요 (colorScheme으로 하면 lightColorScheme 적용이 안되더라고요ㅜㅜ)
         typography = Typography,
         content = content
     )
