@@ -4,8 +4,13 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,19 +28,22 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 
 @Composable
 fun ConnectDogTopAppBar(
-    @StringRes titleRes: Int,
+    @StringRes titleRes: Int?,
     navigationType: TopAppBarNavigationType,
     modifier: Modifier = Modifier,
     navigationIconContentDescription: String?,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     actionButtons: @Composable () -> Unit = {},
-    onNavigationClick: () -> Unit = {},
+    onNavigationClick: () -> Unit = {}
 ) {
     val icon: @Composable (Modifier, imageRes: Int) -> Unit =
         { modifier, imageRes ->
             IconButton(onClick = onNavigationClick, modifier = modifier.size(48.dp)) {
                 Icon(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(start = 16.dp),
                     painter = painterResource(id = imageRes),
                     contentDescription = navigationIconContentDescription
                 )
@@ -53,30 +61,80 @@ fun ConnectDogTopAppBar(
                 Modifier.align(Alignment.CenterStart),
                 R.drawable.ic_left
             )
+        } else if (navigationType == TopAppBarNavigationType.HOME) {
+            HomeIcon(
+                modifier = Modifier.size(66.dp, 45.dp),
+                imageRes = R.drawable.ic_logo_home,
+                iconContentDescription = "connect dog home"
+            )
         }
-        Row(modifier = Modifier.align(Alignment.CenterEnd)) {
-            actionButtons
-        }
-        Text(
-            text = stringResource(id = titleRes),
-            color = contentColor,
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
 
+        Row(modifier = Modifier.align(Alignment.CenterEnd)) {
+            actionButtons()
+        }
+        if (titleRes != null) {
+            Text(
+                text = stringResource(id = titleRes),
+                color = contentColor,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+    }
 }
 
-enum class TopAppBarNavigationType { BACK }
+@Composable
+private fun HomeIcon(
+    modifier: Modifier = Modifier,
+    imageRes: Int,
+    tintColor: Color = MaterialTheme.colorScheme.primary,
+    iconContentDescription: String
+) {
+    Icon(
+        modifier = modifier
+            .padding(start = 16.dp),
+        painter = painterResource(id = imageRes),
+        tint = tintColor,
+        contentDescription = iconContentDescription
+    )
+}
+
+enum class TopAppBarNavigationType { BACK, HOME }
 
 @Preview
 @Composable
-private fun ConnectDogTopAppBarPreviewBack(){
+private fun ConnectDogTopAppBarPreviewBack() {
     ConnectDogTheme {
         ConnectDogTopAppBar(
             titleRes = R.string.untitled,
             navigationType = TopAppBarNavigationType.BACK,
             navigationIconContentDescription = "Navigation icon"
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun ConnectDogTopAppBarPreviewHome() {
+    ConnectDogTheme {
+        ConnectDogTopAppBar(
+            titleRes = null,
+            navigationType = TopAppBarNavigationType.HOME,
+            navigationIconContentDescription = "Navigation icon home",
+            actionButtons = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Navigate to Search"
+                    )
+                }
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = "Navigate to Search"
+                    )
+                }
+            }
         )
     }
 }
