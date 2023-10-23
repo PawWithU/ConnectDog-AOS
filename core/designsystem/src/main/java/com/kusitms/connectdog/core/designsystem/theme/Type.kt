@@ -12,7 +12,8 @@ val fonts = FontFamily(
     Font(R.font.pretendard_bold, weight = FontWeight.Bold),
     Font(R.font.pretendard_semibold, weight = FontWeight.SemiBold),
     Font(R.font.pretendard_medium, weight = FontWeight.Medium),
-    Font(R.font.pretendard_regular)
+    Font(R.font.pretendard_regular),
+    Font(R.font.pretendard_extralight, weight = FontWeight.ExtraLight)
 )
 
 val Typography = Typography(
@@ -51,9 +52,16 @@ val Typography = Typography(
         lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     ),
-    labelSmall = TextStyle(
+    labelMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
+        fontSize = 10.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.5.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.ExtraLight,
         fontSize = 10.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp
