@@ -79,7 +79,7 @@ private fun BottomButtonPreview() {
 private fun ConnectDogIconButton() {
     ConnectDogTheme {
         ConnectDogIconButton(
-            iconId = R.drawable.ic_right,
+            iconId = R.drawable.ic_left,
             contentDescription = "네이버 로그인",
             onClick = {},
             content = "네이버로 계속하기",
