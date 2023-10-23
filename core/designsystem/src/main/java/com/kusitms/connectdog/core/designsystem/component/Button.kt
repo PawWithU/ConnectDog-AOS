@@ -21,7 +21,7 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Typography
 
 @Composable
-fun BottomButton(
+fun ConnectDogBottomButton(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
@@ -40,7 +40,7 @@ fun BottomButton(
 }
 
 @Composable
-fun ConnectDogIconButton(
+fun ConnectDogIconBottomButton(
     modifier: Modifier = Modifier,
     iconId: Int,
     contentDescription: String,
@@ -70,7 +70,7 @@ fun ConnectDogIconButton(
 @Composable
 private fun BottomButtonPreview() {
     ConnectDogTheme {
-        BottomButton(onClick = {}, content = "간편 회원가입하기", modifier = Modifier.size(230.dp, 56.dp))
+        ConnectDogBottomButton(onClick = {}, content = "간편 회원가입하기", modifier = Modifier.size(230.dp, 56.dp))
     }
 }
 
@@ -78,7 +78,7 @@ private fun BottomButtonPreview() {
 @Composable
 private fun ConnectDogIconButton() {
     ConnectDogTheme {
-        ConnectDogIconButton(
+        ConnectDogIconBottomButton(
             iconId = R.drawable.ic_left,
             contentDescription = "네이버 로그인",
             onClick = {},
