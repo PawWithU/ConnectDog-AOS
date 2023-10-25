@@ -1,1 +1,0 @@
-com.kusitms.connectdog.core.designsystem
