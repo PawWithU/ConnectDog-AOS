@@ -52,6 +52,8 @@ dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:home"))
 
+    implementation(libs.androidx.core.splashscreen)
+
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
