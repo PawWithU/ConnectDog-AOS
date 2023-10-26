@@ -11,6 +11,7 @@ androidxComposeBom = "2023.03.00"
 androidxAppCompat = "1.6.1"
 androidxComposeNavigation = "2.6.0"
 androidxComposeMaterial3 = "1.1.2"
+androidxSplash = "1.0.0"
 hilt = "2.46.1"
 hiltNavigationCompose = "1.0.0"
 
@@ -38,6 +39,7 @@ androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "life
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelKtx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
+androidx-core-splashscreen = {group = "androidx.core", name = "core-splashscreen", version.ref = "androidxSplash"}
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
