@@ -54,7 +54,6 @@ dependencies {
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
-    implementation(libs.androidx.core.splashscreen)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

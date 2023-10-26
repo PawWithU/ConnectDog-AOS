@@ -11,7 +11,7 @@ androidxComposeBom = "2023.03.00"
 androidxAppCompat = "1.6.1"
 androidxComposeNavigation = "2.6.0"
 androidxComposeMaterial3 = "1.1.2"
-androidxSplash = "1.0.0"
+androidxSplash = "1.1.0-alpha02"
 hilt = "2.46.1"
 hiltNavigationCompose = "1.0.0"
 

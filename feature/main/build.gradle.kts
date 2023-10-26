@@ -51,6 +51,9 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
 
+
+    implementation(libs.androidx.core.splashscreen)
+
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
