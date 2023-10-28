@@ -19,7 +19,7 @@
             android:name=".feature.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ConnectDog">
+            android:theme="@style/Theme.ConnectDog.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
