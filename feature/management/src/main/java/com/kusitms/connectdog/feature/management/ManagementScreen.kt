@@ -3,7 +3,6 @@ package com.kusitms.connectdog.feature.management
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.kusitms.connectdog.feature.management.navigation.ManagementRoute
 
 @Composable
 internal fun ManagementRoute(
