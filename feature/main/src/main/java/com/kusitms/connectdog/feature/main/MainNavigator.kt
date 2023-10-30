@@ -10,7 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
-import com.kusitms.connectdog.feature.mypage.navigateMypage
+import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 
 internal class MainNavigator(
     val navController: NavHostController

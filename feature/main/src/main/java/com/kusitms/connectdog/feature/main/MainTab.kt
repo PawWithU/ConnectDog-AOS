@@ -2,7 +2,7 @@ package com.kusitms.connectdog.feature.main
 
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.management.navigation.ManagementRoute
-import com.kusitms.connectdog.feature.mypage.MypageRoute
+import com.kusitms.connectdog.feature.mypage.navigation.MypageRoute
 
 internal enum class MainTab(
     val iconResId: Int,
