@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
+import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
+import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -48,6 +50,8 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                     startDestination = navigator.startDestination
                 ) {
                     homeNavGraph(padding = it, onClick = {}, onShowErrorSnackBar = {})
+                    managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
+                    mypageNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
                 }
             }
         },
