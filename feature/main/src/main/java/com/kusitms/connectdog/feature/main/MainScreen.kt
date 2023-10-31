@@ -1,38 +1,29 @@
 package com.kusitms.connectdog.feature.main
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
+import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -56,82 +47,86 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
             }
         },
         bottomBar = {
-            MainBottomBar(
-                visible = navigator.shouldShowBottomBar(),
-                tabs = MainTab.values().toList().toPersistentList(),
-                currentTab = navigator.currentTab,
-                onTabSelected = { navigator.navigate(it) }
-            )
+            Column {
+                Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
+                NavigationBar(
+                    containerColor = Color.Transparent,
+                    modifier = Modifier.background(Color.White)
+                ) {
+                    MainTab.values().toList().toPersistentList().forEach {
+                        NavigationBarItem(
+                            selected = navigator.currentTab == it,
+                            onClick = { navigator.navigate(it) },
+                            icon = {
+                                NavigationIcon(
+                                    tab = it,
+                                    selected = navigator.currentTab == it
+                                )
+                            },
+                            label = {
+                                NavigationLabel(
+                                    tab = it,
+                                    selected = navigator.currentTab == it
+                                )
+                            }
+                        )
+                    }
+                }
+            }
         }
     )
 }
 
 @Composable
-private fun MainBottomBar(
-    visible: Boolean,
-    tabs: PersistentList<MainTab>,
-    currentTab: MainTab?,
-    onTabSelected: (MainTab) -> Unit
+private fun NavigationIcon(
+    tab: MainTab,
+    selected: Boolean
 ) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn() + slideIn { IntOffset(0, it.height) },
-        exit = fadeOut() + slideOut { IntOffset(0, it.height) }
-    ) {
-        Row(
-            modifier =
-            Modifier
-                .navigationBarsPadding()
-                .fillMaxWidth()
-                .height(56.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(size = 28.dp)
-                )
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(28.dp)
-                )
-                .padding(horizontal = 28.dp)
-        ) {
-            tabs.forEach { tab ->
-                MainBottomBarItem(
-                    tab = tab,
-                    selected = tab == currentTab,
-                    onClick = { onTabSelected(tab) }
-                )
-            }
-        }
-    }
+    Icon(
+        painter = painterResource(id = tab.iconResId),
+        contentDescription = tab.contentDescription,
+        tint =
+        if (selected) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        },
+        modifier = Modifier.size(24.dp)
+    )
 }
 
 @Composable
-private fun RowScope.MainBottomBarItem(
+private fun NavigationLabel(
     tab: MainTab,
-    selected: Boolean,
-    onClick: () -> Unit
+    selected: Boolean
 ) {
-    Box(
-        modifier =
-        Modifier
-            .weight(1f)
-            .fillMaxHeight()
-            .selectable(
-                selected = selected,
-                onClick = onClick
-            )
-    ) {
-        Icon(
-            painter = painterResource(id = tab.iconResId),
-            contentDescription = tab.contentDescription,
-            tint =
-            if (selected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.outline
-            },
-            modifier = Modifier.size(34.dp)
-        )
+    Text(
+        text = tab.contentDescription,
+        style = MaterialTheme.typography.labelLarge,
+        color = if (selected) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun MainScreenPreview() {
+    ConnectDogTheme {
+        NavigationBar(
+            containerColor = Color.Transparent,
+            modifier = Modifier.background(Color.White)
+        ) {
+            MainTab.values().toList().toPersistentList().forEach {
+                NavigationBarItem(
+                    selected = it == MainTab.HOME,
+                    onClick = { },
+                    icon = { NavigationIcon(tab = it, selected = it == MainTab.HOME) },
+                    label = { NavigationLabel(tab = it, selected = it == MainTab.HOME) }
+                )
+            }
+        }
     }
 }
