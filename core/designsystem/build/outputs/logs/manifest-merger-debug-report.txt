@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml:2:13-83
-INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml:2:13-83
+ADDED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml:2:13-83
+INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml:2:13-83
 	package
-		INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml
+		INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml
 	xmlns:android
-		ADDED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml:2:23-81
+		ADDED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml:2:23-81
 uses-sdk
-INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml reason: use-sdk injection requested
-INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml
-INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml
+INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml reason: use-sdk injection requested
+INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml
+INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml
 	android:targetSdkVersion
-		INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml
+		INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml
 	android:minSdkVersion
-		INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest17908244927590666841.xml
+		INJECTED from /Users/mjkim/StudioProjects/ConnectDog-AOS/core/designsystem/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest10870774018376045455.xml
