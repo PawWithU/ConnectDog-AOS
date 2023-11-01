@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kusitms.connectdog.feature.main"
+    namespace = "com.kusitms.connectdog.feature.management"
     compileSdk = 33
 
     defaultConfig {
@@ -34,7 +34,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
     }
@@ -45,15 +44,9 @@ android {
 
 dependencies {
 
-    // Navigation을 위해 모든 feature 의존성 추가 필요
-    implementation(project(":feature:home"))
-    implementation(project(":feature:management"))
-    implementation(project(":feature:mypage"))
-
     implementation(project(":core:model"))
+    implementation(project(":core:data"))
     implementation(project(":core:designsystem"))
-
-    implementation(libs.androidx.core.splashscreen)
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
@@ -61,10 +54,10 @@ dependencies {
     implementation(libs.androidx.compose.navigation)
     implementation(libs.hilt.navigation.compose)
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.viewModelKtx)
 
     // compose
     implementation(platform(libs.androidx.compose.bom))
@@ -73,10 +66,11 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
-    implementation(libs.kotlinx.collection.imuutable)
-
     // test
-    implementation(libs.androidx.junit.ktx)
+    implementation(libs.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
 
 kapt {

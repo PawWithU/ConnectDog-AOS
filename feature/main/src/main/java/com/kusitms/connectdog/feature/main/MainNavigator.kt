@@ -9,6 +9,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
+import com.kusitms.connectdog.feature.management.navigation.navigateManagement
+import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -38,6 +40,8 @@ internal class MainNavigator(
 
         when (tab) {
             MainTab.HOME -> navController.navigateHome(navOptions)
+            MainTab.MANAGEMENT -> navController.navigateManagement(navOptions)
+            MainTab.MYPAGE -> navController.navigateMypage(navOptions)
         }
     }
 
