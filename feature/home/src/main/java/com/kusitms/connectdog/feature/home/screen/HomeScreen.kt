@@ -1,8 +1,8 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -30,8 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun HomeRoute(
-    padding: PaddingValues,
-    onClick: () -> Unit,
+    onSearchIconClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -42,54 +41,47 @@ internal fun HomeRoute(
         viewModel.errorFlow.collectLatest { throwable -> onShowErrorSnackBar(throwable) }
     }
 
-    HomeScreen(
-        padding = padding,
-        exampleUiState = exampleUiState,
-        onClick = onClick
-    )
+    Column {
+        TopAppBar(onClickSearch = onSearchIconClick)
+        HomeScreen(
+            exampleUiState = exampleUiState
+        )
+    }
 }
 
 @Composable
 private fun HomeScreen(
-    padding: PaddingValues,
-    exampleUiState: ExampleUiState,
-    onClick: () -> Unit
+    exampleUiState: ExampleUiState
 ) {
-
-    Column {
-        TopAppBar(onClickSearch = onClick)
-    }
-
     val scrollState = rememberScrollState()
     Column(
         modifier =
         Modifier
-            .padding(padding)
             .padding(horizontal = 8.dp)
             .verticalScroll(scrollState)
             .padding(bottom = 4.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = "Hello HOME!",
-            modifier = Modifier.padding(padding)
+            text = "Hello HOME!"
         )
         ExampleCard(uiState = exampleUiState)
     }
-
-
 }
 
 @Composable
 private fun TopAppBar(
     onClickSearch: () -> Unit
-){
+) {
     ConnectDogTopAppBar(
         titleRes = null,
         navigationType = TopAppBarNavigationType.HOME,
         navigationIconContentDescription = "Navigation icon home",
         actionButtons = {
-            IconButton(onClick = {onClickSearch}) {
+            IconButton(onClick = {
+                Log.d("SearchScreen", "clickSearchIcon")
+                onClickSearch()
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Search,
                     contentDescription = "Navigate to Search"
@@ -107,10 +99,8 @@ private fun TopAppBar(
 
 @Preview
 @Composable
-private fun HomeScreenPreview(){
+private fun HomeScreenPreview() {
     ConnectDogTheme {
-        HomeScreen(padding = PaddingValues(0.dp), exampleUiState = ExampleUiState.Empty) {
-            
-        }
+        HomeScreen(exampleUiState = ExampleUiState.Empty)
     }
 }
