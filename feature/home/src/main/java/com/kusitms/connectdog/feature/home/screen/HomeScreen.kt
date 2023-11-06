@@ -101,6 +101,9 @@ private fun TopAppBar(
 @Composable
 private fun HomeScreenPreview() {
     ConnectDogTheme {
-        HomeScreen(exampleUiState = ExampleUiState.Empty)
+        Column {
+            TopAppBar(onClickSearch = {})
+            HomeScreen(exampleUiState = ExampleUiState.Empty)
+        }
     }
 }
