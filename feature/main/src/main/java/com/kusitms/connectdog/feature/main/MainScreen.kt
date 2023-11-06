@@ -1,6 +1,10 @@
 package com.kusitms.connectdog.feature.main
 
-import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
@@ -44,36 +49,43 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onSearchIconClick = { navigator.navigateHomeSearch() },
-                        onShowErrorSnackBar = {})
+                        onShowErrorSnackBar = {}
+                    )
                     managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
                     mypageNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
                 }
             }
         },
         bottomBar = {
-            Column {
-                Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
-                NavigationBar(
-                    containerColor = Color.Transparent,
-                    modifier = Modifier.background(Color.White)
-                ) {
-                    MainTab.values().toList().toPersistentList().forEach {
-                        NavigationBarItem(
-                            selected = navigator.currentTab == it,
-                            onClick = { navigator.navigate(it) },
-                            icon = {
-                                NavigationIcon(
-                                    tab = it,
-                                    selected = navigator.currentTab == it
-                                )
-                            },
-                            label = {
-                                NavigationLabel(
-                                    tab = it,
-                                    selected = navigator.currentTab == it
-                                )
-                            }
-                        )
+            AnimatedVisibility(
+                visible = navigator.shouldShowBottomBar(),
+                enter = fadeIn() + slideIn { IntOffset(0, it.height) },
+                exit = fadeOut() + slideOut { IntOffset(0, it.height) }
+            ) {
+                Column {
+                    Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
+                    NavigationBar(
+                        containerColor = Color.Transparent,
+                        modifier = Modifier.background(Color.White)
+                    ) {
+                        MainTab.values().toList().toPersistentList().forEach {
+                            NavigationBarItem(
+                                selected = navigator.currentTab == it,
+                                onClick = { navigator.navigate(it) },
+                                icon = {
+                                    NavigationIcon(
+                                        tab = it,
+                                        selected = navigator.currentTab == it
+                                    )
+                                },
+                                label = {
+                                    NavigationLabel(
+                                        tab = it,
+                                        selected = navigator.currentTab == it
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
