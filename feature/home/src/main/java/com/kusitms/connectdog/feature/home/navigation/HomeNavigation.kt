@@ -23,19 +23,17 @@ fun NavGraphBuilder.homeNavGraph(
     onSearchIconClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
-    navigation(startDestination = HomeRoute.main, route = HomeRoute.route) {
-        composable(route = HomeRoute.main) {
-            HomeRoute(
-                onSearchIconClick,
-                onShowErrorSnackBar
-            )
-        }
+    composable(route = HomeRoute.route) {
+        HomeRoute(
+            onSearchIconClick,
+            onShowErrorSnackBar
+        )
+    }
 
-        composable(route = HomeRoute.search) {
-            SearchScreen(
-                onBackClick = onBackClick
-            )
-        }
+    composable(route = HomeRoute.search) {
+        SearchScreen(
+            onBackClick = onBackClick
+        )
     }
 }
 
