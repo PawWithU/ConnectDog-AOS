@@ -1,6 +1,9 @@
 com.kusitms.connectdog.core.designsystem
+drawable ic_error
 drawable ic_left
 drawable ic_logo_home
+drawable ic_main
+drawable logo
 font pretendard_bold
 font pretendard_extralight
 font pretendard_medium
