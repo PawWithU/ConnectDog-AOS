@@ -4,6 +4,7 @@
     <string name="search_app_bar_title">이동봉사 공고</string>
     <!-- main -->
     <string name="home_description_title">이동봉사 일정이 있나요?\n딱 맞는 이동 봉사 공고를 검색해보세요!</string>
+    <string name="home_counting_guide">집계안내</string>
     <string name="home_dog_unit">마리</string>
     <string name="home_need_move_description">이동이 필요해요</string>
     <string name="home_moved_description">이동했어요!</string>

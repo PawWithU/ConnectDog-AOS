@@ -28,7 +28,6 @@ val Typography = Typography(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
-        lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
     titleSmall = TextStyle(
