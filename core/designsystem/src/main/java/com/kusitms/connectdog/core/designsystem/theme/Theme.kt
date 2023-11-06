@@ -25,7 +25,7 @@ private val LightColorScheme =
         onBackground = Color.Black,
         primaryContainer = Orange_container,
         surface = Color.White,
-        error = Red1
+        error = Red1,
     /* Other default colors to override
     surface = Color(0xFFFFFBFE),
     onSecondary = Color.White,
@@ -39,7 +39,7 @@ fun ConnectDogTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme =
         when {
@@ -61,6 +61,6 @@ fun ConnectDogTheme(
     MaterialTheme(
         colorScheme = LightColorScheme, // todo 확인필요 (colorScheme으로 하면 lightColorScheme 적용이 안되더라고요ㅜㅜ)
         typography = Typography,
-        content = content
+        content = content,
     )
 }
