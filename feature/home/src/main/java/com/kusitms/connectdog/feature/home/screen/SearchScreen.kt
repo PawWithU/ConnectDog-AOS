@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.feature.home.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,7 +22,7 @@ internal fun SearchScreen(
 @Composable
 private fun TopAppBar(
     onBackClick: () -> Unit
-){
+) {
     ConnectDogTopAppBar(
         titleRes = R.string.search_app_bar_title,
         navigationType = TopAppBarNavigationType.BACK,
