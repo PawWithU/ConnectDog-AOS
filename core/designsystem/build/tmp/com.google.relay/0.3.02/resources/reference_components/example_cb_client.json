@@ -1,0 +1,77 @@
+{
+    "name": "contained_button_client",
+    "version": 31,
+    "default": "default",
+    "design": {
+        "atoms": [
+            {
+                "type": "group",
+                "id": "top_level",
+                "ordered": "true",
+                "root": "true"
+            },
+            {
+                "type": "reference",
+                "id": "myButton",
+                "key": "contained_button"
+            }
+        ],
+        "modes": {
+            "default": {
+                "rules": [
+                    {
+                        "id": "top_level",
+                        "children": [
+                            "myButton"
+                        ]
+                    },
+                    {
+                        "id": "myButton",
+                        "tap-handler": "$onContainedButtonTapped",
+                        "background-color": {
+                            "alpha": "1.0",
+                            "hue": "0.0",
+                            "saturation": "0.0",
+                            "value": "0.0"
+                        },
+                        "icon-color": {
+                            "alpha": "1.0",
+                            "hue": "0.0",
+                            "saturation": "0.0",
+                            "value": "1.0"
+                        },
+                        "text-color": {
+                            "alpha": "1.0",
+                            "hue": "0.0",
+                            "saturation": "0.0",
+                            "value": "1.0"
+                        },
+                        "size-constraints": {
+                            "width-constraints": {
+                                "sizing-mode": "fixed",
+                                "value": 100
+                            },
+                            "height-constraints": {
+                                "sizing-mode": "fixed",
+                                "value": 100
+                            }
+                        },
+                        "text": "A Button",
+                        "text-size": 12.0,
+                        "line-height": 3.0,
+                        "letter-spacing": 1.0,
+                        "italic": false,
+                        "padding": "0.0",
+                        "border-radius": 0.0
+                    }
+                ]
+            }
+        }
+    },
+    "parameters": {
+        "onContainedButtonTapped": {
+            "data-type": "void-callback"
+        }
+    },
+    "adin-component-search-paths": []
+}

@@ -1,0 +1,22 @@
+{
+  "target": "MaterialFloatingActionButton",
+  "package": "com.google.relay.compose",
+  "includeInteractionModifiers": false,
+  "fieldMappings": [
+    {
+      "type": "parameter",
+      "source": "on FAB tapped",
+      "target": "tapHandler"
+    },
+    {
+      "type": "parameter",
+      "source": "Background color",
+      "target": "backgroundColor"
+    },
+    {
+      "type": "lambda",
+      "source": "Children",
+      "target": "content"
+    }
+  ]
+}

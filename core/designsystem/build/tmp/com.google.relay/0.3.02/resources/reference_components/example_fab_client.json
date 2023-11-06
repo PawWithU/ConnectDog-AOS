@@ -1,0 +1,64 @@
+{
+    "name": "fab_client",
+    "version": 31,
+    "default": "default",
+    "design": {
+        "atoms": [
+            {
+                "type": "group",
+                "id": "top_level",
+                "ordered": "true",
+                "root": "true"
+            },
+            {
+                "type": "reference_component",
+                "id": "fab",
+                "key": "floating_action_button"
+            }
+        ],
+        "modes": {
+            "default": {
+                "rules": [
+                    {
+                        "id": "top_level",
+                        "children": [
+                            "fab"
+                        ]
+                    },
+                    {
+                        "id": "fab",
+                        "tap-handler": "$onFabTapped",
+                        "background-color": {
+                            "alpha": "1.0",
+                            "hue": "0.0",
+                            "saturation": "0.0",
+                            "value": "0.0"
+                        },
+                        "child-color": {
+                            "alpha": "1.0",
+                            "hue": "0.0",
+                            "saturation": "0.0",
+                            "value": "1.0"
+                        },
+                        "size-constraints": {
+                            "width-constraints": {
+                                "sizing-mode": "fixed",
+                                "value": 100
+                            },
+                            "height-constraints": {
+                                "sizing-mode": "fixed",
+                                "value": 100
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "parameters": {
+        "onFabTapped": {
+            "data-type": "void-callback"
+        }
+    },
+    "adin-component-search-paths": []
+}

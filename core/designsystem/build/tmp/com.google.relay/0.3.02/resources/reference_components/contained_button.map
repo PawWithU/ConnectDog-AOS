@@ -1,0 +1,32 @@
+{
+  "target": "MaterialButton",
+  "package": "com.google.relay.compose",
+  "includeInteractionModifiers": false,
+  "fieldMappings": [
+    {
+      "type": "parameter",
+      "source": "Padding",
+      "target": "padding"
+    },
+    {
+      "type": "parameter",
+      "source": "Border radius",
+      "target": "borderRadius"
+    },
+    {
+      "type": "parameter",
+      "source": "on ContainedButton tapped",
+      "target": "tapHandler"
+    },
+    {
+      "type": "parameter",
+      "source": "Background color",
+      "target": "backgroundColor"
+    },
+    {
+      "type": "lambda",
+      "source": "Children",
+      "target": "content"
+    }
+  ]
+}
