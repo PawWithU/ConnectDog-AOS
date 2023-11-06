@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +41,10 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                     navController = navigator.navController,
                     startDestination = navigator.startDestination
                 ) {
-                    homeNavGraph(padding = it, onClick = {}, onShowErrorSnackBar = {})
+                    homeNavGraph(
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        onSearchIconClick = { navigator.navigateHomeSearch() },
+                        onShowErrorSnackBar = {})
                     managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
                     mypageNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
                 }
