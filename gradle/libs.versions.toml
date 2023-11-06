@@ -11,6 +11,7 @@ androidxComposeBom = "2023.03.00"
 androidxAppCompat = "1.6.1"
 androidxComposeNavigation = "2.6.0"
 androidxComposeMaterial3 = "1.1.2"
+androidxComposeMaterial = "1.5.4"
 androidxSplash = "1.0.0-beta02"
 hilt = "2.46.1"
 hiltNavigationCompose = "1.0.0"
@@ -31,6 +32,8 @@ ktlint = "11.6.1"
 kotlin = "1.8.10"
 material = "1.10.0"
 
+relay = "0.3.02"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "andoroidCoreKtx" }
@@ -49,6 +52,7 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+androidx-compose-material = {group = "androidx.compose.material", name = "material", version.ref = "androidxComposeMaterial"}
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-compose-navigation-test = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxComposeNavigation" }
@@ -95,6 +99,7 @@ com-android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = {id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
+google-relay = {id = "com.google.relay", version.ref = "relay"}
 
 [bundles]
 
