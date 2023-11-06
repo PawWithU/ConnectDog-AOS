@@ -63,7 +63,7 @@ fun ConnectDogTopAppBar(
             )
         } else if (navigationType == TopAppBarNavigationType.HOME) {
             HomeIcon(
-                modifier = Modifier.size(66.dp, 45.dp),
+                modifier = Modifier.size(66.dp, 45.dp).align(Alignment.CenterStart),
                 imageRes = R.drawable.ic_logo_home,
                 iconContentDescription = "connect dog home"
             )
