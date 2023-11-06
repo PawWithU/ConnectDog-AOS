@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 val PetOrange = Color(0xFFFFAC60)
 val Orange_container = Color(0xFFFFF3E8) // todo 임의의 이름
 val Red1 = Color(0xFFFA5050)
+val Red2 = Color(0xFFFEEAEA)
 
 val Gray1 = Color(0xFF373737)
 val Gray2 = Color(0xFF7B7B7B)
