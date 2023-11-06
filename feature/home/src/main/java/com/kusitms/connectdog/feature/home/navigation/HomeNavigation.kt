@@ -1,30 +1,46 @@
 package com.kusitms.connectdog.feature.home.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
+import com.kusitms.connectdog.feature.home.screen.SearchScreen
 
 fun NavController.navigateHome(navOptions: NavOptions) {
     navigate(HomeRoute.route, navOptions)
 }
 
+fun NavController.navigateSearch() {
+    Log.d("SearchScreen", "navigateSearch")
+    navigate(HomeRoute.search)
+}
+
 fun NavGraphBuilder.homeNavGraph(
-    padding: PaddingValues,
-    onClick: () -> Unit,
+    onBackClick: () -> Unit,
+    onSearchIconClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
-    composable(route = HomeRoute.route) {
-        HomeRoute(
-            padding,
-            onClick,
-            onShowErrorSnackBar
-        )
+    navigation(startDestination = HomeRoute.main, route = HomeRoute.route) {
+        composable(route = HomeRoute.main) {
+            HomeRoute(
+                onSearchIconClick,
+                onShowErrorSnackBar
+            )
+        }
+
+        composable(route = HomeRoute.search) {
+            SearchScreen(
+                onBackClick = onBackClick
+            )
+        }
     }
 }
 
 object HomeRoute {
     const val route = "home"
+    const val main = "main"
+    const val search = "search"
 }
