@@ -5,7 +5,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.kusitms.connectdog.feature.home.HomeRoute
+import com.kusitms.connectdog.feature.home.screen.HomeRoute
 
 fun NavController.navigateHome(navOptions: NavOptions) {
     navigate(HomeRoute.route, navOptions)

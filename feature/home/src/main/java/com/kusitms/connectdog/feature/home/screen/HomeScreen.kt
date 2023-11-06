@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.home
+package com.kusitms.connectdog.feature.home.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,14 +6,26 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.feature.home.ExampleCard
+import com.kusitms.connectdog.feature.home.ExampleUiState
+import com.kusitms.connectdog.feature.home.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -43,6 +55,11 @@ private fun HomeScreen(
     exampleUiState: ExampleUiState,
     onClick: () -> Unit
 ) {
+
+    Column {
+        TopAppBar(onClickSearch = onClick)
+    }
+
     val scrollState = rememberScrollState()
     Column(
         modifier =
@@ -58,5 +75,42 @@ private fun HomeScreen(
             modifier = Modifier.padding(padding)
         )
         ExampleCard(uiState = exampleUiState)
+    }
+
+
+}
+
+@Composable
+private fun TopAppBar(
+    onClickSearch: () -> Unit
+){
+    ConnectDogTopAppBar(
+        titleRes = null,
+        navigationType = TopAppBarNavigationType.HOME,
+        navigationIconContentDescription = "Navigation icon home",
+        actionButtons = {
+            IconButton(onClick = {onClickSearch}) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Navigate to Search"
+                )
+            }
+            IconButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Outlined.Notifications,
+                    contentDescription = "Navigate to Search"
+                )
+            }
+        }
+    )
+}
+
+@Preview
+@Composable
+private fun HomeScreenPreview(){
+    ConnectDogTheme {
+        HomeScreen(padding = PaddingValues(0.dp), exampleUiState = ExampleUiState.Empty) {
+            
+        }
     }
 }
