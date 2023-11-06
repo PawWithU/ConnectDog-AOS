@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.ktlint)
-    //alias(libs.plugins.google.relay)
+    // alias(libs.plugins.google.relay)
 }
 
 android {
