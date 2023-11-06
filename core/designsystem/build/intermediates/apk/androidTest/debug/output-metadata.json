@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "com.kusitms.connectdog.core.designsystem.test",
+  "variantName": "debugAndroidTest",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 0,
+      "versionName": "",
+      "outputFile": "designsystem-debug-androidTest.apk"
+    }
+  ],
+  "elementType": "File"
+}
