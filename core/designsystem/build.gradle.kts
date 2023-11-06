@@ -1,3 +1,5 @@
+import com.kusitms.connectdog.Configuration
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
@@ -7,10 +9,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.core.designsystem"
-    compileSdk = 33
+    compileSdk = Configuration.compileSdk
 
     defaultConfig {
-        minSdk = 30
+        minSdk = Configuration.minSdk
     }
 
     compileOptions {
