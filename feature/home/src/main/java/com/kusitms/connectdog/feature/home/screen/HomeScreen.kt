@@ -7,17 +7,21 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -79,6 +83,7 @@ private fun HomeScreen(
     ) {
         TopTitle(modifier = Modifier.padding(20.dp))
         StatisticBanner(modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp))
+        BannerGuideline()
     }
 }
 
@@ -132,7 +137,8 @@ private fun StatisticBanner(modifier: Modifier) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_info),
                 contentDescription = "info icon",
-                modifier = Modifier.padding(2.dp)
+                modifier = Modifier.padding(2.dp),
+                tint = Gray3
             )
             Text(
                 text = stringResource(id = R.string.home_counting_guide),
@@ -202,6 +208,39 @@ private fun StatisticInfoItem(
             )
         }
         Image(painter = painter, contentDescription = "mandog")
+    }
+}
+
+@Composable
+private fun BannerGuideline() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .defaultMinSize(minHeight = 52.dp)
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = stringResource(id = R.string.home_banner),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.background
+        )
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.primary
+            ),
+            modifier = Modifier.wrapContentSize().defaultMinSize(minHeight = 22.dp, minWidth = 96.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.home_banner_button_guideline),
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 10.sp
+            )
+        }
     }
 }
 
