@@ -1,5 +1,4 @@
 com.kusitms.connectdog.core.designsystem
-drawable card_info_item_image_1
 drawable ic_left
 drawable ic_logo_home
 font pretendard_bold

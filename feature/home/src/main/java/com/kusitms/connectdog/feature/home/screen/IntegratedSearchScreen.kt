@@ -4,6 +4,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-internal fun IntegratedSearchScreen(){
+internal fun IntegratedSearchScreen() {
     Text(text = "INTEGRATED SEARCH")
 }
