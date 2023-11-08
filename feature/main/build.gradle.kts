@@ -1,3 +1,5 @@
+import com.kusitms.connectdog.Configuration
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
@@ -9,10 +11,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.feature.main"
-    compileSdk = 33
+    compileSdk = Configuration.compileSdk
 
     defaultConfig {
-        minSdk = 30
+        minSdk = Configuration.minSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -47,6 +49,8 @@ dependencies {
 
     // Navigation을 위해 모든 feature 의존성 추가 필요
     implementation(project(":feature:home"))
+    implementation(project(":feature:management"))
+    implementation(project(":feature:mypage"))
 
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))

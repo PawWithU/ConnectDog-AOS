@@ -1,3 +1,5 @@
+import com.kusitms.connectdog.Configuration
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.application)
@@ -9,14 +11,14 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog"
-    compileSdk = 33
+    compileSdk = Configuration.compileSdk
 
     defaultConfig {
         applicationId = "com.kusitms.connectdog"
-        minSdk = 30
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Configuration.minSdk
+        targetSdk = Configuration.targetSdk
+        versionCode = Configuration.versionCode
+        versionName = Configuration.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
