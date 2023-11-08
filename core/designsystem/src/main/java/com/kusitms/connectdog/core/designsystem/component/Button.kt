@@ -26,14 +26,14 @@ fun ConnectDogBottomButton(
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClick: () -> Unit,
-    content: String
+    content: String,
 ) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
     ) {
         Text(text = content, style = Typography.titleSmall)
     }
@@ -47,19 +47,19 @@ fun ConnectDogIconBottomButton(
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClick: () -> Unit,
-    content: String
+    content: String,
 ) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
     ) {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = contentDescription,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = content, color = textColor, style = Typography.titleSmall)
@@ -83,7 +83,7 @@ private fun ConnectDogIconButton() {
             contentDescription = "네이버 로그인",
             onClick = {},
             content = "네이버로 계속하기",
-            modifier = Modifier.size(230.dp, 56.dp)
+            modifier = Modifier.size(230.dp, 56.dp),
         )
     }
 }
