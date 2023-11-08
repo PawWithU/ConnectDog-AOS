@@ -21,7 +21,7 @@ internal fun HomeRoute(
     padding: PaddingValues,
     onClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val exampleUiState by viewModel.exampleUiState.collectAsStateWithLifecycle()
 
@@ -33,7 +33,7 @@ internal fun HomeRoute(
     HomeScreen(
         padding = padding,
         exampleUiState = exampleUiState,
-        onClick = onClick
+        onClick = onClick,
     )
 }
 
@@ -41,21 +41,21 @@ internal fun HomeRoute(
 private fun HomeScreen(
     padding: PaddingValues,
     exampleUiState: ExampleUiState,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
         modifier =
-        Modifier
-            .padding(padding)
-            .padding(horizontal = 8.dp)
-            .verticalScroll(scrollState)
-            .padding(bottom = 4.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+            Modifier
+                .padding(padding)
+                .padding(horizontal = 8.dp)
+                .verticalScroll(scrollState)
+                .padding(bottom = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = "Hello HOME!",
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
         )
         ExampleCard(uiState = exampleUiState)
     }

@@ -8,18 +8,18 @@ import androidx.compose.runtime.Composable
 internal fun MypageRoute(
     padding: PaddingValues,
     onClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit
+    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     MypageScreen(
         padding = padding,
-        onClick = onClick
+        onClick = onClick,
     )
 }
 
 @Composable
 private fun MypageScreen(
     padding: PaddingValues,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Text(text = "MYPAGE")
 }

@@ -14,13 +14,13 @@ fun NavController.navigateManagement(navOptions: NavOptions) {
 fun NavGraphBuilder.managementNavGraph(
     padding: PaddingValues,
     onClick: () -> Unit,
-    onShowErrorSnackbar: (throwable: Throwable?) -> Unit
+    onShowErrorSnackbar: (throwable: Throwable?) -> Unit,
 ) {
     composable(route = ManagementRoute.route) {
         ManagementRoute(
             padding,
             onClick,
-            onShowErrorSnackbar
+            onShowErrorSnackbar,
         )
     }
 }

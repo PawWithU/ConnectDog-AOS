@@ -76,7 +76,7 @@ class LoginRepository
                 }
             }
 
-        fun initKakaoLogin(context: Context)  {
+        fun initKakaoLogin(context: Context) {
             KakaoSdk.init(context, "227799f94d3661c7d84b79daba3b0eaa")
 
             val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->

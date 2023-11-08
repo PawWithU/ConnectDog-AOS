@@ -32,13 +32,13 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
         content = {
             Box(
                 modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape)
+                    Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape),
             ) {
                 NavHost(
                     navController = navigator.navController,
-                    startDestination = navigator.startDestination
+                    startDestination = navigator.startDestination,
                 ) {
                     homeNavGraph(padding = it, onClick = {}, onShowErrorSnackBar = {})
                     managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
@@ -51,7 +51,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                 Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
                 NavigationBar(
                     containerColor = Color.Transparent,
-                    modifier = Modifier.background(Color.White)
+                    modifier = Modifier.background(Color.White),
                 ) {
                     MainTab.values().toList().toPersistentList().forEach {
                         NavigationBarItem(
@@ -60,54 +60,55 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                             icon = {
                                 NavigationIcon(
                                     tab = it,
-                                    selected = navigator.currentTab == it
+                                    selected = navigator.currentTab == it,
                                 )
                             },
                             label = {
                                 NavigationLabel(
                                     tab = it,
-                                    selected = navigator.currentTab == it
+                                    selected = navigator.currentTab == it,
                                 )
-                            }
+                            },
                         )
                     }
                 }
             }
-        }
+        },
     )
 }
 
 @Composable
 private fun NavigationIcon(
     tab: MainTab,
-    selected: Boolean
+    selected: Boolean,
 ) {
     Icon(
         painter = painterResource(id = tab.iconResId),
         contentDescription = tab.contentDescription,
         tint =
-        if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        },
-        modifier = Modifier.size(24.dp)
+            if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
+        modifier = Modifier.size(24.dp),
     )
 }
 
 @Composable
 private fun NavigationLabel(
     tab: MainTab,
-    selected: Boolean
+    selected: Boolean,
 ) {
     Text(
         text = tab.contentDescription,
         style = MaterialTheme.typography.labelLarge,
-        color = if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        }
+        color =
+            if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
     )
 }
 
@@ -117,14 +118,14 @@ private fun MainScreenPreview() {
     ConnectDogTheme {
         NavigationBar(
             containerColor = Color.Transparent,
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(Color.White),
         ) {
             MainTab.values().toList().toPersistentList().forEach {
                 NavigationBarItem(
                     selected = it == MainTab.HOME,
                     onClick = { },
                     icon = { NavigationIcon(tab = it, selected = it == MainTab.HOME) },
-                    label = { NavigationLabel(tab = it, selected = it == MainTab.HOME) }
+                    label = { NavigationLabel(tab = it, selected = it == MainTab.HOME) },
                 )
             }
         }

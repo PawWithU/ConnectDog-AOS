@@ -16,27 +16,27 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel
-@Inject
-constructor(
-    exampleRepository: ExampleRepository
-) : ViewModel() {
-    private val _errorFlow = MutableSharedFlow<Throwable>()
-    val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+    @Inject
+    constructor(
+        exampleRepository: ExampleRepository,
+    ) : ViewModel() {
+        private val _errorFlow = MutableSharedFlow<Throwable>()
+        val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
-    val exampleUiState: StateFlow<ExampleUiState> =
-        flow {
-            emit(exampleRepository.getExample())
-        }.map { examples ->
-            if (examples.isNotEmpty()) {
-                ExampleUiState.Examples(examples)
-            } else {
-                ExampleUiState.Empty
-            }
-        }.catch {
-            _errorFlow.emit(it)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ExampleUiState.Loading
-        )
-}
+        val exampleUiState: StateFlow<ExampleUiState> =
+            flow {
+                emit(exampleRepository.getExample())
+            }.map { examples ->
+                if (examples.isNotEmpty()) {
+                    ExampleUiState.Examples(examples)
+                } else {
+                    ExampleUiState.Empty
+                }
+            }.catch {
+                _errorFlow.emit(it)
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ExampleUiState.Loading,
+            )
+    }
