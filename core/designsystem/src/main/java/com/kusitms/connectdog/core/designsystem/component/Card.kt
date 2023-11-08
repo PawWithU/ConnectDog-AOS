@@ -13,13 +13,13 @@ import androidx.compose.ui.unit.dp
 fun ConnectDogCard(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surface,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
         color = color,
         shape = RoundedCornerShape(32.dp),
         shadowElevation = 2.dp,
-        content = content,
+        content = content
     )
 }

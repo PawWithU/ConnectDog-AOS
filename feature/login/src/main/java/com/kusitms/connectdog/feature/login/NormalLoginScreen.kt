@@ -44,28 +44,28 @@ import com.kusitms.connectdog.core.designsystem.theme.Red2
 @Composable
 fun EmailLoginScreen(
     title: String,
-    navController: NavController,
+    navController: NavController
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     Box(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(top = 32.dp, bottom = 32.dp)
-                .clickable(
-                    onClick = { focusManager.clearFocus() },
-                    indication = null,
-                    interactionSource = interactionSource,
-                ),
+        Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(top = 32.dp, bottom = 32.dp)
+            .clickable(
+                onClick = { focusManager.clearFocus() },
+                indication = null,
+                interactionSource = interactionSource
+            )
     ) {
         Column(
             modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .background(Color.White),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            Modifier
+                .align(Alignment.TopCenter)
+                .background(Color.White),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TopBar(title = title, navController)
             Spacer(modifier = Modifier.height(37.dp))
@@ -73,13 +73,13 @@ fun EmailLoginScreen(
             LoginTextField(
                 label = "휴대폰 번호",
                 placeholder = "예)01012341234",
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Text
             )
             Spacer(modifier = Modifier.height(12.dp))
             LoginTextField(
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
-                keyboardType = KeyboardType.Password,
+                keyboardType = KeyboardType.Password
             )
             Spacer(modifier = Modifier.height(12.dp))
             ErrorCard()
@@ -90,11 +90,11 @@ fun EmailLoginScreen(
             onClick = {
             },
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .padding(horizontal = 20.dp)
-                    .align(Alignment.BottomCenter),
+            Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .padding(horizontal = 20.dp)
+                .align(Alignment.BottomCenter)
         )
     }
 }
@@ -102,39 +102,39 @@ fun EmailLoginScreen(
 @Composable
 fun TopBar(
     title: String,
-    navController: NavController,
+    navController: NavController
 ) {
     Row(
         modifier =
-            Modifier
-                .fillMaxWidth(),
+        Modifier
+            .fillMaxWidth(),
         verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(
             onClick = { navController.popBackStack() },
             modifier =
-                Modifier
-                    .weight(1f)
-                    .padding(end = 84.dp)
-                    .background(Color.Transparent),
+            Modifier
+                .weight(1f)
+                .padding(end = 84.dp)
+                .background(Color.Transparent)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_left),
-                contentDescription = "Back Button",
+                contentDescription = "Back Button"
             )
         }
         Text(
             text = title,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         )
         Spacer(
             modifier =
-                Modifier
-                    .size(24.dp)
-                    .weight(1f),
+            Modifier
+                .size(24.dp)
+                .weight(1f)
         )
     }
 }
@@ -143,31 +143,31 @@ fun TopBar(
 fun ErrorCard() {
     Card(
         colors =
-            CardDefaults.cardColors(
-                containerColor = Red2,
-            ),
+        CardDefaults.cardColors(
+            containerColor = Red2
+        ),
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(40.dp)
-                .padding(horizontal = 20.dp),
+        Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .padding(horizontal = 20.dp)
     ) {
         Row(
             modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(start = 13.dp),
-            verticalAlignment = CenterVertically,
+            Modifier
+                .fillMaxSize()
+                .padding(start = 13.dp),
+            verticalAlignment = CenterVertically
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_error),
-                contentDescription = "ErrorIcon",
+                contentDescription = "ErrorIcon"
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = "이메일 혹은 비밀번호가 일치하지 않습니다.",
                 color = Red1,
-                fontSize = 13.sp,
+                fontSize = 13.sp
             )
         }
     }
@@ -177,7 +177,7 @@ fun ErrorCard() {
 fun LoginTextField(
     label: String,
     placeholder: String,
-    keyboardType: KeyboardType,
+    keyboardType: KeyboardType
 ) {
     val (text, onTextChanged) =
         remember {
@@ -189,7 +189,7 @@ fun LoginTextField(
             onTextChanged = onTextChanged,
             label = label,
             placeholder = placeholder,
-            keyboardType = keyboardType,
+            keyboardType = keyboardType
         )
     }
 }

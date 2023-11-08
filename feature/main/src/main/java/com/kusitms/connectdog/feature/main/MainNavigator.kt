@@ -13,7 +13,7 @@ import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 
 internal class MainNavigator(
-    val navController: NavHostController,
+    val navController: NavHostController
 ) {
     private val currentDestination: NavDestination?
         @Composable get() =

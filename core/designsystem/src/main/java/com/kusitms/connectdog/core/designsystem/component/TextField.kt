@@ -36,7 +36,7 @@ fun ConnectDogTextField(
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false,
-    @StringRes errorMessageRes: Int = 0,
+    @StringRes errorMessageRes: Int = 0
 ) {
     val visualTransformation =
         if (keyboardType == KeyboardType.Password) {
@@ -48,29 +48,29 @@ fun ConnectDogTextField(
     OutlinedTextField(
         visualTransformation = visualTransformation,
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .height(65.dp),
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+            .height(65.dp),
         value = text,
         onValueChange = onTextChanged,
         label = {
             Text(
                 text = label,
-                color = Gray3,
+                color = Gray3
             )
         },
         placeholder = {
             Text(
                 text = placeholder,
-                color = Gray4,
+                color = Gray4
             )
         },
         keyboardOptions =
-            KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction,
-            ),
+        KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
         singleLine = true,
         shape = RoundedCornerShape(12.dp),
         isError = isError,
@@ -79,21 +79,21 @@ fun ConnectDogTextField(
                 Text(
                     text = stringResource(id = errorMessageRes),
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.error,
+                    color = MaterialTheme.colorScheme.error
                 )
             } else if (supportingText != null) {
                 Text(
                     text = stringResource(id = supportingText),
                     style = MaterialTheme.typography.labelSmall,
-                    color = Gray3,
+                    color = Gray3
                 )
             }
         },
         colors =
-            OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = Gray5,
-                errorBorderColor = MaterialTheme.colorScheme.error,
-            ),
+        OutlinedTextFieldDefaults.colors(
+            unfocusedBorderColor = Gray5,
+            errorBorderColor = MaterialTheme.colorScheme.error
+        )
     )
 }
 
@@ -109,7 +109,7 @@ private fun ConnectDogTextFieldPreview() {
             text = text,
             onTextChanged = onTextChanged,
             label = "텍스트",
-            placeholder = "비밀번호",
+            placeholder = "비밀번호"
         )
     }
 }

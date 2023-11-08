@@ -20,7 +20,7 @@ internal abstract class DataModule {
     companion object {
         @Provides
         fun provideLoginRepository(
-            @ApplicationContext context: Context,
+            @ApplicationContext context: Context
         ): LoginRepository {
             return LoginRepository(context)
         }

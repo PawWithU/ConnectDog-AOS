@@ -28,7 +28,7 @@ import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 fun LoginScreen(navigator: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(46.dp))
         Logo(124, 204)
@@ -44,12 +44,12 @@ fun LoginScreen(navigator: NavController) {
 @Composable
 fun Logo(
     width: Int,
-    height: Int,
+    height: Int
 ) {
     Image(
         modifier = Modifier.width(width.dp).height(height.dp),
         painter = painterResource(com.kusitms.connectdog.core.designsystem.R.drawable.logo),
-        contentDescription = "Local Image",
+        contentDescription = "Local Image"
     )
 }
 
@@ -58,7 +58,7 @@ fun MainLogo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(com.kusitms.connectdog.core.designsystem.R.drawable.ic_main),
         modifier = modifier,
-        contentDescription = "Local Image",
+        contentDescription = "Local Image"
     )
 }
 
@@ -70,16 +70,16 @@ fun OutlinedButton(onClick: () -> Unit) {
         content = "로그인",
         color = Color.White,
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 20.dp)
-                .border(
-                    width = 1.dp,
-                    color = Gray5,
-                    shape = shape,
-                ),
-        textColor = Gray2,
+        Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(horizontal = 20.dp)
+            .border(
+                width = 1.dp,
+                color = Gray5,
+                shape = shape
+            ),
+        textColor = Gray2
     )
 }
 
@@ -89,13 +89,13 @@ fun NormalButton(
     color: Color = PetOrange,
     onClick: () -> Unit = {},
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
-    modifier: Modifier = Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 20.dp),
+    modifier: Modifier = Modifier.fillMaxWidth().height(56.dp).padding(horizontal = 20.dp)
 ) {
     ConnectDogBottomButton(
         onClick = onClick,
         content = content,
         color = color,
         modifier = modifier,
-        textColor = textColor,
+        textColor = textColor
     )
 }

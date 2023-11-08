@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SocialLoginScreen() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
         Spacer(modifier = Modifier.height(75.dp))
         Title()
@@ -28,7 +28,7 @@ fun Title() {
     Text(
         text = "사용자 정보를 입력해주세요",
         fontSize = 20.sp,
-        modifier = Modifier.padding(start = 44.dp, end = 44.dp),
+        modifier = Modifier.padding(start = 44.dp, end = 44.dp)
     )
 }
 

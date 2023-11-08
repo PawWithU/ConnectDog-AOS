@@ -8,18 +8,18 @@ import androidx.compose.runtime.Composable
 internal fun ManagementRoute(
     padding: PaddingValues,
     onClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     ManagementScreen(
         padding = padding,
-        onClick = onClick,
+        onClick = onClick
     )
 }
 
 @Composable
 private fun ManagementScreen(
     padding: PaddingValues,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Text(text = "MANAGEMENT")
 }

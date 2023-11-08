@@ -45,7 +45,7 @@ internal object ApiModule {
     @Singleton
     fun provideApiService(
         okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory,
+        converterFactory: Converter.Factory
     ): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)

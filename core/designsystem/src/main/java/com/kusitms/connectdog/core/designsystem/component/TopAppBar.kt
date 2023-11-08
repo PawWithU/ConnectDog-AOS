@@ -35,39 +35,39 @@ fun ConnectDogTopAppBar(
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     actionButtons: @Composable () -> Unit = {},
-    onNavigationClick: () -> Unit = {},
+    onNavigationClick: () -> Unit = {}
 ) {
     val icon: @Composable (Modifier, imageRes: Int) -> Unit =
         { modifier, imageRes ->
             IconButton(onClick = onNavigationClick, modifier = modifier.size(48.dp)) {
                 Icon(
                     modifier =
-                        modifier
-                            .fillMaxSize()
-                            .padding(start = 16.dp),
+                    modifier
+                        .fillMaxSize()
+                        .padding(start = 16.dp),
                     painter = painterResource(id = imageRes),
-                    contentDescription = navigationIconContentDescription,
+                    contentDescription = navigationIconContentDescription
                 )
             }
         }
 
     Box(
         modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(color = containerColor)
-                .then(modifier),
+        Modifier
+            .fillMaxWidth()
+            .background(color = containerColor)
+            .then(modifier)
     ) {
         if (navigationType == TopAppBarNavigationType.BACK) {
             icon(
                 Modifier.align(Alignment.CenterStart),
-                R.drawable.ic_left,
+                R.drawable.ic_left
             )
         } else if (navigationType == TopAppBarNavigationType.HOME) {
             HomeIcon(
                 modifier = Modifier.size(66.dp, 45.dp),
                 imageRes = R.drawable.ic_logo_home,
-                iconContentDescription = "connect dog home",
+                iconContentDescription = "connect dog home"
             )
         }
 
@@ -79,7 +79,7 @@ fun ConnectDogTopAppBar(
                 text = stringResource(id = titleRes),
                 color = contentColor,
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier.align(Alignment.Center)
             )
         }
     }
@@ -90,15 +90,15 @@ private fun HomeIcon(
     modifier: Modifier = Modifier,
     imageRes: Int,
     tintColor: Color = MaterialTheme.colorScheme.primary,
-    iconContentDescription: String,
+    iconContentDescription: String
 ) {
     Icon(
         modifier =
-            modifier
-                .padding(start = 16.dp),
+        modifier
+            .padding(start = 16.dp),
         painter = painterResource(id = imageRes),
         tint = tintColor,
-        contentDescription = iconContentDescription,
+        contentDescription = iconContentDescription
     )
 }
 
@@ -111,7 +111,7 @@ private fun ConnectDogTopAppBarPreviewBack() {
         ConnectDogTopAppBar(
             titleRes = R.string.untitled,
             navigationType = TopAppBarNavigationType.BACK,
-            navigationIconContentDescription = "Navigation icon",
+            navigationIconContentDescription = "Navigation icon"
         )
     }
 }
@@ -128,16 +128,16 @@ private fun ConnectDogTopAppBarPreviewHome() {
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "Navigate to Search",
+                        contentDescription = "Navigate to Search"
                     )
                 }
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Outlined.Notifications,
-                        contentDescription = "Navigate to Search",
+                        contentDescription = "Navigate to Search"
                     )
                 }
-            },
+            }
         )
     }
 }

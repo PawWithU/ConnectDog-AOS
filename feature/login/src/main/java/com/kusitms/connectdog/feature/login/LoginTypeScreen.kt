@@ -51,21 +51,21 @@ val text =
 fun LoginTypeScreen(
     navigator: NavController,
     viewModel: LoginViewModel,
-    context: Context,
+    context: Context
 ) {
     Column(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .background(Color.White),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(73.dp))
         MainLogo(
             modifier =
-                Modifier
-                    .height(257.dp)
-                    .width(257.dp),
+            Modifier
+                .height(257.dp)
+                .width(257.dp)
         )
         Spacer(modifier = Modifier.height(6.dp))
         TabLayout(navigator, viewModel, context)
@@ -77,19 +77,19 @@ fun LoginTypeScreen(
 fun TabLayout(
     navigator: NavController,
     viewModel: LoginViewModel,
-    context: Context,
+    context: Context
 ) {
     ConnectDogTheme {
         Surface {
             Column(
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
             ) {
                 val pagerState = rememberPagerState()
                 val coroutineScope = rememberCoroutineScope()
 
                 TabRow(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp),
-                    selectedTabIndex = pagerState.currentPage,
+                    selectedTabIndex = pagerState.currentPage
                 ) {
                     pages.forEachIndexed { index, title ->
                         Tab(
@@ -97,11 +97,11 @@ fun TabLayout(
                                 Text(
                                     text = title,
                                     color =
-                                        if (pagerState.currentPage == index) {
-                                            MaterialTheme.colorScheme.primary
-                                        } else {
-                                            Color(0xFF7B7B7B)
-                                        },
+                                    if (pagerState.currentPage == index) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        Color(0xFF7B7B7B)
+                                    }
                                 )
                             },
                             selected = pagerState.currentPage == index,
@@ -109,7 +109,7 @@ fun TabLayout(
                                 coroutineScope.launch {
                                     pagerState.scrollToPage(index)
                                 }
-                            },
+                            }
                         )
                     }
                 }
@@ -117,7 +117,7 @@ fun TabLayout(
                 HorizontalPager(
                     pageCount = pages.size,
                     state = pagerState,
-                    modifier = Modifier.padding(top = 32.dp),
+                    modifier = Modifier.padding(top = 32.dp)
                 ) {
                     when (it) {
                         0 -> Individual(navigator, viewModel, context)
@@ -133,10 +133,10 @@ fun TabLayout(
 fun Individual(
     navigator: NavController,
     viewModel: LoginViewModel,
-    context: Context,
+    context: Context
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NormalButton(
             content = "카카오톡으로 시작하기",
@@ -144,7 +144,7 @@ fun Individual(
             textColor = Color(0xFF373737),
             onClick = {
                 viewModel.initKakaoLogin(context)
-            },
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
         NormalButton(
@@ -153,13 +153,13 @@ fun Individual(
             onClick = {
                 Log.d("testt", "tests")
                 viewModel.initNaverLogin(context)
-            },
+            }
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "또는",
             fontSize = 13.sp,
-            color = Color(0xFF7B7B7B),
+            color = Color(0xFF7B7B7B)
         )
         Spacer(modifier = Modifier.height(10.dp))
         NormalButton(content = "코넥독 계정으로 회원가입하기", color = PetOrange)
@@ -171,7 +171,7 @@ fun Individual(
 @Composable
 fun Organization(navigator: NavController) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NormalButton(content = "코넥독 계정으로 회원가입하기")
         Spacer(modifier = Modifier.height(16.dp))
@@ -185,6 +185,6 @@ fun LoginText(navigator: NavController) {
         text = text,
         onClick = {
             navigator.navigate(route = "emailLogin")
-        },
+        }
     )
 }

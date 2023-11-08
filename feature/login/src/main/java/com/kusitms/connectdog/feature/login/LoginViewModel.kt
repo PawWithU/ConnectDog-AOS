@@ -8,13 +8,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
-    @Inject
-    constructor(private val loginRepository: LoginRepository) : ViewModel() {
-        fun initNaverLogin(context: Context) {
-            loginRepository.initNaverLogin(context)
-        }
-
-        fun initKakaoLogin(context: Context) {
-            loginRepository.initKakaoLogin(context)
-        }
+@Inject
+constructor(private val loginRepository: LoginRepository) : ViewModel() {
+    fun initNaverLogin(context: Context) {
+        loginRepository.initNaverLogin(context)
     }
+
+    fun initKakaoLogin(context: Context) {
+        loginRepository.initKakaoLogin(context)
+    }
+}
