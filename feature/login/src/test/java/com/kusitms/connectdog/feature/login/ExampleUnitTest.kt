@@ -1,6 +1,6 @@
 package com.kusitms.connectdog.feature.login
 
-import org.junit.Assert.*
+import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 /**

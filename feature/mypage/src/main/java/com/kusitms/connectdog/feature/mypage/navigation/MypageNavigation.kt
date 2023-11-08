@@ -14,13 +14,13 @@ fun NavController.navigateMypage(navOptions: NavOptions) {
 fun NavGraphBuilder.mypageNavGraph(
     padding: PaddingValues,
     onClick: () -> Unit,
-    onShowErrorSnackbar: (throwable: Throwable?) -> Unit,
+    onShowErrorSnackbar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = MypageRoute.route) {
         MypageRoute(
             padding,
             onClick,
-            onShowErrorSnackbar,
+            onShowErrorSnackbar
         )
     }
 }
