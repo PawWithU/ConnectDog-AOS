@@ -54,7 +54,10 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun HomeRoute(
-    onSearchIconClick: () -> Unit,
+    onBackClick: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToReview: () -> Unit,
+    onNavigateToDetail: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -66,7 +69,7 @@ internal fun HomeRoute(
     }
 
     Column {
-        TopAppBar(onClickSearch = onSearchIconClick)
+        TopAppBar(onClickSearch = onNavigateToSearch)
         HomeScreen(
             exampleUiState = exampleUiState
         )
@@ -84,6 +87,7 @@ private fun HomeScreen(
         TopTitle(modifier = Modifier.padding(20.dp))
         StatisticBanner(modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp))
         BannerGuideline()
+
     }
 }
 
@@ -233,12 +237,34 @@ private fun BannerGuideline() {
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.primary
             ),
-            modifier = Modifier.wrapContentSize().defaultMinSize(minHeight = 22.dp, minWidth = 96.dp)
+            modifier = Modifier
+                .wrapContentSize()
+                .defaultMinSize(minHeight = 22.dp, minWidth = 96.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.home_banner_button_guideline),
                 style = MaterialTheme.typography.titleMedium,
                 fontSize = 10.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun MoveContent(
+    onClick: () -> Unit,
+    titleRes: Int
+) {
+    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(
+            text = stringResource(id = titleRes),
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 18.sp
+        )
+        IconButton(onClick = { onClick() }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_right_arrow),
+                contentDescription = "move to another screen"
             )
         }
     }

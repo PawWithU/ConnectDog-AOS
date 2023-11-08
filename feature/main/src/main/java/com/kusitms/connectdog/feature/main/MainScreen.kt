@@ -48,7 +48,9 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                 ) {
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onSearchIconClick = { navigator.navigateHomeSearch() },
+                        onNavigateToSearch = { navigator.navigateHomeSearch() },
+                        onNavigateToReview = { navigator.navigateHomeReview() },
+                        onNavigateToDetail = { navigator.navigateHomeDetail() },
                         onShowErrorSnackBar = {}
                     )
                     managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})

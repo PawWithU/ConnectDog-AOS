@@ -18,14 +18,27 @@ fun NavController.navigateSearch() {
     navigate(HomeRoute.search)
 }
 
+fun NavController.navigateReview(){
+    navigate(HomeRoute.review)
+}
+
+fun NavController.navigateDetail(){
+    navigate(HomeRoute.detail)
+}
+
 fun NavGraphBuilder.homeNavGraph(
     onBackClick: () -> Unit,
-    onSearchIconClick: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToReview: () -> Unit,
+    onNavigateToDetail: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = HomeRoute.route) {
         HomeRoute(
-            onSearchIconClick,
+            onBackClick,
+            onNavigateToSearch,
+            onNavigateToReview,
+            onNavigateToDetail,
             onShowErrorSnackBar
         )
     }
@@ -41,4 +54,6 @@ object HomeRoute {
     const val route = "home"
     const val main = "main"
     const val search = "search"
+    const val review = "review"
+    const val detail = "detail"
 }
