@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -33,8 +34,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,10 +47,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.kusitms.connectdog.core.designsystem.component.AnnouncementContent
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
+import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.feature.home.ExampleUiState
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
@@ -71,14 +78,22 @@ internal fun HomeRoute(
     Column {
         TopAppBar(onClickSearch = onNavigateToSearch)
         HomeScreen(
-            exampleUiState = exampleUiState
+            exampleUiState = exampleUiState,
+            onBackClick = onBackClick,
+            onNavigateToSearch = onNavigateToSearch,
+            onNavigateToReview = onNavigateToReview,
+            onNavigateToDetail = onNavigateToDetail
         )
     }
 }
 
 @Composable
 private fun HomeScreen(
-    exampleUiState: ExampleUiState
+    exampleUiState: ExampleUiState,
+    onBackClick: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onNavigateToReview: () -> Unit,
+    onNavigateToDetail: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -87,7 +102,9 @@ private fun HomeScreen(
         TopTitle(modifier = Modifier.padding(20.dp))
         StatisticBanner(modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp))
         BannerGuideline()
-
+        MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
+        //todo recyclerview
+        MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
     }
 }
 
@@ -255,7 +272,13 @@ private fun MoveContent(
     onClick: () -> Unit,
     titleRes: Int
 ) {
-    Row(horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(horizontal = 20.dp, vertical = 30.dp)
+            .fillMaxWidth(),
+    ) {
         Text(
             text = stringResource(id = titleRes),
             style = MaterialTheme.typography.titleMedium,
@@ -270,13 +293,57 @@ private fun MoveContent(
     }
 }
 
+@Composable
+private fun CardContent(
+    announcement: Announcement
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(150.dp)) {
+        NetworkImage(
+            imageUrl = announcement.imageUrl,
+            placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
+            modifier = Modifier
+                .size(150.dp)
+                .shadow(shape = RoundedCornerShape(12.dp), elevation = 3.dp)
+        )
+        Text(
+            text = announcement.location,
+            maxLines = 2,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        AnnouncementContent(
+            date = announcement.date,
+            organization = announcement.organization,
+            hasKennel = announcement.hasKennel,
+            style = MaterialTheme.typography.labelMedium
+        )
+
+    }
+}
+
 @Preview
 @Composable
 private fun HomeScreenPreview() {
     ConnectDogTheme {
         Column(modifier = Modifier.background(Color.White)) {
             TopAppBar(onClickSearch = {})
-            HomeScreen(exampleUiState = ExampleUiState.Empty)
+            HomeScreen(exampleUiState = ExampleUiState.Empty, {}, {}, {}, {})
         }
+    }
+}
+
+@Preview
+@Composable
+private fun AnnouncementPreview() {
+    ConnectDogTheme {
+        CardContent(
+            announcement = Announcement(
+                "",
+                "서울시 강남구 -> 서울시 도봉구",
+                "23.10.19(수)",
+                "단체이름이름",
+                true
+            )
+        )
     }
 }
