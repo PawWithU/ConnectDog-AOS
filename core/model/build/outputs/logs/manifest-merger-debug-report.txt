@@ -1,0 +1,16 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml:2:13-83
+INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml:2:13-83
+	package
+		INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml
+	xmlns:android
+		ADDED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml:2:23-81
+uses-sdk
+INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml reason: use-sdk injection requested
+INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml
+INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml
+	android:targetSdkVersion
+		INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml
+	android:minSdkVersion
+		INJECTED from /Users/kangseunggu/Desktop/ConnectDog-AOS/core/model/build/intermediates/tmp/ProcessLibraryManifest/debug/tempAndroidManifest9164911000721377112.xml

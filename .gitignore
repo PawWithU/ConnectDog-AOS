@@ -8,3 +8,5 @@
 .cxx
 local.properties
 .idea/
+core/designsystem/build/intermediates/
+core/designsystem/build/kotlin/compileDebugKotlin/cacheable/caches-jvm/jvm/kotlin/
