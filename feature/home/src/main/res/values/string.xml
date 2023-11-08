@@ -10,6 +10,6 @@
     <string name="home_moved_description">이동했어요!</string>
     <string name="home_banner">이동봉사 전과정이 궁금해요!</string>
     <string name="home_banner_button_guideline">가이드라인 확인하기</string>
-    <string name="home_navigate_list">이동봉사 공고 보러가기</string>
+    <string name="home_navigate_search">이동봉사 공고</string>
     <string name="home_navigate_review">이동봉사 후기</string>
 </resources>
