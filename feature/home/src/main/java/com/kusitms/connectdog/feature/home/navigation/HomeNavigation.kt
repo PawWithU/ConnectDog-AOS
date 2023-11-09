@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
+import com.kusitms.connectdog.feature.home.screen.ReviewScreen
 import com.kusitms.connectdog.feature.home.screen.SearchScreen
 
 fun NavController.navigateHome(navOptions: NavOptions) {
@@ -45,6 +46,12 @@ fun NavGraphBuilder.homeNavGraph(
 
     composable(route = HomeRoute.search) {
         SearchScreen(
+            onBackClick = onBackClick
+        )
+    }
+
+    composable(route = HomeRoute.review) {
+        ReviewScreen(
             onBackClick = onBackClick
         )
     }
