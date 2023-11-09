@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.model.Recent
 import com.kusitms.connectdog.core.model.Review
 
 
@@ -71,6 +72,7 @@ fun ConnectDogReview(
     review: Review
 ) {
     ConnectDogCommunityContent(
+        modifier = modifier,
         profile = {
             ProfileContent(
                 profileUrl = review.profileUrl,
@@ -87,6 +89,28 @@ fun ConnectDogReview(
         },
         contentUrl = review.contentUrl,
         content = review.content
+    )
+}
+
+@Composable
+fun ConnectDogRecent(
+    modifier: Modifier = Modifier,
+    recent: Recent
+) {
+    ConnectDogCommunityContent(
+        modifier = modifier,
+        profile = {
+            Text(
+                text = recent.dogName + stringResource(id = R.string.dog_recent),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+        },
+        informationContent = {
+                             RecentContent(date = recent.date, location = recent.location, volunteer = recent.volunteer)
+        },
+        contentUrl =recent.contentUrl,
+        content = recent.content
     )
 }
 

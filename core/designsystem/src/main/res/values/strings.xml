@@ -9,5 +9,6 @@
     <string name="has_not_kennel">X(준비해 주세요)</string>
     <string name="who_connected">를 연결해 준</string>
     <string name="who_review">의 후기</string>
+    <string name="dog_recent">의 근황</string>
     <string name="location">지역</string>
 </resources>

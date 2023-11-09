@@ -41,3 +41,21 @@ fun ReviewContent(
         t3Value = organization,
     )
 }
+
+@Composable
+fun RecentContent(
+    date: String,
+    location: String,
+    volunteer: String,
+    style: TextStyle = MaterialTheme.typography.labelLarge
+) {
+    Content(
+        textStyle = style,
+        titleRes1 = R.string.date,
+        titleRes2 = R.string.location,
+        titleRes3 = R.string.volunteer,
+        t1Value = date,
+        t2Value = location,
+        t3Value = volunteer
+    )
+}
