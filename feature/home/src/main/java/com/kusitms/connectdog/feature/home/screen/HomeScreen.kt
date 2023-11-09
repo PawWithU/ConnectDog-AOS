@@ -326,7 +326,7 @@ private fun AnnouncementListContent(
 ) {
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list.take(10)) {
-            CardContent(announcement = it)
+            AnnouncementCardContent(announcement = it)
         }
     }
 }
@@ -338,13 +338,13 @@ private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Hor
     }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
-            CardContent(announcement = it)
+            AnnouncementCardContent(announcement = it)
         }
     }
 }
 
 @Composable
-private fun CardContent(
+private fun AnnouncementCardContent(
     announcement: Announcement
 ) {
     Column(
@@ -411,7 +411,7 @@ private fun HomeScreenPreview() {
 @Composable
 private fun AnnouncementPreview() {
     ConnectDogTheme {
-        CardContent(
+        AnnouncementCardContent(
             announcement = Announcement(
                 "",
                 "서울시 강남구 -> 서울시 도봉구",
