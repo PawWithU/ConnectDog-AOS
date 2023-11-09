@@ -56,6 +56,7 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.model.Announcement
+import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
@@ -371,6 +372,21 @@ private fun CardContent(
             style = MaterialTheme.typography.labelMedium
         )
 
+    }
+}
+
+@Composable
+private fun BigCardContent(
+    review: Review
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.outline,
+        shape = RoundedCornerShape(12.dp),
+        shadowElevation = 1.dp,
+    ) {
+        Column {
+
+        }
     }
 }
 

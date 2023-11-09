@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="date">일정</string>
-    <string name="has_kennel">O(준비하지 않아도 돼요)</string>
-    <string name="has_not_kennel">X(준비해 주세요)</string>
-    <string name="need_kennel">켄넬 여부</string>
-    <string name="organization">중개자명</string>
-    <string name="untitled">&lt;Untitled></string>
-</resources>
