@@ -23,7 +23,8 @@ internal enum class MainTab(
         iconResId = R.drawable.ic_profile,
         contentDescription = "마이페이지",
         route = MypageRoute.route
-    );
+    )
+    ;
 
     companion object {
         operator fun contains(route: String): Boolean {

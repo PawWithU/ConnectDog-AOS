@@ -41,7 +41,8 @@ fun ConnectDogTopAppBar(
         { modifier, imageRes ->
             IconButton(onClick = onNavigationClick, modifier = modifier.size(48.dp)) {
                 Icon(
-                    modifier = modifier
+                    modifier =
+                    modifier
                         .fillMaxSize()
                         .padding(start = 16.dp),
                     painter = painterResource(id = imageRes),
@@ -51,7 +52,8 @@ fun ConnectDogTopAppBar(
         }
 
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .fillMaxWidth()
             .background(color = containerColor)
             .then(modifier)
@@ -91,7 +93,8 @@ private fun HomeIcon(
     iconContentDescription: String
 ) {
     Icon(
-        modifier = modifier
+        modifier =
+        modifier
             .padding(start = 16.dp),
         painter = painterResource(id = imageRes),
         tint = tintColor,

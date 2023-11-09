@@ -14,6 +14,11 @@ androidxComposeMaterial3 = "1.1.2"
 androidxSplash = "1.0.0-beta02"
 hilt = "2.46.1"
 hiltNavigationCompose = "1.0.0"
+accompanistPager = "0.20.1"
+accompanistPagerIndicators = "0.20.1"
+
+naverOauth = "5.8.0"
+kakaoOauth = "2.17.0"
 
 okhttp = "4.11.0"
 retrofit = "2.9.0"
@@ -77,6 +82,11 @@ landscapist-animation = { group = "com.github.skydoves", name = "landscapist-ani
 
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "composeShimmer" }
 
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
+accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
+
+naver-oauth = {group = "com.navercorp.nid", name = "oauth", version.ref = "naverOauth"}
+kakao-oauth = {group = "com.kakao.sdk", name = "v2-user", version.ref="kakaoOauth"}
 
 # modular graph
 dependency-graph = {group = "com.vanniktech", name = "gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph"}
