@@ -3,8 +3,13 @@ package com.kusitms.connectdog.core.designsystem.theme
 import androidx.compose.ui.graphics.Color
 
 val PetOrange = Color(0xFFFFAC60)
-val Orange_container = Color(0xFFFFF3E8) // todo 임의의 이름
-val Red1 = Color(0xFFFA5050)
+val Orange80 = Color(0xFFFFBD80)
+val Orange60 = Color(0xFFFFCDA0)
+val Orange40 = Color(0xFFFFDEBF)
+val Orange20 = Color(0xFFFFEEDF)
+val Orange10 = Color(0xFFFFF7EF)
+
+val Red = Color(0xFFFA5050)
 
 val Gray1 = Color(0xFF373737)
 val Gray2 = Color(0xFF7B7B7B)
