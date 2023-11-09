@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -62,7 +63,12 @@ fun ConnectDogCommunityContent(
                 .height(20.dp)
                 .fillMaxWidth()
         )
-        Text(text = content, style = MaterialTheme.typography.bodyMedium, maxLines = 2)
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -107,9 +113,13 @@ fun ConnectDogRecent(
             )
         },
         informationContent = {
-                             RecentContent(date = recent.date, location = recent.location, volunteer = recent.volunteer)
+            RecentContent(
+                date = recent.date,
+                location = recent.location,
+                volunteer = recent.volunteer
+            )
         },
-        contentUrl =recent.contentUrl,
+        contentUrl = recent.contentUrl,
         content = recent.content
     )
 }
