@@ -22,52 +22,56 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
         lineHeight = 28.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        color = Gray1
     ),
     titleMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        color = Gray1
     ),
     titleSmall = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.sp
+        letterSpacing = 0.sp,
+        color = Gray1
     ),
     bodyLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.5.sp,
+        color = Gray1
     ),
     bodyMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.5.sp,
+        color = Gray1
     ),
     labelLarge = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        color = Gray1
     ),
     labelMedium = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.Normal,
         fontSize = 10.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        color = Gray1
     ),
     labelSmall = TextStyle(
         fontFamily = fonts,
         fontWeight = FontWeight.ExtraLight,
         fontSize = 10.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        color = Gray1
     )
 )
