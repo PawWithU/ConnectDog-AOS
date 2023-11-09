@@ -1,12 +1,14 @@
 package com.kusitms.connectdog.feature.home.screen
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementContent
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogReview
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -61,6 +64,7 @@ import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
+import com.kusitms.connectdog.feature.home.state.ReviewUiState
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -74,6 +78,7 @@ internal fun HomeRoute(
 ) {
     val exampleUiState by viewModel.exampleUiState.collectAsStateWithLifecycle()
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
+    val reviewUiState by viewModel.reviewUiState.collectAsStateWithLifecycle()
 
     // 에러 발생할 때마다 에러 스낵바 표시
     LaunchedEffect(true) {
@@ -85,6 +90,7 @@ internal fun HomeRoute(
         HomeScreen(
             exampleUiState = exampleUiState,
             announcementUiState = announcementUiState,
+            reviewUiState = reviewUiState,
             onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearch,
             onNavigateToReview = onNavigateToReview,
@@ -97,6 +103,7 @@ internal fun HomeRoute(
 private fun HomeScreen(
     exampleUiState: ExampleUiState,
     announcementUiState: AnnouncementUiState,
+    reviewUiState: ReviewUiState,
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
@@ -112,6 +119,8 @@ private fun HomeScreen(
         MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
         AnnouncementContent(announcementUiState)
         MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
+        ReviewContent(uiState = reviewUiState)
+        Spacer(modifier = Modifier.height(90.dp))
     }
 }
 
@@ -319,6 +328,22 @@ private fun AnnouncementContent(uiState: AnnouncementUiState) {
 }
 
 @Composable
+private fun ReviewContent(uiState: ReviewUiState) {
+    val modifier = Modifier.padding(horizontal = 20.dp)
+    when (uiState) {
+        is ReviewUiState.Reviews -> {
+            ReviewListContent(
+                list = uiState.reviews,
+                modifier = modifier,
+                arrangement = Arrangement.spacedBy(12.dp)
+            )
+        }
+
+        else -> ReviewLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp))
+    }
+}
+
+@Composable
 private fun AnnouncementListContent(
     list: List<Announcement>,
     modifier: Modifier,
@@ -339,6 +364,40 @@ private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Hor
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
             AnnouncementCardContent(announcement = it)
+        }
+    }
+}
+
+@Composable
+private fun ReviewListContent(
+    list: List<Review>,
+    modifier: Modifier,
+    arrangement: Arrangement.Horizontal
+) {
+    LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
+        items(list.take(10)) {
+            ReviewCardContent(review = it)
+        }
+    }
+}
+
+@Composable
+private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
+    val list = List(4){
+        Review(
+            profileUrl = "",
+            dogName = "멍멍이",
+            userName = "츄",
+            contentUrl = "",
+            date = "23.10.19(목)",
+            location = "서울 강남구 -> 서울 도봉구",
+            organization = "단체이름",
+            content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><"
+        )
+    }
+    LazyRow(horizontalArrangement = arrangement, modifier = modifier){
+        items(list) {
+            ReviewCardContent(review = it)
         }
     }
 }
@@ -376,17 +435,16 @@ private fun AnnouncementCardContent(
 }
 
 @Composable
-private fun BigCardContent(
+private fun ReviewCardContent(
     review: Review
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.outline,
+        color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),
         shadowElevation = 1.dp,
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline)
     ) {
-        Column {
-
-        }
+        ConnectDogReview(review = review, modifier = Modifier.width(272.dp))
     }
 }
 
@@ -399,6 +457,7 @@ private fun HomeScreenPreview() {
             HomeScreen(
                 exampleUiState = ExampleUiState.Empty,
                 announcementUiState = AnnouncementUiState.Empty,
+                reviewUiState = ReviewUiState.Empty,
                 {},
                 {},
                 {},

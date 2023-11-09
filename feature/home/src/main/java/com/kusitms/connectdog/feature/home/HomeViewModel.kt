@@ -6,6 +6,7 @@ import com.kusitms.connectdog.core.data.repository.ExampleRepository
 import com.kusitms.connectdog.core.data.repository.HomeRepository
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import com.kusitms.connectdog.feature.home.state.ExampleUiState
+import com.kusitms.connectdog.feature.home.state.ReviewUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -56,5 +57,19 @@ constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = AnnouncementUiState.Loading
+        )
+
+    val reviewUiState: StateFlow<ReviewUiState> =
+        flow {
+            emit(homeRepository.getReviewList())
+        }.map {
+            if (it.isNotEmpty()) ReviewUiState.Reviews(it)
+            else ReviewUiState.Empty
+        }.catch {
+            _errorFlow.emit(it)
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = ReviewUiState.Loading
         )
 }
