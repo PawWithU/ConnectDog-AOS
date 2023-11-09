@@ -40,7 +40,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,11 +53,13 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.model.Announcement
-import com.kusitms.connectdog.feature.home.ExampleUiState
+import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -71,6 +72,7 @@ internal fun HomeRoute(
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val exampleUiState by viewModel.exampleUiState.collectAsStateWithLifecycle()
+    val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
 
     // 에러 발생할 때마다 에러 스낵바 표시
     LaunchedEffect(true) {
@@ -81,6 +83,7 @@ internal fun HomeRoute(
         TopAppBar(onClickSearch = onNavigateToSearch)
         HomeScreen(
             exampleUiState = exampleUiState,
+            announcementUiState = announcementUiState,
             onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearch,
             onNavigateToReview = onNavigateToReview,
@@ -92,6 +95,7 @@ internal fun HomeRoute(
 @Composable
 private fun HomeScreen(
     exampleUiState: ExampleUiState,
+    announcementUiState: AnnouncementUiState,
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
@@ -105,7 +109,7 @@ private fun HomeScreen(
         StatisticBanner(modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp))
         BannerGuideline()
         MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
-        //todo recyclerview
+        AnnouncementContent(announcementUiState)
         MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
     }
 }
@@ -278,7 +282,7 @@ private fun MoveContent(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 30.dp)
+            .padding(horizontal = 20.dp, vertical = 20.dp)
             .fillMaxWidth(),
     ) {
         Text(
@@ -289,16 +293,50 @@ private fun MoveContent(
         IconButton(onClick = { onClick() }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
-                contentDescription = "move to another screen"
+                contentDescription = "move to another screen",
+                modifier = Modifier.size(24.dp),
+                tint = Gray2
             )
         }
     }
 }
 
 @Composable
-private fun AnnouncementList(list: List<Announcement>){
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        items(list.take(10)){
+private fun AnnouncementContent(uiState: AnnouncementUiState) {
+    val modifier = Modifier.padding(horizontal = 20.dp)
+    when (uiState) {
+        is AnnouncementUiState.Announcements -> {
+            AnnouncementListContent(
+                list = uiState.announcements,
+                modifier = modifier,
+                arrangement = Arrangement.spacedBy(12.dp)
+            )
+        }
+
+        else -> AnnouncementLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp))
+    }
+}
+
+@Composable
+private fun AnnouncementListContent(
+    list: List<Announcement>,
+    modifier: Modifier,
+    arrangement: Arrangement.Horizontal
+) {
+    LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
+        items(list.take(10)) {
+            CardContent(announcement = it)
+        }
+    }
+}
+
+@Composable
+private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
+    val list = List(4) {
+        Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
+    }
+    LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
+        items(list) {
             CardContent(announcement = it)
         }
     }
@@ -308,19 +346,23 @@ private fun AnnouncementList(list: List<Announcement>){
 private fun CardContent(
     announcement: Announcement
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(150.dp)) {
+    Column(
+        horizontalAlignment = Alignment.Start,
+        modifier = Modifier.width(150.dp)
+    ) {
         NetworkImage(
             imageUrl = announcement.imageUrl,
             placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier
                 .size(150.dp)
-                .shadow(shape = RoundedCornerShape(12.dp), elevation = 3.dp)
+                .shadow(shape = RoundedCornerShape(12.dp), elevation = 2.dp)
         )
         Text(
             text = announcement.location,
             maxLines = 2,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(start = 1.dp, top = 10.dp, bottom = 8.dp)
         )
         AnnouncementContent(
             date = announcement.date,
@@ -338,7 +380,13 @@ private fun HomeScreenPreview() {
     ConnectDogTheme {
         Column(modifier = Modifier.background(Color.White)) {
             TopAppBar(onClickSearch = {})
-            HomeScreen(exampleUiState = ExampleUiState.Empty, {}, {}, {}, {})
+            HomeScreen(
+                exampleUiState = ExampleUiState.Empty,
+                announcementUiState = AnnouncementUiState.Empty,
+                {},
+                {},
+                {},
+                {})
         }
     }
 }
