@@ -44,7 +44,8 @@ import com.kusitms.connectdog.core.designsystem.theme.Red2
 @Composable
 fun EmailLoginScreen(
     title: String,
-    navController: NavController
+    navController: NavController,
+    onclick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -87,8 +88,7 @@ fun EmailLoginScreen(
         NormalButton(
             content = "로그인",
             color = PetOrange,
-            onClick = {
-            },
+            onClick = onclick,
             modifier =
             Modifier
                 .fillMaxWidth()
