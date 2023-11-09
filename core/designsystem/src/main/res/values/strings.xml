@@ -3,9 +3,11 @@
     <string name="untitled">&lt;Untitled&gt;</string>
     <string name="date">일정</string>
     <string name="organization">중개자명</string>
+    <string name="volunteer">봉사자명</string>
     <string name="need_kennel">켄넬 여부</string>
     <string name="has_kennel">O(준비하지 않아도 돼요)</string>
     <string name="has_not_kennel">X(준비해 주세요)</string>
     <string name="who_connected">를 연결해 준</string>
     <string name="who_review">의 후기</string>
+    <string name="location">지역</string>
 </resources>
