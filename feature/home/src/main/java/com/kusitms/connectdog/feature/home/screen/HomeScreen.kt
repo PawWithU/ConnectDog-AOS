@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -289,6 +291,15 @@ private fun MoveContent(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
                 contentDescription = "move to another screen"
             )
+        }
+    }
+}
+
+@Composable
+private fun AnnouncementList(list: List<Announcement>){
+    LazyRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        items(list.take(10)){
+            CardContent(announcement = it)
         }
     }
 }
