@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.login
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.feature.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,10 +30,16 @@ class LoginActivity : ComponentActivity() {
                         LoginTypeScreen(navigator, viewModel, this@LoginActivity)
                     }
                     composable("emailLogin") {
-                        EmailLoginScreen(title = "이동봉사자 로그인", navigator)
+                        EmailLoginScreen(title = "이동봉사자 로그인", navigator) { initMainActivity() }
                     }
                 }
             }
         }
+    }
+
+    private fun initMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
