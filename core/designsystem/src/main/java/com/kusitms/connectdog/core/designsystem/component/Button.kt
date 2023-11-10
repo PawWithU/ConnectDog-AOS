@@ -35,7 +35,7 @@ fun ConnectDogBottomButton(
         modifier = modifier,
         colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
     ) {
-        Text(text = content, style = Typography.titleSmall)
+        Text(text = content, style = Typography.titleSmall, color = textColor)
     }
 }
 
