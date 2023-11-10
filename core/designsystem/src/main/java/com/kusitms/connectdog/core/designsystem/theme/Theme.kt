@@ -20,13 +20,13 @@ private val LightColorScheme =
         primary = PetOrange,
         onPrimary = Color.White,
         secondary = PetOrange,
-        secondaryContainer = Color.White,
+        onSecondary = Color.White,
         background = Color.White,
         onBackground = Color.Black,
         primaryContainer = Orange20,
         surface = Color.White,
         onSurface = Gray1,
-        error = Red,
+        error = Red1,
         outline = Gray5
     /* Other default colors to override
     surface = Color(0xFFFFFBFE),

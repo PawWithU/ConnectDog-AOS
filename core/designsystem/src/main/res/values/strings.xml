@@ -11,4 +11,5 @@
     <string name="who_review">의 후기</string>
     <string name="dog_recent">의 근황</string>
     <string name="location">지역</string>
+    <string name="kakao_app_key">227799f94d3661c7d84b79daba3b0eaa</string>
 </resources>

@@ -15,16 +15,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ConnectDog"
         tools:targetApi="33">
-        <activity
-            android:name=".feature.main.MainActivity"
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.ConnectDog.Splash">
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="oauth"
+                    android:scheme="kakao227799f94d3661c7d84b79daba3b0eaa" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".feature.login.LoginActivity"
+            android:exported="true"
+            android:theme="@style/Theme.ConnectDog.Splash"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".feature.main.MainActivity"
+            android:exported="true">
         </activity>
     </application>
 

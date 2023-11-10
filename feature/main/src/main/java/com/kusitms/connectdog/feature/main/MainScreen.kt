@@ -121,7 +121,8 @@ private fun NavigationLabel(
     Text(
         text = tab.contentDescription,
         style = MaterialTheme.typography.labelLarge,
-        color = if (selected) {
+        color =
+        if (selected) {
             MaterialTheme.colorScheme.primary
         } else {
             MaterialTheme.colorScheme.onSurface

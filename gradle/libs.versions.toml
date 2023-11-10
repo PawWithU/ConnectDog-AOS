@@ -12,9 +12,15 @@ androidxAppCompat = "1.6.1"
 androidxComposeNavigation = "2.6.0"
 androidxComposeMaterial3 = "1.1.2"
 androidxComposeMaterial = "1.5.4"
+androidxComposeFoundation = "1.5.4"
 androidxSplash = "1.0.0-beta02"
 hilt = "2.46.1"
 hiltNavigationCompose = "1.0.0"
+accompanistPager = "0.20.1"
+accompanistPagerIndicators = "0.20.1"
+
+naverOauth = "5.8.0"
+kakaoOauth = "2.17.0"
 
 okhttp = "4.11.0"
 retrofit = "2.9.0"
@@ -57,6 +63,7 @@ androidx-compose-material = {group = "androidx.compose.material", name = "materi
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidxComposeMaterial3" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxComposeNavigation" }
 androidx-compose-navigation-test = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxComposeNavigation" }
+androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "androidxComposeFoundation"}
 
 hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
@@ -81,6 +88,11 @@ landscapist-animation = { group = "com.github.skydoves", name = "landscapist-ani
 
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "composeShimmer" }
 
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
+accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanistPagerIndicators" }
+
+naver-oauth = {group = "com.navercorp.nid", name = "oauth", version.ref = "naverOauth"}
+kakao-oauth = {group = "com.kakao.sdk", name = "v2-user", version.ref="kakaoOauth"}
 
 # modular graph
 dependency-graph = {group = "com.vanniktech", name = "gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph"}
