@@ -20,7 +20,7 @@ fun NetworkImage(
     modifier: Modifier = Modifier,
     placeholder: Painter? = null,
     contentScale: ContentScale = ContentScale.Crop,
-    contentDescription: String? = null,
+    contentDescription: String? = null
 ) {
     CoilImage(
         imageModel = { imageUrl },
@@ -32,7 +32,7 @@ fun NetworkImage(
         imageOptions = ImageOptions(
             contentScale = contentScale,
             alignment = Alignment.Center,
-            contentDescription = contentDescription,
+            contentDescription = contentDescription
         )
     )
 }

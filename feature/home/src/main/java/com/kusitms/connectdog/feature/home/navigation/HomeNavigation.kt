@@ -19,11 +19,11 @@ fun NavController.navigateSearch() {
     navigate(HomeRoute.search)
 }
 
-fun NavController.navigateReview(){
+fun NavController.navigateReview() {
     navigate(HomeRoute.review)
 }
 
-fun NavController.navigateDetail(){
+fun NavController.navigateDetail() {
     navigate(HomeRoute.detail)
 }
 

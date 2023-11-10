@@ -53,11 +53,11 @@ internal class MainNavigator(
         navController.navigateSearch()
     }
 
-    fun navigateHomeReview(){
+    fun navigateHomeReview() {
         navController.navigateReview()
     }
 
-    fun navigateHomeDetail(){
+    fun navigateHomeDetail() {
         navController.navigateDetail()
     }
 

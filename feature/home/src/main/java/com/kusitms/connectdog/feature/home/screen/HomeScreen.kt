@@ -60,10 +60,10 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.model.Review
-import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
+import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.state.ReviewUiState
 import kotlinx.coroutines.flow.collectLatest
 
@@ -107,7 +107,7 @@ private fun HomeScreen(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -293,7 +293,7 @@ private fun MoveContent(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 20.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
     ) {
         Text(
             text = stringResource(id = titleRes),
@@ -383,7 +383,7 @@ private fun ReviewListContent(
 
 @Composable
 private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
-    val list = List(4){
+    val list = List(4) {
         Review(
             profileUrl = "",
             dogName = "멍멍이",
@@ -395,7 +395,7 @@ private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizonta
             content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><"
         )
     }
-    LazyRow(horizontalArrangement = arrangement, modifier = modifier){
+    LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
             ReviewCardContent(review = it)
         }
@@ -430,7 +430,6 @@ private fun AnnouncementCardContent(
             hasKennel = announcement.hasKennel,
             style = MaterialTheme.typography.labelMedium
         )
-
     }
 }
 
@@ -461,7 +460,8 @@ private fun HomeScreenPreview() {
                 {},
                 {},
                 {},
-                {})
+                {}
+            )
         }
     }
 }

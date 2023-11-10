@@ -49,8 +49,11 @@ constructor(
         flow {
             emit(homeRepository.getAnnouncementList())
         }.map {
-            if (it.isNotEmpty()) AnnouncementUiState.Announcements(it)
-            else AnnouncementUiState.Empty
+            if (it.isNotEmpty()) {
+                AnnouncementUiState.Announcements(it)
+            } else {
+                AnnouncementUiState.Empty
+            }
         }.catch {
             _errorFlow.emit(it)
         }.stateIn(
@@ -63,8 +66,11 @@ constructor(
         flow {
             emit(homeRepository.getReviewList())
         }.map {
-            if (it.isNotEmpty()) ReviewUiState.Reviews(it)
-            else ReviewUiState.Empty
+            if (it.isNotEmpty()) {
+                ReviewUiState.Reviews(it)
+            } else {
+                ReviewUiState.Empty
+            }
         }.catch {
             _errorFlow.emit(it)
         }.stateIn(

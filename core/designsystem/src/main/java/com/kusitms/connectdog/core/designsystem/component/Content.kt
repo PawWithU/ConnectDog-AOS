@@ -26,7 +26,7 @@ fun Content(
     titleRes3: Int,
     t1Value: String,
     t2Value: String,
-    t3Value: String,
+    t3Value: String
 ) {
     Column(modifier = modifier) {
         TitleValue(title = stringResource(id = titleRes1), value = t1Value, style = textStyle)
@@ -46,13 +46,13 @@ fun TitleValue(
             text = title,
             style = style,
             color = Gray3,
-            modifier = Modifier.defaultMinSize(minWidth = 35.dp),
+            modifier = Modifier.defaultMinSize(minWidth = 35.dp)
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = value,
             style = style,
-            color = Gray2,
+            color = Gray2
         )
     }
 }

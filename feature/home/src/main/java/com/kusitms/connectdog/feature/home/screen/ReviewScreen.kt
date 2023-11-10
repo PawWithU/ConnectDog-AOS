@@ -55,13 +55,13 @@ private fun TopAppBar(
 }
 
 @Composable
-private fun ReviewContent(uiState: ReviewUiState){
+private fun ReviewContent(uiState: ReviewUiState) {
     val modifier = Modifier.padding(horizontal = 0.dp)
     when (uiState) {
         is ReviewUiState.Reviews -> {
             ReviewListContent(
                 list = uiState.reviews,
-                modifier = modifier,
+                modifier = modifier
             )
         }
 
@@ -72,10 +72,10 @@ private fun ReviewContent(uiState: ReviewUiState){
 @Composable
 private fun ReviewListContent(
     list: List<Review>,
-    modifier: Modifier,
-){
-    LazyColumn(modifier = modifier){
-        items(list.take(30)){
+    modifier: Modifier
+) {
+    LazyColumn(modifier = modifier) {
+        items(list.take(30)) {
             ReviewItemContent(review = it)
         }
     }
@@ -83,7 +83,7 @@ private fun ReviewListContent(
 
 @Composable
 private fun ReviewLoading(modifier: Modifier) {
-    val list = List(10){
+    val list = List(10) {
         Review(
             profileUrl = "",
             dogName = "멍멍이",
@@ -95,7 +95,7 @@ private fun ReviewLoading(modifier: Modifier) {
             content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><"
         )
     }
-    LazyColumn(modifier = modifier){
+    LazyColumn(modifier = modifier) {
         items(list) {
             ReviewItemContent(review = it)
         }
@@ -115,7 +115,7 @@ private fun ReviewItemContent(
 
 @Preview
 @Composable
-private fun ReviewScreenPreview(){
+private fun ReviewScreenPreview() {
     ConnectDogTheme {
         ReviewContent(uiState = ReviewUiState.Empty)
     }
