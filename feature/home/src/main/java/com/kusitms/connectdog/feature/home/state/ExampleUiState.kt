@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.home
+package com.kusitms.connectdog.feature.home.state
 
 import com.kusitms.connectdog.core.model.Example
 

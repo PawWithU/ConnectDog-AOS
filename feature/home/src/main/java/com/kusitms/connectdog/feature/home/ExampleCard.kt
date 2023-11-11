@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogCard
+import com.kusitms.connectdog.feature.home.state.ExampleUiState
 
 @Composable
 internal fun ExampleCard(uiState: ExampleUiState) {

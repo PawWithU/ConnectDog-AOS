@@ -1,0 +1,447 @@
+{
+  "name": "card_info_item",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "x74Rs9XNNMoeBtEXsLAkjP",
+    "node": "2388:2831",
+    "version": "4480070460",
+    "component-id": "d9eea528b35465bc63794cecc633f16ffcbcff18"
+  },
+  "default": "CardInfoItem",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "group",
+        "id": "CardImage"
+      },
+      {
+        "type": "group",
+        "id": "CardContent"
+      },
+      {
+        "type": "image",
+        "id": "image 1"
+      },
+      {
+        "type": "text",
+        "id": "Title"
+      },
+      {
+        "type": "group",
+        "id": "Description"
+      },
+      {
+        "type": "group",
+        "id": "Date"
+      },
+      {
+        "type": "group",
+        "id": "Organization"
+      },
+      {
+        "type": "group",
+        "id": "Etc"
+      },
+      {
+        "type": "text",
+        "id": "datetime"
+      },
+      {
+        "type": "text",
+        "id": "text / due date"
+      },
+      {
+        "type": "text",
+        "id": "organization"
+      },
+      {
+        "type": "text",
+        "id": "text / due date1"
+      },
+      {
+        "type": "text",
+        "id": "etc"
+      },
+      {
+        "type": "text",
+        "id": "text / due date2"
+      }
+    ],
+    "modes": {
+      "CardInfoItem": {
+        "rules": [
+          {
+            "id": "top_level",
+            "tap-handler": "$onCardInfoItemClicked",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "arrangement": "row",
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": [
+              "CardImage",
+              "CardContent"
+            ],
+            "item-spacing": "16.0",
+            "background-color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "1.0"
+            }
+          },
+          {
+            "id": "CardImage",
+            "border-radius": "6.0",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "80.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "80.0"
+              }
+            },
+            "children": [
+              "image 1"
+            ]
+          },
+          {
+            "id": "CardContent",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "cross-axis-align": "start",
+            "children": [
+              "Title",
+              "Description"
+            ],
+            "item-spacing": "9.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "image 1",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "1.5"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "1.5"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "83.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "83.0"
+              }
+            },
+            "image-content": "$img",
+            "scale": "cover"
+          },
+          {
+            "id": "Title",
+            "font-weight": "600.0",
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.21568627450980393"
+            },
+            "text-content": "$title",
+            "overflow": "visible",
+            "text-align": "left",
+            "letter-spacing": "-0.6000000238418579",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          },
+          {
+            "id": "Description",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "cross-axis-align": "start",
+            "children": [
+              "Date",
+              "Organization",
+              "Etc"
+            ],
+            "item-spacing": "6.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "Date",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "arrangement": "row",
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": [
+              "datetime",
+              "text / due date"
+            ],
+            "item-spacing": "12.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "Organization",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "arrangement": "row",
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": [
+              "organization",
+              "text / due date1"
+            ],
+            "item-spacing": "12.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "Etc",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "proportional",
+                "value": "1.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "arrangement": "row",
+            "main-axis-align": "start",
+            "cross-axis-align": "start",
+            "children": [
+              "etc",
+              "text / due date2"
+            ],
+            "item-spacing": "12.0",
+            "clip-content": "false"
+          },
+          {
+            "id": "datetime",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "75.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.6235294117647059"
+            },
+            "text-content": "이동봉사 일정",
+            "overflow": "visible",
+            "max-lines": "-1",
+            "text-align": "left",
+            "text-size": "12.0",
+            "letter-spacing": "-0.6000000238418579",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          },
+          {
+            "id": "text / due date",
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.21568627450980393"
+            },
+            "text-content": "$datetime",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": "12.0",
+            "letter-spacing": "-0.24",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          },
+          {
+            "id": "organization",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "75.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.6235294117647059"
+            },
+            "text-content": "이동봉사 중개",
+            "overflow": "visible",
+            "max-lines": "-1",
+            "text-align": "left",
+            "text-size": "12.0",
+            "letter-spacing": "-0.6000000238418579",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          },
+          {
+            "id": "text / due date1",
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.21568627450980393"
+            },
+            "text-content": "$organization",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": "12.0",
+            "letter-spacing": "-0.6000000238418579",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          },
+          {
+            "id": "etc",
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "75.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "shrink"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.6235294117647059"
+            },
+            "text-content": "컨넬 준비 여부",
+            "overflow": "visible",
+            "max-lines": "-1",
+            "text-align": "left",
+            "text-size": "12.0",
+            "letter-spacing": "-0.6000000238418579",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          },
+          {
+            "id": "text / due date2",
+            "color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.0",
+              "value": "0.21568627450980393"
+            },
+            "text-content": "$etc",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": "12.0",
+            "letter-spacing": "-0.6000000238418579",
+            "line-height": "1.193359375",
+            "typeface": "Pretendard"
+          }
+        ]
+      }
+    }
+  },
+  "parameters": {
+    "onCardInfoItemClicked": {
+      "data-type": "void-callback",
+      "required": false,
+      "description": ""
+    },
+    "img": {
+      "data-type": "image",
+      "required": false,
+      "description": ""
+    },
+    "title": {
+      "data-type": "text",
+      "required": false,
+      "description": ""
+    },
+    "datetime": {
+      "data-type": "text",
+      "required": false,
+      "description": ""
+    },
+    "organization": {
+      "data-type": "text",
+      "required": false,
+      "description": ""
+    },
+    "etc": {
+      "data-type": "text",
+      "required": false,
+      "description": ""
+    }
+  },
+  "previews": [
+    {
+      "design": "CardInfoItem",
+      "size": {
+        "width": 320.0,
+        "height": 80.0
+      },
+      "parameters": {
+        "img": "image_1.png",
+        "title": "인천 > 부산",
+        "datetime": "23.12.22(금) 17:00",
+        "organization": "단체이름이름",
+        "etc": "X (따로 준비가 필요해요)"
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}
