@@ -28,6 +28,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.feature.home.R
+import java.nio.file.WatchEvent
 
 @Composable
 internal fun SearchScreen(
@@ -85,13 +86,20 @@ private fun SearchBar(
 }
 
 @Composable
+private fun FilterBar(
+    modifier: Modifier = Modifier
+){
+
+}
+
+@Composable
 private fun FilterTag(
     tag: String,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
     val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray4
-    Column(
+    Row(
         modifier = Modifier
             .padding(horizontal = 12.dp, vertical = 4.dp)
             .border(width = 1.dp, color = color)
@@ -103,6 +111,7 @@ private fun FilterTag(
             fontSize = 12.sp,
             color = color
         )
+        Spacer(modifier = Modifier.width(8.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_expand_down),
             contentDescription = "필터 확장",
