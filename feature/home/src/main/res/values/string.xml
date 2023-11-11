@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- search -->
+    <string name="search_app_bar_title">이동봉사 공고</string>
+    <!-- main -->
+    <string name="home_description_title">이동봉사 일정이 있나요?\n딱 맞는 이동 봉사 공고를 검색해보세요!</string>
+    <string name="home_counting_guide">집계안내</string>
+    <string name="home_dog_unit">마리</string>
+    <string name="home_need_move_description">이동이 필요해요</string>
+    <string name="home_moved_description">이동했어요!</string>
+    <string name="home_banner">이동봉사 전과정이 궁금해요!</string>
+    <string name="home_banner_button_guideline">가이드라인 확인하기</string>
+    <string name="home_navigate_search">이동봉사 공고</string>
+    <string name="home_navigate_review">이동봉사 후기</string>
+    <!-- review -->
+    <string name="review_top_app_bar_title">이동봉사 후기</string>
+</resources>

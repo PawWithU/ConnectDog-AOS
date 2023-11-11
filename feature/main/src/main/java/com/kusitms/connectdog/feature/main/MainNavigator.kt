@@ -8,7 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.kusitms.connectdog.feature.home.navigation.HomeRoute
+import com.kusitms.connectdog.feature.home.navigation.navigateDetail
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
+import com.kusitms.connectdog.feature.home.navigation.navigateReview
+import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 
@@ -44,6 +48,27 @@ internal class MainNavigator(
             MainTab.MYPAGE -> navController.navigateMypage(navOptions)
         }
     }
+
+    fun navigateHomeSearch() {
+        navController.navigateSearch()
+    }
+
+    fun navigateHomeReview() {
+        navController.navigateReview()
+    }
+
+    fun navigateHomeDetail() {
+        navController.navigateDetail()
+    }
+
+    fun popBackStackIfNotHome() {
+        if (!isSameCurrentDestination(HomeRoute.route)) {
+            navController.popBackStack()
+        }
+    }
+
+    private fun isSameCurrentDestination(route: String) =
+        navController.currentDestination?.route == route
 
     @Composable
     fun shouldShowBottomBar(): Boolean {

@@ -41,10 +41,9 @@ fun ConnectDogTopAppBar(
         { modifier, imageRes ->
             IconButton(onClick = onNavigationClick, modifier = modifier.size(48.dp)) {
                 Icon(
-                    modifier =
-                    modifier
+                    modifier = modifier
                         .fillMaxSize()
-                        .padding(start = 16.dp),
+                        .padding(vertical = 16.dp, horizontal = 12.dp),
                     painter = painterResource(id = imageRes),
                     contentDescription = navigationIconContentDescription
                 )
@@ -52,8 +51,7 @@ fun ConnectDogTopAppBar(
         }
 
     Box(
-        modifier =
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(color = containerColor)
             .then(modifier)
@@ -65,7 +63,7 @@ fun ConnectDogTopAppBar(
             )
         } else if (navigationType == TopAppBarNavigationType.HOME) {
             HomeIcon(
-                modifier = Modifier.size(66.dp, 45.dp),
+                modifier = Modifier.size(66.dp, 45.dp).align(Alignment.CenterStart),
                 imageRes = R.drawable.ic_logo_home,
                 iconContentDescription = "connect dog home"
             )
@@ -93,8 +91,7 @@ private fun HomeIcon(
     iconContentDescription: String
 ) {
     Icon(
-        modifier =
-        modifier
+        modifier = modifier
             .padding(start = 16.dp),
         painter = painterResource(id = imageRes),
         tint = tintColor,
