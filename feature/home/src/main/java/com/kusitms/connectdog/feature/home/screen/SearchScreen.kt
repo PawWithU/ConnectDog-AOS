@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.home.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -79,6 +80,33 @@ private fun SearchBar(
             style = MaterialTheme.typography.titleSmall,
             fontSize = 14.sp,
             color = Gray4
+        )
+    }
+}
+
+@Composable
+private fun FilterTag(
+    tag: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray4
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 12.dp, vertical = 4.dp)
+            .border(width = 1.dp, color = color)
+            .clickable { onClick() }
+    ) {
+        Text(
+            text = tag,
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 12.sp,
+            color = color
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_expand_down),
+            contentDescription = "필터 확장",
+            tint = color
         )
     }
 }
