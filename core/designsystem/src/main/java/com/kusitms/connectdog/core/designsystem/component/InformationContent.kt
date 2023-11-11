@@ -43,7 +43,7 @@ fun ReviewContent(
 }
 
 @Composable
-fun RecentContent(
+fun ApplicantContent(
     date: String,
     location: String,
     volunteer: String,

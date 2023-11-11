@@ -113,7 +113,7 @@ fun ConnectDogRecent(
             )
         },
         informationContent = {
-            RecentContent(
+            ApplicantContent(
                 date = recent.date,
                 location = recent.location,
                 volunteer = recent.volunteer
