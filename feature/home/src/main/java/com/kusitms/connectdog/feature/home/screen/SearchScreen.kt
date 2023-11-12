@@ -10,44 +10,56 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.model.Filter
+import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
+
     Column {
-        TopAppBar {
-            onBackClick()
-        }
+        TopAppBar { onBackClick() }
         SearchBar(
             modifier = Modifier
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
         ) {} //todo 검색 popup
         FilterBar(filter = Filter(), onClick = { /*TODO*/ })
-        SortButton(isByDeadline = true) { //todo sort
-        }
+        SortButton(isByDeadline = true) { /*todo sort*/ }
+        AnnouncementContent(uiState = announcementUiState)
     }
 }
 
@@ -167,10 +179,65 @@ private fun SortButton(
     }
 }
 
+@Composable
+private fun AnnouncementContent(uiState: AnnouncementUiState) {
+    when (uiState) {
+        is AnnouncementUiState.Announcements -> {
+            AnnouncementList(list = uiState.announcements)
+        }
+        else -> AnnouncementLoading()
+    }
+}
+
+@Composable
+private fun AnnouncementList(
+    list: List<Announcement>
+) {
+    LazyColumn {
+        items(list) {
+            AnnouncementContent(announcement = it)
+        }
+    }
+}
+
+@Composable
+private fun AnnouncementLoading() {
+    val list = List(4) {
+        Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
+    }
+    LazyColumn {
+        items(list) {
+            AnnouncementContent(announcement = it)
+        }
+    }
+}
+
+@Composable
+private fun AnnouncementContent(announcement: Announcement) {
+    Column(modifier = Modifier.padding(20.dp) ) {
+        ListForUserItem(
+            modifier = Modifier.padding(vertical = 20.dp),
+            imageUrl = announcement.imageUrl,
+            announcement = announcement
+        )
+        Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
+    }
+}
+
 @Preview
 @Composable
 private fun SearchScreenPreview() {
     ConnectDogTheme {
-        SearchScreen {}
+        Column {
+            TopAppBar { }
+            SearchBar(
+                modifier = Modifier
+                    .padding(horizontal = 13.dp, vertical = 6.dp)
+                    .fillMaxWidth()
+            ) {} //todo 검색 popup
+            FilterBar(filter = Filter(), onClick = { /*TODO*/ })
+            SortButton(isByDeadline = true) { /*todo sort*/ }
+            AnnouncementContent(uiState = AnnouncementUiState.Loading)
+        }
     }
 }
