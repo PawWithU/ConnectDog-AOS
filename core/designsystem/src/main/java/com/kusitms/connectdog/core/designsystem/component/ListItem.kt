@@ -37,7 +37,7 @@ fun ListItem(
     imageUrl: String,
     title: String,
     isValid: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -53,12 +53,14 @@ fun ListItem(
                     .alpha(if (!isValid) 0.4F else 1.0F),
                 placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer)
             )
-            if (!isValid) DescriptionTag(
-                text = stringResource(id = R.string.end_recruit),
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(4.dp)
-            )
+            if (!isValid) {
+                DescriptionTag(
+                    text = stringResource(id = R.string.end_recruit),
+                    modifier = Modifier
+                        .align(Alignment.BottomStart)
+                        .padding(4.dp)
+                )
+            }
         }
         Spacer(modifier = Modifier.size(16.dp))
         Column {
@@ -74,7 +76,7 @@ fun ListForUserItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
     announcement: Announcement,
-    isValid: Boolean = true,
+    isValid: Boolean = true
 ) {
     ListItem(modifier = modifier, imageUrl = imageUrl, title = announcement.location, isValid = isValid) {
         AnnouncementContent(
@@ -90,7 +92,7 @@ fun ListForOrganizationItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
     applicant: Applicant,
-    isValid: Boolean = true,
+    isValid: Boolean = true
 ) {
     ListItem(modifier = modifier, imageUrl = imageUrl, title = applicant.dogName, isValid = isValid) {
         ApplicantContent(

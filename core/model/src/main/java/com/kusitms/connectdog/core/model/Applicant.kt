@@ -5,5 +5,5 @@ data class Applicant(
     val dogName: String,
     val date: String,
     val location: String,
-    val volunteer: String,
+    val volunteer: String
 )

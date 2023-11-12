@@ -57,14 +57,19 @@ internal fun SearchScreen(
             modifier = Modifier
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
-        ) {} //todo 검색 popup
-        if (filter != null) FilterBar(
-            modifier = Modifier.padding(
-                start = 13.dp,
-                end = 13.dp,
-                top = 4.dp,
-                bottom = 6.dp
-            ), filter = filter, onClick = { /*TODO*/ })
+        ) {} // todo 검색 popup
+        if (filter != null) {
+            FilterBar(
+                modifier = Modifier.padding(
+                    start = 13.dp,
+                    end = 13.dp,
+                    top = 4.dp,
+                    bottom = 6.dp
+                ),
+                filter = filter,
+                onClick = { /*TODO*/ }
+            )
+        }
         AnnouncementContent(uiState = announcementUiState) {
             SortButton(
                 modifier = Modifier
@@ -91,7 +96,7 @@ private fun TopAppBar(
 @Composable
 private fun SearchBar(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -118,14 +123,20 @@ private fun SearchBar(
 private fun FilterBar(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    filter: Filter,
+    filter: Filter
 ) {
     val dateFilter: String =
-        if (filter.startDate.isNotEmpty() && filter.endDate.isNotEmpty()) filter.startDate + "-" + filter.endDate
-        else stringResource(id = R.string.search_location)
+        if (filter.startDate.isNotEmpty() && filter.endDate.isNotEmpty()) {
+            filter.startDate + "-" + filter.endDate
+        } else {
+            stringResource(id = R.string.search_location)
+        }
     val locationFilter: String =
-        if (filter.startLocation.isNotEmpty() && filter.destLocation.isNotEmpty()) filter.startLocation + " -> " + filter.destLocation
-        else stringResource(id = R.string.search_date)
+        if (filter.startLocation.isNotEmpty() && filter.destLocation.isNotEmpty()) {
+            filter.startLocation + " -> " + filter.destLocation
+        } else {
+            stringResource(id = R.string.search_date)
+        }
 
     Row(
         modifier = modifier,
@@ -184,8 +195,11 @@ private fun SortButton(
         modifier = modifier.clickable { onClick() }
     ) {
         Text(
-            text = if (isByDeadline) stringResource(id = R.string.search_sort_end)
-            else stringResource(id = R.string.search_sort_recent),
+            text = if (isByDeadline) {
+                stringResource(id = R.string.search_sort_end)
+            } else {
+                stringResource(id = R.string.search_sort_recent)
+            },
             style = MaterialTheme.typography.bodyMedium,
             color = Gray2
         )
@@ -200,7 +214,6 @@ private fun SortButton(
 
 @Composable
 private fun AnnouncementContent(uiState: AnnouncementUiState, sortBtn: @Composable () -> Unit) {
-
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
             AnnouncementList(list = uiState.announcements, sortBtn = sortBtn)
@@ -264,11 +277,12 @@ private fun SearchScreenPreview() {
                 modifier = Modifier
                     .padding(horizontal = 13.dp, vertical = 6.dp)
                     .fillMaxWidth()
-            ) {} //todo 검색 popup
+            ) {} // todo 검색 popup
             FilterBar(
                 modifier = Modifier.padding(start = 13.dp, end = 13.dp, top = 4.dp),
                 filter = Filter(),
-                onClick = { /*TODO*/ })
+                onClick = { /*TODO*/ }
+            )
             AnnouncementContent(uiState = AnnouncementUiState.Loading) {
                 SortButton(
                     modifier = Modifier
