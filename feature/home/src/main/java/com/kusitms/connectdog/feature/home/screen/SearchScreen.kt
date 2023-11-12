@@ -3,6 +3,7 @@ package com.kusitms.connectdog.feature.home.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,12 +27,12 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.model.Filter
 import com.kusitms.connectdog.feature.home.R
-import java.nio.file.WatchEvent
 
 @Composable
 internal fun SearchScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Column {
         TopAppBar {
@@ -42,8 +42,8 @@ internal fun SearchScreen(
             modifier = Modifier
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
-        ) { //todo 검색 popup
-        }
+        ) {} //todo 검색 popup
+        FilterBar(filter = Filter(), onClick = { /*TODO*/ })
     }
 }
 
@@ -87,15 +87,37 @@ private fun SearchBar(
 
 @Composable
 private fun FilterBar(
-    modifier: Modifier = Modifier
-){
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    filter: Filter,
+) {
+    val dateFilter: String =
+        if (filter.startDate != null && filter.endDate != null) filter.startDate + "-" + filter.endDate
+        else stringResource(id = R.string.search_location)
+    val locationFilter: String =
+        if (filter.startLocation != null && filter.destLocation != null) filter.startLocation + " -> " + filter.destLocation
+        else stringResource(id = R.string.search_detail)
 
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
+        FilterTag(
+            tag = locationFilter,
+            isSelected = filter.startLocation != null
+        ) { onClick() }
+        FilterTag(
+            tag = stringResource(id = R.string.search_detail),
+            isSelected = filter.detail != null
+        ) { onClick() }
+    }
 }
 
 @Composable
 private fun FilterTag(
     tag: String,
-    isSelected: Boolean,
+    isSelected: Boolean = false,
     onClick: () -> Unit
 ) {
     val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray4

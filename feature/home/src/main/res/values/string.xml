@@ -5,6 +5,9 @@
     <string name="search_where_to_move">어디로 이동하시나요?</string>
     <string name="search_sort_end">마감순</string>
     <string name="search_sort_recent">최신순</string>
+    <string name="search_detail">상세</string>
+    <string name="search_location">지역</string>
+    <string name="search_date">일정</string>
     <!-- main -->
     <string name="home_description_title">이동봉사 일정이 있나요?\n딱 맞는 이동 봉사 공고를 검색해보세요!</string>
     <string name="home_counting_guide">집계안내</string>
