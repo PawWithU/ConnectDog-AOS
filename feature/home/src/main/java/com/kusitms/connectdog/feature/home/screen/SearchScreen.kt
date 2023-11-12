@@ -58,9 +58,21 @@ internal fun SearchScreen(
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
         ) {} //todo 검색 popup
-        if (filter != null) FilterBar(modifier = Modifier.padding(start = 13.dp, end = 13.dp, top = 4.dp, bottom = 6.dp), filter = filter, onClick = { /*TODO*/ })
-        SortButton(modifier = Modifier.padding(top = 20.dp, end = 20.dp).align(Alignment.End), isByDeadline = true) { /*todo sort*/ }
-        AnnouncementContent(uiState = announcementUiState)
+        if (filter != null) FilterBar(
+            modifier = Modifier.padding(
+                start = 13.dp,
+                end = 13.dp,
+                top = 4.dp,
+                bottom = 6.dp
+            ), filter = filter, onClick = { /*TODO*/ })
+        AnnouncementContent(uiState = announcementUiState) {
+            SortButton(
+                modifier = Modifier
+                    .padding(top = 20.dp, end = 20.dp)
+                    .fillMaxWidth(),
+                isByDeadline = true
+            ) { /*todo sort*/ }
+        }
     }
 }
 
@@ -168,6 +180,7 @@ private fun SortButton(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.End,
         modifier = modifier.clickable { onClick() }
     ) {
         Text(
@@ -177,25 +190,35 @@ private fun SortButton(
             color = Gray2
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Icon(painter = painterResource(id = R.drawable.ic_sort), contentDescription = "정렬", tint = Gray2)
+        Icon(
+            painter = painterResource(id = R.drawable.ic_sort),
+            contentDescription = "정렬",
+            tint = Gray2
+        )
     }
 }
 
 @Composable
-private fun AnnouncementContent(uiState: AnnouncementUiState) {
+private fun AnnouncementContent(uiState: AnnouncementUiState, sortBtn: @Composable () -> Unit) {
+
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
-            AnnouncementList(list = uiState.announcements)
+            AnnouncementList(list = uiState.announcements, sortBtn = sortBtn)
         }
-        else -> AnnouncementLoading()
+
+        else -> AnnouncementLoading(sortBtn)
     }
 }
 
 @Composable
 private fun AnnouncementList(
-    list: List<Announcement>
+    list: List<Announcement>,
+    sortBtn: @Composable () -> Unit
 ) {
     LazyColumn {
+        item {
+            sortBtn()
+        }
         items(list) {
             AnnouncementContent(announcement = it)
         }
@@ -203,11 +226,16 @@ private fun AnnouncementList(
 }
 
 @Composable
-private fun AnnouncementLoading() {
-    val list = List(4) {
+private fun AnnouncementLoading(
+    sortBtn: @Composable () -> Unit
+) {
+    val list = List(10) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
     }
     LazyColumn {
+        item {
+            sortBtn()
+        }
         items(list) {
             AnnouncementContent(announcement = it)
         }
@@ -216,7 +244,7 @@ private fun AnnouncementLoading() {
 
 @Composable
 private fun AnnouncementContent(announcement: Announcement) {
-    Column(modifier = Modifier.padding(20.dp) ) {
+    Column(modifier = Modifier.padding(20.dp)) {
         ListForUserItem(
             modifier = Modifier.padding(vertical = 20.dp),
             imageUrl = announcement.imageUrl,
@@ -237,9 +265,18 @@ private fun SearchScreenPreview() {
                     .padding(horizontal = 13.dp, vertical = 6.dp)
                     .fillMaxWidth()
             ) {} //todo 검색 popup
-            FilterBar(modifier = Modifier.padding(start = 13.dp, end = 13.dp, top = 4.dp), filter = Filter(), onClick = { /*TODO*/ })
-            SortButton(modifier = Modifier.padding(top = 20.dp, end = 20.dp).align(Alignment.End), isByDeadline = true) { /*todo sort*/ }
-            AnnouncementContent(uiState = AnnouncementUiState.Loading)
+            FilterBar(
+                modifier = Modifier.padding(start = 13.dp, end = 13.dp, top = 4.dp),
+                filter = Filter(),
+                onClick = { /*TODO*/ })
+            AnnouncementContent(uiState = AnnouncementUiState.Loading) {
+                SortButton(
+                    modifier = Modifier
+                        .padding(top = 20.dp, end = 20.dp)
+                        .fillMaxWidth(),
+                    isByDeadline = true
+                ) { /*todo sort*/ }
+            }
         }
     }
 }
