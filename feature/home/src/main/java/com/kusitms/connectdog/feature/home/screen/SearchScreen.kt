@@ -15,6 +15,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
@@ -44,6 +46,8 @@ internal fun SearchScreen(
                 .fillMaxWidth()
         ) {} //todo 검색 popup
         FilterBar(filter = Filter(), onClick = { /*TODO*/ })
+        SortButton(isByDeadline = true) { //todo sort
+        }
     }
 }
 
@@ -139,6 +143,27 @@ private fun FilterTag(
             contentDescription = "필터 확장",
             tint = color
         )
+    }
+}
+
+@Composable
+private fun SortButton(
+    isByDeadline: Boolean = true,
+    onClick: () -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.End,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.clickable { onClick() }
+    ) {
+        Text(
+            text = if (isByDeadline) stringResource(id = R.string.search_sort_end)
+            else stringResource(id = R.string.search_sort_recent),
+            style = MaterialTheme.typography.bodyMedium,
+            color = Gray2
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Icon(painter = painterResource(id = R.drawable.ic_sort), contentDescription = "정렬")
     }
 }
 
