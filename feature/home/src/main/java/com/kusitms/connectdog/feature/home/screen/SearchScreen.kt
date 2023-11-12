@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -21,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +46,7 @@ import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
+    filter: Filter? = null,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
@@ -57,8 +58,8 @@ internal fun SearchScreen(
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
         ) {} //todo 검색 popup
-        FilterBar(filter = Filter(), onClick = { /*TODO*/ })
-        SortButton(isByDeadline = true) { /*todo sort*/ }
+        if (filter != null) FilterBar(modifier = Modifier.padding(start = 13.dp, end = 13.dp, top = 4.dp, bottom = 6.dp), filter = filter, onClick = { /*TODO*/ })
+        SortButton(modifier = Modifier.padding(top = 20.dp, end = 20.dp).align(Alignment.End), isByDeadline = true) { /*todo sort*/ }
         AnnouncementContent(uiState = announcementUiState)
     }
 }
@@ -108,20 +109,20 @@ private fun FilterBar(
     filter: Filter,
 ) {
     val dateFilter: String =
-        if (filter.startDate != null && filter.endDate != null) filter.startDate + "-" + filter.endDate
+        if (filter.startDate.isNotEmpty() && filter.endDate.isNotEmpty()) filter.startDate + "-" + filter.endDate
         else stringResource(id = R.string.search_location)
     val locationFilter: String =
-        if (filter.startLocation != null && filter.destLocation != null) filter.startLocation + " -> " + filter.destLocation
-        else stringResource(id = R.string.search_detail)
+        if (filter.startLocation.isNotEmpty() && filter.destLocation.isNotEmpty()) filter.startLocation + " -> " + filter.destLocation
+        else stringResource(id = R.string.search_date)
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
+        FilterTag(tag = dateFilter, isSelected = filter.startDate.isNotEmpty()) { onClick() }
         FilterTag(
             tag = locationFilter,
-            isSelected = filter.startLocation != null
+            isSelected = filter.startLocation.isNotEmpty()
         ) { onClick() }
         FilterTag(
             tag = stringResource(id = R.string.search_detail),
@@ -138,9 +139,10 @@ private fun FilterTag(
 ) {
     val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray4
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
+            .border(width = 1.dp, color = color, shape = CircleShape)
             .padding(horizontal = 12.dp, vertical = 4.dp)
-            .border(width = 1.dp, color = color)
             .clickable { onClick() }
     ) {
         Text(
@@ -160,13 +162,13 @@ private fun FilterTag(
 
 @Composable
 private fun SortButton(
+    modifier: Modifier = Modifier,
     isByDeadline: Boolean = true,
     onClick: () -> Unit
 ) {
     Row(
-        horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.clickable { onClick() }
+        modifier = modifier.clickable { onClick() }
     ) {
         Text(
             text = if (isByDeadline) stringResource(id = R.string.search_sort_end)
@@ -175,7 +177,7 @@ private fun SortButton(
             color = Gray2
         )
         Spacer(modifier = Modifier.width(4.dp))
-        Icon(painter = painterResource(id = R.drawable.ic_sort), contentDescription = "정렬")
+        Icon(painter = painterResource(id = R.drawable.ic_sort), contentDescription = "정렬", tint = Gray2)
     }
 }
 
@@ -235,8 +237,8 @@ private fun SearchScreenPreview() {
                     .padding(horizontal = 13.dp, vertical = 6.dp)
                     .fillMaxWidth()
             ) {} //todo 검색 popup
-            FilterBar(filter = Filter(), onClick = { /*TODO*/ })
-            SortButton(isByDeadline = true) { /*todo sort*/ }
+            FilterBar(modifier = Modifier.padding(start = 13.dp, end = 13.dp, top = 4.dp), filter = Filter(), onClick = { /*TODO*/ })
+            SortButton(modifier = Modifier.padding(top = 20.dp, end = 20.dp).align(Alignment.End), isByDeadline = true) { /*todo sort*/ }
             AnnouncementContent(uiState = AnnouncementUiState.Loading)
         }
     }

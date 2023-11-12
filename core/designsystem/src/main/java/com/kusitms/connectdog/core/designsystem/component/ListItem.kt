@@ -17,7 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +49,7 @@ fun ListItem(
                 imageUrl = imageUrl,
                 modifier = Modifier
                     .size(85.dp)
-                    .shadow(shape = RoundedCornerShape(12.dp), elevation = 0.dp)
+                    .clip(shape = RoundedCornerShape(12.dp))
                     .alpha(if (!isValid) 0.4F else 1.0F),
                 placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer)
             )
