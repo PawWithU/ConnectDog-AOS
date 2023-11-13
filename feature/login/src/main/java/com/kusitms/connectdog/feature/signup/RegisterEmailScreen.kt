@@ -30,7 +30,7 @@ import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
 fun RegisterEmailScreen(
-    navigator: NavController,
+    navigator: NavController
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -50,7 +50,7 @@ fun RegisterEmailScreen(
             modifier =
             Modifier
                 .align(Alignment.TopCenter)
-                .background(Color.White),
+                .background(Color.White)
         ) {
             ConnectDogTopAppBar(
                 titleRes = R.string.volunteer_signup,
@@ -74,7 +74,6 @@ fun RegisterEmailScreen(
                 buttonLabel = "인증 요청",
                 padding = 5
             ) {
-
             }
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -86,7 +85,6 @@ fun RegisterEmailScreen(
                 buttonLabel = "인증 확인",
                 padding = 5
             ) {
-
             }
         }
         NormalButton(
