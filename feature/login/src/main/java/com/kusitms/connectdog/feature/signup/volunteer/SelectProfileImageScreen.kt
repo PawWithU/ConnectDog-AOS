@@ -18,9 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,10 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
-import com.kusitms.connectdog.feature.login.TopBar
 
 val profileImageList = listOf(
     R.drawable.ic_profile_1,
@@ -68,7 +67,7 @@ fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileI
         Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
+            .padding(bottom = 32.dp)
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null,
@@ -78,15 +77,20 @@ fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileI
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
                 .background(Color.White)
         ) {
-            TopBar(title = "이동봉사자 회원가입", navController = navigator)
+            ConnectDogTopAppBar(
+                titleRes = R.string.volunteer_signup,
+                navigationType = TopAppBarNavigationType.BACK,
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = { navigator.popBackStack() }
+            )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "프로필 이미지를\n선택해주세요",
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 20.dp)
             )
             Spacer(modifier = Modifier.height(40.dp))
             ProfileImageGrid(navigator, selectedImageIndex)
@@ -114,7 +118,7 @@ fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileI
 @Composable
 fun ProfileImageGrid(navigator: NavController, selectedImageIndex: MutableState<Int>) {
     val modifier = Modifier
-        .padding(10.dp)
+        .padding(15.dp)
         .aspectRatio(1f)
         .clip(CircleShape)
 
