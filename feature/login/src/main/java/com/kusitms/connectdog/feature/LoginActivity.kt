@@ -17,8 +17,8 @@ import com.kusitms.connectdog.feature.main.MainActivity
 import com.kusitms.connectdog.feature.signup.CompleteSignUpScreen
 import com.kusitms.connectdog.feature.signup.RegisterEmailScreen
 import com.kusitms.connectdog.feature.signup.RegisterPasswordScreen
-import com.kusitms.connectdog.feature.signup.VolunteerSignUpScreen
 import com.kusitms.connectdog.feature.signup.TermsViewModel
+import com.kusitms.connectdog.feature.signup.VolunteerSignUpScreen
 import com.kusitms.connectdog.feature.signup.volunteer.ProfileScreen
 import com.kusitms.connectdog.feature.signup.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.feature.signup.volunteer.SelectProfileImageViewModel
@@ -29,7 +29,6 @@ class LoginActivity : ComponentActivity() {
     private val termsViewModel: TermsViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
     private val selectProfileImageViewModel: SelectProfileImageViewModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
