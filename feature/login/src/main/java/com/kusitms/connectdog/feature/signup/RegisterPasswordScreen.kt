@@ -28,7 +28,6 @@ import com.kusitms.connectdog.core.designsystem.component.LoginTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
-import com.kusitms.connectdog.feature.login.TopBar
 
 @Composable
 fun RegisterPasswordScreen(
@@ -53,7 +52,7 @@ fun RegisterPasswordScreen(
             modifier =
             Modifier
                 .align(Alignment.TopCenter)
-                .background(Color.White),
+                .background(Color.White)
         ) {
             ConnectDogTopAppBar(
                 titleRes = R.string.volunteer_signup,
@@ -72,7 +71,7 @@ fun RegisterPasswordScreen(
             LoginTextField(
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
-                keyboardType = KeyboardType.Password,
+                keyboardType = KeyboardType.Password
             )
             Spacer(modifier = Modifier.height(12.dp))
             LoginTextField(
