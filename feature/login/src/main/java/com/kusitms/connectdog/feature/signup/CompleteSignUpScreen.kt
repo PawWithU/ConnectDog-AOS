@@ -83,10 +83,10 @@ fun CompleteSignUpScreen(
                 .padding(start = 20.dp, end = 20.dp)
                 .layout { measurable, constraints ->
                     val placeable = measurable.measure(constraints)
-                layout(placeable.width, placeable.height + 64.dp.roundToPx()) {
-                    placeable.place(0, 0)
-                }
-            },
+                    layout(placeable.width, placeable.height + 64.dp.roundToPx()) {
+                        placeable.place(0, 0)
+                    }
+                },
             onClick = onclick
         )
     }
