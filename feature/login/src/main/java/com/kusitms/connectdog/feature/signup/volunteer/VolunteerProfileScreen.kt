@@ -38,7 +38,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    val profileImageId = if(viewModel.selectedImageIndex.value == null) {
+    val profileImageId = if (viewModel.selectedImageIndex.value == null) {
         R.drawable.ic_circle
     } else {
         profileImageList[viewModel.selectedImageIndex.value!!]
@@ -105,7 +105,6 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
                 buttonLabel = "중복 확인",
                 padding = 5
             ) {
-
             }
             Text(
                 text = "사용할 수 있는 닉네임입니다.",
