@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,13 +41,17 @@ fun CompleteSignUpScreen(
         Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null,
                 interactionSource = interactionSource
             )
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.background),
+            contentDescription = "",
+            modifier = Modifier.fillMaxSize()
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -68,7 +73,6 @@ fun CompleteSignUpScreen(
                 fontWeight = FontWeight.SemiBold
             )
         }
-
         NormalButton(
             content = "확인",
             modifier =
@@ -76,7 +80,13 @@ fun CompleteSignUpScreen(
                 .fillMaxWidth()
                 .height(56.dp)
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 20.dp),
+                .padding(start = 20.dp, end = 20.dp)
+                .layout { measurable, constraints ->
+                    val placeable = measurable.measure(constraints)
+                layout(placeable.width, placeable.height + 64.dp.roundToPx()) {
+                    placeable.place(0, 0)
+                }
+            },
             onClick = onclick
         )
     }
