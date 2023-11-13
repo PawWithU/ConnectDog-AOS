@@ -22,15 +22,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.LoginTextField
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
 import com.kusitms.connectdog.feature.login.TopBar
 
 @Composable
 fun RegisterPasswordScreen(
-    title: String,
-    navController: NavController,
+    navigator: NavController,
     onclick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -40,7 +42,7 @@ fun RegisterPasswordScreen(
         Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
+            .padding(bottom = 32.dp)
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null,
@@ -53,7 +55,12 @@ fun RegisterPasswordScreen(
                 .align(Alignment.TopCenter)
                 .background(Color.White),
         ) {
-            TopBar(title = title, navController)
+            ConnectDogTopAppBar(
+                titleRes = R.string.volunteer_signup,
+                navigationType = TopAppBarNavigationType.BACK,
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = { navigator.popBackStack() }
+            )
             Spacer(modifier = Modifier.height(37.dp))
             Text(
                 text = "로그인에 사용할\n비밀번호를 입력해주세요",
@@ -67,7 +74,7 @@ fun RegisterPasswordScreen(
                 placeholder = "비밀번호 입력",
                 keyboardType = KeyboardType.Password,
             )
-
+            Spacer(modifier = Modifier.height(12.dp))
             LoginTextField(
                 label = "비밀번호 확인",
                 placeholder = "비밀번호 확인",
@@ -77,7 +84,7 @@ fun RegisterPasswordScreen(
         NormalButton(
             content = "다음",
             color = PetOrange,
-            onClick = { navController.navigate("completeSignUp") },
+            onClick = { navigator.navigate("completeSignUp") },
             modifier =
             Modifier
                 .fillMaxWidth()
