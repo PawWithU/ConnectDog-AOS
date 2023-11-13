@@ -28,9 +28,10 @@ import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
-import com.kusitms.connectdog.feature.login.TopBar
 
 @Composable
 fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewModel) {
@@ -48,7 +49,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
         Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
+            .padding(bottom = 32.dp)
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null,
@@ -60,7 +61,12 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
                 .fillMaxSize()
                 .background(Color.White)
         ) {
-            TopBar(title = "이동봉사자 회원가입", navController = navigator)
+            ConnectDogTopAppBar(
+                titleRes = R.string.volunteer_signup,
+                navigationType = TopAppBarNavigationType.BACK,
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = { navigator.popBackStack() }
+            )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "프로필 정보를\n입력해주세요",
@@ -94,7 +100,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
             ConnectDogTextFieldWithButton(
                 width = 62,
                 height = 27,
-                textFieldLabel = "닉네임 입력",
+                textFieldLabel = "닉네임",
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
                 padding = 5
