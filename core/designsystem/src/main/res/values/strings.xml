@@ -12,4 +12,6 @@
     <string name="dog_recent">의 근황</string>
     <string name="location">지역</string>
     <string name="kakao_app_key">227799f94d3661c7d84b79daba3b0eaa</string>
+    <string name="volunteer_signup">이동봉사자 회원가입</string>
+    <string name="intermediator_signup">이동봉사 중개 회원가입</string>
 </resources>
