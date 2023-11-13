@@ -34,13 +34,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
-import com.kusitms.connectdog.feature.login.TopBar
 
 @Composable
 fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
@@ -62,7 +64,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
         Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
+            .padding(bottom = 32.dp)
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null,
@@ -72,15 +74,23 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp)
                 .background(Color.White),
         ) {
-            TopBar(title = "이동봉사자 회원가입", navController = navigator)
+            ConnectDogTopAppBar(
+                titleRes = R.string.volunteer_signup,
+                navigationType = TopAppBarNavigationType.BACK,
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = {
+                    navigator.popBackStack()
+                    viewModel.resetState()
+                }
+            )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text="코넥독 서비스 이용약관에\n동의해주세요",
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(start = 20.dp)
             )
             Spacer(modifier = Modifier.height(40.dp))
 
@@ -111,7 +121,10 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
                 .align(Alignment.BottomCenter)
                 .padding(horizontal = 20.dp),
             onClick = {
-                if(allChecked) navigator.navigate("profile")
+                if(allChecked) {
+                    navigator.navigate("profile")
+                    viewModel.resetState()
+                }
             }
         )
     }
@@ -123,6 +136,7 @@ fun HorizontalLine() {
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
+            .padding(horizontal = 20.dp)
     ) {
         drawLine(
             color = Gray3,
@@ -142,14 +156,16 @@ fun CustomCheckbox(text: String, checked: Boolean, onCheckedChange: (Boolean) ->
     }
 
     Row(
-        modifier = Modifier.clickable {
+        modifier = Modifier
+            .padding(horizontal = 20.dp)
+            .clickable {
             isChecked = !isChecked
             onCheckedChange(isChecked)
         }
     ) {
         Icon(
             painter = painterResource(
-                id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_checked
+                id = R.drawable.ic_checked
             ),
             contentDescription = "Custom Checkbox",
             tint = if (isChecked) PetOrange else Gray4,
