@@ -21,16 +21,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
-import com.kusitms.connectdog.feature.login.TopBar
 
 @Composable
 fun RegisterEmailScreen(
-    title: String,
-    navController: NavController,
-    onclick: () -> Unit
+    navigator: NavController,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -39,7 +39,7 @@ fun RegisterEmailScreen(
         Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
+            .padding(bottom = 32.dp)
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null,
@@ -52,7 +52,12 @@ fun RegisterEmailScreen(
                 .align(Alignment.TopCenter)
                 .background(Color.White),
         ) {
-            TopBar(title = title, navController)
+            ConnectDogTopAppBar(
+                titleRes = R.string.volunteer_signup,
+                navigationType = TopAppBarNavigationType.BACK,
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = { navigator.popBackStack() }
+            )
             Spacer(modifier = Modifier.height(37.dp))
             Text(
                 text = "로그인에 사용할\n이메일을 입력해주세요",
@@ -68,7 +73,11 @@ fun RegisterEmailScreen(
                 placeholder = "이메일 입력",
                 buttonLabel = "인증 요청",
                 padding = 5
-            )
+            ) {
+
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+
             ConnectDogTextFieldWithButton(
                 width = 62,
                 height = 27,
@@ -76,12 +85,14 @@ fun RegisterEmailScreen(
                 placeholder = "숫자 6자리",
                 buttonLabel = "인증 확인",
                 padding = 5
-            )
+            ) {
+
+            }
         }
         NormalButton(
             content = "다음",
             color = PetOrange,
-            onClick = { navController.navigate("registerPassword") },
+            onClick = { navigator.navigate("registerPassword") },
             modifier =
             Modifier
                 .fillMaxWidth()
