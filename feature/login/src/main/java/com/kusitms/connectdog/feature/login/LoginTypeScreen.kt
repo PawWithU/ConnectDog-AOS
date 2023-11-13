@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,8 +32,6 @@ import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import kotlinx.coroutines.launch
 
 val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
@@ -79,50 +78,43 @@ fun TabLayout(
     viewModel: LoginViewModel,
     context: Context
 ) {
-    ConnectDogTheme {
-        Surface {
-            Column(
-                verticalArrangement = Arrangement.Center
+    Surface {
+        Column() {
+            val pagerState = rememberPagerState()
+            val coroutineScope = rememberCoroutineScope()
+            TabRow(
+                modifier = Modifier.padding(start = 10.dp, end = 10.dp),
+                selectedTabIndex = pagerState.currentPage
             ) {
-                val pagerState = rememberPagerState()
-                val coroutineScope = rememberCoroutineScope()
-
-                TabRow(
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp),
-                    selectedTabIndex = pagerState.currentPage
-                ) {
-                    pages.forEachIndexed { index, title ->
-                        Tab(
-                            text = {
-                                Text(
-                                    text = title,
-                                    color =
-                                    if (pagerState.currentPage == index) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else {
-                                        Color(0xFF7B7B7B)
-                                    }
-                                )
-                            },
-                            selected = pagerState.currentPage == index,
-                            onClick = {
-                                coroutineScope.launch {
-                                    pagerState.scrollToPage(index)
+                pages.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                color = if (pagerState.currentPage == index) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    Color(0xFF7B7B7B)
                                 }
+                            )
+                        },
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.scrollToPage(index)
                             }
-                        )
-                    }
+                        }
+                    )
                 }
+            }
 
-                HorizontalPager(
-                    count = pages.size,
-                    state = pagerState,
-                    modifier = Modifier.padding(top = 32.dp)
-                ) {
-                    when (it) {
-                        0 -> Individual(navigator, viewModel, context)
-                        1 -> Organization(navigator)
-                    }
+            HorizontalPager(
+                count = pages.size,
+                state = pagerState
+            ) {
+                when (it) {
+                    0 -> Individual(navigator, viewModel, context)
+                    1 -> Organization(navigator)
                 }
             }
         }
@@ -136,7 +128,11 @@ fun Individual(
     context: Context
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(top = 32.dp)
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Top
     ) {
         NormalButton(
             content = "카카오톡으로 시작하기",
@@ -162,7 +158,7 @@ fun Individual(
             color = Color(0xFF7B7B7B)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        NormalButton(content = "코넥독 계정으로 회원가입하기", color = PetOrange)
+        NormalButton(content = "코넥독 계정으로 회원가입하기", onClick = { navigator.navigate("volunteerSignUp") })
         Spacer(modifier = Modifier.height(16.dp))
         LoginText(navigator)
     }
@@ -171,9 +167,13 @@ fun Individual(
 @Composable
 fun Organization(navigator: NavController) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(top = 32.dp)
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.Top
     ) {
-        NormalButton(content = "코넥독 계정으로 회원가입하기")
+        NormalButton(content = "코넥독 계정으로 회원가입하기", onClick = { navigator.navigate("intermediatorSignUp") })
         Spacer(modifier = Modifier.height(16.dp))
         LoginText(navigator)
     }
