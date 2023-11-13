@@ -202,10 +202,10 @@ private fun ConnectDogTextFieldPreview() {
 //    }
 // }
 
-//@Preview
-//@Composable
-//private fun ConnnectDogTextFieldWithButtonPreview() {
+// @Preview
+// @Composable
+// private fun ConnnectDogTextFieldWithButtonPreview() {
 //    ConnectDogTheme {
 //        ConnectDogTextFieldWithButton(width = 100, height = 30, label = "test", padding = 10)
 //    }
-//}
+// }
