@@ -19,7 +19,6 @@ import com.kusitms.connectdog.feature.signup.RegisterEmailScreen
 import com.kusitms.connectdog.feature.signup.RegisterPasswordScreen
 import com.kusitms.connectdog.feature.signup.VolunteerSignUpScreen
 import com.kusitms.connectdog.feature.signup.TermsViewModel
-import com.kusitms.connectdog.feature.signup.intermediator.IntermediatorProfileScreen
 import com.kusitms.connectdog.feature.signup.volunteer.ProfileScreen
 import com.kusitms.connectdog.feature.signup.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.feature.signup.volunteer.SelectProfileImageViewModel
@@ -68,9 +67,9 @@ class LoginActivity : ComponentActivity() {
                     composable("completeSignUp") {
                         CompleteSignUpScreen { initMainActivity() }
                     }
-                    composable("intermediatorSignUp") {
-                        IntermediatorProfileScreen(navigator)
-                    }
+//                    composable("intermediatorSignUp") {
+//                        IntermediatorProfileScreen(navigator)
+//                    }
                 }
             }
         }
