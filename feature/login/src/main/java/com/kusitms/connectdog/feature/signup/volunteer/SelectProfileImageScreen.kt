@@ -49,7 +49,6 @@ val profileImageList = listOf(
     R.drawable.ic_profile_9
 )
 
-
 @Composable
 fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileImageViewModel) {
     val focusManager = LocalFocusManager.current
@@ -141,8 +140,11 @@ fun ProfileImageGrid(navigator: NavController, selectedImageIndex: MutableState<
                                 selectedImageIndex.value = index
                             }
                             .then(
-                                if (selectedImageIndex.value == index) modifier.border(4.dp, PetOrange, CircleShape)
-                                else modifier
+                                if (selectedImageIndex.value == index) {
+                                    modifier.border(4.dp, PetOrange, CircleShape)
+                                } else {
+                                    modifier
+                                }
                             )
                     )
                 }
