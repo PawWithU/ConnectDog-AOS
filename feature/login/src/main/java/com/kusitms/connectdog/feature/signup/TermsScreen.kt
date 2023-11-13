@@ -74,7 +74,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White),
+                .background(Color.White)
         ) {
             ConnectDogTopAppBar(
                 titleRes = R.string.volunteer_signup,
@@ -87,7 +87,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
             )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text="코넥독 서비스 이용약관에\n동의해주세요",
+                text = "코넥독 서비스 이용약관에\n동의해주세요",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(start = 20.dp)
@@ -121,7 +121,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
                 .align(Alignment.BottomCenter)
                 .padding(horizontal = 20.dp),
             onClick = {
-                if(allChecked) {
+                if (allChecked) {
                     navigator.navigate("profile")
                     viewModel.resetState()
                 }
@@ -159,9 +159,9 @@ fun CustomCheckbox(text: String, checked: Boolean, onCheckedChange: (Boolean) ->
         modifier = Modifier
             .padding(horizontal = 20.dp)
             .clickable {
-            isChecked = !isChecked
-            onCheckedChange(isChecked)
-        }
+                isChecked = !isChecked
+                onCheckedChange(isChecked)
+            }
     ) {
         Icon(
             painter = painterResource(
