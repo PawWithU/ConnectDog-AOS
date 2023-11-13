@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SelectProfileImageViewModel: ViewModel() {
+class SelectProfileImageViewModel : ViewModel() {
     private val _selectedImageIndex = MutableLiveData<Int?>()
     val selectedImageIndex: LiveData<Int?> = _selectedImageIndex
 
