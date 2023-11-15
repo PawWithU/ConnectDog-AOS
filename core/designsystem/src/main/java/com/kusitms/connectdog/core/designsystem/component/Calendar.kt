@@ -229,11 +229,11 @@ private fun CalendarHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = onClickLeftBtn) {
-            Icon(painter = painterResource(id = R.drawable.ic_left), contentDescription = "이전 달")
+            Icon(painter = painterResource(id = R.drawable.ic_left_small), contentDescription = "이전 달", modifier = Modifier.size(16.dp))
         }
         Text(text = headerMonth, style = MaterialTheme.typography.titleSmall, fontSize = 18.sp)
         IconButton(onClick = onClickRightBtn) {
-            Icon(painter = painterResource(id = R.drawable.ic_right), contentDescription = "다음 달")
+            Icon(painter = painterResource(id = R.drawable.ic_right), contentDescription = "다음 달", modifier = Modifier.size(16.dp))
         }
     }
 }

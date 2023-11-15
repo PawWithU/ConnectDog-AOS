@@ -169,9 +169,8 @@ private fun ExpandedCardContent(
     onClickNext: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    val scrollState = rememberScrollState()
     Column(
-        modifier = modifier.padding(20.dp).verticalScroll(scrollState)
+        modifier = modifier.padding(20.dp)
     ) {
         Text(
             text = stringResource(id = titleRes),
