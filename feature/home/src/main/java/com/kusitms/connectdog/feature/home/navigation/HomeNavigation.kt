@@ -58,7 +58,9 @@ fun NavGraphBuilder.homeNavGraph(
     }
 
     composable(route = HomeRoute.filter_search){
-        FilterSearchScreen()
+        FilterSearchScreen(
+            onBackClick = onBackClick
+        )
     }
 
     composable(route = HomeRoute.review) {
