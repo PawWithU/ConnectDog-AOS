@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogCardButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogIconTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.model.DogSize
@@ -90,8 +91,18 @@ private fun DogSizeButton(
 internal fun SelectKennel() {
     var needKennel by remember { mutableStateOf<Boolean?>(null) }
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
-        KennelButton(modifier = Modifier.weight(1f), isSelected = needKennel == false, onSelected = { needKennel = false }, textRes = R.string.filter_kennel_no_need)
-        KennelButton(modifier = Modifier.weight(1f), isSelected = needKennel == true, onSelected = { needKennel = true }, textRes = R.string.filter_kennel_need)
+        KennelButton(
+            modifier = Modifier.weight(1f),
+            isSelected = needKennel == false,
+            onSelected = { needKennel = false },
+            textRes = R.string.filter_kennel_no_need
+        )
+        KennelButton(
+            modifier = Modifier.weight(1f),
+            isSelected = needKennel == true,
+            onSelected = { needKennel = true },
+            textRes = R.string.filter_kennel_need
+        )
     }
 }
 
@@ -118,6 +129,15 @@ private fun KennelButton(
 
 
 @Composable
-internal fun SearchOrganization() {
-
+internal fun SearchOrganization(
+    modifier: Modifier = Modifier,
+) {
+    val (text, onTextChanged) = remember { mutableStateOf("") }
+    ConnectDogIconTextField(
+        modifier = modifier.fillMaxWidth(),
+        text = text,
+        onTextChanged = onTextChanged,
+        iconRes = R.drawable.ic_search,
+        placeholderRes = R.string.filter_organization_placeholder
+    )
 }

@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -35,6 +37,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.feature.home.component.SearchOrganization
 import com.kusitms.connectdog.feature.home.component.SelectDogSize
 import com.kusitms.connectdog.feature.home.component.SelectKennel
 
@@ -121,6 +124,10 @@ private fun DetailCard() {
                     DetailContent(titleRes = R.string.filter_kennel) {
                         SelectKennel()
                     }
+                    Spacer(modifier = Modifier.size(30.dp))
+                    DetailContent(titleRes = R.string.filter_organization) {
+                        SearchOrganization()
+                    }
                 }
             }
         })
@@ -162,8 +169,9 @@ private fun ExpandedCardContent(
     onClickNext: () -> Unit,
     content: @Composable () -> Unit,
 ) {
+    val scrollState = rememberScrollState()
     Column(
-        modifier = modifier.padding(20.dp)
+        modifier = modifier.padding(20.dp).verticalScroll(scrollState)
     ) {
         Text(
             text = stringResource(id = titleRes),

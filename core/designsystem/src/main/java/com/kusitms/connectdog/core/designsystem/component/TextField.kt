@@ -4,8 +4,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -14,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,6 +24,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
@@ -94,6 +98,42 @@ fun ConnectDogTextField(
             unfocusedBorderColor = Gray5,
             errorBorderColor = MaterialTheme.colorScheme.error
         )
+    )
+}
+
+@Composable
+fun ConnectDogIconTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    onTextChanged: (String) -> Unit,
+    iconRes: Int,
+    @StringRes placeholderRes: Int,
+    imeAction: ImeAction = ImeAction.Done,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+) {
+    OutlinedTextField(
+        value = text,
+        onValueChange = onTextChanged,
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        leadingIcon = {
+            Icon(painter = painterResource(id = iconRes), contentDescription = "icon", tint = Gray4, modifier = Modifier.size(20.dp))
+        },
+        textStyle = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp),
+        placeholder = {
+            Text(
+                text = stringResource(id = placeholderRes),
+                style = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp),
+                color = Gray4
+            )
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
+        visualTransformation = visualTransformation
     )
 }
 
