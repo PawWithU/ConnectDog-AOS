@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.core.designsystem.component
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,7 +42,8 @@ fun ConnectDogTextField(
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false,
-    @StringRes errorMessageRes: Int = 0
+    @StringRes errorMessageRes: Int = 0,
+    height: Int = 65
 ) {
     val visualTransformation =
         if (keyboardType == KeyboardType.Password) {
@@ -55,7 +58,7 @@ fun ConnectDogTextField(
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
-            .height(65.dp),
+            .height(height.dp),
         value = text,
         onValueChange = onTextChanged,
         label = {
@@ -102,6 +105,28 @@ fun ConnectDogTextField(
 }
 
 @Composable
+fun LoginTextField(
+    label: String,
+    placeholder: String,
+    keyboardType: KeyboardType,
+    height: Int = 65
+) {
+    val (text, onTextChanged) =
+        remember {
+            mutableStateOf("")
+        }
+    ConnectDogTextField(
+        text = text,
+        onTextChanged = onTextChanged,
+        label = label,
+        placeholder = placeholder,
+        keyboardType = keyboardType,
+        height = height
+    )
+}
+
+
+@Composable
 fun ConnectDogIconTextField(
     modifier: Modifier = Modifier,
     text: String,
@@ -135,6 +160,37 @@ fun ConnectDogIconTextField(
         ),
         visualTransformation = visualTransformation
     )
+}
+
+
+@Composable
+fun ConnectDogTextFieldWithButton(
+    width: Int,
+    height: Int,
+    textFieldLabel: String,
+    placeholder: String,
+    buttonLabel: String,
+    padding: Int,
+    onclick: () -> Unit
+) {
+    Box {
+        LoginTextField(
+            label = textFieldLabel,
+            placeholder = placeholder,
+            keyboardType = KeyboardType.Text
+        )
+
+        ConnectDogOutlinedButton(
+            width = width,
+            height = height,
+            text = buttonLabel,
+            padding = padding,
+            modifier = Modifier
+                .padding(top = 6.dp, end = 33.dp)
+                .align(Alignment.CenterEnd),
+            onClick = onclick
+        )
+    }
 }
 
 @Preview
@@ -185,5 +241,13 @@ private fun ConnectDogTextFieldPreview() {
 //            isError = true,
 //            errorMessageRes = R.string.untitled
 //        )
+//    }
+// }
+
+// @Preview
+// @Composable
+// private fun ConnnectDogTextFieldWithButtonPreview() {
+//    ConnectDogTheme {
+//        ConnectDogTextFieldWithButton(width = 100, height = 30, label = "test", padding = 10)
 //    }
 // }
