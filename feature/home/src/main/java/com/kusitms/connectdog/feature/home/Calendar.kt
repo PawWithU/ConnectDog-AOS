@@ -95,9 +95,13 @@ internal fun ConnectDogCalendar(
             val date = LocalDate.of(config.yearRange.first + page / 12, page % 12 + 1, 1)
             if (page in pagerState.currentPage - 1..pagerState.currentPage + 1) {
                 CalendarMonth(
-                    currentDate = currentDate,
+                    currentDate = date,
                     selectedDate = currentSelectedDate,
-                    onSelectedDate = { currentSelectedDate = date })
+                    onSelectedDate = {
+                        currentSelectedDate = it
+                        Log.d("Calendar", "currentSelectedDate = $currentSelectedDate")
+                    }
+                )
             }
         }
     }
@@ -128,7 +132,10 @@ private fun CalendarMonth(
                 val isSelected = remember(selectedDate) {
                     selectedDate.compareTo(date) == 0
                 }
-                CalendarDay(date = date, isSelected = isSelected, onSelectedDate = onSelectedDate)
+                CalendarDay(date = date, isSelected = isSelected, onSelectedDate = {
+                    onSelectedDate(date)
+                    Log.d("Calendar", "CalendarMonth selectedDate = $date")
+                })
             }
         }
     }
@@ -161,7 +168,10 @@ private fun CalendarDay(
     Box(
         modifier = modifier
             .size(41.dp)
-            .clickable { onSelectedDate(date) },
+            .clickable {
+                onSelectedDate(date)
+                Log.d("Calendar", "CalendarDay selectedDate = $date")
+            },
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -206,7 +216,7 @@ data class CalendarConfig(
 ) {
     data class YearRange(
         val first: Int = 2023,
-        val last: Int = 2025
+        val last: Int = 2030
     )
 }
 
