@@ -1,18 +1,18 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -33,23 +33,31 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
+import com.kusitms.connectdog.feature.home.ConnectDogCalendar
 import com.kusitms.connectdog.feature.home.R
+import java.time.LocalDate
 
 @Composable
-internal fun FilterSearchScreen() {
+internal fun FilterSearchScreen(
+    onBackClick: () -> Unit
+) {
     Column {
-        TopAppBar()
+        TopAppBar(onBackClick)
         Spacer(modifier = Modifier.size(14.dp))
         LocationCard()
+        ScheduleCard()
     }
 }
 
 @Composable
-private fun TopAppBar() {
+private fun TopAppBar(
+    onBackClick: () -> Unit
+) {
     ConnectDogTopAppBar(
         titleRes = R.string.filter_app_bar_title,
         navigationType = TopAppBarNavigationType.CLOSE,
-        navigationIconContentDescription = "닫기"
+        navigationIconContentDescription = "닫기",
+        onNavigationClick = { onBackClick() }
     )
 }
 
@@ -69,6 +77,24 @@ private fun LocationCard() {
             ) { LocationContent() }
         }
     )
+}
+
+@Composable
+private fun ScheduleCard() {
+    ConnectDogExpandableCard(defaultContent = {
+        DefaultCardContent(titleRes = R.string.filter_schedule, content = null)
+    }, expandedContent = {
+        ExpandedCardContent(
+            modifier = Modifier.wrapContentHeight(),
+            titleRes = R.string.filter_schedule,
+            spacer = 20,
+            onClickSkip = { /*TODO*/ },
+            onClickNext = { /*TODO*/ }) {
+            ConnectDogCalendar{ start, end ->
+                Log.d("FilterSearch", "start = $start - end = $end")
+            }
+        }
+    })
 }
 
 @Composable
@@ -100,13 +126,15 @@ private fun DefaultCardContent(
 
 @Composable
 private fun ExpandedCardContent(
+    modifier: Modifier = Modifier,
     @StringRes titleRes: Int,
     spacer: Int,
     onClickSkip: () -> Unit,
     onClickNext: () -> Unit,
     content: @Composable () -> Unit,
 ) {
-    Column(modifier = Modifier.padding(20.dp)) {
+    Column(modifier = modifier.padding(20.dp)
+    ) {
         Text(
             text = stringResource(id = titleRes),
             style = MaterialTheme.typography.titleLarge,
@@ -171,11 +199,13 @@ private fun SelectLocation(
 private fun DialogBottomButton(
     onClickSkip: () -> Unit,
     onClickNext: () -> Unit,
-){
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
         Text(
             text = stringResource(id = R.string.filter_skip),
@@ -196,6 +226,7 @@ private fun DialogBottomButton(
                 text = stringResource(id = R.string.filter_next),
                 style = MaterialTheme.typography.titleSmall,
                 fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
@@ -204,5 +235,5 @@ private fun DialogBottomButton(
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
-    FilterSearchScreen()
+    FilterSearchScreen({})
 }
