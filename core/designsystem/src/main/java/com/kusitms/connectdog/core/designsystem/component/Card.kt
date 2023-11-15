@@ -24,7 +24,7 @@ fun ConnectDogCard(
     content: @Composable () -> Unit
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth().padding(20.dp),
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
         border = BorderStroke(width = 1.dp, color = borderColor),
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),

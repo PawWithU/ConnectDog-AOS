@@ -39,7 +39,7 @@ import com.kusitms.connectdog.feature.home.R
 internal fun FilterSearchScreen() {
     Column {
         TopAppBar()
-        Spacer(modifier = Modifier.size(20.dp))
+        Spacer(modifier = Modifier.size(14.dp))
         LocationCard()
     }
 }
