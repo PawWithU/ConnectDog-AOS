@@ -33,28 +33,34 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.Orange60
+import kotlin.math.abs
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun ConnectDogCalendar(
     modifier: Modifier = Modifier,
     config: CalendarConfig = CalendarConfig(),
-    currentDate: LocalDate = LocalDate.now(),
-    onSelectedDate: (LocalDate) -> Unit
+    startDate: LocalDate = LocalDate.now(),
+    endDate: LocalDate = startDate,
+    onSelectedDate: (LocalDate, LocalDate) -> Unit
 ) {
-    val initialPage = (currentDate.year - config.yearRange.first) * 12 + currentDate.monthValue - 1
+    val initialPage = (startDate.year - config.yearRange.first) * 12 + startDate.monthValue - 1
     Log.d("Calendar", "initialPage = $initialPage")
-    var currentSelectedDate by remember { mutableStateOf(currentDate) }
+    var currentSelectedStartDate by remember { mutableStateOf(startDate) }
+    var currentSelectedEndDate by remember { mutableStateOf(endDate) }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var currentPage by remember { mutableIntStateOf(initialPage) }
     val pagerState = rememberPagerState(
@@ -70,8 +76,8 @@ internal fun ConnectDogCalendar(
         currentPage = pagerState.currentPage
     }
 
-    LaunchedEffect(currentSelectedDate) {
-        onSelectedDate(currentSelectedDate)
+    LaunchedEffect(currentSelectedStartDate, currentSelectedEndDate) {
+        onSelectedDate(currentSelectedStartDate, currentSelectedEndDate)
     }
 
     val scope = rememberCoroutineScope()
@@ -96,10 +102,15 @@ internal fun ConnectDogCalendar(
             if (page in pagerState.currentPage - 1..pagerState.currentPage + 1) {
                 CalendarMonth(
                     currentDate = date,
-                    selectedDate = currentSelectedDate,
-                    onSelectedDate = {
-                        currentSelectedDate = it
-                        Log.d("Calendar", "currentSelectedDate = $currentSelectedDate")
+                    selectedStartDate = currentSelectedStartDate,
+                    selectedEndDate = currentSelectedEndDate,
+                    onSelectedStartDate = {
+                        currentSelectedStartDate = it
+                        Log.d("Calendar", "currentSelectedStartDate = $currentSelectedStartDate")
+                    },
+                    onSelectedEndDate = {
+                        currentSelectedEndDate = it
+                        Log.d("Calendar", "currentSelectedEndDate = $currentSelectedEndDate")
                     }
                 )
             }
@@ -112,8 +123,10 @@ internal fun ConnectDogCalendar(
 private fun CalendarMonth(
     modifier: Modifier = Modifier,
     currentDate: LocalDate,
-    selectedDate: LocalDate,
-    onSelectedDate: (LocalDate) -> Unit
+    selectedStartDate: LocalDate,
+    selectedEndDate: LocalDate,
+    onSelectedStartDate: (LocalDate) -> Unit,
+    onSelectedEndDate: (LocalDate) -> Unit,
 ) {
     val lastDay by remember { mutableIntStateOf(currentDate.lengthOfMonth()) }
     val firstDayOfWeek by remember { mutableIntStateOf(currentDate.dayOfWeek.value) } // 요일
@@ -129,13 +142,25 @@ private fun CalendarMonth(
             }
             items(days) { day ->
                 val date = currentDate.withDayOfMonth(day)
-                val isSelected = remember(selectedDate) {
-                    selectedDate.compareTo(date) == 0
+                val isSelectedStart = remember(selectedStartDate) {
+                    selectedStartDate.compareTo(date) == 0
                 }
-                CalendarDay(date = date, isSelected = isSelected, onSelectedDate = {
-                    onSelectedDate(date)
-                    Log.d("Calendar", "CalendarMonth selectedDate = $date")
-                })
+                val isSelectedEnd = remember(selectedEndDate) {
+                    selectedEndDate.compareTo(date) == 0
+                }
+
+                CalendarDay(
+                    date = date,
+                    isSelected = isSelectedStart or isSelectedEnd,
+                    isInMiddle = date in selectedStartDate .. selectedEndDate,
+                    onSelectedDate = {
+                        if (it.isBefore(selectedStartDate)) onSelectedStartDate(it)
+                        else if (it.isAfter(selectedEndDate)) onSelectedEndDate(it)
+                        else if (dayDiff(it, selectedStartDate) < dayDiff(it, selectedEndDate)) onSelectedStartDate(it)
+                        else onSelectedEndDate(it)
+                        Log.d("Calendar", "CalendarMonth startDate = $selectedStartDate, endDate = $selectedEndDate, selected = $it")
+                    }
+                )
             }
         }
     }
@@ -163,6 +188,7 @@ private fun CalendarDay(
     modifier: Modifier = Modifier,
     date: LocalDate,
     isSelected: Boolean,
+    isInMiddle: Boolean,
     onSelectedDate: (LocalDate) -> Unit,
 ) {
     Box(
@@ -177,13 +203,13 @@ private fun CalendarDay(
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .clip(shape = CircleShape)
-                .background(color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent)
+                .clip(shape = if (isSelected) CircleShape else RectangleShape)
+                .background(color = if (isSelected) MaterialTheme.colorScheme.primary else if (isInMiddle) Orange60 else  Color.Transparent)
         )
         Text(
             text = date.dayOfMonth.toString(),
             textAlign = TextAlign.Center,
-            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+            color = if (isSelected or isInMiddle) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -234,3 +260,6 @@ private fun DayOfWeek.getDayOfWeekKor(): String {
         DayOfWeek.SUNDAY -> "일"
     }
 }
+
+private fun dayDiff(date1: LocalDate, date2: LocalDate) : Long =
+    abs(ChronoUnit.DAYS.between(date1, date2))
