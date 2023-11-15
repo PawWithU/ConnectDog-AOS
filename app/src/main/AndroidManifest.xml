@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".feature.login.LoginActivity"
+            android:name=".feature.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.ConnectDog.Splash"
             android:windowSoftInputMode="adjustResize">

@@ -19,9 +19,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -35,9 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.core.designsystem.component.LoginTextField
 import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.core.designsystem.theme.Red2
 
@@ -87,7 +85,7 @@ fun EmailLoginScreen(
         }
         NormalButton(
             content = "로그인",
-            color = PetOrange,
+            color = MaterialTheme.colorScheme.primary,
             onClick = onclick,
             modifier =
             Modifier
@@ -128,7 +126,8 @@ fun TopBar(
             text = title,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            maxLines = 1
         )
         Spacer(
             modifier =
@@ -170,26 +169,5 @@ fun ErrorCard() {
                 fontSize = 13.sp
             )
         }
-    }
-}
-
-@Composable
-fun LoginTextField(
-    label: String,
-    placeholder: String,
-    keyboardType: KeyboardType
-) {
-    val (text, onTextChanged) =
-        remember {
-            mutableStateOf("")
-        }
-    ConnectDogTheme {
-        ConnectDogTextField(
-            text = text,
-            onTextChanged = onTextChanged,
-            label = label,
-            placeholder = placeholder,
-            keyboardType = keyboardType
-        )
     }
 }
