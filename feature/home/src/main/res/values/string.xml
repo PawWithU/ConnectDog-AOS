@@ -27,6 +27,8 @@
     <string name="filter_big_dog">대형견</string>
     <string name="filter_middle_dog">중형견</string>
     <string name="filter_small_dog">소형견</string>
+    <string name="filter_kennel_no_need">O (준비하지 않아도 돼요)</string>
+    <string name="filter_kennel_need">X (준비가 필요해요)</string>
     <!-- main -->
     <string name="home_description_title">이동봉사 일정이 있나요?\n딱 맞는 이동 봉사 공고를 검색해보세요!</string>
     <string name="home_counting_guide">집계안내</string>
