@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import kotlinx.coroutines.launch
 
 val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
@@ -94,7 +95,7 @@ fun TabLayout(
                                 color = if (pagerState.currentPage == index) {
                                     MaterialTheme.colorScheme.primary
                                 } else {
-                                    Color(0xFF7B7B7B)
+                                    Gray2
                                 }
                             )
                         },
