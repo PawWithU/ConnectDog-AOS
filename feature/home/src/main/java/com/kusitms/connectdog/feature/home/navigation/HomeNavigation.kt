@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.kusitms.connectdog.feature.home.screen.FilterSearchScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
 import com.kusitms.connectdog.feature.home.screen.ReviewScreen
 import com.kusitms.connectdog.feature.home.screen.SearchScreen
@@ -19,6 +20,10 @@ fun NavController.navigateSearch() {
     navigate(HomeRoute.search)
 }
 
+fun NavController.navigateFilterSearch(){
+    navigate(HomeRoute.filter_search)
+}
+
 fun NavController.navigateReview() {
     navigate(HomeRoute.review)
 }
@@ -30,6 +35,7 @@ fun NavController.navigateDetail() {
 fun NavGraphBuilder.homeNavGraph(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
@@ -38,6 +44,7 @@ fun NavGraphBuilder.homeNavGraph(
         HomeRoute(
             onBackClick,
             onNavigateToSearch,
+            onNavigateToFilterSearch,
             onNavigateToReview,
             onNavigateToDetail,
             onShowErrorSnackBar
@@ -48,6 +55,10 @@ fun NavGraphBuilder.homeNavGraph(
         SearchScreen(
             onBackClick = onBackClick
         )
+    }
+
+    composable(route = HomeRoute.filter_search){
+        FilterSearchScreen()
     }
 
     composable(route = HomeRoute.review) {
@@ -61,6 +72,7 @@ object HomeRoute {
     const val route = "home"
     const val main = "main"
     const val search = "search"
+    const val filter_search = "filter_search"
     const val review = "review"
     const val detail = "detail"
 }

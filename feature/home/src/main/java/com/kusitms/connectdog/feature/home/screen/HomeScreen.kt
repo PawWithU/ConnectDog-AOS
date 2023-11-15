@@ -71,6 +71,7 @@ import kotlinx.coroutines.flow.collectLatest
 internal fun HomeRoute(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
@@ -86,13 +87,14 @@ internal fun HomeRoute(
     }
 
     Column {
-        TopAppBar(onClickSearch = onNavigateToSearch)
+        TopAppBar(onClickSearch = onNavigateToFilterSearch)
         HomeScreen(
             exampleUiState = exampleUiState,
             announcementUiState = announcementUiState,
             reviewUiState = reviewUiState,
             onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearch,
+            onNavigateToFilterSearch = onNavigateToFilterSearch,
             onNavigateToReview = onNavigateToReview,
             onNavigateToDetail = onNavigateToDetail
         )
@@ -106,6 +108,7 @@ private fun HomeScreen(
     reviewUiState: ReviewUiState,
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit
 ) {
@@ -457,10 +460,7 @@ private fun HomeScreenPreview() {
                 exampleUiState = ExampleUiState.Empty,
                 announcementUiState = AnnouncementUiState.Empty,
                 reviewUiState = ReviewUiState.Empty,
-                {},
-                {},
-                {},
-                {}
+                {}, {}, {}, {}, {}
             )
         }
     }
