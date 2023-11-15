@@ -21,6 +21,7 @@ private val LightColorScheme =
         onPrimary = Color.White,
         secondary = PetOrange,
         onSecondary = Color.White,
+        secondaryContainer = Color.White,
         background = Color.White,
         onBackground = Color.Black,
         primaryContainer = Orange20,
