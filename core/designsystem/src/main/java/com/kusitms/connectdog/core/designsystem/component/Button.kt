@@ -97,7 +97,7 @@ fun ConnectDogOutlinedButton(
         Text(
             text = text,
             fontSize = 12.sp,
-            color = PetOrange,
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.SemiBold
         )
     }
