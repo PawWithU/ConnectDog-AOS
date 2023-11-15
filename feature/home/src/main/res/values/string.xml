@@ -12,7 +12,7 @@
     <string name="filter_app_bar_title">검색</string>
     <string name="filter_choose">선택</string>
     <string name="filter_location">지역</string>
-    <string name="filter_date">일정</string>
+    <string name="filter_schedule">일정</string>
     <string name="filter_detail">상세</string>
     <string name="filter_select_departure">출발지 선택</string>
     <string name="filter_departure">출발</string>
