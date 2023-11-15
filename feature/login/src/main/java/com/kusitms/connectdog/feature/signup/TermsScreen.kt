@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,7 +42,6 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
@@ -54,7 +54,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
     val interactionSource = remember { MutableInteractionSource() }
 
     val buttonColor = if (allChecked) {
-        PetOrange
+        MaterialTheme.colorScheme.primary
     } else {
         Orange_40
     }
@@ -168,7 +168,7 @@ fun CustomCheckbox(text: String, checked: Boolean, onCheckedChange: (Boolean) ->
                 id = R.drawable.ic_checked
             ),
             contentDescription = "Custom Checkbox",
-            tint = if (isChecked) PetOrange else Gray4,
+            tint = if (isChecked) MaterialTheme.colorScheme.primary else Gray4,
             modifier = Modifier
                 .size(24.dp)
         )
