@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.home
+package com.kusitms.connectdog.core.designsystem.component
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Orange60
 import kotlin.math.abs
@@ -50,7 +51,7 @@ import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun ConnectDogCalendar(
+fun ConnectDogCalendar(
     modifier: Modifier = Modifier,
     config: CalendarConfig = CalendarConfig(),
     startDate: LocalDate = LocalDate.now(),

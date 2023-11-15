@@ -27,15 +27,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogCard
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogCalendar
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogExpandableCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
-import com.kusitms.connectdog.feature.home.ConnectDogCalendar
 import com.kusitms.connectdog.feature.home.R
-import java.time.LocalDate
 
 @Composable
 internal fun FilterSearchScreen(
