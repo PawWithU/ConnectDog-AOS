@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,7 +27,6 @@ import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.LoginTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
@@ -82,7 +82,7 @@ fun RegisterPasswordScreen(
         }
         NormalButton(
             content = "다음",
-            color = PetOrange,
+            color = MaterialTheme.colorScheme.primary,
             onClick = { navigator.navigate("completeSignUp") },
             modifier =
             Modifier
