@@ -19,11 +19,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,16 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Orange20
 
@@ -48,7 +42,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Orange20
 @Composable
 fun ApplyScreen(
     onBackClick: () -> Unit = {},
-    onClick:() -> Unit
+    onClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
