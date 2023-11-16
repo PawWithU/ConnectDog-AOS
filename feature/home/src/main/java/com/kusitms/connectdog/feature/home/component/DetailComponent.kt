@@ -146,9 +146,10 @@ private fun KennelButton(
 @Composable
 internal fun SearchOrganization(
     modifier: Modifier = Modifier,
+    organizationText: String?,
     onSearched: (String?) -> Unit
 ) {
-    val (text, onTextChanged) = remember { mutableStateOf("") }
+    val (text, onTextChanged) = remember { mutableStateOf(organizationText.orEmpty()) }
     ConnectDogIconTextField(
         modifier = modifier.fillMaxWidth(),
         text = text,

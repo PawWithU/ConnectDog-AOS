@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.kusitms.connectdog.feature.home.screen.FilterSearchScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
@@ -20,7 +22,7 @@ fun NavController.navigateSearch() {
     navigate(HomeRoute.search)
 }
 
-fun NavController.navigateFilterSearch(){
+fun NavController.navigateFilterSearch() {
     navigate(HomeRoute.filter_search)
 }
 
@@ -57,9 +59,17 @@ fun NavGraphBuilder.homeNavGraph(
         )
     }
 
-    composable(route = HomeRoute.filter_search){
+    composable(
+        route = "${HomeRoute.search}/{filter}",
+        arguments = listOf(navArgument("filter") {type = NavType.ReferenceType})
+    ) {
+        SearchScreen(onBackClick = onBackClick)
+    }
+
+    composable(route = HomeRoute.filter_search) {
         FilterSearchScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            onNavigateToSearch = onNavigateToSearch
         )
     }
 

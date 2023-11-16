@@ -135,13 +135,10 @@ private fun DetailCard(
     var isExpended by remember { mutableStateOf(true) }
 
     var dogSize by remember { mutableStateOf(detail.dogSize) }
-    var hasKennel by remember { mutableStateOf<Boolean?>(detail.hasKennel) }
-    //var hasKennel: Boolean? = detail.hasKennel
-    var organization: String? = detail.organization
+    var hasKennel by remember { mutableStateOf(detail.hasKennel) }
+    var organization by remember { mutableStateOf(detail.organization) }
 
-    var detailContent by remember {
-        mutableStateOf("")
-    }
+    var detailContent by remember { mutableStateOf("") }
 
     ConnectDogExpandableCard(
         isExpended = isExpended,
@@ -172,7 +169,9 @@ private fun DetailCard(
                     }
                     Spacer(modifier = Modifier.size(30.dp))
                     DetailContent(titleRes = R.string.filter_organization) {
-                        SearchOrganization { organization = it }
+                        SearchOrganization(organizationText = organization) {
+                            organization = it
+                        }
                     }
                 }
             }
