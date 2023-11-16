@@ -139,7 +139,10 @@ private fun ScheduleCard(
                     content = dateRangeDisplay(startDate, endDate)
                     isExpended = false
                 }) {
-                ConnectDogCalendar { start, end ->
+                ConnectDogCalendar(
+                    startDate = startDate,
+                    endDate =  endDate
+                ) { start, end ->
                     Log.d("FilterSearch", "start = $start - end = $end")
                     startDate = start
                     endDate = end
