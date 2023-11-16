@@ -11,13 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,18 +32,46 @@ import com.kusitms.connectdog.core.designsystem.theme.Orange10
 
 @Composable
 fun ConnectDogRegions() {
-    SiDoList()
+    var selectedRegion by remember { mutableStateOf("") }
+    SiDoList { sido, gugun ->
+        selectedRegion = "$sido $gugun"
+    }
 }
 
 @Composable
-fun SiDoList() {
-    var selectedIdx by remember { mutableIntStateOf(-1) }
-    LazyColumn {
-        itemsIndexed(regions.keys.toList()){ index, item ->
-            Row(modifier = Modifier.fillMaxWidth()) {
-                SiDoItem(text = item, isSelected = selectedIdx == index) {
-                    selectedIdx = index
+fun SiDoList(
+    onRegionSelected: (String, String) -> Unit
+) {
+    var selectedSiDo by remember { mutableStateOf(regions.keys.first()) }
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn {
+            items(regions.keys.toList()) { item ->
+                SiDoItem(text = item, isSelected = selectedSiDo == item) {
+                    selectedSiDo = item
                 }
+            }
+        }
+
+        regions[selectedSiDo]?.let { cities ->
+            GuGunList(list = cities) {
+                onRegionSelected(selectedSiDo, it)
+            }
+        }
+    }
+}
+
+@Composable
+private fun GuGunList(
+    list: List<String>,
+    onGuGunSelected: (String) -> Unit
+) {
+    var selected by remember { mutableStateOf("") }
+    LazyColumn {
+        items(list) {
+            GuGunItem(text = it, isSelected = selected == it) {
+                selected = it
+                onGuGunSelected(it)
             }
         }
     }
@@ -79,22 +104,28 @@ private fun GuGunItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    Text(
+
+    Box(
         modifier = modifier
+            .size(width = 110.dp, height = 45.dp)
             .background(if (isSelected) Orange10 else Color.Transparent)
             .padding(horizontal = 20.dp)
             .clickable { onClick() },
-        text = text,
-        style = MaterialTheme.typography.titleSmall,
-        fontSize = 14.sp,
-        textAlign = TextAlign.Start,
-        color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Gray3
-    )
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = text,
+            style = MaterialTheme.typography.titleSmall,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Start,
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Gray3
+        )
+    }
 }
 
 @Preview
 @Composable
-private fun ConnectDogRegionPreview(){
+private fun ConnectDogRegionPreview() {
     ConnectDogRegions()
 }
 
