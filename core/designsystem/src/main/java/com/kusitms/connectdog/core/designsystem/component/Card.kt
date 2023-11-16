@@ -39,6 +39,7 @@ fun ConnectDogCard(
 fun ConnectDogExpandableCard(
     modifier: Modifier = Modifier,
     isExpended: Boolean = false,
+    onClick: () -> Unit,
     defaultContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit
 ) {
@@ -47,9 +48,9 @@ fun ConnectDogExpandableCard(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable { expanded = !expanded },
+            .clickable { onClick() },
     ){
-        if (expanded) expandedContent()
+        if (isExpended) expandedContent()
         else defaultContent()
     }
 }

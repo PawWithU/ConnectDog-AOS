@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.home.component
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -99,19 +100,27 @@ private fun DogSizeButton(
 }
 
 @Composable
-internal fun SelectKennel() {
-    var needKennel by remember { mutableStateOf<Boolean?>(null) }
+internal fun SelectKennel(
+    selectedKennel: (Boolean?) -> Unit
+) {
+    var hasKennel by remember { mutableStateOf<Boolean?>(null) }
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         KennelButton(
             modifier = Modifier.weight(1f),
-            isSelected = needKennel == false,
-            onSelected = { needKennel = false },
+            isSelected = hasKennel == true,
+            onSelected = {
+                hasKennel = true
+                selectedKennel(hasKennel)
+            },
             textRes = R.string.filter_kennel_no_need
         )
         KennelButton(
             modifier = Modifier.weight(1f),
-            isSelected = needKennel == true,
-            onSelected = { needKennel = true },
+            isSelected = hasKennel == false,
+            onSelected = {
+                hasKennel = false
+                selectedKennel(hasKennel)
+            },
             textRes = R.string.filter_kennel_need
         )
     }
@@ -142,6 +151,7 @@ private fun KennelButton(
 @Composable
 internal fun SearchOrganization(
     modifier: Modifier = Modifier,
+    onSearched: (String?) -> Unit
 ) {
     val (text, onTextChanged) = remember { mutableStateOf("") }
     ConnectDogIconTextField(
@@ -149,6 +159,10 @@ internal fun SearchOrganization(
         text = text,
         onTextChanged = onTextChanged,
         iconRes = R.drawable.ic_search,
-        placeholderRes = R.string.filter_organization_placeholder
+        placeholderRes = R.string.filter_organization_placeholder,
+        onImeAction = {
+            Log.d("SearchOrganization", "text = $text, onTextChanged = $onTextChanged")
+            onSearched(text)
+        }
     )
 }

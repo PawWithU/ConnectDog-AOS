@@ -5,7 +5,7 @@ data class Filter(
     val destLocation: String = "",
     val startDate: String = "",
     val endDate: String = "",
-    val detail: Detail? = null
+    var detail: Detail? = null
 )
 
 data class Detail(
