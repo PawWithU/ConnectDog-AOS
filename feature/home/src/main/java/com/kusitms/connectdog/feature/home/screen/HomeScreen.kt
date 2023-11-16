@@ -319,7 +319,7 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: () -> Uni
             AnnouncementListContent(
                 list = uiState.announcements,
                 modifier = modifier,
-                arrangement = Arrangement.spacedBy(12.dp),
+                arrangement = Arrangement.spacedBy(12.dp)
             )
         }
 
