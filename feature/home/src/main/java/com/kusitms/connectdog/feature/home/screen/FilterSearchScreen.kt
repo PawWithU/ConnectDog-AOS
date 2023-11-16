@@ -22,6 +22,10 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -40,17 +44,25 @@ import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.component.SearchOrganization
 import com.kusitms.connectdog.feature.home.component.SelectDogSize
 import com.kusitms.connectdog.feature.home.component.SelectKennel
+import com.kusitms.connectdog.feature.home.model.Detail
+import com.kusitms.connectdog.feature.home.model.Filter
 
 @Composable
 internal fun FilterSearchScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onNavigateToSearch: () -> Unit
 ) {
+    val filter = Filter()
+
     Column {
         TopAppBar(onBackClick)
         Spacer(modifier = Modifier.size(14.dp))
         LocationCard()
         ScheduleCard()
-        DetailCard()
+        DetailCard { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
+            filter.detail = Detail(dogSize, hasKennel, organization)
+            Log.d("FilterSearch", "${filter.detail.toString()}")
+        }
     }
 }
 
@@ -68,8 +80,11 @@ private fun TopAppBar(
 
 @Composable
 private fun LocationCard() {
+    var isExpended by remember { mutableStateOf(true) }
     ConnectDogExpandableCard(
         modifier = Modifier.fillMaxWidth(),
+        isExpended = isExpended,
+        onClick = { isExpended = !isExpended },
         defaultContent = {
             DefaultCardContent(titleRes = R.string.filter_location, content = null)
         },
@@ -86,7 +101,11 @@ private fun LocationCard() {
 
 @Composable
 private fun ScheduleCard() {
-    ConnectDogExpandableCard(defaultContent = {
+    var isExpended by remember { mutableStateOf(false) }
+    ConnectDogExpandableCard(
+        isExpended = isExpended,
+        onClick = { isExpended = !isExpended },
+        defaultContent = {
         DefaultCardContent(titleRes = R.string.filter_schedule, content = null)
     }, expandedContent = {
         ExpandedCardContent(
@@ -103,9 +122,18 @@ private fun ScheduleCard() {
 }
 
 @Composable
-private fun DetailCard() {
+private fun DetailCard(
+    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit
+) {
+    var isExpended by remember { mutableStateOf(true) }
+
+    var dogSize: Detail.DogSize? = null
+    var hasKennel: Boolean? = null
+    var organization: String? = null
+
     ConnectDogExpandableCard(
-        isExpended = true,
+        isExpended = isExpended,
+        onClick = { isExpended = !isExpended },
         defaultContent = {
             DefaultCardContent(titleRes = R.string.filter_detail, content = null)
         },
@@ -114,11 +142,13 @@ private fun DetailCard() {
                 modifier = Modifier.wrapContentHeight(),
                 titleRes = R.string.filter_detail,
                 spacer = 30,
-                onClickSkip = { /*TODO*/ },
-                onClickNext = { /*TODO*/ }) {
+                onClickSkip = { isExpended = false },
+                onClickNext = {
+                    onClickNext(dogSize, hasKennel, organization)
+                }) {
                 Column {
                     DetailContent(titleRes = R.string.filter_dog_size) {
-                        SelectDogSize()
+                        SelectDogSize { dogSize = it }
                     }
                     Spacer(modifier = Modifier.size(30.dp))
                     DetailContent(titleRes = R.string.filter_kennel) {
@@ -287,9 +317,8 @@ private fun DetailContent(
 }
 
 
-
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
-    FilterSearchScreen({})
+    FilterSearchScreen({}, {})
 }

@@ -25,30 +25,41 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogCardButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIconTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.feature.home.R
-import com.kusitms.connectdog.feature.home.model.DogSize
+import com.kusitms.connectdog.feature.home.model.Detail
 
 @Composable
-internal fun SelectDogSize() {
-    var selected by remember { mutableStateOf<DogSize?>(null) }
+internal fun SelectDogSize(
+    selectedDogSize: (Detail.DogSize) -> Unit
+) {
+    var selected by remember { mutableStateOf<Detail.DogSize?>(null) }
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         DogSizeButton(
             modifier = Modifier.weight(1f),
-            isSelected = selected == DogSize.BIG,
-            onSelected = { selected = DogSize.BIG },
+            isSelected = selected == Detail.DogSize.BIG,
+            onSelected = {
+                selected = Detail.DogSize.BIG
+                selectedDogSize(Detail.DogSize.BIG)
+            },
             imageRes = R.drawable.img_big_dog,
             textRes = R.string.filter_big_dog
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
-            isSelected = selected == DogSize.MIDDLE,
-            onSelected = { selected = DogSize.MIDDLE },
+            isSelected = selected == Detail.DogSize.MIDDLE,
+            onSelected = {
+                selected = Detail.DogSize.MIDDLE
+                selectedDogSize(Detail.DogSize.MIDDLE)
+            },
             imageRes = R.drawable.img_middle_dog,
             textRes = R.string.filter_middle_dog
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
-            isSelected = selected == DogSize.SMALL,
-            onSelected = { selected = DogSize.SMALL },
+            isSelected = selected == Detail.DogSize.SMALL,
+            onSelected = {
+                selected = Detail.DogSize.SMALL
+                selectedDogSize(Detail.DogSize.SMALL)
+            },
             imageRes = R.drawable.img_small_dog,
             textRes = R.string.filter_small_dog
         )
