@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.core.model
+package com.kusitms.connectdog.feature.home.model
 
 data class Filter(
     val startLocation: String = "",
@@ -14,6 +14,15 @@ data class Detail(
     val organization: String? = null
 ) {
     enum class DogSize {
-        BIG, MID, SMALL
+        BIG, MIDDLE, SMALL;
+
+        fun toDisplayName(): String {
+            return when (this) {
+                BIG -> "대형견"
+                MIDDLE -> "중형견"
+                SMALL -> "소형견"
+            }
+        }
     }
 }
+

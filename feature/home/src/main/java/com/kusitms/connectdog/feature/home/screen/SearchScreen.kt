@@ -38,7 +38,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
-import com.kusitms.connectdog.core.model.Filter
+import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
