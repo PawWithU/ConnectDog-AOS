@@ -31,6 +31,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogCalendar
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogExpandableCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -38,6 +40,7 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
+import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.component.SearchOrganization
 import com.kusitms.connectdog.feature.home.component.SelectDogSize
@@ -48,18 +51,19 @@ import com.kusitms.connectdog.feature.home.model.Filter
 @Composable
 internal fun FilterSearchScreen(
     onBackClick: () -> Unit,
+    viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToSearch: () -> Unit
 ) {
-    val filter = Filter()
+    val filter by viewModel.filter.collectAsStateWithLifecycle()
 
     Column {
         TopAppBar(onBackClick)
         Spacer(modifier = Modifier.size(14.dp))
         LocationCard()
         ScheduleCard()
-        DetailCard { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
-            filter.detail = Detail(dogSize, hasKennel, organization)
-            Log.d("FilterSearch", "${filter.detail.toString()}")
+        DetailCard(viewModel, filter.detail) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
+            viewModel.setFilter(Detail(dogSize, hasKennel, organization))
+            Log.d("FilterSearch", "${filter.detail}")
         }
     }
 }
@@ -121,19 +125,25 @@ private fun ScheduleCard() {
 
 @Composable
 private fun DetailCard(
-    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit
+    viewModel: HomeViewModel,
+    detail: Detail,
+    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit,
 ) {
     var isExpended by remember { mutableStateOf(true) }
 
-    var dogSize: Detail.DogSize? = null
-    var hasKennel: Boolean? = null
-    var organization: String? = null
+    var dogSize by remember { mutableStateOf(detail.dogSize) }
+    var hasKennel: Boolean? = detail.hasKennel
+    var organization: String? = detail.organization
+
+    var detailContent by remember {
+        mutableStateOf("")
+    }
 
     ConnectDogExpandableCard(
         isExpended = isExpended,
         onClick = { isExpended = !isExpended },
         defaultContent = {
-            DefaultCardContent(titleRes = R.string.filter_detail, content = null)
+            DefaultCardContent(titleRes = R.string.filter_detail, content = detailContent)
         },
         expandedContent = {
             ExpandedCardContent(
@@ -142,11 +152,15 @@ private fun DetailCard(
                 spacer = 30,
                 onClickSkip = { isExpended = false },
                 onClickNext = {
+                    detailContent = viewModel.detailContentDisplay(dogSize, hasKennel, organization)
+                    isExpended = false
                     onClickNext(dogSize, hasKennel, organization)
                 }) {
                 Column {
                     DetailContent(titleRes = R.string.filter_dog_size) {
-                        SelectDogSize { dogSize = it }
+                        SelectDogSize(dogSize) {
+                            dogSize = it
+                        }
                     }
                     Spacer(modifier = Modifier.size(30.dp))
                     DetailContent(titleRes = R.string.filter_kennel) {
@@ -180,7 +194,7 @@ private fun DefaultCardContent(
             fontSize = 14.sp
         )
         Text(
-            text = content ?: stringResource(id = R.string.filter_choose),
+            text = if (content.isNullOrEmpty()) stringResource(id = R.string.filter_choose) else content,
             style = MaterialTheme.typography.titleMedium,
             fontSize = 14.sp,
             color = Gray3
@@ -318,5 +332,5 @@ private fun DetailContent(
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
-    FilterSearchScreen({}, {})
+    FilterSearchScreen({}, hiltViewModel(), {})
 }

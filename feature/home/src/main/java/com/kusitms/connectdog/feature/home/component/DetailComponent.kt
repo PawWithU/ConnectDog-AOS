@@ -30,16 +30,15 @@ import com.kusitms.connectdog.feature.home.model.Detail
 
 @Composable
 internal fun SelectDogSize(
-    selectedDogSize: (Detail.DogSize) -> Unit
+    selected: Detail.DogSize?,
+    onSelectedDogSize: (Detail.DogSize) -> Unit
 ) {
-    var selected by remember { mutableStateOf<Detail.DogSize?>(null) }
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         DogSizeButton(
             modifier = Modifier.weight(1f),
             isSelected = selected == Detail.DogSize.BIG,
             onSelected = {
-                selected = Detail.DogSize.BIG
-                selectedDogSize(Detail.DogSize.BIG)
+                onSelectedDogSize(Detail.DogSize.BIG)
             },
             imageRes = R.drawable.img_big_dog,
             textRes = R.string.filter_big_dog
@@ -48,8 +47,7 @@ internal fun SelectDogSize(
             modifier = Modifier.weight(1f),
             isSelected = selected == Detail.DogSize.MIDDLE,
             onSelected = {
-                selected = Detail.DogSize.MIDDLE
-                selectedDogSize(Detail.DogSize.MIDDLE)
+                onSelectedDogSize(Detail.DogSize.MIDDLE)
             },
             imageRes = R.drawable.img_middle_dog,
             textRes = R.string.filter_middle_dog
@@ -58,8 +56,7 @@ internal fun SelectDogSize(
             modifier = Modifier.weight(1f),
             isSelected = selected == Detail.DogSize.SMALL,
             onSelected = {
-                selected = Detail.DogSize.SMALL
-                selectedDogSize(Detail.DogSize.SMALL)
+                onSelectedDogSize(Detail.DogSize.SMALL)
             },
             imageRes = R.drawable.img_small_dog,
             textRes = R.string.filter_small_dog
