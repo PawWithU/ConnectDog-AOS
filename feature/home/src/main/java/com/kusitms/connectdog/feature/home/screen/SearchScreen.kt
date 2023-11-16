@@ -132,8 +132,8 @@ private fun FilterBar(
             stringResource(id = R.string.search_location)
         }
     val locationFilter: String =
-        if (filter.startLocation.isNotEmpty() && filter.destLocation.isNotEmpty()) {
-            filter.startLocation + " -> " + filter.destLocation
+        if (filter.departure.isNotEmpty() && filter.arrival.isNotEmpty()) {
+            filter.departure + " -> " + filter.arrival
         } else {
             stringResource(id = R.string.search_date)
         }
@@ -145,7 +145,7 @@ private fun FilterBar(
         FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
         FilterTag(
             tag = locationFilter,
-            isSelected = filter.startLocation.isNotEmpty()
+            isSelected = filter.departure.isNotEmpty()
         ) { onClick() }
         FilterTag(
             tag = stringResource(id = R.string.search_detail),
