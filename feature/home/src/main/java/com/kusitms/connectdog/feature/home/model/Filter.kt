@@ -1,10 +1,12 @@
 package com.kusitms.connectdog.feature.home.model
 
+import java.time.LocalDate
+
 data class Filter(
     val startLocation: String = "",
     val destLocation: String = "",
-    val startDate: String = "",
-    val endDate: String = "",
+    var startDate: LocalDate? = null, // 2023-11-08
+    var endDate: LocalDate? = null, // 2023-11-08
     var detail: Detail = Detail()
 )
 

@@ -37,6 +37,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogCalendar
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogExpandableCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.component.dateFormat
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
@@ -47,6 +48,7 @@ import com.kusitms.connectdog.feature.home.component.SelectDogSize
 import com.kusitms.connectdog.feature.home.component.SelectKennel
 import com.kusitms.connectdog.feature.home.model.Detail
 import com.kusitms.connectdog.feature.home.model.Filter
+import java.time.LocalDate
 
 @Composable
 internal fun FilterSearchScreen(
@@ -60,7 +62,9 @@ internal fun FilterSearchScreen(
         TopAppBar(onBackClick)
         Spacer(modifier = Modifier.size(14.dp))
         LocationCard()
-        ScheduleCard()
+        ScheduleCard(filter.startDate, filter.endDate){ start, end ->
+            viewModel.setFilter(start, end)
+        }
         DetailCard(
             viewModel,
             filter.detail
@@ -105,22 +109,40 @@ private fun LocationCard() {
 }
 
 @Composable
-private fun ScheduleCard() {
+private fun ScheduleCard(
+    start: LocalDate?,
+    end: LocalDate?,
+    onClickNext: (LocalDate, LocalDate) -> Unit
+) {
     var isExpended by remember { mutableStateOf(false) }
+
+    var startDate: LocalDate by remember { mutableStateOf(start ?: LocalDate.now()) }
+    var endDate: LocalDate by remember { mutableStateOf(end ?: LocalDate.now()) }
+
+    var content by remember { mutableStateOf(if (start != null && end != null) dateRangeDisplay(start, end) else "")  }
+
     ConnectDogExpandableCard(
         isExpended = isExpended,
         onClick = { isExpended = !isExpended },
         defaultContent = {
-            DefaultCardContent(titleRes = R.string.filter_schedule, content = null)
+            DefaultCardContent(titleRes = R.string.filter_schedule, content = content)
         }, expandedContent = {
             ExpandedCardContent(
                 modifier = Modifier.wrapContentHeight(),
                 titleRes = R.string.filter_schedule,
                 spacer = 20,
-                onClickSkip = { /*TODO*/ },
-                onClickNext = { /*TODO*/ }) {
+                onClickSkip = {
+                    isExpended = false
+                },
+                onClickNext = {
+                    onClickNext(startDate, endDate)
+                    content = dateRangeDisplay(startDate, endDate)
+                    isExpended = false
+                }) {
                 ConnectDogCalendar { start, end ->
                     Log.d("FilterSearch", "start = $start - end = $end")
+                    startDate = start
+                    endDate = end
                 }
             }
         })
@@ -132,7 +154,7 @@ private fun DetailCard(
     detail: Detail,
     onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit,
 ) {
-    var isExpended by remember { mutableStateOf(true) }
+    var isExpended by remember { mutableStateOf(false) }
 
     var dogSize by remember { mutableStateOf(detail.dogSize) }
     var hasKennel by remember { mutableStateOf(detail.hasKennel) }
@@ -336,4 +358,14 @@ private fun DetailContent(
 @Composable
 private fun FilterSearchScreenPreview() {
     FilterSearchScreen({}, hiltViewModel(), {})
+}
+
+
+/**
+ * UI display
+ */
+private fun dateRangeDisplay(startDate: LocalDate, endDate: LocalDate): String {
+    val datePattern = "M월 dd일"
+    if (startDate == endDate) return startDate.dateFormat(datePattern)
+    return startDate.dateFormat(datePattern) + " - " + endDate.dateFormat(datePattern)
 }

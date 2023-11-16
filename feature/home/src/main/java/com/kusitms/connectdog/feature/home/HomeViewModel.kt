@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 @HiltViewModel
 class HomeViewModel
@@ -94,6 +95,12 @@ constructor(
 
     fun setFilter(detail: Detail){
         _filter.value.detail = detail
+        Log.d("HomeViewModel", "filter = ${filter.value}")
+    }
+
+    fun setFilter(startDate: LocalDate, endDate: LocalDate){
+        _filter.value.startDate = startDate
+        _filter.value.endDate = endDate
         Log.d("HomeViewModel", "filter = ${filter.value}")
     }
 
