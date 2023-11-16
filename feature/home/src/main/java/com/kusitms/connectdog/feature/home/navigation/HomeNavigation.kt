@@ -89,7 +89,7 @@ fun NavGraphBuilder.homeNavGraph(
             onApplyClick = onNavigateToApply
         )
     }
-    
+
     composable(route = HomeRoute.apply) {
         ApplyScreen(
             onBackClick = onBackClick,
