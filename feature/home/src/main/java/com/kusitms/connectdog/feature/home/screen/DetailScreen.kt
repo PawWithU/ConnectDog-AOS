@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -48,7 +47,6 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.designsystem.theme.Typography
 import com.kusitms.connectdog.feature.home.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -90,7 +88,6 @@ internal fun DetailScreen(
         }
     }
 }
-
 
 @Composable
 fun NormalButton(
@@ -141,7 +138,7 @@ fun BookmarkButton(onClick: () -> Unit = {}) {
     ) {
         Image(
             painter = imagePainter,
-            contentDescription = null,
+            contentDescription = null
         )
     }
 }
@@ -176,7 +173,9 @@ fun Content(title: String, content: String) {
     Divider(
         Modifier
             .height(8.dp)
-            .fillMaxWidth(), color = Gray7)
+            .fillMaxWidth(),
+        color = Gray7
+    )
 }
 
 @Composable
@@ -226,7 +225,9 @@ fun DogInfo() {
     Divider(
         Modifier
             .height(8.dp)
-            .fillMaxWidth(), color = Gray7)
+            .fillMaxWidth(),
+        color = Gray7
+    )
 }
 
 @Composable
@@ -244,7 +245,7 @@ fun Significant() {
             Text(
                 text = "특이사항",
                 fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
+                fontWeight = FontWeight.SemiBold
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
@@ -289,13 +290,14 @@ fun IntermediatorInfo() {
                     .weight(1f),
                 text = "이동봉사 단체 이름",
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
             ProfileButton(
                 modifier = Modifier
                     .width(100.dp)
                     .height(34.dp)
-                    .align(Alignment.CenterVertically))
+                    .align(Alignment.CenterVertically)
+            )
         }
     }
 }
