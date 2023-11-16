@@ -104,6 +104,11 @@ constructor(
         Log.d("HomeViewModel", "filter = ${filter.value}")
     }
 
+    fun setFilter(departure: String, arrival: String) {
+        _filter.value.departure = departure
+        _filter.value.arrival = arrival
+    }
+
     fun detailContentDisplay(
         dogSize: Detail.DogSize?,
         hasKennel: Boolean?,

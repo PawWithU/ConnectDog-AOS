@@ -17,12 +17,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +46,8 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.feature.home.component.RegionBottomSheet
+import com.kusitms.connectdog.feature.home.component.RegionType
 import com.kusitms.connectdog.feature.home.component.SearchOrganization
 import com.kusitms.connectdog.feature.home.component.SelectDogSize
 import com.kusitms.connectdog.feature.home.component.SelectKennel
@@ -61,8 +66,10 @@ internal fun FilterSearchScreen(
     Column {
         TopAppBar(onBackClick)
         Spacer(modifier = Modifier.size(14.dp))
-        LocationCard()
-        ScheduleCard(filter.startDate, filter.endDate){ start, end ->
+        LocationCard(filter.departure, filter.arrival) { depart, dest ->
+            viewModel.setFilter(depart, dest)
+        }
+        ScheduleCard(filter.startDate, filter.endDate) { start, end ->
             viewModel.setFilter(start, end)
         }
         DetailCard(
@@ -88,22 +95,52 @@ private fun TopAppBar(
 }
 
 @Composable
-private fun LocationCard() {
+private fun LocationCard(
+    depart: String? = null,
+    dest: String? = null,
+    onSelectedRegion: (String, String) -> Unit
+) {
     var isExpended by remember { mutableStateOf(true) }
+
+    var departure by remember { mutableStateOf(depart) }
+    var destination by remember { mutableStateOf(dest) }
+    var content by remember {
+        mutableStateOf(
+            if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) "$depart -> $dest"
+            else ""
+        )
+    }
+
     ConnectDogExpandableCard(
         modifier = Modifier.fillMaxWidth(),
         isExpended = isExpended,
         onClick = { isExpended = !isExpended },
         defaultContent = {
-            DefaultCardContent(titleRes = R.string.filter_location, content = null)
+            DefaultCardContent(titleRes = R.string.filter_location, content = content)
         },
         expandedContent = {
             ExpandedCardContent(
                 titleRes = R.string.filter_location,
                 spacer = 40,
-                onClickSkip = { /*TODO*/ },
-                onClickNext = {}
-            ) { LocationContent() }
+                onClickSkip = {
+                    isExpended = false
+                },
+                onClickNext = {
+                    isExpended = false
+                    if (departure != null && destination != null) {
+                        content = "$departure -> $destination"
+                        onSelectedRegion(departure!!, destination!!)
+                    }
+                }
+            ) {
+                LocationContent(
+                    departureLocation = departure,
+                    destinationLocation = destination,
+                ) { st, end ->
+                    departure = st
+                    destination = end
+                }
+            }
         }
     )
 }
@@ -119,7 +156,11 @@ private fun ScheduleCard(
     var startDate: LocalDate by remember { mutableStateOf(start ?: LocalDate.now()) }
     var endDate: LocalDate by remember { mutableStateOf(end ?: LocalDate.now()) }
 
-    var content by remember { mutableStateOf(if (start != null && end != null) dateRangeDisplay(start, end) else "")  }
+    var content by remember {
+        mutableStateOf(
+            if (start != null && end != null) dateRangeDisplay(start, end) else ""
+        )
+    }
 
     ConnectDogExpandableCard(
         isExpended = isExpended,
@@ -143,7 +184,7 @@ private fun ScheduleCard(
                 }) {
                 ConnectDogCalendar(
                     startDate = startDate,
-                    endDate =  endDate
+                    endDate = endDate
                 ) { start, end ->
                     Log.d("FilterSearch", "start = $start - end = $end")
                     startDate = start
@@ -256,8 +297,25 @@ private fun ExpandedCardContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun LocationContent() {
+private fun LocationContent(
+    departureLocation: String? = "",
+    destinationLocation: String? = "",
+    onSelectedRegion: (String?, String?) -> Unit
+) {
+    val departureSheetState = rememberModalBottomSheetState()
+    var isDepartureSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+    val destinationSheetState = rememberModalBottomSheetState()
+    var isDestinationSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var departure by remember { mutableStateOf(departureLocation) }
+    var destination by remember { mutableStateOf(destinationLocation) }
+
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = R.drawable.img_location_path),
@@ -267,15 +325,45 @@ private fun LocationContent() {
         Column {
             SelectLocation(
                 titleRes = R.string.filter_departure,
-                place = null,
+                place = departure,
                 placeholderRes = R.string.filter_select_departure
-            )
+            ) {
+                isDepartureSheetOpen = true
+            }
             Spacer(modifier = Modifier.size(30.dp))
             SelectLocation(
                 titleRes = R.string.filter_destination,
-                place = null,
+                place = destination,
                 placeholderRes = R.string.filter_select_destination
-            )
+            ) {
+                isDestinationSheetOpen = true
+            }
+        }
+    }
+
+    if (isDepartureSheetOpen) {
+        RegionBottomSheet(
+            sheetState = departureSheetState,
+            regionType = RegionType.DEPARTURE,
+            onDismissRequest = { isDepartureSheetOpen = false }
+        ) {
+            Log.d("FilterSearch", "departure = $it")
+            departure = it
+            isDepartureSheetOpen = false
+            onSelectedRegion(departure, destination)
+        }
+    }
+
+    if (isDestinationSheetOpen) {
+        RegionBottomSheet(
+            sheetState = destinationSheetState,
+            regionType = RegionType.DESTINATION,
+            onDismissRequest = { isDestinationSheetOpen = false }
+        ) {
+            Log.d("FilterSearch", "destination = $it")
+            destination = it
+            isDestinationSheetOpen = false
+            onSelectedRegion(departure, destination)
         }
     }
 }
@@ -285,9 +373,10 @@ private fun SelectLocation(
     modifier: Modifier = Modifier,
     @StringRes titleRes: Int,
     place: String?,
-    @StringRes placeholderRes: Int
+    @StringRes placeholderRes: Int,
+    onClick: () -> Unit
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clickable { onClick() }) {
         Text(
             text = stringResource(id = titleRes),
             style = MaterialTheme.typography.titleMedium,
@@ -295,10 +384,11 @@ private fun SelectLocation(
         )
         Spacer(modifier = Modifier.size(4.dp))
         Text(
-            text = place ?: stringResource(id = placeholderRes),
+            text = if (place.isNullOrEmpty()) stringResource(id = placeholderRes) else place,
             style = MaterialTheme.typography.bodyLarge,
             color = Gray4,
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier
+                .padding(vertical = 8.dp)
         )
         Divider(modifier = Modifier.fillMaxWidth())
     }
