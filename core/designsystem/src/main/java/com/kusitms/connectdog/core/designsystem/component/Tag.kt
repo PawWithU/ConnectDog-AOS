@@ -16,7 +16,7 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 @Composable
 fun ConnectDogTag(
     text: String,
-    color: Color = MaterialTheme.colorScheme.primary,
+    color: Color = MaterialTheme.colorScheme.primary
 ) {
     Text(
         text = text,
