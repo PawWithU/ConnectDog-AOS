@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,16 +26,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray6
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.Orange10
 
 @Composable
-fun ConnectDogRegions() {
+fun ConnectDogRegions(
+    onSelected: (String) -> Unit
+) {
     var selectedRegion by remember { mutableStateOf("") }
     SiDoList { sido, gugun ->
         selectedRegion = "$sido $gugun"
+        onSelected(selectedRegion)
     }
 }
 
@@ -106,19 +111,17 @@ private fun GuGunItem(
 ) {
 
     Box(
-        modifier = modifier
-            .size(width = 110.dp, height = 45.dp)
-            .background(if (isSelected) Orange10 else Color.Transparent)
-            .padding(horizontal = 20.dp)
+        modifier = modifier.height(45.dp).fillMaxWidth()
+            .background(if (isSelected) Orange10 else MaterialTheme.colorScheme.surface)
             .clickable { onClick() },
     ) {
         Text(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.CenterStart).padding(horizontal = 20.dp),
             text = text,
             style = MaterialTheme.typography.titleSmall,
             fontSize = 14.sp,
             textAlign = TextAlign.Start,
-            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Gray3
+            color = if (isSelected) Gray1 else Gray3
         )
     }
 }
@@ -126,7 +129,7 @@ private fun GuGunItem(
 @Preview
 @Composable
 private fun ConnectDogRegionPreview() {
-    ConnectDogRegions()
+    ConnectDogRegions({})
 }
 
 
