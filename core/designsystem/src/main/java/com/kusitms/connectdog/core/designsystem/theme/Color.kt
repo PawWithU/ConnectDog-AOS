@@ -19,6 +19,7 @@ val Gray4 = Color(0xFFC1C1C1)
 val Gray5 = Color(0xFFD9D9D9)
 val Gray6 = Color(0xFFEFEFEF)
 val Gray7 = Color(0xFFF5F5F5)
+val Gray8 = Color(0xFFFAFAFA)
 
 val Brown1 = Color(0xFF5B3816)
 val Brown1_5 = Color(0xFFDDD7D1)
@@ -28,3 +29,4 @@ val Brown4 = Color(0xFFC99D74)
 val Brown5 = Color(0xFFF0D4B9)
 
 val Orange_40 = Color(0xFFFFDEBF)
+

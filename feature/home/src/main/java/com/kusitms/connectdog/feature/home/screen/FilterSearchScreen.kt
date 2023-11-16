@@ -3,6 +3,7 @@ package com.kusitms.connectdog.feature.home.screen
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +46,7 @@ import com.kusitms.connectdog.core.designsystem.component.dateFormat
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
+import com.kusitms.connectdog.core.designsystem.theme.Gray8
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.component.RegionBottomSheet
@@ -63,8 +66,8 @@ internal fun FilterSearchScreen(
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
 
-    Column {
-        TopAppBar(onBackClick)
+    Column(modifier = Modifier.background(color = Gray8)) {
+        TopAppBar(Gray8, onBackClick)
         Spacer(modifier = Modifier.size(14.dp))
         LocationCard(filter.departure, filter.arrival) { depart, dest ->
             viewModel.setFilter(depart, dest)
@@ -84,9 +87,11 @@ internal fun FilterSearchScreen(
 
 @Composable
 private fun TopAppBar(
+    containerColor: Color,
     onBackClick: () -> Unit
 ) {
     ConnectDogTopAppBar(
+        containerColor = containerColor,
         titleRes = R.string.filter_app_bar_title,
         navigationType = TopAppBarNavigationType.CLOSE,
         navigationIconContentDescription = "닫기",
