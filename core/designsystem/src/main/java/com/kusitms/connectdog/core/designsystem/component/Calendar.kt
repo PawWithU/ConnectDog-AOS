@@ -2,12 +2,14 @@ package com.kusitms.connectdog.core.designsystem.component
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -150,16 +153,31 @@ private fun CalendarMonth(
                     selectedEndDate.compareTo(date) == 0
                 }
 
+                val calendarDayType =
+                    if (isSelectedStart && isSelectedEnd && selectedStartDate == selectedEndDate) CalendarDayType.ONE
+                    else if (isSelectedStart) CalendarDayType.START
+                    else if (isSelectedEnd) CalendarDayType.END
+                    else if (date in selectedStartDate..selectedEndDate) CalendarDayType.MIDDLE
+                    else CalendarDayType.NONE
+
                 CalendarDay(
                     date = date,
-                    isSelected = isSelectedStart or isSelectedEnd,
-                    isInMiddle = date in selectedStartDate .. selectedEndDate,
+                    dayType = calendarDayType,
                     onSelectedDate = {
-                        if (it.isBefore(selectedStartDate)) onSelectedStartDate(it)
+                        if (it == selectedStartDate) onSelectedEndDate(it)
+                        else if (it == selectedEndDate) onSelectedStartDate(it)
+                        else if (it.isBefore(selectedStartDate)) onSelectedStartDate(it)
                         else if (it.isAfter(selectedEndDate)) onSelectedEndDate(it)
-                        else if (dayDiff(it, selectedStartDate) < dayDiff(it, selectedEndDate)) onSelectedStartDate(it)
+                        else if (dayDiff(it, selectedStartDate) < dayDiff(
+                                it,
+                                selectedEndDate
+                            )
+                        ) onSelectedStartDate(it)
                         else onSelectedEndDate(it)
-                        Log.d("Calendar", "CalendarMonth startDate = $selectedStartDate, endDate = $selectedEndDate, selected = $it")
+                        Log.d(
+                            "Calendar",
+                            "CalendarMonth startDate = $selectedStartDate, endDate = $selectedEndDate, selected = $it"
+                        )
                     }
                 )
             }
@@ -188,10 +206,17 @@ private fun DayOfWeekBar(
 private fun CalendarDay(
     modifier: Modifier = Modifier,
     date: LocalDate,
-    isSelected: Boolean,
-    isInMiddle: Boolean,
+    dayType: CalendarDayType = CalendarDayType.NONE,
     onSelectedDate: (LocalDate) -> Unit,
 ) {
+    val image: Painter = when (dayType) {
+        CalendarDayType.START -> painterResource(id = R.drawable.ic_range_start)
+        CalendarDayType.END -> painterResource(id = R.drawable.ic_range_end)
+        CalendarDayType.MIDDLE -> painterResource(id = R.drawable.ic_rectangle)
+        CalendarDayType.ONE -> painterResource(id = R.drawable.ic_circle_small)
+        CalendarDayType.NONE -> painterResource(id = R.drawable.ic_rectangle_transparent)
+    }
+
     Box(
         modifier = modifier
             .size(41.dp)
@@ -201,16 +226,11 @@ private fun CalendarDay(
             },
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .clip(shape = if (isSelected) CircleShape else RectangleShape)
-                .background(color = if (isSelected) MaterialTheme.colorScheme.primary else if (isInMiddle) Orange60 else  Color.Transparent)
-        )
+        Image(painter = image, contentDescription = "selected date", modifier = Modifier.fillMaxSize())
         Text(
             text = date.dayOfMonth.toString(),
             textAlign = TextAlign.Center,
-            color = if (isSelected or isInMiddle) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+            color = if (dayType != CalendarDayType.NONE) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
         )
     }
 }
@@ -229,11 +249,19 @@ private fun CalendarHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(onClick = onClickLeftBtn) {
-            Icon(painter = painterResource(id = R.drawable.ic_left_small), contentDescription = "이전 달", modifier = Modifier.size(16.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_left_small),
+                contentDescription = "이전 달",
+                modifier = Modifier.size(16.dp)
+            )
         }
         Text(text = headerMonth, style = MaterialTheme.typography.titleSmall, fontSize = 18.sp)
         IconButton(onClick = onClickRightBtn) {
-            Icon(painter = painterResource(id = R.drawable.ic_right), contentDescription = "다음 달", modifier = Modifier.size(16.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_right),
+                contentDescription = "다음 달",
+                modifier = Modifier.size(16.dp)
+            )
         }
     }
 }
@@ -245,6 +273,10 @@ data class CalendarConfig(
         val first: Int = 2023,
         val last: Int = 2030
     )
+}
+
+enum class CalendarDayType {
+    ONE, MIDDLE, START, END, NONE
 }
 
 private fun YearMonth.dateFormat(pattern: String) =
@@ -262,7 +294,7 @@ private fun DayOfWeek.getDayOfWeekKor(): String {
     }
 }
 
-private fun dayDiff(date1: LocalDate, date2: LocalDate) : Long =
+private fun dayDiff(date1: LocalDate, date2: LocalDate): Long =
     abs(ChronoUnit.DAYS.between(date1, date2))
 
 fun LocalDate.dateFormat(pattern: String) =
