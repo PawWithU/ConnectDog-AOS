@@ -133,6 +133,8 @@ private fun ScheduleCard(
                 spacer = 20,
                 onClickSkip = {
                     isExpended = false
+                    startDate = start ?: LocalDate.now()
+                    endDate = end ?: LocalDate.now()
                 },
                 onClickNext = {
                     onClickNext(startDate, endDate)
