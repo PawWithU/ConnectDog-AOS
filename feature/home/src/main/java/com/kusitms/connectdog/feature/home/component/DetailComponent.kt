@@ -98,16 +98,15 @@ private fun DogSizeButton(
 
 @Composable
 internal fun SelectKennel(
-    selectedKennel: (Boolean?) -> Unit
+    hasKennel: Boolean?,
+    selectedKennel: (Boolean) -> Unit
 ) {
-    var hasKennel by remember { mutableStateOf<Boolean?>(null) }
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         KennelButton(
             modifier = Modifier.weight(1f),
             isSelected = hasKennel == true,
             onSelected = {
-                hasKennel = true
-                selectedKennel(hasKennel)
+                selectedKennel(true)
             },
             textRes = R.string.filter_kennel_no_need
         )
@@ -115,8 +114,7 @@ internal fun SelectKennel(
             modifier = Modifier.weight(1f),
             isSelected = hasKennel == false,
             onSelected = {
-                hasKennel = false
-                selectedKennel(hasKennel)
+                selectedKennel(false)
             },
             textRes = R.string.filter_kennel_need
         )

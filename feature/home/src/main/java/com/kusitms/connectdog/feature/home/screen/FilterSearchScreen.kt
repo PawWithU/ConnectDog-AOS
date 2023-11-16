@@ -61,7 +61,10 @@ internal fun FilterSearchScreen(
         Spacer(modifier = Modifier.size(14.dp))
         LocationCard()
         ScheduleCard()
-        DetailCard(viewModel, filter.detail) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
+        DetailCard(
+            viewModel,
+            filter.detail
+        ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
             viewModel.setFilter(Detail(dogSize, hasKennel, organization))
             Log.d("FilterSearch", "${filter.detail}")
         }
@@ -108,19 +111,19 @@ private fun ScheduleCard() {
         isExpended = isExpended,
         onClick = { isExpended = !isExpended },
         defaultContent = {
-        DefaultCardContent(titleRes = R.string.filter_schedule, content = null)
-    }, expandedContent = {
-        ExpandedCardContent(
-            modifier = Modifier.wrapContentHeight(),
-            titleRes = R.string.filter_schedule,
-            spacer = 20,
-            onClickSkip = { /*TODO*/ },
-            onClickNext = { /*TODO*/ }) {
-            ConnectDogCalendar { start, end ->
-                Log.d("FilterSearch", "start = $start - end = $end")
+            DefaultCardContent(titleRes = R.string.filter_schedule, content = null)
+        }, expandedContent = {
+            ExpandedCardContent(
+                modifier = Modifier.wrapContentHeight(),
+                titleRes = R.string.filter_schedule,
+                spacer = 20,
+                onClickSkip = { /*TODO*/ },
+                onClickNext = { /*TODO*/ }) {
+                ConnectDogCalendar { start, end ->
+                    Log.d("FilterSearch", "start = $start - end = $end")
+                }
             }
-        }
-    })
+        })
 }
 
 @Composable
@@ -132,7 +135,8 @@ private fun DetailCard(
     var isExpended by remember { mutableStateOf(true) }
 
     var dogSize by remember { mutableStateOf(detail.dogSize) }
-    var hasKennel: Boolean? = detail.hasKennel
+    var hasKennel by remember { mutableStateOf<Boolean?>(detail.hasKennel) }
+    //var hasKennel: Boolean? = detail.hasKennel
     var organization: String? = detail.organization
 
     var detailContent by remember {
@@ -164,11 +168,11 @@ private fun DetailCard(
                     }
                     Spacer(modifier = Modifier.size(30.dp))
                     DetailContent(titleRes = R.string.filter_kennel) {
-                        SelectKennel{ hasKennel = it }
+                        SelectKennel(hasKennel) { hasKennel = it }
                     }
                     Spacer(modifier = Modifier.size(30.dp))
                     DetailContent(titleRes = R.string.filter_organization) {
-                        SearchOrganization{ organization = it}
+                        SearchOrganization { organization = it }
                     }
                 }
             }
