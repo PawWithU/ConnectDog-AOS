@@ -47,7 +47,7 @@ fun ApplyScreen(
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = R.string.apply_volunteer,
+                titleRes = R.string.apply_volunter,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
