@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.LoginTextField
+import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.feature.login.NormalButton
 
@@ -68,13 +68,13 @@ fun RegisterPasswordScreen(
                 modifier = Modifier.padding(start = 20.dp)
             )
             Spacer(modifier = Modifier.height(40.dp))
-            LoginTextField(
+            NormalTextField(
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
                 keyboardType = KeyboardType.Password
             )
             Spacer(modifier = Modifier.height(12.dp))
-            LoginTextField(
+            NormalTextField(
                 label = "비밀번호 확인",
                 placeholder = "비밀번호 확인",
                 keyboardType = KeyboardType.Password
