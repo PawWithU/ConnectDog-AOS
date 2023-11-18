@@ -33,30 +33,35 @@ internal fun SelectDogSize(
     selected: Detail.DogSize?,
     onSelectedDogSize: (Detail.DogSize) -> Unit
 ) {
+    val selectedState = remember { mutableStateOf(selected) }
+
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         DogSizeButton(
             modifier = Modifier.weight(1f),
-            isSelected = selected == Detail.DogSize.BIG,
+            isSelected = selectedState.value == Detail.DogSize.BIG,
             onSelected = {
                 onSelectedDogSize(Detail.DogSize.BIG)
+                selectedState.value = Detail.DogSize.BIG
             },
             imageRes = R.drawable.img_big_dog,
             textRes = R.string.filter_big_dog
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
-            isSelected = selected == Detail.DogSize.MIDDLE,
+            isSelected = selectedState.value == Detail.DogSize.MIDDLE,
             onSelected = {
                 onSelectedDogSize(Detail.DogSize.MIDDLE)
+                selectedState.value = Detail.DogSize.MIDDLE
             },
             imageRes = R.drawable.img_middle_dog,
             textRes = R.string.filter_middle_dog
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
-            isSelected = selected == Detail.DogSize.SMALL,
+            isSelected = selectedState.value == Detail.DogSize.SMALL,
             onSelected = {
                 onSelectedDogSize(Detail.DogSize.SMALL)
+                selectedState.value = Detail.DogSize.SMALL
             },
             imageRes = R.drawable.img_small_dog,
             textRes = R.string.filter_small_dog
@@ -101,20 +106,24 @@ internal fun SelectKennel(
     hasKennel: Boolean?,
     selectedKennel: (Boolean) -> Unit
 ) {
+    val selectedState = remember { mutableStateOf(hasKennel) }
+
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         KennelButton(
             modifier = Modifier.weight(1f),
-            isSelected = hasKennel == true,
+            isSelected = selectedState.value == true,
             onSelected = {
                 selectedKennel(true)
+                selectedState.value = true
             },
             textRes = R.string.filter_kennel_no_need
         )
         KennelButton(
             modifier = Modifier.weight(1f),
-            isSelected = hasKennel == false,
+            isSelected = selectedState.value == false,
             onSelected = {
                 selectedKennel(false)
+                selectedState.value = false
             },
             textRes = R.string.filter_kennel_need
         )

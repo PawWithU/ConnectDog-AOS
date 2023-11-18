@@ -97,8 +97,10 @@ internal fun FilterSearchScreen(
                 viewModel.setFilter(start, end)
             }
             DetailCard(
-                viewModel,
-                filter.detail
+                filter.detail,
+                onSelectDogSize = {},
+                onSelectKennel = {},
+                onSelectOrganization = {},
             ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
                 viewModel.setFilter(Detail(dogSize, hasKennel, organization))
                 Log.d("FilterSearch", "${filter.detail}")
@@ -229,17 +231,20 @@ private fun ScheduleCard(
 
 @Composable
 private fun DetailCard(
-    viewModel: HomeViewModel,
     detail: Detail,
+    onSelectDogSize: (Detail.DogSize) -> Unit,
+    onSelectKennel: (Boolean) -> Unit,
+    onSelectOrganization: (String) -> Unit,
     onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit,
 ) {
     var isExpended by remember { mutableStateOf(false) }
 
-    var dogSize by remember { mutableStateOf(detail.dogSize) }
-    var hasKennel by remember { mutableStateOf(detail.hasKennel) }
-    var organization by remember { mutableStateOf(detail.organization) }
+    var dogSize = detail.dogSize
+    var hasKennel = detail.hasKennel
+    var organization = detail.organization
+    val detailContent = detailContentDisplay(detail.dogSize, detail.hasKennel, detail.organization)
 
-    var detailContent by remember { mutableStateOf("") }
+
 
     ConnectDogExpandableCard(
         isExpended = isExpended,
@@ -254,7 +259,6 @@ private fun DetailCard(
                 spacer = 30,
                 onClickSkip = { isExpended = false },
                 onClickNext = {
-                    detailContent = viewModel.detailContentDisplay(dogSize, hasKennel, organization)
                     isExpended = false
                     onClickNext(dogSize, hasKennel, organization)
                 }) {
@@ -542,4 +546,22 @@ private fun dateRangeDisplay(startDate: LocalDate, endDate: LocalDate): String {
     val datePattern = "M월 dd일"
     if (startDate == endDate) return startDate.dateFormat(datePattern)
     return startDate.dateFormat(datePattern) + " - " + endDate.dateFormat(datePattern)
+}
+
+private fun detailContentDisplay(
+    dogSize: Detail.DogSize?,
+    hasKennel: Boolean?,
+    organization: String?
+): String {
+    val dogSizeDisplayName = dogSize?.toDisplayName().orEmpty()
+    val kennelStatus = if (hasKennel == null) "" else if (hasKennel) "켄넬 O" else "켄넬 X"
+    val organizationText = organization.orEmpty()
+
+    return buildString {
+        append(dogSizeDisplayName)
+        if (dogSize != null && hasKennel != null) append("-")
+        append(kennelStatus)
+        if (this.isNotEmpty() && organization != null) append("-")
+        if (organizationText.isNotEmpty()) append(organizationText)
+    }
 }

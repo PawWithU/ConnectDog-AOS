@@ -94,39 +94,21 @@ constructor(
     }
 
     fun setFilter(detail: Detail) {
-        _filter.value.detail = detail
+        _filter.value = filter.value.copy(detail = detail)
         Log.d("HomeViewModel", "filter = ${filter.value}")
     }
 
     fun setFilter(startDate: LocalDate, endDate: LocalDate) {
         Log.d("HomeViewModel", "filter = ${filter.value}")
-        _filter.value = _filter.value.copy(startDate = startDate, endDate = endDate)
+        _filter.value = filter.value.copy(startDate = startDate, endDate = endDate)
     }
 
     fun setFilter(departure: String, arrival: String) {
-        _filter.value = _filter.value.copy(departure = departure, arrival = arrival)
+        _filter.value = filter.value.copy(departure = departure, arrival = arrival)
     }
 
     fun clearFilter() {
         _filter.value = Filter()
-    }
-
-    fun detailContentDisplay(
-        dogSize: Detail.DogSize?,
-        hasKennel: Boolean?,
-        organization: String?
-    ): String {
-        val dogSizeDisplayName = dogSize?.toDisplayName().orEmpty()
-        val kennelStatus = if (hasKennel == null) "" else if (hasKennel) "켄넬 O" else "켄넬 X"
-        val organizationText = organization.orEmpty()
-
-        return buildString {
-            append(dogSizeDisplayName)
-            if (dogSize != null && hasKennel != null) append("-")
-            append(kennelStatus)
-            if (this.isNotEmpty() && organization != null) append("-")
-            if (organizationText.isNotEmpty()) append(organizationText)
-        }
     }
 
 
