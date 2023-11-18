@@ -31,6 +31,8 @@
     <string name="filter_kennel_need">X (준비 필요)</string>
     <string name="filter_select_departure_region">출발 지역 선택</string>
     <string name="filter_select_destination_region">도착 지역 선택</string>
+    <string name="filter_button_refresh">초기화</string>
+    <string name="filter_button_search">검색하기</string>
     <!-- main -->
     <string name="home_description_title">이동봉사 일정이 있나요?\n딱 맞는 이동 봉사 공고를 검색해보세요!</string>
     <string name="home_counting_guide">집계안내</string>

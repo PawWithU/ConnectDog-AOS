@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -40,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogCalendar
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogExpandableCard
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogIconBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.component.dateFormat
@@ -82,6 +85,12 @@ internal fun FilterSearchScreen(
             viewModel.setFilter(Detail(dogSize, hasKennel, organization))
             Log.d("FilterSearch", "${filter.detail}")
         }
+
+        BottomBar(
+            modifier = Modifier
+                .padding(24.dp)
+                .wrapContentSize(),
+            onClickRefresh = { /*TODO*/ }, onClickSearch = {})
     }
 }
 
@@ -451,6 +460,48 @@ private fun DetailContent(
         Spacer(modifier = Modifier.size(8.dp))
         content()
     }
+}
+
+@Composable
+private fun BottomBar(
+    modifier: Modifier = Modifier,
+    onClickRefresh: () -> Unit,
+    onClickSearch: () -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(end = 16.5.dp)
+                .clickable { onClickRefresh() },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                modifier = Modifier.size(24.dp),
+                painter = painterResource(id = R.drawable.ic_refresh),
+                contentDescription = stringResource(id = R.string.filter_button_refresh)
+            )
+            Text(
+                text = stringResource(id = R.string.filter_button_refresh),
+                style = MaterialTheme.typography.titleSmall,
+                fontSize = 14.sp,
+            )
+        }
+
+        ConnectDogIconBottomButton(
+            modifier = Modifier.fillMaxWidth(1f),
+            iconId = R.drawable.ic_search,
+            contentDescription = stringResource(id = R.string.filter_button_search),
+            onClick = onClickSearch,
+            content = stringResource(id = R.string.filter_button_search)
+        )
+    }
+
 }
 
 
