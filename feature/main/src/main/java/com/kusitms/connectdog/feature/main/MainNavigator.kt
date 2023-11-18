@@ -14,6 +14,7 @@ import com.kusitms.connectdog.feature.home.navigation.navigateCertification
 import com.kusitms.connectdog.feature.home.navigation.navigateComplete
 import com.kusitms.connectdog.feature.home.navigation.navigateDetail
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
+import com.kusitms.connectdog.feature.home.navigation.navigateIntermediatorProfile
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
@@ -80,6 +81,10 @@ internal class MainNavigator(
 
     fun navigateComplete() {
         navController.navigateComplete()
+    }
+
+    fun navigateIntermediatorProfile() {
+        navController.navigateIntermediatorProfile()
     }
 
     private fun isSameCurrentDestination(route: String) =
