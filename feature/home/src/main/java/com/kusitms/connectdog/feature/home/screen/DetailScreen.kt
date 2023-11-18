@@ -29,7 +29,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTag
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
@@ -56,7 +56,8 @@ internal fun DetailScreen(
     imageUrl: String = "",
     title: String = "인천 댕댕구 -> 서울 댕댕구",
     content: String = "내용",
-    onCertificationClick: () -> Unit
+    onCertificationClick: () -> Unit,
+    onIntermediatorProfileClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -84,7 +85,7 @@ internal fun DetailScreen(
             )
             Content(title, content)
             DogInfo()
-            IntermediatorInfo()
+            IntermediatorInfo(onIntermediatorProfileClick)
         }
     }
 }
@@ -220,7 +221,7 @@ fun DogInfo() {
         Spacer(modifier = Modifier.height(8.dp))
         DetailInfo("몸무게", "밍밍이")
         Spacer(modifier = Modifier.height(20.dp))
-        Significant()
+        ConnectDogInformationCard(title = "특이사항", content = "특이사항")
     }
     Divider(
         Modifier
@@ -230,35 +231,12 @@ fun DogInfo() {
     )
 }
 
-@Composable
-fun Significant() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .background(Gray7)
-            .padding(all = 10.dp)
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "특이사항",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = "특이사항",
-                fontSize = 14.sp,
-                color = Gray3
-            )
-        }
-    }
-}
+
 
 @Composable
-fun IntermediatorInfo() {
+fun IntermediatorInfo(
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -296,7 +274,8 @@ fun IntermediatorInfo() {
                 modifier = Modifier
                     .width(100.dp)
                     .height(34.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
+                onClick = onClick
             )
         }
     }
