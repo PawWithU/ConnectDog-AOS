@@ -284,7 +284,7 @@ private fun BannerGuideline() {
 }
 
 @Composable
-private fun MoveContent(
+fun MoveContent(
     onClick: () -> Unit,
     titleRes: Int
 ) {
@@ -357,7 +357,7 @@ private fun AnnouncementListContent(
 }
 
 @Composable
-private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal, onClick: () -> Unit) {
+fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal, onClick: () -> Unit) {
     val list = List(4) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
     }
