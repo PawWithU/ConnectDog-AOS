@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -68,22 +71,29 @@ internal fun FilterSearchScreen(
     onNavigateToSearch: () -> Unit
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
 
     Column(modifier = Modifier.background(color = Gray8)) {
-        TopAppBar(Gray8, onBackClick)
-        Spacer(modifier = Modifier.size(14.dp))
-        LocationCard(filter.departure, filter.arrival) { depart, dest ->
-            viewModel.setFilter(depart, dest)
-        }
-        ScheduleCard(filter.startDate, filter.endDate) { start, end ->
-            viewModel.setFilter(start, end)
-        }
-        DetailCard(
-            viewModel,
-            filter.detail
-        ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
-            viewModel.setFilter(Detail(dogSize, hasKennel, organization))
-            Log.d("FilterSearch", "${filter.detail}")
+        Column(modifier = Modifier
+            .verticalScroll(scrollState)
+            .height(1400.dp)
+            .weight(1f))
+        {
+            TopAppBar(Gray8, onBackClick)
+            Spacer(modifier = Modifier.size(14.dp))
+            LocationCard(filter.departure, filter.arrival) { depart, dest ->
+                viewModel.setFilter(depart, dest)
+            }
+            ScheduleCard(filter.startDate, filter.endDate) { start, end ->
+                viewModel.setFilter(start, end)
+            }
+            DetailCard(
+                viewModel,
+                filter.detail
+            ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
+                viewModel.setFilter(Detail(dogSize, hasKennel, organization))
+                Log.d("FilterSearch", "${filter.detail}")
+            }
         }
 
         BottomBar(
