@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
@@ -28,6 +29,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +41,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,6 +67,7 @@ import com.kusitms.connectdog.feature.home.component.SelectDogSize
 import com.kusitms.connectdog.feature.home.component.SelectKennel
 import com.kusitms.connectdog.feature.home.model.Detail
 import com.kusitms.connectdog.feature.home.model.Filter
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 
 @Composable
@@ -71,18 +77,21 @@ internal fun FilterSearchScreen(
     onNavigateToSearch: () -> Unit
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
+
     val scrollState = rememberScrollState()
 
     Column(modifier = Modifier.background(color = Gray8)) {
-        Column(modifier = Modifier
-            .verticalScroll(scrollState)
-            .height(1400.dp)
-            .weight(1f))
-        {
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .height(1400.dp)
+                .weight(1f),
+        ) {
             TopAppBar(Gray8, onBackClick)
             Spacer(modifier = Modifier.size(14.dp))
             LocationCard(filter.departure, filter.arrival) { depart, dest ->
                 viewModel.setFilter(depart, dest)
+                Log.d("FilterSearch", "screen : ${filter.departure}, ${filter.arrival}")
             }
             ScheduleCard(filter.startDate, filter.endDate) { start, end ->
                 viewModel.setFilter(start, end)
@@ -100,7 +109,12 @@ internal fun FilterSearchScreen(
             modifier = Modifier
                 .padding(24.dp)
                 .wrapContentSize(),
-            onClickRefresh = { /*TODO*/ }, onClickSearch = {})
+            onClickRefresh = {
+                viewModel.clearFilter()
+                Log.d("FilterSearch", "filter = $filter")
+            },
+            onClickSearch = { onNavigateToSearch() }
+        )
     }
 }
 
@@ -126,14 +140,12 @@ private fun LocationCard(
 ) {
     var isExpended by remember { mutableStateOf(true) }
 
-    var departure by remember { mutableStateOf(depart) }
-    var destination by remember { mutableStateOf(dest) }
-    var content by remember {
-        mutableStateOf(
-            if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) "$depart -> $dest"
-            else ""
-        )
-    }
+    var departure = depart
+    Log.d("FilterSearch", "LocationCard : departure = $departure, depart = $depart")
+    var destination = dest
+    var content =
+        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) "$depart -> $dest"
+        else ""
 
     ConnectDogExpandableCard(
         modifier = Modifier.fillMaxWidth(),
@@ -289,10 +301,14 @@ private fun DefaultCardContent(
             fontSize = 14.sp
         )
         Text(
+            modifier = Modifier.width(200.dp),
             text = if (content.isNullOrEmpty()) stringResource(id = R.string.filter_choose) else content,
             style = MaterialTheme.typography.titleMedium,
             fontSize = 14.sp,
-            color = Gray3
+            color = Gray3,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+            textAlign = TextAlign.End
         )
     }
 }
