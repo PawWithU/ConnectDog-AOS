@@ -82,7 +82,7 @@ private fun ReviewListContent(
 }
 
 @Composable
-private fun ReviewLoading(modifier: Modifier) {
+fun ReviewLoading(modifier: Modifier) {
     val list = List(10) {
         Review(
             profileUrl = "",
