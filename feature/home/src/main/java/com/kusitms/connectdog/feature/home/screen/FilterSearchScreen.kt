@@ -189,14 +189,11 @@ private fun ScheduleCard(
 ) {
     var isExpended by remember { mutableStateOf(false) }
 
-    var startDate: LocalDate by remember { mutableStateOf(start ?: LocalDate.now()) }
-    var endDate: LocalDate by remember { mutableStateOf(end ?: LocalDate.now()) }
-
-    var content by remember {
-        mutableStateOf(
+    var startDate: LocalDate =start ?: LocalDate.now()
+    var endDate: LocalDate = end ?: LocalDate.now()
+    var content =
             if (start != null && end != null) dateRangeDisplay(start, end) else ""
-        )
-    }
+
 
     ConnectDogExpandableCard(
         isExpended = isExpended,

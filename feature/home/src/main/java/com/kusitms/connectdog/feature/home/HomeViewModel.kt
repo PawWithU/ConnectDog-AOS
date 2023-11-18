@@ -99,9 +99,8 @@ constructor(
     }
 
     fun setFilter(startDate: LocalDate, endDate: LocalDate) {
-        _filter.value.startDate = startDate
-        _filter.value.endDate = endDate
         Log.d("HomeViewModel", "filter = ${filter.value}")
+        _filter.value = _filter.value.copy(startDate = startDate, endDate = endDate)
     }
 
     fun setFilter(departure: String, arrival: String) {
