@@ -10,6 +10,7 @@ import com.kusitms.connectdog.feature.home.screen.CertificationScreen
 import com.kusitms.connectdog.feature.home.screen.CompleteApplyScreen
 import com.kusitms.connectdog.feature.home.screen.DetailScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
+import com.kusitms.connectdog.feature.home.screen.IntermediatorProfileScreen
 import com.kusitms.connectdog.feature.home.screen.ReviewScreen
 import com.kusitms.connectdog.feature.home.screen.SearchScreen
 
@@ -44,6 +45,10 @@ fun NavController.navigateComplete() {
     navigate(HomeRoute.complete)
 }
 
+fun NavController.navigateIntermediatorProfile() {
+    navigate(HomeRoute.intermediatorProfile)
+}
+
 fun NavGraphBuilder.homeNavGraph(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
@@ -52,6 +57,7 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToCertification: () -> Unit,
     onNavigateToApply: () -> Unit,
     onNavigateToComplete: () -> Unit,
+    onNavigateToIntermediatorProfile: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = HomeRoute.route) {
@@ -79,7 +85,8 @@ fun NavGraphBuilder.homeNavGraph(
     composable(route = HomeRoute.detail) {
         DetailScreen(
             onBackClick = onBackClick,
-            onCertificationClick = onNavigateToCertification
+            onCertificationClick = onNavigateToCertification,
+            onIntermediatorProfileClick = onNavigateToIntermediatorProfile
         )
     }
 
@@ -102,6 +109,12 @@ fun NavGraphBuilder.homeNavGraph(
             onClick = onNavigateToSearch
         )
     }
+
+    composable(route = HomeRoute.intermediatorProfile) {
+        IntermediatorProfileScreen(
+            onBackClick = onBackClick
+        )
+    }
 }
 
 object HomeRoute {
@@ -113,4 +126,5 @@ object HomeRoute {
     const val certification = "certification"
     const val apply = "apply"
     const val complete = "complete"
+    const val intermediatorProfile = "intermediatorProfile"
 }
