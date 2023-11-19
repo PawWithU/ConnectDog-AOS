@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.google.gson.Gson
+import com.kusitms.connectdog.core.util.localDateGson
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.screen.FilterSearchScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
@@ -27,7 +27,7 @@ fun NavController.navigateSearch() {
 
 fun NavController.navigateSearchWithFilter(filter: Filter) {
     Log.d(TAG, "navigateSearchWithFilter()")
-    val filterJson = Gson().toJson(filter)
+    val filterJson = localDateGson.toJson(filter)
     navigate("${HomeRoute.search}/${filterJson}")
 }
 
@@ -74,7 +74,7 @@ fun NavGraphBuilder.homeNavGraph(
         })
     ) { backStackEntry ->
         val filterJson = backStackEntry.arguments?.getString("filter")
-        val filter = Gson().fromJson(filterJson, Filter::class.java)
+        val filter = localDateGson.fromJson(filterJson, Filter::class.java)
         Log.d(TAG, "homeNavGraph filter = $filter")
         SearchScreen(onBackClick = onBackClick, filter = filter ?: Filter())
     }

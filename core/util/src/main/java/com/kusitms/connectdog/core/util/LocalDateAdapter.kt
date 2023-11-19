@@ -28,6 +28,6 @@ class LocalDateAdapter : JsonDeserializer<LocalDate>, com.google.gson.JsonSerial
     }
 }
 
-val lcoalDateGson = GsonBuilder()
+val localDateGson = GsonBuilder()
     .registerTypeAdapter(LocalDate::class.java, LocalDateAdapter())
     .create()
