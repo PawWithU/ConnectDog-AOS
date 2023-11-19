@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mypage">마이페이지</string>
+    <string name="my_page">마이페이지</string>
+    <string name="edit_profile">프로필 수정</string>
+    <string name="setting">설정</string>
+    <string name="manage_account">계정 정보 관리</string>
+    <string name="notification">알림</string>
 </resources>
