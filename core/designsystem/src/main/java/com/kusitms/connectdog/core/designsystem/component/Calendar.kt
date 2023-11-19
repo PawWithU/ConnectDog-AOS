@@ -296,6 +296,3 @@ private fun DayOfWeek.getDayOfWeekKor(): String {
 
 private fun dayDiff(date1: LocalDate, date2: LocalDate): Long =
     abs(ChronoUnit.DAYS.between(date1, date2))
-
-fun LocalDate.dateFormat(pattern: String) =
-    this.format(DateTimeFormatter.ofPattern(pattern))
