@@ -55,10 +55,21 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         onNavigateToApply = { navigator.navigateApply() },
                         onNavigateToComplete = { navigator.navigateComplete() },
                         onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile()},
+                        onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {}
                     )
                     managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
-                    mypageNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
+                    mypageNavGraph(
+                        padding = it,
+                        onClick = {},
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        onEditProfileClick = { navigator.navigateEditProfile() },
+                        onManageAccountClick = { navigator.navigateManageAccount() },
+                        onNotificationClick = { navigator.navigateNotification() },
+                        onSettingClick = { navigator.navigateSetting() },
+                        onBadgeClick = { navigator.navigateBadge() },
+                        onShowErrorSnackbar = {}
+                    )
                 }
             }
         },
