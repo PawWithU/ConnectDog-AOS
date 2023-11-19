@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pending_approval">승인 대기중</string>
+    <string name="inProgress">진행중</string>
+    <string name="completed">봉사완료</string>
+</resources>

@@ -63,17 +63,35 @@ fun ConnectDogTopAppBar(
                     R.drawable.ic_left
                 )
             }
+
             TopAppBarNavigationType.CLOSE -> {
                 icon(
                     Modifier.align(Alignment.CenterStart),
                     R.drawable.ic_x
                 )
             }
+
             TopAppBarNavigationType.HOME -> {
                 HomeIcon(
-                    modifier = Modifier.size(66.dp, 45.dp).align(Alignment.CenterStart),
+                    modifier = Modifier
+                        .size(66.dp, 45.dp)
+                        .align(Alignment.CenterStart),
                     imageRes = R.drawable.ic_logo_home,
                     iconContentDescription = "connect dog home"
+                )
+            }
+
+            TopAppBarNavigationType.MYPAGE -> {
+
+            }
+
+            TopAppBarNavigationType.MANAGEMENT -> {
+                Text(
+                    text = stringResource(id = R.string.management),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
                 )
             }
         }
@@ -87,9 +105,13 @@ fun ConnectDogTopAppBar(
                 color = contentColor,
                 style = if (navigationType == TopAppBarNavigationType.MYPAGE) {
                     MaterialTheme.typography.titleLarge
-                } else { MaterialTheme.typography.titleMedium },
+                } else {
+                    MaterialTheme.typography.titleMedium
+                },
                 modifier = if (navigationType == TopAppBarNavigationType.MYPAGE) {
-                    Modifier.align(Alignment.CenterStart).padding(start = 24.dp)
+                    Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 24.dp)
                 } else {
                     Modifier.align(Alignment.Center)
                 }
@@ -114,7 +136,7 @@ private fun HomeIcon(
     )
 }
 
-enum class TopAppBarNavigationType { BACK, HOME, CLOSE, MYPAGE }
+enum class TopAppBarNavigationType { BACK, HOME, CLOSE, MYPAGE, MANAGEMENT }
 
 @Preview
 @Composable
