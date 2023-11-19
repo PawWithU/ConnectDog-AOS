@@ -18,7 +18,12 @@ import com.kusitms.connectdog.feature.home.navigation.navigateIntermediatorProfi
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
+import com.kusitms.connectdog.feature.mypage.navigation.navigateBadge
+import com.kusitms.connectdog.feature.mypage.navigation.navigateEditProfile
+import com.kusitms.connectdog.feature.mypage.navigation.navigateManageAccount
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
+import com.kusitms.connectdog.feature.mypage.navigation.navigateNotification
+import com.kusitms.connectdog.feature.mypage.navigation.navigateSetting
 
 internal class MainNavigator(
     val navController: NavHostController
@@ -85,6 +90,26 @@ internal class MainNavigator(
 
     fun navigateIntermediatorProfile() {
         navController.navigateIntermediatorProfile()
+    }
+
+    fun navigateEditProfile() {
+        navController.navigateEditProfile()
+    }
+
+    fun navigateManageAccount() {
+        navController.navigateManageAccount()
+    }
+
+    fun navigateNotification() {
+        navController.navigateNotification()
+    }
+
+    fun navigateSetting() {
+        navController.navigateSetting()
+    }
+
+    fun navigateBadge() {
+        navController.navigateBadge()
     }
 
     private fun isSameCurrentDestination(route: String) =
