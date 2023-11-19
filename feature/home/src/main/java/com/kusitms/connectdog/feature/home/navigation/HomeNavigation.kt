@@ -49,6 +49,10 @@ fun NavController.navigateIntermediatorProfile() {
     navigate(HomeRoute.intermediatorProfile)
 }
 
+fun NavController.navigateNotification() {
+    navigate(HomeRoute.notification)
+}
+
 fun NavGraphBuilder.homeNavGraph(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
@@ -58,6 +62,7 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToApply: () -> Unit,
     onNavigateToComplete: () -> Unit,
     onNavigateToIntermediatorProfile: () -> Unit,
+    onNavigateToNotification: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = HomeRoute.route) {
@@ -66,6 +71,7 @@ fun NavGraphBuilder.homeNavGraph(
             onNavigateToSearch,
             onNavigateToReview,
             onNavigateToDetail,
+            onNavigateToNotification,
             onShowErrorSnackBar
         )
     }
@@ -115,6 +121,12 @@ fun NavGraphBuilder.homeNavGraph(
             onBackClick = onBackClick
         )
     }
+
+    composable(route = HomeRoute.notification) {
+//        NotificationScreen(
+//            onClick = navigateNotification
+//        )
+    }
 }
 
 object HomeRoute {
@@ -127,4 +139,5 @@ object HomeRoute {
     const val apply = "apply"
     const val complete = "complete"
     const val intermediatorProfile = "intermediatorProfile"
+    const val notification = "notification"
 }

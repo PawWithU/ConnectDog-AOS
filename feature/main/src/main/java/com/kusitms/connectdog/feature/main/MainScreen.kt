@@ -54,7 +54,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         onNavigateToCertification = { navigator.navigateCertification() },
                         onNavigateToApply = { navigator.navigateApply() },
                         onNavigateToComplete = { navigator.navigateComplete() },
-                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile()},
+                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {}
                     )

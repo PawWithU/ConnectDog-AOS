@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +34,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTag
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -212,8 +210,6 @@ fun DogInfo() {
         color = Gray7
     )
 }
-
-
 
 @Composable
 fun IntermediatorInfo(

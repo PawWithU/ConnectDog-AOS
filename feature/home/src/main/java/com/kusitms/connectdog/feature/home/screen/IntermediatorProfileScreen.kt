@@ -43,7 +43,6 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.feature.home.R
 import kotlinx.coroutines.launch
 
-
 val pages = listOf("기본 정보", "후기", "근황")
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -194,7 +193,7 @@ fun Announcement() {
     Column(
 //        modifier = Modifier.padding(horizontal = )
     ) {
-        MoveContent(onClick = {  }, titleRes = R.string.home_navigate_search)
+        MoveContent(onClick = { }, titleRes = R.string.home_navigate_search)
         AnnouncementLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp), onClick = { })
     }
 }
@@ -215,7 +214,6 @@ fun News() {
         modifier = Modifier.padding(all = 24.dp),
         verticalArrangement = Arrangement.Top
     ) {
-
     }
 }
 

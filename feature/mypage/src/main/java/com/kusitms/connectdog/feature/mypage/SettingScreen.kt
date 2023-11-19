@@ -74,12 +74,15 @@ private fun Content(onClick: () -> Unit) {
                 color = Gray2,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.TopStart))
-            Text(text = "이동봉사 신청 승인, 입양 후 근황 업로드 알림",
+                modifier = Modifier.align(Alignment.TopStart)
+            )
+            Text(
+                text = "이동봉사 신청 승인, 입양 후 근황 업로드 알림",
                 color = Gray4,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.BottomStart))
+                modifier = Modifier.align(Alignment.BottomStart)
+            )
             Switch(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 checked = checked,
@@ -109,7 +112,7 @@ private fun Content(onClick: () -> Unit) {
         Text(
             text = "로그아웃",
             fontSize = 16.sp,
-            color = Gray2,
+            color = Gray2
         )
     }
 }

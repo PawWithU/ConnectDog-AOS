@@ -27,5 +27,4 @@ fun NotificationScreen(
 
 @Composable
 private fun Content() {
-
 }

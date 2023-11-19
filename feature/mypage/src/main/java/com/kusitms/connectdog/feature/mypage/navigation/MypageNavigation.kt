@@ -86,7 +86,7 @@ fun NavGraphBuilder.mypageNavGraph(
     }
 
     composable(route = MypageRoute.badge) {
-        BadgeScreen (
+        BadgeScreen(
             onBackClick = onBackClick
         )
     }

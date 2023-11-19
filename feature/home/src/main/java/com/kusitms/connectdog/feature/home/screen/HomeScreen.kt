@@ -73,6 +73,7 @@ internal fun HomeRoute(
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
+    onNavigateToNotification: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -86,7 +87,7 @@ internal fun HomeRoute(
     }
 
     Column {
-        TopAppBar(onClickSearch = onNavigateToSearch)
+        TopAppBar(onClickSearch = onNavigateToSearch, onNotificationClick = onNavigateToNotification)
         HomeScreen(
             exampleUiState = exampleUiState,
             announcementUiState = announcementUiState,
@@ -126,7 +127,8 @@ private fun HomeScreen(
 
 @Composable
 private fun TopAppBar(
-    onClickSearch: () -> Unit
+    onClickSearch: () -> Unit,
+    onNotificationClick: () -> Unit
 ) {
     ConnectDogTopAppBar(
         titleRes = null,
@@ -142,7 +144,9 @@ private fun TopAppBar(
                     contentDescription = "Navigate to Search"
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                onNotificationClick()
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.Notifications,
                     contentDescription = "Navigate to Search"
@@ -455,7 +459,7 @@ private fun ReviewCardContent(
 private fun HomeScreenPreview() {
     ConnectDogTheme {
         Column(modifier = Modifier.background(Color.White)) {
-            TopAppBar(onClickSearch = {})
+            TopAppBar(onClickSearch = {}, onNotificationClick = {})
             HomeScreen(
                 exampleUiState = ExampleUiState.Empty,
                 announcementUiState = AnnouncementUiState.Empty,

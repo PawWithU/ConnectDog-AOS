@@ -47,7 +47,7 @@ internal fun MypageRoute(
     onManageAccountClick: () -> Unit,
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
-    onBadgeClick:() -> Unit,
+    onBadgeClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     MypageScreen(
@@ -82,7 +82,7 @@ private fun TopBar(
                 Icon(
                     imageVector = Icons.Outlined.Settings,
                     contentDescription = "Navigate to Search",
-                    modifier = Modifier.clickable{ onManageAccountClick() }
+                    modifier = Modifier.clickable { onManageAccountClick() }
                 )
             }
         }
@@ -97,7 +97,7 @@ private fun MypageScreen(
     onManageAccountClick: () -> Unit,
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
-    onBadgeClick: () -> Unit,
+    onBadgeClick: () -> Unit
 ) {
     Column {
         TopBar(onSettingClick, onNotificationClick)
@@ -124,8 +124,10 @@ private fun MyInformation(
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(painter = painterResource(
-            id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_1),
+        Image(
+            painter = painterResource(
+                id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_1
+            ),
             contentDescription = null,
             modifier = Modifier.size(50.dp)
         )
@@ -185,7 +187,7 @@ private fun InformationBox() {
             .clip(shape)
             .background(MaterialTheme.colorScheme.primary)
     ) {
-        Row{
+        Row {
             Information(3, "진행한 이동봉사", Modifier.weight(1f))
             Information(12, "봉사 후기", Modifier.weight(1f))
             Information(5, "입양 근황", Modifier.weight(1f))
@@ -201,7 +203,7 @@ private fun Information(
 ) {
     Column(
         modifier = modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(text = "${count}회", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterHorizontally))
         Text(text = title, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.align(Alignment.CenterHorizontally))
