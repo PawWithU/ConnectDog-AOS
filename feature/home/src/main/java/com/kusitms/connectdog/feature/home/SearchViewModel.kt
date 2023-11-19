@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
 import javax.inject.Inject
 
+private val TAG = "SearchViewModel"
+
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     homeRepository: HomeRepository
@@ -27,12 +29,26 @@ class SearchViewModel @Inject constructor(
     private var _filter = MutableStateFlow(Filter())
     val filter: StateFlow<Filter> get() = _filter
 
+    private var _isDeadlineOrder = MutableStateFlow(true)
+    val isDeadlineOrder: StateFlow<Boolean> get() = _isDeadlineOrder
+
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
     val announcementUiState: StateFlow<AnnouncementUiState> =
         flow {
-            emit(homeRepository.getAnnouncementListWithFilter())
+            emit(
+                homeRepository.getAnnouncementListWithFilter(
+                    departureLoc = filter.value.departure,
+                    arrivalLoc = filter.value.arrival,
+                    startDate = filter.value.startDate.toString(),
+                    endDate = filter.value.endDate.toString(),
+                    dogSize = filter.value.detail.dogSize?.toDisplayName(),
+                    isKennel = filter.value.detail.hasKennel,
+                    intermediaryName = filter.value.detail.organization,
+                    orderCondition = if (isDeadlineOrder.value) "마감순" else "최신순"
+                )
+            )
         }.map {
             if (it.isNotEmpty()) {
                 AnnouncementUiState.Announcements(it)
@@ -68,5 +84,9 @@ class SearchViewModel @Inject constructor(
 
     fun clearFilter() {
         _filter.value = Filter()
+    }
+
+    fun changeOrderCondition() {
+        _isDeadlineOrder.value = !_isDeadlineOrder.value
     }
 }
