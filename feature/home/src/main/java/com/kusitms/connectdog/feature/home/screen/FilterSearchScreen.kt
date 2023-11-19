@@ -68,14 +68,28 @@ import com.kusitms.connectdog.feature.home.model.Filter
 import java.time.LocalDate
 
 private val TAG = "FilterSearch"
+
 @Composable
-internal fun FilterSearchScreen(
+internal fun FilterSearchRoute(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToSearch: (Filter) -> Unit
-) {
+){
     Log.d(TAG, "filterArg = $filterArg")
+    viewModel.setFilter(filterArg!!)
+    FilterSearchScreen(
+        onBackClick = onBackClick,
+        onNavigateToSearch = onNavigateToSearch
+    )
+}
+
+@Composable
+private fun FilterSearchScreen(
+    onBackClick: () -> Unit,
+    viewModel: SearchViewModel = hiltViewModel(),
+    onNavigateToSearch: (Filter) -> Unit
+) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
     Log.d(TAG, "filter = $filter")
 
@@ -535,7 +549,7 @@ private fun BottomBar(
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
-    FilterSearchScreen({}, Filter(), hiltViewModel(), {})
+    FilterSearchScreen({}, hiltViewModel(), {})
 }
 
 

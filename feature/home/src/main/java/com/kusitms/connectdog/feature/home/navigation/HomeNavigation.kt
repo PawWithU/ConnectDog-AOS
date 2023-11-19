@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.localDateGson
 import com.kusitms.connectdog.feature.home.model.Filter
-import com.kusitms.connectdog.feature.home.screen.FilterSearchScreen
+import com.kusitms.connectdog.feature.home.screen.FilterSearchRoute
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
 import com.kusitms.connectdog.feature.home.screen.ReviewScreen
 import com.kusitms.connectdog.feature.home.screen.SearchScreen
@@ -86,13 +86,13 @@ fun NavGraphBuilder.homeNavGraph(
         Log.d(TAG, "homeNavGraph filter = $filter")
         SearchScreen(
             onBackClick = onBackClick,
-            filter = filter ?: Filter(),
+            filterArg = filter ?: Filter(),
             onNavigateToFilter = onNavigateToFilter
         )
     }
 
     composable(route = HomeRoute.filter_search) {
-        FilterSearchScreen(
+        FilterSearchRoute(
             onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearchWithFilter
         )
@@ -107,10 +107,10 @@ fun NavGraphBuilder.homeNavGraph(
         val filterJson = backStackEntry.arguments?.getString("filter")
         val filter = localDateGson.fromJson(filterJson, Filter::class.java)
         Log.d(TAG, "homeNavGraph filter = $filter")
-        FilterSearchScreen(
+        FilterSearchRoute(
             onBackClick = onBackClick,
             filterArg = filter,
-            onNavigateToSearch = onNavigateToFilter
+            onNavigateToSearch = onNavigateToSearchWithFilter
         )
     }
 

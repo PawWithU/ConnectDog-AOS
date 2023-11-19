@@ -53,13 +53,15 @@ private val TAG = "SearchScreen"
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
-    filter: Filter? = Filter(),
+    filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToFilter: (Filter) -> Unit,
 ) {
-    val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
-
+    viewModel.setFilter(filterArg!!)
+    val filter by viewModel.filter.collectAsStateWithLifecycle()
     Log.d(TAG, "filter = $filter")
+
+    val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
 
     Column {
         TopAppBar { onBackClick() }
@@ -68,9 +70,9 @@ internal fun SearchScreen(
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
         ) {
-            onNavigateToFilter(filter!!)
+            onNavigateToFilter(filter)
         }
-        if (filter != null && filter.isNotEmpty()) {
+        if (filter.isNotEmpty()) {
             FilterBar(
                 filter = filter,
                 onClick = { onNavigateToFilter(filter) }
