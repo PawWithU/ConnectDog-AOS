@@ -120,7 +120,7 @@ private fun HomeScreen(
         StatisticBanner(modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp))
         BannerGuideline()
         MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
-        AnnouncementContent(announcementUiState)
+        AnnouncementContent(announcementUiState, onClick = onNavigateToDetail)
         MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
         ReviewContent(uiState = reviewUiState)
         Spacer(modifier = Modifier.height(90.dp))
@@ -315,7 +315,7 @@ private fun MoveContent(
 }
 
 @Composable
-private fun AnnouncementContent(uiState: AnnouncementUiState) {
+private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: () -> Unit) {
     val modifier = Modifier.padding(horizontal = 20.dp)
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
@@ -326,7 +326,7 @@ private fun AnnouncementContent(uiState: AnnouncementUiState) {
             )
         }
 
-        else -> AnnouncementLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp))
+        else -> AnnouncementLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp), onClick = onClick)
     }
 }
 
@@ -360,13 +360,13 @@ private fun AnnouncementListContent(
 }
 
 @Composable
-private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
+private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal, onClick: () -> Unit) {
     val list = List(4) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
     }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
-            AnnouncementCardContent(announcement = it)
+            AnnouncementCardContent(announcement = it, onClick = onClick)
         }
     }
 }
@@ -407,11 +407,14 @@ private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizonta
 
 @Composable
 private fun AnnouncementCardContent(
-    announcement: Announcement
+    announcement: Announcement,
+    onClick: () -> Unit = {}
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier.width(150.dp)
+        modifier = Modifier.width(150.dp).clickable {
+            onClick()
+        }
     ) {
         NetworkImage(
             imageUrl = announcement.imageUrl,

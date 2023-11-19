@@ -10,6 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
+import com.kusitms.connectdog.feature.home.navigation.navigateApply
+import com.kusitms.connectdog.feature.home.navigation.navigateCertification
+import com.kusitms.connectdog.feature.home.navigation.navigateComplete
 import com.kusitms.connectdog.feature.home.navigation.navigateDetail
 import com.kusitms.connectdog.feature.home.navigation.navigateFilter
 import com.kusitms.connectdog.feature.home.navigation.navigateFilterSearch
@@ -77,10 +80,22 @@ internal class MainNavigator(
         navController.navigateDetail()
     }
 
+    fun navigateCertification() {
+        navController.navigateCertification()
+    }
+
+    fun navigateApply() {
+        navController.navigateApply()
+    }
+
     fun popBackStackIfNotHome() {
         if (!isSameCurrentDestination(HomeRoute.route)) {
             navController.popBackStack()
         }
+    }
+
+    fun navigateComplete() {
+        navController.navigateComplete()
     }
 
     private fun isSameCurrentDestination(route: String) =

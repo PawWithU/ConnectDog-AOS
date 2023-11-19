@@ -14,6 +14,6 @@
     <string name="dog_recent">의 근황</string>
     <string name="location">지역</string>
     <string name="end_recruit">모집마감</string>
-
     <string name="volunteer_signup">이동봉사자 회원가입</string>
+    <string name="apply_volunter">이동봉사 신청하기</string>
 </resources>

@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Typography
 
 @Composable
@@ -79,14 +78,16 @@ fun ConnectDogOutlinedButton(
     text: String,
     padding: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    borderColor: Color = MaterialTheme.colorScheme.primary,
+    fontColor: Color = MaterialTheme.colorScheme.primary
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier
             .width(width.dp)
             .height(height.dp),
-        border = BorderStroke(1.dp, PetOrange),
+        border = BorderStroke(1.dp, borderColor),
         contentPadding = PaddingValues(
             top = 4.dp,
             bottom = 4.dp,
@@ -97,7 +98,7 @@ fun ConnectDogOutlinedButton(
         Text(
             text = text,
             fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.primary,
+            color = fontColor,
             fontWeight = FontWeight.SemiBold
         )
     }

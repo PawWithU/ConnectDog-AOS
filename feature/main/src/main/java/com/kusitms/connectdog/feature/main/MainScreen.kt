@@ -58,6 +58,9 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         },
                         onNavigateToReview = { navigator.navigateHomeReview() },
                         onNavigateToDetail = { navigator.navigateHomeDetail() },
+                        onNavigateToCertification = { navigator.navigateCertification() },
+                        onNavigateToApply = { navigator.navigateApply() },
+                        onNavigateToComplete = { navigator.navigateComplete() },
                         onShowErrorSnackBar = {}
                     )
                     managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})

@@ -60,7 +60,6 @@ fun ConnectDogTextField(
         modifier =
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
             .height(height.dp),
         value = text,
         onValueChange = onTextChanged,
@@ -108,7 +107,7 @@ fun ConnectDogTextField(
 }
 
 @Composable
-fun LoginTextField(
+fun NormalTextField(
     label: String,
     placeholder: String,
     keyboardType: KeyboardType,
@@ -186,14 +185,15 @@ fun ConnectDogTextFieldWithButton(
     textFieldLabel: String,
     placeholder: String,
     buttonLabel: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
     padding: Int,
     onclick: () -> Unit
 ) {
     Box {
-        LoginTextField(
+        NormalTextField(
             label = textFieldLabel,
             placeholder = placeholder,
-            keyboardType = KeyboardType.Text
+            keyboardType = keyboardType
         )
 
         ConnectDogOutlinedButton(
@@ -202,7 +202,7 @@ fun ConnectDogTextFieldWithButton(
             text = buttonLabel,
             padding = padding,
             modifier = Modifier
-                .padding(top = 6.dp, end = 33.dp)
+                .padding(top = 6.dp, end = 16.dp)
                 .align(Alignment.CenterEnd),
             onClick = onclick
         )
