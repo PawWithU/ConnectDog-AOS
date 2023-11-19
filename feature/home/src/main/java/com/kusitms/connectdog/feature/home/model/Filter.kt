@@ -8,13 +8,21 @@ data class Filter(
     var startDate: LocalDate? = null, // 2023-11-08
     var endDate: LocalDate? = null, // 2023-11-08
     var detail: Detail = Detail()
-)
+){
+    fun isNotEmpty(): Boolean {
+        return departure.isNotEmpty() || arrival.isNotEmpty() || startDate != null || endDate != null || detail.isNotEmpty()
+    }
+}
 
 data class Detail(
     val dogSize: DogSize? = null,
     val hasKennel: Boolean? = null,
     val organization: String? = null
 ) {
+    fun isNotEmpty(): Boolean {
+        return dogSize != null || hasKennel != null || organization != null
+    }
+
     enum class DogSize {
         BIG, MIDDLE, SMALL;
 
