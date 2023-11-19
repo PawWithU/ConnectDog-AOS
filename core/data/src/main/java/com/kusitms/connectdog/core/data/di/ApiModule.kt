@@ -8,16 +8,16 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -31,7 +31,9 @@ internal object ApiModule {
             chain.proceed(
                 request.newBuilder()
                     .addHeader(
-                        "Authorization", "Bearer $jwt") //todo
+                        "Authorization",
+                        "Bearer $jwt"
+                    ) // todo
                     .build()
             )
         } catch (e: Exception) {

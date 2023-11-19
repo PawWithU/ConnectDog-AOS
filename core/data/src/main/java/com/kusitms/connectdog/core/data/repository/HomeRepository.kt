@@ -17,7 +17,7 @@ interface HomeRepository {
         intermediaryName: String? = null,
         orderCondition: String? = null,
         page: Int? = 0,
-        size: Int? = 50,
+        size: Int? = 50
     ): List<Announcement>
 
     suspend fun getReviewList(page: Int? = 0, size: Int? = 5): List<Review>

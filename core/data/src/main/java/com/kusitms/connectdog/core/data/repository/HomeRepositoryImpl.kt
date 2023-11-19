@@ -24,7 +24,7 @@ internal class HomeRepositoryImpl @Inject constructor(
         intermediaryName: String?,
         orderCondition: String?,
         page: Int?,
-        size: Int?,
+        size: Int?
     ): List<Announcement> {
         return api.getAnnouncementFilterPosts(
             postStatus,
@@ -32,7 +32,7 @@ internal class HomeRepositoryImpl @Inject constructor(
             startDate, endDate,
             dogSize, isKennel, intermediaryName,
             orderCondition,
-            page ?: 0, size ?: 50,
+            page ?: 0, size ?: 50
         ).map { it.toData() }
     }
 

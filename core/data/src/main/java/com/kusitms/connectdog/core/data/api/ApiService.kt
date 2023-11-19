@@ -23,7 +23,7 @@ internal interface ApiService {
         @Query("intermediaryName") intermediaryName: String?,
         @Query("orderCondition") orderCondition: String?,
         @Query("page") page: Int,
-        @Query("size") size: Int,
+        @Query("size") size: Int
     ): List<AnnouncementSearchResponseItem>
 
     @GET("/volunteers/reviews")
