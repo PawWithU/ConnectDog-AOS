@@ -76,8 +76,14 @@ fun ConnectDogTopAppBar(
             Text(
                 text = stringResource(id = titleRes),
                 color = contentColor,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.Center)
+                style = if (navigationType == TopAppBarNavigationType.MYPAGE) {
+                    MaterialTheme.typography.titleLarge
+                } else { MaterialTheme.typography.titleMedium },
+                modifier = if (navigationType == TopAppBarNavigationType.MYPAGE) {
+                    Modifier.align(Alignment.CenterStart).padding(start = 24.dp)
+                } else {
+                    Modifier.align(Alignment.Center)
+                }
             )
         }
     }
@@ -99,7 +105,7 @@ private fun HomeIcon(
     )
 }
 
-enum class TopAppBarNavigationType { BACK, HOME }
+enum class TopAppBarNavigationType { BACK, HOME, MYPAGE }
 
 @Preview
 @Composable
