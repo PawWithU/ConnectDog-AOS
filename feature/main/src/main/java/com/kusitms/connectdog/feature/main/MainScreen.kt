@@ -49,6 +49,13 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToSearch = { navigator.navigateHomeSearch() },
+                        onNavigateToSearchWithFilter = { filter ->
+                            navigator.navigateHomeSearchWithFilter(filter)
+                        },
+                        onNavigateToFilterSearch = { navigator.navigateHomeFilterSearch() },
+                        onNavigateToFilter = { filter ->
+                            navigator.navigateHomeFilter(filter)
+                        },
                         onNavigateToReview = { navigator.navigateHomeReview() },
                         onNavigateToDetail = { navigator.navigateHomeDetail() },
                         onNavigateToCertification = { navigator.navigateCertification() },

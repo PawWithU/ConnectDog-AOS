@@ -56,17 +56,26 @@ fun ConnectDogTopAppBar(
             .background(color = containerColor)
             .then(modifier)
     ) {
-        if (navigationType == TopAppBarNavigationType.BACK) {
-            icon(
-                Modifier.align(Alignment.CenterStart),
-                R.drawable.ic_left
-            )
-        } else if (navigationType == TopAppBarNavigationType.HOME) {
-            HomeIcon(
-                modifier = Modifier.size(66.dp, 45.dp).align(Alignment.CenterStart),
-                imageRes = R.drawable.ic_logo_home,
-                iconContentDescription = "connect dog home"
-            )
+        when (navigationType) {
+            TopAppBarNavigationType.BACK -> {
+                icon(
+                    Modifier.align(Alignment.CenterStart),
+                    R.drawable.ic_left
+                )
+            }
+            TopAppBarNavigationType.CLOSE -> {
+                icon(
+                    Modifier.align(Alignment.CenterStart),
+                    R.drawable.ic_x
+                )
+            }
+            TopAppBarNavigationType.HOME -> {
+                HomeIcon(
+                    modifier = Modifier.size(66.dp, 45.dp).align(Alignment.CenterStart),
+                    imageRes = R.drawable.ic_logo_home,
+                    iconContentDescription = "connect dog home"
+                )
+            }
         }
 
         Row(modifier = Modifier.align(Alignment.CenterEnd)) {
@@ -105,7 +114,7 @@ private fun HomeIcon(
     )
 }
 
-enum class TopAppBarNavigationType { BACK, HOME, MYPAGE }
+enum class TopAppBarNavigationType { BACK, HOME, CLOSE, MYPAGE }
 
 @Preview
 @Composable
