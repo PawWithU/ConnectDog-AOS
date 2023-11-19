@@ -7,19 +7,26 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navigation
+import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.screen.FilterSearchScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
 import com.kusitms.connectdog.feature.home.screen.ReviewScreen
 import com.kusitms.connectdog.feature.home.screen.SearchScreen
+
+private val TAG = "HomeNavigation"
 
 fun NavController.navigateHome(navOptions: NavOptions) {
     navigate(HomeRoute.route, navOptions)
 }
 
 fun NavController.navigateSearch() {
-    Log.d("SearchScreen", "navigateSearch")
+    Log.d(TAG, "navigateSearch")
     navigate(HomeRoute.search)
+}
+
+fun NavController.navigateSearchWithFilter(filter: String) {
+    Log.d(TAG, "navigateSearchWithFilter()")
+    navigate("${HomeRoute.search}/$filter")
 }
 
 fun NavController.navigateFilterSearch() {
@@ -37,6 +44,7 @@ fun NavController.navigateDetail() {
 fun NavGraphBuilder.homeNavGraph(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToSearchWithFilter: (String) -> Unit,
     onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
@@ -54,22 +62,24 @@ fun NavGraphBuilder.homeNavGraph(
     }
 
     composable(route = HomeRoute.search) {
-        SearchScreen(
-            onBackClick = onBackClick
-        )
+        SearchScreen(onBackClick = onBackClick)
     }
 
     composable(
         route = "${HomeRoute.search}/{filter}",
-        arguments = listOf(navArgument("filter") {type = NavType.ReferenceType})
-    ) {
-        SearchScreen(onBackClick = onBackClick)
+        arguments = listOf(navArgument("filter") {
+            type = NavType.StringType
+        })
+    ) { backStackEntry ->
+        val filter = backStackEntry.arguments?.getString("filter")
+        Log.d(TAG, "homeNavGraph filter = $filter")
+        SearchScreen(onBackClick = onBackClick, filter = filter ?: "")
     }
 
     composable(route = HomeRoute.filter_search) {
         FilterSearchScreen(
             onBackClick = onBackClick,
-            onNavigateToSearch = onNavigateToSearch
+            onNavigateToSearch = onNavigateToSearchWithFilter
         )
     }
 

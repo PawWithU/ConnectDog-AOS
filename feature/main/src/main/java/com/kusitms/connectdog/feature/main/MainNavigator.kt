@@ -14,6 +14,7 @@ import com.kusitms.connectdog.feature.home.navigation.navigateFilterSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
+import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 
@@ -52,6 +53,10 @@ internal class MainNavigator(
 
     fun navigateHomeSearch() {
         navController.navigateSearch()
+    }
+
+    fun navigateHomeSearchWithFilter(filter: String){
+        navController.navigateSearchWithFilter(filter)
     }
 
     fun navigateHomeFilterSearch(){

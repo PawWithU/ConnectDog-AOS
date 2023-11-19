@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,14 +43,19 @@ import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
+import java.io.Serializable
+
+private val TAG = "Search"
 
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
-    filter: Filter? = null,
+    filter: String? = "",
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
+
+    Log.d(TAG, "filter = $filter")
 
     Column {
         TopAppBar { onBackClick() }
@@ -58,7 +64,7 @@ internal fun SearchScreen(
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
         ) {} // todo 검색 popup
-        if (filter != null) {
+        if (filter != null && filter.isNotEmpty()) {
             FilterBar(
                 modifier = Modifier.padding(
                     start = 13.dp,
@@ -66,7 +72,7 @@ internal fun SearchScreen(
                     top = 4.dp,
                     bottom = 6.dp
                 ),
-                filter = filter,
+                filter = Filter(),
                 onClick = { /*TODO*/ }
             )
         }

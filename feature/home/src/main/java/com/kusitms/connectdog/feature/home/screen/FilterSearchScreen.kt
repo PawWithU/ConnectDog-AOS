@@ -70,13 +70,15 @@ import com.kusitms.connectdog.feature.home.model.Filter
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 
+private val TAG = "FilterSearch"
 @Composable
 internal fun FilterSearchScreen(
     onBackClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToSearch: () -> Unit
+    onNavigateToSearch: (String) -> Unit
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
+    Log.d(TAG, "filter = $filter")
 
     val scrollState = rememberScrollState()
 
@@ -113,9 +115,8 @@ internal fun FilterSearchScreen(
                 .wrapContentSize(),
             onClickRefresh = {
                 viewModel.clearFilter()
-                Log.d("FilterSearch", "filter = $filter")
             },
-            onClickSearch = { onNavigateToSearch() }
+            onClickSearch = { onNavigateToSearch("성공!") }
         )
     }
 }
