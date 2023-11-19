@@ -15,16 +15,16 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 private val TAG = "SearchViewModel"
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    homeRepository: HomeRepository
+    val homeRepository: HomeRepository
 ) : ViewModel() {
     private var _filter = MutableStateFlow(Filter())
     val filter: StateFlow<Filter> get() = _filter
@@ -37,24 +37,7 @@ class SearchViewModel @Inject constructor(
 
     val announcementUiState: StateFlow<AnnouncementUiState> =
         flow {
-            emit(
-                homeRepository.getAnnouncementListWithFilter(
-                    departureLoc = filter.value.departure,
-                    arrivalLoc = filter.value.arrival,
-                    startDate = filter.value.startDate.toString(),
-                    endDate = filter.value.endDate.toString(),
-                    dogSize = filter.value.detail.dogSize?.toDisplayName(),
-                    isKennel = filter.value.detail.hasKennel,
-                    intermediaryName = filter.value.detail.organization,
-                    orderCondition = if (isDeadlineOrder.value) "마감순" else "최신순"
-                )
-            )
-        }.map {
-            if (it.isNotEmpty()) {
-                AnnouncementUiState.Announcements(it)
-            } else {
-                AnnouncementUiState.Empty
-            }
+            emit(loadAnnouncementList())
         }.catch {
             _errorFlow.emit(it)
         }.stateIn(
@@ -88,5 +71,32 @@ class SearchViewModel @Inject constructor(
 
     fun changeOrderCondition() {
         _isDeadlineOrder.value = !_isDeadlineOrder.value
+        viewModelScope.launch {
+            loadAnnouncementList()
+        }
     }
+
+    /**
+     * Network Communication
+     */
+    private suspend fun loadAnnouncementList(): AnnouncementUiState {
+        val orderCondition = if (isDeadlineOrder.value) "마감순" else "최신순"
+        val announcementList = homeRepository.getAnnouncementListWithFilter(
+            departureLoc = filter.value.departure,
+            arrivalLoc = filter.value.arrival,
+            startDate = filter.value.startDate.toString(),
+            endDate = filter.value.endDate.toString(),
+            dogSize = filter.value.detail.dogSize?.toDisplayName(),
+            isKennel = filter.value.detail.hasKennel,
+            intermediaryName = filter.value.detail.organization,
+            orderCondition = orderCondition
+        )
+
+        return if (announcementList.isNotEmpty()) {
+            AnnouncementUiState.Announcements(announcementList)
+        } else {
+            AnnouncementUiState.Empty
+        }
+    }
+
 }
