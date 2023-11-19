@@ -8,5 +8,5 @@ interface HomeRepository {
 
     suspend fun getAnnouncementListWithFilter(): List<Announcement>
 
-    suspend fun getReviewList(): List<Review>
+    suspend fun getReviewList(page: Int? = 1, size: Int? = 5): List<Review>
 }

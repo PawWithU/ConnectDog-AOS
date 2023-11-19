@@ -50,6 +50,7 @@ constructor(
         flow {
             emit(homeRepository.getReviewList())
         }.map {
+            Log.d(TAG, "reviewUiState = ${it.size}")
             if (it.isNotEmpty()) {
                 ReviewUiState.Reviews(it)
             } else {

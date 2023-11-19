@@ -17,7 +17,7 @@ internal class HomeRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getReviewList(): List<Review> {
-        TODO("Not yet implemented")
+    override suspend fun getReviewList(page: Int?, size: Int?): List<Review> {
+        return api.getReviewsHome(page ?: 1, size ?: 5).map { it.toData() }
     }
 }
