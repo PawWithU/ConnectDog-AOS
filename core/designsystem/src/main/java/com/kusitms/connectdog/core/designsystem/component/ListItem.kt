@@ -88,6 +88,25 @@ fun ListForUserItem(
 }
 
 @Composable
+fun ListForUserItem(
+    modifier: Modifier = Modifier,
+    imageUrl: String,
+    location: String,
+    date: String,
+    organization: String,
+    hasKennel: Boolean,
+    isValid: Boolean = true
+) {
+    ListItem(modifier = modifier, imageUrl = imageUrl, title = location, isValid = isValid) {
+        AnnouncementContent(
+            date = date,
+            organization = organization,
+            hasKennel = hasKennel
+        )
+    }
+}
+
+@Composable
 fun ListForOrganizationItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
