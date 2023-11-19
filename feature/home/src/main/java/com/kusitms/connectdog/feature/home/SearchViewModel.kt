@@ -81,11 +81,12 @@ class SearchViewModel @Inject constructor(
      */
     private suspend fun loadAnnouncementList(): AnnouncementUiState {
         val orderCondition = if (isDeadlineOrder.value) "마감순" else "최신순"
+
         val announcementList = homeRepository.getAnnouncementListWithFilter(
             departureLoc = filter.value.departure,
             arrivalLoc = filter.value.arrival,
-            startDate = filter.value.startDate.toString(),
-            endDate = filter.value.endDate.toString(),
+            startDate = filter.value.startDate?.toString(),
+            endDate = filter.value.endDate?.toString(),
             dogSize = filter.value.detail.dogSize?.toDisplayName(),
             isKennel = filter.value.detail.hasKennel,
             intermediaryName = filter.value.detail.organization,
