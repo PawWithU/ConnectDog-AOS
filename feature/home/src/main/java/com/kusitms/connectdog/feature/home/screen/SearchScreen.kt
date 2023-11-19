@@ -149,11 +149,11 @@ private fun FilterBar(
             .horizontalScroll(scrollState),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
         FilterTag(
             tag = locationFilter,
             isSelected = filter.departure.isNotEmpty()
         ) { onClick() }
+        FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
         FilterTag(
             tag = stringResource(id = R.string.search_detail),
             isSelected = filter.detail.isNotEmpty()
