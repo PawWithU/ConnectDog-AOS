@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,8 +14,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,11 +42,13 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
+import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import java.io.Serializable
+import java.time.LocalDate
 
 private val TAG = "SearchScreen"
 
@@ -66,13 +71,7 @@ internal fun SearchScreen(
         ) {} // todo 검색 popup
         if (filter != null && filter.isNotEmpty()) {
             FilterBar(
-                modifier = Modifier.padding(
-                    start = 13.dp,
-                    end = 13.dp,
-                    top = 4.dp,
-                    bottom = 6.dp
-                ),
-                filter = Filter(),
+                filter = filter,
                 onClick = { /*TODO*/ }
             )
         }
@@ -131,21 +130,23 @@ private fun FilterBar(
     onClick: () -> Unit,
     filter: Filter
 ) {
+    Log.d(TAG, "FilterBar: filter = $filter")
     val dateFilter: String =
         if (filter.startDate != null && filter.endDate != null) {
-            filter.startDate.toString() + "-" + filter.endDate.toString()
-        } else {
-            stringResource(id = R.string.search_location)
-        }
+            dateRangeDisplay(filter.startDate!!, filter.endDate!!)
+        } else stringResource(id = R.string.search_location)
+
     val locationFilter: String =
         if (filter.departure.isNotEmpty() && filter.arrival.isNotEmpty()) {
             filter.departure + " -> " + filter.arrival
-        } else {
-            stringResource(id = R.string.search_date)
-        }
+        } else stringResource(id = R.string.search_date)
 
+    val scrollState = rememberScrollState()
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .padding(start = 13.dp, end = 13.dp, top = 4.dp, bottom = 6.dp)
+            .fillMaxWidth()
+            .horizontalScroll(scrollState),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
@@ -155,7 +156,7 @@ private fun FilterBar(
         ) { onClick() }
         FilterTag(
             tag = stringResource(id = R.string.search_detail),
-            isSelected = filter.detail != null
+            isSelected = filter.detail.isNotEmpty()
         ) { onClick() }
     }
 }
@@ -178,7 +179,8 @@ private fun FilterTag(
             text = tag,
             style = MaterialTheme.typography.titleMedium,
             fontSize = 12.sp,
-            color = color
+            color = color,
+            maxLines = 1
         )
         Spacer(modifier = Modifier.width(8.dp))
         Icon(
@@ -299,4 +301,14 @@ private fun SearchScreenPreview() {
             }
         }
     }
+}
+
+
+/**
+ * UI display
+ */
+private fun dateRangeDisplay(startDate: LocalDate, endDate: LocalDate): String {
+    val datePattern = "M월 dd일"
+    if (startDate == endDate) return startDate.dateFormat(datePattern)
+    return startDate.dateFormat(datePattern) + " - " + endDate.dateFormat(datePattern)
 }
