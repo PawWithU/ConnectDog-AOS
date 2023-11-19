@@ -40,6 +40,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationC
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTag
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
+import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -88,25 +89,6 @@ internal fun DetailScreen(
             IntermediatorInfo(onIntermediatorProfileClick)
         }
     }
-}
-
-@Composable
-fun NormalButton(
-    content: String,
-    color: Color = PetOrange,
-    onClick: () -> Unit = {},
-    textColor: Color = MaterialTheme.colorScheme.onPrimary,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(56.dp)
-) {
-    ConnectDogBottomButton(
-        onClick = onClick,
-        content = content,
-        color = color,
-        modifier = modifier,
-        textColor = textColor
-    )
 }
 
 @Composable
