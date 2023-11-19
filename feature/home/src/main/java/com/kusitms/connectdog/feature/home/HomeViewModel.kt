@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-val TAG = "HomeViewModel"
+private val TAG = "HomeViewModel"
 
 @HiltViewModel
 class HomeViewModel

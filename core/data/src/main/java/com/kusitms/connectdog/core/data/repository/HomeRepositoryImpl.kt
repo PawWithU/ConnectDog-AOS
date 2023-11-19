@@ -5,7 +5,6 @@ import com.kusitms.connectdog.core.data.mapper.toData
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.model.Review
 import javax.inject.Inject
-import retrofit2.http.Query
 
 internal class HomeRepositoryImpl @Inject constructor(
     private val api: ApiService
@@ -33,7 +32,7 @@ internal class HomeRepositoryImpl @Inject constructor(
             startDate, endDate,
             dogSize, isKennel, intermediaryName,
             orderCondition,
-            page ?: 0, size ?:50,
+            page ?: 0, size ?: 50,
         ).map { it.toData() }
     }
 
