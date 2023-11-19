@@ -26,6 +26,7 @@ fun NavController.navigateSearch() {
 }
 
 fun NavController.navigateSearchWithFilter(filter: Filter) {
+    this.popBackStack()
     Log.d(TAG, "navigateSearchWithFilter()")
     val filterJson = localDateGson.toJson(filter)
     navigate("${HomeRoute.search}/${filterJson}")
