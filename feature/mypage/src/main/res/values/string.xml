@@ -5,4 +5,23 @@
     <string name="setting">설정</string>
     <string name="manage_account">계정 정보 관리</string>
     <string name="notification">알림</string>
+    <string name="badge">내 활동 배지</string>
+
+    <!--volunteer badge-->
+    <string name="volunteer_title">이동봉사 활동</string>
+    <string name="first">첫 연결의 설렘\n1마리 연결</string>
+    <string name="second">초심자의 열정\n3마리 연결</string>
+    <string name="third">소중함을 아니까\n5마리 연결</string>
+    <string name="fourth">신뢰의 시작\n10마리 연결</string>
+    <string name="fifth">열정 봉사자\n20마리 연결</string>
+    <string name="sixth">이동봉사 마스터\n30마리 연결</string>
+
+    <!--volunteer review badge-->
+    <string name="review_title">이동봉사 후기 등록</string>
+    <string name="review_first">첫 기록의 뿌듯함\n1개 등록</string>
+    <string name="review_second">제법 쓸 줄 알아요\n1개 등록</string>
+    <string name="review_third">봉사 꿀팁 보유자\n1개 등록</string>
+    <string name="review_fourth">믿음직한 후기\n1개 등록</string>
+    <string name="review_fifth">성실 기록가\n1개 등록</string>
+    <string name="review_sixth">코넥독 후기왕\n1개 등록</string>
 </resources>
