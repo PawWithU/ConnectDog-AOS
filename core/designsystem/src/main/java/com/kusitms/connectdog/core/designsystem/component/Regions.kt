@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -89,7 +88,7 @@ private fun SiDoItem(text: String, isSelected: Boolean, onClick: () -> Unit) {
             .size(width = 110.dp, height = 45.dp)
             .background(color = if (isSelected) MaterialTheme.colorScheme.primary else Gray7)
             .border(BorderStroke(width = 1.dp, color = Gray6))
-            .clickable { onClick() },
+            .clickable { onClick() }
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
@@ -109,11 +108,10 @@ private fun GuGunItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-
     Box(
         modifier = modifier.height(45.dp).fillMaxWidth()
             .background(if (isSelected) Orange10 else MaterialTheme.colorScheme.surface)
-            .clickable { onClick() },
+            .clickable { onClick() }
     ) {
         Text(
             modifier = Modifier.align(Alignment.CenterStart).padding(horizontal = 20.dp),
@@ -131,7 +129,6 @@ private fun GuGunItem(
 private fun ConnectDogRegionPreview() {
     ConnectDogRegions({})
 }
-
 
 val regions = linkedMapOf(
     "서울" to listOf(
@@ -258,5 +255,5 @@ val regions = linkedMapOf(
         "경남 전체", "창원시", "의창구", "성산구", "거제시", "거창군", "고성군", "김해시", "남해군", "밀양시", "사천시", "산청군", "양산시",
         "의령군", "진주시", "진해구", "창녕군", "창원시", "통영시", "하동군", "함안군", "함양군", "합천군"
     ),
-    "제주" to listOf("제주 전체"),
+    "제주" to listOf("제주 전체")
 )

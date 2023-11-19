@@ -75,7 +75,7 @@ internal fun FilterSearchRoute(
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToSearch: (Filter) -> Unit
-){
+) {
     Log.d(TAG, "filterArg = $filterArg")
     viewModel.setFilter(filterArg!!)
     FilterSearchScreen(
@@ -100,7 +100,7 @@ private fun FilterSearchScreen(
             modifier = Modifier
                 .verticalScroll(scrollState)
                 .height(1400.dp)
-                .weight(1f),
+                .weight(1f)
         ) {
             TopAppBar(Gray8, onBackClick)
             Spacer(modifier = Modifier.size(14.dp))
@@ -111,12 +111,7 @@ private fun FilterSearchScreen(
             ScheduleCard(filter.startDate, filter.endDate) { start, end ->
                 viewModel.setFilter(start, end)
             }
-            DetailCard(
-                filter.detail,
-                onSelectDogSize = {},
-                onSelectKennel = {},
-                onSelectOrganization = {},
-            ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
+            DetailCard(filter.detail) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
                 viewModel.setFilter(Detail(dogSize, hasKennel, organization))
                 Log.d("FilterSearch", "${filter.detail}")
             }
@@ -160,8 +155,11 @@ private fun LocationCard(
     Log.d("FilterSearch", "LocationCard : departure = $departure, depart = $depart")
     var destination = dest
     var content =
-        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) "$depart -> $dest"
-        else ""
+        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) {
+            "$depart -> $dest"
+        } else {
+            ""
+        }
 
     ConnectDogExpandableCard(
         modifier = Modifier.fillMaxWidth(),
@@ -187,7 +185,7 @@ private fun LocationCard(
             ) {
                 LocationContent(
                     departureLocation = departure,
-                    destinationLocation = destination,
+                    destinationLocation = destination
                 ) { st, end ->
                     departure = st
                     destination = end
@@ -205,18 +203,18 @@ private fun ScheduleCard(
 ) {
     var isExpended by remember { mutableStateOf(false) }
 
-    var startDate: LocalDate =start ?: LocalDate.now()
+    var startDate: LocalDate = start ?: LocalDate.now()
     var endDate: LocalDate = end ?: LocalDate.now()
     var content =
-            if (start != null && end != null) dateRangeDisplay(start, end) else ""
-
+        if (start != null && end != null) dateRangeDisplay(start, end) else ""
 
     ConnectDogExpandableCard(
         isExpended = isExpended,
         onClick = { isExpended = !isExpended },
         defaultContent = {
             DefaultCardContent(titleRes = R.string.filter_schedule, content = content)
-        }, expandedContent = {
+        },
+        expandedContent = {
             ExpandedCardContent(
                 modifier = Modifier.wrapContentHeight(),
                 titleRes = R.string.filter_schedule,
@@ -230,7 +228,8 @@ private fun ScheduleCard(
                     onClickNext(startDate, endDate)
                     content = dateRangeDisplay(startDate, endDate)
                     isExpended = false
-                }) {
+                }
+            ) {
                 ConnectDogCalendar(
                     startDate = startDate,
                     endDate = endDate
@@ -240,16 +239,14 @@ private fun ScheduleCard(
                     endDate = end
                 }
             }
-        })
+        }
+    )
 }
 
 @Composable
 private fun DetailCard(
     detail: Detail,
-    onSelectDogSize: (Detail.DogSize) -> Unit,
-    onSelectKennel: (Boolean) -> Unit,
-    onSelectOrganization: (String) -> Unit,
-    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit,
+    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit
 ) {
     var isExpended by remember { mutableStateOf(false) }
 
@@ -257,8 +254,6 @@ private fun DetailCard(
     var hasKennel = detail.hasKennel
     var organization = detail.organization
     val detailContent = detailContentDisplay(detail.dogSize, detail.hasKennel, detail.organization)
-
-
 
     ConnectDogExpandableCard(
         isExpended = isExpended,
@@ -275,7 +270,8 @@ private fun DetailCard(
                 onClickNext = {
                     isExpended = false
                     onClickNext(dogSize, hasKennel, organization)
-                }) {
+                }
+            ) {
                 Column {
                     DetailContent(titleRes = R.string.filter_dog_size) {
                         SelectDogSize(dogSize) {
@@ -294,7 +290,8 @@ private fun DetailCard(
                     }
                 }
             }
-        })
+        }
+    )
 }
 
 @Composable
@@ -335,7 +332,7 @@ private fun ExpandedCardContent(
     spacer: Int,
     onClickSkip: () -> Unit,
     onClickNext: () -> Unit,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Column(
         modifier = modifier.padding(20.dp)
@@ -452,7 +449,7 @@ private fun SelectLocation(
 @Composable
 private fun DialogBottomButton(
     onClickSkip: () -> Unit,
-    onClickNext: () -> Unit,
+    onClickNext: () -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -530,7 +527,7 @@ private fun BottomBar(
             Text(
                 text = stringResource(id = R.string.filter_button_refresh),
                 style = MaterialTheme.typography.titleSmall,
-                fontSize = 14.sp,
+                fontSize = 14.sp
             )
         }
 
@@ -542,16 +539,13 @@ private fun BottomBar(
             content = stringResource(id = R.string.filter_button_search)
         )
     }
-
 }
-
 
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
     FilterSearchScreen({}, hiltViewModel(), {})
 }
-
 
 /**
  * UI display

@@ -5,7 +5,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogRegions
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -26,8 +25,11 @@ internal fun RegionBottomSheet(
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         val titleRes =
-            if (regionType == RegionType.DEPARTURE) R.string.filter_select_departure_region
-            else R.string.filter_select_destination_region
+            if (regionType == RegionType.DEPARTURE) {
+                R.string.filter_select_departure_region
+            } else {
+                R.string.filter_select_destination_region
+            }
         RegionHeader(titleRes = titleRes) {
             onDismissRequest()
         }

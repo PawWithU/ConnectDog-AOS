@@ -42,9 +42,9 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
-import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.SearchViewModel
+import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import java.time.LocalDate
 
@@ -55,7 +55,7 @@ internal fun SearchScreen(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
-    onNavigateToFilter: (Filter) -> Unit,
+    onNavigateToFilter: (Filter) -> Unit
 ) {
     viewModel.setFilter(filterArg!!)
     val filter by viewModel.filter.collectAsStateWithLifecycle()
@@ -137,12 +137,16 @@ private fun FilterBar(
     val dateFilter: String =
         if (filter.startDate != null && filter.endDate != null) {
             dateRangeDisplay(filter.startDate!!, filter.endDate!!)
-        } else stringResource(id = R.string.search_location)
+        } else {
+            stringResource(id = R.string.search_location)
+        }
 
     val locationFilter: String =
         if (filter.departure.isNotEmpty() && filter.arrival.isNotEmpty()) {
             filter.departure + " -> " + filter.arrival
-        } else stringResource(id = R.string.search_date)
+        } else {
+            stringResource(id = R.string.search_date)
+        }
 
     val scrollState = rememberScrollState()
     Row(
@@ -305,7 +309,6 @@ private fun SearchScreenPreview() {
         }
     }
 }
-
 
 /**
  * UI display

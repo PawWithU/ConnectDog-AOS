@@ -1,12 +1,9 @@
 package com.kusitms.connectdog.feature.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.repository.ExampleRepository
 import com.kusitms.connectdog.core.data.repository.HomeRepository
-import com.kusitms.connectdog.feature.home.model.Detail
-import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.state.ReviewUiState
@@ -20,8 +17,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import java.time.LocalDate
 
 @HiltViewModel
 class HomeViewModel
@@ -83,6 +78,4 @@ constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ReviewUiState.Loading
         )
-
-
 }

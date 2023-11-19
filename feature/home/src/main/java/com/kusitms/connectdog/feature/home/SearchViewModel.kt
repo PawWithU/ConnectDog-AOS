@@ -8,7 +8,6 @@ import com.kusitms.connectdog.feature.home.model.Detail
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,11 +18,12 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.time.LocalDate
+import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     homeRepository: HomeRepository
-): ViewModel() {
+) : ViewModel() {
     private var _filter = MutableStateFlow(Filter())
     val filter: StateFlow<Filter> get() = _filter
 
@@ -49,7 +49,7 @@ class SearchViewModel @Inject constructor(
 
     fun setFilter(filter: Filter) {
         _filter.value = filter
-        Log.d("HomeViewModel", "filter = ${filter}")
+        Log.d("HomeViewModel", "filter = $filter")
     }
 
     fun setFilter(detail: Detail) {

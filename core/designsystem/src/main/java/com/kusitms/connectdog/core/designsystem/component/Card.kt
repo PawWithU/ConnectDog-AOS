@@ -10,8 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,15 +41,17 @@ fun ConnectDogExpandableCard(
     defaultContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit
 ) {
-    var expanded by remember { mutableStateOf(isExpended) }
     ConnectDogCard(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
-            .clickable { onClick() },
-    ){
-        if (isExpended) expandedContent()
-        else defaultContent()
+            .clickable { onClick() }
+    ) {
+        if (isExpended) {
+            expandedContent()
+        } else {
+            defaultContent()
+        }
     }
 }
 
@@ -60,8 +60,8 @@ fun ConnectDogCardButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     onSelected: () -> Unit,
-    content: @Composable () -> Unit,
-){
+    content: @Composable () -> Unit
+) {
     Surface(
         modifier = modifier.clickable { onSelected() },
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),

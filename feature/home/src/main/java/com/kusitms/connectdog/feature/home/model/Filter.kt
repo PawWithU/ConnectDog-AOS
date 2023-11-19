@@ -8,7 +8,7 @@ data class Filter(
     var startDate: LocalDate? = null, // 2023-11-08
     var endDate: LocalDate? = null, // 2023-11-08
     var detail: Detail = Detail()
-){
+) {
     fun isNotEmpty(): Boolean {
         return departure.isNotEmpty() || arrival.isNotEmpty() || startDate != null || endDate != null || detail.isNotEmpty()
     }
@@ -35,4 +35,3 @@ data class Detail(
         }
     }
 }
-

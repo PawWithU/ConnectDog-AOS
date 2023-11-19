@@ -109,10 +109,11 @@ fun ConnectDogOutlinedButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     onClick: () -> Unit,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Button(
-        onClick = onClick, modifier = modifier,
+        onClick = onClick,
+        modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
         colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
@@ -120,7 +121,6 @@ fun ConnectDogOutlinedButton(
         content()
     }
 }
-
 
 @Preview
 @Composable

@@ -9,11 +9,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.localDateGson
 import com.kusitms.connectdog.feature.home.model.Filter
-import com.kusitms.connectdog.feature.home.screen.FilterSearchRoute
 import com.kusitms.connectdog.feature.home.screen.ApplyScreen
 import com.kusitms.connectdog.feature.home.screen.CertificationScreen
 import com.kusitms.connectdog.feature.home.screen.CompleteApplyScreen
 import com.kusitms.connectdog.feature.home.screen.DetailScreen
+import com.kusitms.connectdog.feature.home.screen.FilterSearchRoute
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
 import com.kusitms.connectdog.feature.home.screen.ReviewScreen
 import com.kusitms.connectdog.feature.home.screen.SearchScreen
@@ -26,7 +26,6 @@ fun NavController.navigateHome(navOptions: NavOptions) {
 
 fun NavController.navigateSearch() {
     Log.d(TAG, "navigateSearch")
-    //navigate(HomeRoute.search)
     navigate(HomeRoute.search) {
         popUpTo(HomeRoute.route) { inclusive = false }
     }
@@ -36,7 +35,7 @@ fun NavController.navigateSearchWithFilter(filter: Filter) {
     this.popBackStack()
     Log.d(TAG, "navigateSearchWithFilter()")
     val filterJson = localDateGson.toJson(filter)
-    navigate("${HomeRoute.search}/${filterJson}")
+    navigate("${HomeRoute.search}/$filterJson")
 }
 
 fun NavController.navigateFilterSearch() {
@@ -46,7 +45,7 @@ fun NavController.navigateFilterSearch() {
 fun NavController.navigateFilter(filter: Filter) {
     Log.d(TAG, "navigateFilterSearchWithFilter()")
     val filterJson = localDateGson.toJson(filter)
-    navigate("${HomeRoute.filter_search}/${filterJson}")
+    navigate("${HomeRoute.filter_search}/$filterJson")
 }
 
 fun NavController.navigateReview() {
@@ -84,7 +83,6 @@ fun NavGraphBuilder.homeNavGraph(
 ) {
     composable(route = HomeRoute.route) {
         HomeRoute(
-            onBackClick,
             onNavigateToSearch,
             onNavigateToFilterSearch,
             onNavigateToReview,
@@ -99,9 +97,11 @@ fun NavGraphBuilder.homeNavGraph(
 
     composable(
         route = "${HomeRoute.search}/{filter}",
-        arguments = listOf(navArgument("filter") {
-            type = NavType.StringType
-        })
+        arguments = listOf(
+            navArgument("filter") {
+                type = NavType.StringType
+            }
+        )
     ) { backStackEntry ->
         val filterJson = backStackEntry.arguments?.getString("filter")
         val filter = localDateGson.fromJson(filterJson, Filter::class.java)
@@ -122,9 +122,11 @@ fun NavGraphBuilder.homeNavGraph(
 
     composable(
         route = "${HomeRoute.filter_search}/{filter}",
-        arguments = listOf(navArgument("filter") {
-            type = NavType.StringType
-        })
+        arguments = listOf(
+            navArgument("filter") {
+                type = NavType.StringType
+            }
+        )
     ) { backStackEntry ->
         val filterJson = backStackEntry.arguments?.getString("filter")
         val filter = localDateGson.fromJson(filterJson, Filter::class.java)
@@ -135,7 +137,6 @@ fun NavGraphBuilder.homeNavGraph(
             onNavigateToSearch = onNavigateToSearchWithFilter
         )
     }
-
 
     composable(route = HomeRoute.review) {
         ReviewScreen(

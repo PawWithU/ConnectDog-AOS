@@ -127,7 +127,6 @@ fun NormalTextField(
     )
 }
 
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ConnectDogIconTextField(
@@ -139,7 +138,7 @@ fun ConnectDogIconTextField(
     imeAction: ImeAction = ImeAction.Done,
     onImeAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
+    visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -176,7 +175,6 @@ fun ConnectDogIconTextField(
         visualTransformation = visualTransformation
     )
 }
-
 
 @Composable
 fun ConnectDogTextFieldWithButton(
