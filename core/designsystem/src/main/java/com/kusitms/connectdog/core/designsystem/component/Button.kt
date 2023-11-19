@@ -3,6 +3,7 @@ package com.kusitms.connectdog.core.designsystem.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -69,6 +70,25 @@ fun ConnectDogIconBottomButton(
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = content, color = textColor, style = Typography.titleSmall)
     }
+}
+
+@Composable
+fun NormalButton(
+    content: String,
+    color: Color = MaterialTheme.colorScheme.primary,
+    onClick: () -> Unit = {},
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
+    modifier: Modifier = Modifier
+        .fillMaxWidth()
+        .height(56.dp)
+) {
+    ConnectDogBottomButton(
+        onClick = onClick,
+        content = content,
+        color = color,
+        modifier = modifier,
+        textColor = textColor
+    )
 }
 
 @Composable

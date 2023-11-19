@@ -72,6 +72,7 @@ internal fun HomeRoute(
     onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
+    onNavigateToNotification: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -84,7 +85,7 @@ internal fun HomeRoute(
     }
 
     Column {
-        TopAppBar(onClickSearch = onNavigateToFilterSearch)
+        TopAppBar(onClickSearch = onNavigateToSearch, onNotificationClick = onNavigateToNotification)
         HomeScreen(
             announcementUiState = announcementUiState,
             reviewUiState = reviewUiState,
@@ -120,7 +121,8 @@ private fun HomeScreen(
 
 @Composable
 private fun TopAppBar(
-    onClickSearch: () -> Unit
+    onClickSearch: () -> Unit,
+    onNotificationClick: () -> Unit
 ) {
     ConnectDogTopAppBar(
         titleRes = null,
@@ -136,7 +138,9 @@ private fun TopAppBar(
                     contentDescription = "Navigate to Search"
                 )
             }
-            IconButton(onClick = {}) {
+            IconButton(onClick = {
+                onNotificationClick()
+            }) {
                 Icon(
                     imageVector = Icons.Outlined.Notifications,
                     contentDescription = "Navigate to Search"
@@ -278,7 +282,7 @@ private fun BannerGuideline() {
 }
 
 @Composable
-private fun MoveContent(
+fun MoveContent(
     onClick: () -> Unit,
     titleRes: Int
 ) {
@@ -351,7 +355,7 @@ private fun AnnouncementListContent(
 }
 
 @Composable
-private fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal, onClick: () -> Unit) {
+fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal, onClick: () -> Unit) {
     val list = List(4) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
     }
@@ -449,7 +453,7 @@ private fun ReviewCardContent(
 private fun HomeScreenPreview() {
     ConnectDogTheme {
         Column(modifier = Modifier.background(Color.White)) {
-            TopAppBar(onClickSearch = {})
+            TopAppBar(onClickSearch = {}, onNotificationClick = {})
             HomeScreen(
                 announcementUiState = AnnouncementUiState.Empty,
                 reviewUiState = ReviewUiState.Empty,
