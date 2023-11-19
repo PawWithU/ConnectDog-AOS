@@ -40,12 +40,15 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:util"))
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
