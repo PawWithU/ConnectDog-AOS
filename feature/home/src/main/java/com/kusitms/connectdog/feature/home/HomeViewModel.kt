@@ -85,31 +85,4 @@ constructor(
         )
 
 
-    private var _filter = MutableStateFlow(Filter())
-    val filter: StateFlow<Filter> get() = _filter
-
-    fun setFilter(filter: Filter) {
-        _filter.value = filter
-        Log.d("HomeViewModel", "filter = ${filter}")
-    }
-
-    fun setFilter(detail: Detail) {
-        _filter.value = filter.value.copy(detail = detail)
-        Log.d("HomeViewModel", "filter = ${filter.value}")
-    }
-
-    fun setFilter(startDate: LocalDate, endDate: LocalDate) {
-        Log.d("HomeViewModel", "filter = ${filter.value}")
-        _filter.value = filter.value.copy(startDate = startDate, endDate = endDate)
-    }
-
-    fun setFilter(departure: String, arrival: String) {
-        _filter.value = filter.value.copy(departure = departure, arrival = arrival)
-    }
-
-    fun clearFilter() {
-        _filter.value = Filter()
-    }
-
-
 }

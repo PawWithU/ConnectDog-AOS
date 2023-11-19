@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,10 +43,9 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.feature.home.model.Filter
-import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.feature.home.SearchViewModel
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
-import java.io.Serializable
 import java.time.LocalDate
 
 private val TAG = "SearchScreen"
@@ -56,7 +54,7 @@ private val TAG = "SearchScreen"
 internal fun SearchScreen(
     onBackClick: () -> Unit,
     filter: Filter? = Filter(),
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToFilter: (Filter) -> Unit,
 ) {
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()

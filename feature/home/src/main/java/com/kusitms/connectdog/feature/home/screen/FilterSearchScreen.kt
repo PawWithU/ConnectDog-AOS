@@ -29,8 +29,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,8 +56,8 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray8
 import com.kusitms.connectdog.core.util.dateFormat
-import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.feature.home.SearchViewModel
 import com.kusitms.connectdog.feature.home.component.RegionBottomSheet
 import com.kusitms.connectdog.feature.home.component.RegionType
 import com.kusitms.connectdog.feature.home.component.SearchOrganization
@@ -74,7 +72,7 @@ private val TAG = "FilterSearch"
 internal fun FilterSearchScreen(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: SearchViewModel = hiltViewModel(),
     onNavigateToSearch: (Filter) -> Unit
 ) {
     Log.d(TAG, "filterArg = $filterArg")
