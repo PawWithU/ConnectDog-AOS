@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.mypage
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,7 +33,8 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SettingScreen(
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit,
+    onManageAccountClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -44,12 +46,12 @@ fun SettingScreen(
             )
         }
     ) {
-        Content()
+        Content(onManageAccountClick)
     }
 }
 
 @Composable
-private fun Content() {
+private fun Content(onClick: () -> Unit) {
     var checked by remember { mutableStateOf(true) }
 
     Column(
@@ -96,6 +98,7 @@ private fun Content() {
             text = "계정 정보 관리",
             fontSize = 16.sp,
             color = Gray2,
+            modifier = Modifier.clickable { onClick() }
         )
         Spacer(modifier = Modifier.height(30.dp))
         Text(
@@ -115,6 +118,6 @@ private fun Content() {
 @Composable
 private fun test() {
     ConnectDogTheme {
-        SettingScreen()
+        SettingScreen(onBackClick = {}, onManageAccountClick = {})
     }
 }
