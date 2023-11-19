@@ -45,12 +45,12 @@ import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import java.io.Serializable
 
-private val TAG = "Search"
+private val TAG = "SearchScreen"
 
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
-    filter: String? = "",
+    filter: Filter? = Filter(),
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()

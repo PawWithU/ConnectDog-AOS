@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateDetail
 import com.kusitms.connectdog.feature.home.navigation.navigateFilterSearch
@@ -55,7 +56,7 @@ internal class MainNavigator(
         navController.navigateSearch()
     }
 
-    fun navigateHomeSearchWithFilter(filter: String){
+    fun navigateHomeSearchWithFilter(filter: Filter){
         navController.navigateSearchWithFilter(filter)
     }
 

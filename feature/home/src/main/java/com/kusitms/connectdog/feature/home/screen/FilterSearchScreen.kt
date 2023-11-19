@@ -75,7 +75,7 @@ private val TAG = "FilterSearch"
 internal fun FilterSearchScreen(
     onBackClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToSearch: (String) -> Unit
+    onNavigateToSearch: (Filter) -> Unit
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
     Log.d(TAG, "filter = $filter")
@@ -116,7 +116,7 @@ internal fun FilterSearchScreen(
             onClickRefresh = {
                 viewModel.clearFilter()
             },
-            onClickSearch = { onNavigateToSearch("성공!") }
+            onClickSearch = { onNavigateToSearch(filter) }
         )
     }
 }

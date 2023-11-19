@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.gson.Gson
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.screen.FilterSearchScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
@@ -24,9 +25,10 @@ fun NavController.navigateSearch() {
     navigate(HomeRoute.search)
 }
 
-fun NavController.navigateSearchWithFilter(filter: String) {
+fun NavController.navigateSearchWithFilter(filter: Filter) {
     Log.d(TAG, "navigateSearchWithFilter()")
-    navigate("${HomeRoute.search}/$filter")
+    val filterJson = Gson().toJson(filter)
+    navigate("${HomeRoute.search}/${filterJson}")
 }
 
 fun NavController.navigateFilterSearch() {
@@ -44,7 +46,7 @@ fun NavController.navigateDetail() {
 fun NavGraphBuilder.homeNavGraph(
     onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
-    onNavigateToSearchWithFilter: (String) -> Unit,
+    onNavigateToSearchWithFilter: (Filter) -> Unit,
     onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
@@ -71,9 +73,10 @@ fun NavGraphBuilder.homeNavGraph(
             type = NavType.StringType
         })
     ) { backStackEntry ->
-        val filter = backStackEntry.arguments?.getString("filter")
+        val filterJson = backStackEntry.arguments?.getString("filter")
+        val filter = Gson().fromJson(filterJson, Filter::class.java)
         Log.d(TAG, "homeNavGraph filter = $filter")
-        SearchScreen(onBackClick = onBackClick, filter = filter ?: "")
+        SearchScreen(onBackClick = onBackClick, filter = filter ?: Filter())
     }
 
     composable(route = HomeRoute.filter_search) {
