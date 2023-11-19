@@ -56,6 +56,7 @@ dependencies {
 
     implementation(libs.androidx.compose.navigation)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.google.gson)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
