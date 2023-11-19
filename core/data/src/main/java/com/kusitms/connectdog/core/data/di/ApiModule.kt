@@ -1,24 +1,24 @@
 package com.kusitms.connectdog.core.data.di
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.kusitms.connectdog.core.data.api.ApiService
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Converter
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
-    private const val BASE_URL = "https://raw.githubusercontent.com"
+    private const val BASE_URL = "https://dev-api.connectdog.site"
 
     @Provides
     @Singleton
@@ -37,19 +37,21 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideConverterFactory(json: Json): Converter.Factory {
-        return json.asConverterFactory("application/json".toMediaType())
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .addLast(KotlinJsonAdapterFactory())
+            .build()
     }
 
     @Provides
     @Singleton
     fun provideApiService(
         okHttpClient: OkHttpClient,
-        converterFactory: Converter.Factory
+        moshi: Moshi
     ): ApiService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient).build()
             .create(ApiService::class.java)
     }
