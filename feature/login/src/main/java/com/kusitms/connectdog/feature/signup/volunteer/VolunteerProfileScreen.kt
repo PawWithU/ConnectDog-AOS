@@ -25,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -39,7 +38,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
     val interactionSource = remember { MutableInteractionSource() }
 
     val profileImageId = if (viewModel.selectedImageIndex.value == null) {
-        R.drawable.ic_circle
+        com.kusitms.connectdog.core.designsystem.R.drawable.ic_circle
     } else {
         profileImageList[viewModel.selectedImageIndex.value!!]
     }
@@ -62,7 +61,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
                 .background(Color.White)
         ) {
             ConnectDogTopAppBar(
-                titleRes = R.string.volunteer_signup,
+                titleRes = com.kusitms.connectdog.core.designsystem.R.string.volunteer_signup,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = { navigator.popBackStack() }

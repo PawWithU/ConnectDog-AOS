@@ -63,20 +63,18 @@ import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.feature.home.HomeViewModel
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
-import com.kusitms.connectdog.feature.home.state.ExampleUiState
 import com.kusitms.connectdog.feature.home.state.ReviewUiState
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 internal fun HomeRoute(
-    onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val exampleUiState by viewModel.exampleUiState.collectAsStateWithLifecycle()
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
     val reviewUiState by viewModel.reviewUiState.collectAsStateWithLifecycle()
 
@@ -86,12 +84,10 @@ internal fun HomeRoute(
     }
 
     Column {
-        TopAppBar(onClickSearch = onNavigateToSearch)
+        TopAppBar(onClickSearch = onNavigateToFilterSearch)
         HomeScreen(
-            exampleUiState = exampleUiState,
             announcementUiState = announcementUiState,
             reviewUiState = reviewUiState,
-            onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearch,
             onNavigateToReview = onNavigateToReview,
             onNavigateToDetail = onNavigateToDetail
@@ -101,10 +97,8 @@ internal fun HomeRoute(
 
 @Composable
 private fun HomeScreen(
-    exampleUiState: ExampleUiState,
     announcementUiState: AnnouncementUiState,
     reviewUiState: ReviewUiState,
-    onBackClick: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit
@@ -457,10 +451,8 @@ private fun HomeScreenPreview() {
         Column(modifier = Modifier.background(Color.White)) {
             TopAppBar(onClickSearch = {})
             HomeScreen(
-                exampleUiState = ExampleUiState.Empty,
                 announcementUiState = AnnouncementUiState.Empty,
                 reviewUiState = ReviewUiState.Empty,
-                {},
                 {},
                 {},
                 {}

@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.home
+package com.kusitms.connectdog.feature.home.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

@@ -8,14 +8,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateApply
 import com.kusitms.connectdog.feature.home.navigation.navigateCertification
 import com.kusitms.connectdog.feature.home.navigation.navigateComplete
 import com.kusitms.connectdog.feature.home.navigation.navigateDetail
+import com.kusitms.connectdog.feature.home.navigation.navigateFilter
+import com.kusitms.connectdog.feature.home.navigation.navigateFilterSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
+import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 
@@ -54,6 +58,18 @@ internal class MainNavigator(
 
     fun navigateHomeSearch() {
         navController.navigateSearch()
+    }
+
+    fun navigateHomeSearchWithFilter(filter: Filter) {
+        navController.navigateSearchWithFilter(filter)
+    }
+
+    fun navigateHomeFilterSearch() {
+        navController.navigateFilterSearch()
+    }
+
+    fun navigateHomeFilter(filter: Filter) {
+        navController.navigateFilter(filter)
     }
 
     fun navigateHomeReview() {

@@ -104,11 +104,33 @@ fun ConnectDogOutlinedButton(
     }
 }
 
+@Composable
+fun ConnectDogOutlinedButton(
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    onClick: () -> Unit,
+    content: @Composable () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        shape = RoundedCornerShape(12.dp),
+        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
+        colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
+    ) {
+        content()
+    }
+}
+
 @Preview
 @Composable
 private fun BottomButtonPreview() {
     ConnectDogTheme {
-        ConnectDogBottomButton(onClick = {}, content = "간편 회원가입하기", modifier = Modifier.size(230.dp, 56.dp))
+        ConnectDogBottomButton(
+            onClick = {},
+            content = "간편 회원가입하기",
+            modifier = Modifier.size(230.dp, 56.dp)
+        )
     }
 }
 
