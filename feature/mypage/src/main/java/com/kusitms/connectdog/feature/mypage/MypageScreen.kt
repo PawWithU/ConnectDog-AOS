@@ -3,6 +3,7 @@ package com.kusitms.connectdog.feature.mypage
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,31 +43,46 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 internal fun MypageRoute(
     padding: PaddingValues,
     onClick: () -> Unit,
+    onEditProfileClick: () -> Unit,
+    onManageAccountClick: () -> Unit,
+    onNotificationClick: () -> Unit,
+    onSettingClick: () -> Unit,
+    onBadgeClick:() -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     MypageScreen(
         padding = padding,
-        onClick = onClick
+        onClick = onClick,
+        onEditProfileClick = onEditProfileClick,
+        onSettingClick = onSettingClick,
+        onManageAccountClick = onManageAccountClick,
+        onNotificationClick = onNotificationClick,
+        onBadgeClick = onBadgeClick
     )
 }
 
 @Composable
-private fun TopBar() {
+private fun TopBar(
+    onManageAccountClick: () -> Unit,
+    onNotificationClick: () -> Unit
+) {
     ConnectDogTopAppBar(
-        titleRes = R.string.mypage,
-        navigationType = TopAppBarNavigationType.HOME,
+        titleRes = R.string.my_page,
+        navigationType = TopAppBarNavigationType.MYPAGE,
         navigationIconContentDescription = "Navigation icon mypage",
         actionButtons = {
             IconButton(onClick = {}) {
                 Icon(
                     imageVector = Icons.Outlined.Notifications,
-                    contentDescription = "Navigate to Search"
+                    contentDescription = "Navigate to Search",
+                    modifier = Modifier.clickable { onNotificationClick() }
                 )
             }
             IconButton(onClick = {}) {
                 Icon(
                     imageVector = Icons.Outlined.Settings,
-                    contentDescription = "Navigate to Search"
+                    contentDescription = "Navigate to Search",
+                    modifier = Modifier.clickable{ onManageAccountClick() }
                 )
             }
         }
@@ -77,25 +92,32 @@ private fun TopBar() {
 @Composable
 private fun MypageScreen(
     padding: PaddingValues,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onEditProfileClick: () -> Unit,
+    onManageAccountClick: () -> Unit,
+    onNotificationClick: () -> Unit,
+    onSettingClick: () -> Unit,
+    onBadgeClick: () -> Unit,
 ) {
     Column {
-        TopBar()
+        TopBar(onSettingClick, onNotificationClick)
         Spacer(modifier = Modifier.height(20.dp))
-        MyInformation()
+        MyInformation(onEditProfileClick)
         Spacer(modifier = Modifier.height(20.dp))
         InformationBox()
         Spacer(modifier = Modifier.height(40.dp))
         Text(text = "나의 이동봉사", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 20.dp))
         Spacer(modifier = Modifier.height(20.dp))
-        MypageTab(painter = R.drawable.ic_bookmark, title = "저장한 이동봉사 공고")
+        MypageTab(painter = R.drawable.ic_bookmark, title = "저장한 이동봉사 공고", onClick = {})
         Spacer(modifier = Modifier.height(20.dp))
-        MypageTab(painter = R.drawable.ic_badge, title = "내 활동 배지")
+        MypageTab(painter = R.drawable.ic_badge, title = "내 활동 배지", onClick = onBadgeClick)
     }
 }
 
 @Composable
-private fun MyInformation() {
+private fun MyInformation(
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -119,20 +141,23 @@ private fun MyInformation() {
             height = 26,
             text = "프로필 수정",
             padding = 5,
-            onClick = { /*TODO*/ })
+            onClick = onClick
+        )
     }
 }
 
 @Composable
 private fun MypageTab(
     @DrawableRes painter: Int,
-    title: String
+    title: String,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(32.dp)
             .padding(horizontal = 20.dp)
+            .clickable { onClick() }
     ) {
         Icon(
             painter = painterResource(id = painter),
