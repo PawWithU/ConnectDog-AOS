@@ -2,6 +2,7 @@ package com.kusitms.connectdog.feature.management
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,12 +28,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
@@ -44,8 +49,14 @@ import com.kusitms.connectdog.core.model.Application
 @Composable
 internal fun ManagementRoute(
     onBackClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit
+    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    viewModel: ManagementViewModel = hiltViewModel()
 ) {
+
+    val pendingUiState by viewModel.waitingUiState.collectAsStateWithLifecycle()
+    val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
+    val completedUiState by viewModel.completedUiState.collectAsStateWithLifecycle()
+
     Column {
         ConnectDogTopAppBar(
             titleRes = null,
@@ -54,9 +65,9 @@ internal fun ManagementRoute(
             onNavigationClick = onBackClick
         )
         ManagementScreen(
-            firstContent = { PendingApproval(list = listOf()){ /*todo*/ } },
-            secondContent = { InProgress(list = listOf()) },
-            thirdContent = { Completed(list = listOf(), onClickReview = {}, onClickRecent = {}) }
+            firstContent = { PendingApproval(pendingUiState) { /*todo*/ } },
+            secondContent = { InProgress(inProgressUiState) },
+            thirdContent = { Completed(completedUiState, onClickReview = {}, onClickRecent = {}) }
         )
     }
 }
@@ -68,13 +79,14 @@ private fun ManagementScreen(
     secondContent: @Composable () -> Unit,
     thirdContent: @Composable () -> Unit,
 ) {
+
     val tabItems = listOf(
         stringResource(id = R.string.pending_approval),
         stringResource(id = R.string.inProgress),
         stringResource(id = R.string.completed)
     )
-    Surface(modifier = Modifier.fillMaxSize()) {
 
+    Surface(modifier = Modifier.fillMaxSize()) {
         var selectedTabIndex by remember {
             mutableIntStateOf(0)
         }
@@ -124,41 +136,59 @@ private fun ManagementScreen(
 
 @Composable
 private fun PendingApproval(
-    list: List<Application>,
+    uiState: ApplicationUiState,
     onClick: () -> Unit
 ) {
-    LazyColumn {
-        items(list) {
-            PendingContent(application = it) { onClick() }
+    when (uiState) {
+        is ApplicationUiState.Applications -> {
+            LazyColumn {
+                items(uiState.applications) {
+                    PendingContent(application = it) { onClick() }
+                }
+            }
         }
+
+        else -> Loading()
     }
 }
 
 @Composable
 private fun InProgress(
-    list: List<Application>,
+    uiState: ApplicationUiState,
 ) {
-    LazyColumn {
-        items(list) {
-            InProgressContent(application = it)
+    when (uiState) {
+        is ApplicationUiState.Applications -> {
+            LazyColumn {
+                items(uiState.applications) {
+                    InProgressContent(application = it)
+                }
+            }
         }
+
+        else -> Loading()
     }
 }
 
 @Composable
 private fun Completed(
-    list: List<Application>,
+    uiState: ApplicationUiState,
     onClickReview: () -> Unit,
     onClickRecent: () -> Unit
 ) {
-    LazyColumn {
-        items(list) {
-            CompletedContent(
-                application = it,
-                onClickReview = onClickReview,
-                onClickRecent = onClickRecent
-            )
+    when (uiState) {
+        is ApplicationUiState.Applications -> {
+            LazyColumn {
+                items(uiState.applications) {
+                    CompletedContent(
+                        application = it,
+                        onClickReview = onClickReview,
+                        onClickRecent = onClickRecent
+                    )
+                }
+            }
         }
+
+        else -> Loading()
     }
 }
 
@@ -272,36 +302,9 @@ private fun ReviewRecentButton(
     }
 }
 
-@Preview
 @Composable
-private fun PendingContentPreview() {
-    ConnectDogTheme {
-        val list = List(2) {
-            Application(0, "", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
-        }
-        PendingApproval(list = list) {}
+private fun Loading() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator()
     }
 }
-
-@Preview
-@Composable
-private fun InProgressContentPreview() {
-    ConnectDogTheme {
-        val list = List(2) {
-            Application(0, "", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
-        }
-        InProgress(list = list)
-    }
-}
-
-@Preview
-@Composable
-private fun CompletedContentPreview() {
-    ConnectDogTheme {
-        val list = List(2) {
-            Application(0, "", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
-        }
-        Completed(list = list, onClickRecent = {}, onClickReview = {})
-    }
-}
-
