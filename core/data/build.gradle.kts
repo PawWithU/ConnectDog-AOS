@@ -40,6 +40,7 @@ android {
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:util"))
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
