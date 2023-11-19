@@ -35,6 +35,12 @@ fun NavController.navigateFilterSearch() {
     navigate(HomeRoute.filter_search)
 }
 
+fun NavController.navigateFilter(filter: Filter) {
+    Log.d(TAG, "navigateFilterSearchWithFilter()")
+    val filterJson = localDateGson.toJson(filter)
+    navigate("${HomeRoute.filter_search}/${filterJson}")
+}
+
 fun NavController.navigateReview() {
     navigate(HomeRoute.review)
 }
@@ -48,6 +54,7 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToSearch: () -> Unit,
     onNavigateToSearchWithFilter: (Filter) -> Unit,
     onNavigateToFilterSearch: () -> Unit,
+    onNavigateToFilter: (Filter) -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
@@ -64,7 +71,7 @@ fun NavGraphBuilder.homeNavGraph(
     }
 
     composable(route = HomeRoute.search) {
-        SearchScreen(onBackClick = onBackClick)
+        SearchScreen(onBackClick = onBackClick, onNavigateToFilter = onNavigateToFilter)
     }
 
     composable(
@@ -76,7 +83,11 @@ fun NavGraphBuilder.homeNavGraph(
         val filterJson = backStackEntry.arguments?.getString("filter")
         val filter = localDateGson.fromJson(filterJson, Filter::class.java)
         Log.d(TAG, "homeNavGraph filter = $filter")
-        SearchScreen(onBackClick = onBackClick, filter = filter ?: Filter())
+        SearchScreen(
+            onBackClick = onBackClick,
+            filter = filter ?: Filter(),
+            onNavigateToFilter = onNavigateToFilter
+        )
     }
 
     composable(route = HomeRoute.filter_search) {
@@ -85,6 +96,23 @@ fun NavGraphBuilder.homeNavGraph(
             onNavigateToSearch = onNavigateToSearchWithFilter
         )
     }
+
+    composable(
+        route = "${HomeRoute.filter_search}/{filter}",
+        arguments = listOf(navArgument("filter") {
+            type = NavType.StringType
+        })
+    ) { backStackEntry ->
+        val filterJson = backStackEntry.arguments?.getString("filter")
+        val filter = localDateGson.fromJson(filterJson, Filter::class.java)
+        Log.d(TAG, "homeNavGraph filter = $filter")
+        FilterSearchScreen(
+            onBackClick = onBackClick,
+            filterArg = filter,
+            onNavigateToSearch = onNavigateToFilter
+        )
+    }
+
 
     composable(route = HomeRoute.review) {
         ReviewScreen(

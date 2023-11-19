@@ -11,6 +11,7 @@ import androidx.navigation.navOptions
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateDetail
+import com.kusitms.connectdog.feature.home.navigation.navigateFilter
 import com.kusitms.connectdog.feature.home.navigation.navigateFilterSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateHome
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
@@ -56,12 +57,16 @@ internal class MainNavigator(
         navController.navigateSearch()
     }
 
-    fun navigateHomeSearchWithFilter(filter: Filter){
+    fun navigateHomeSearchWithFilter(filter: Filter) {
         navController.navigateSearchWithFilter(filter)
     }
 
-    fun navigateHomeFilterSearch(){
+    fun navigateHomeFilterSearch() {
         navController.navigateFilterSearch()
+    }
+
+    fun navigateHomeFilter(filter: Filter) {
+        navController.navigateFilter(filter)
     }
 
     fun navigateHomeReview() {

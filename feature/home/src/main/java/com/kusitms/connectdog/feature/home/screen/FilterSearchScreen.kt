@@ -67,16 +67,17 @@ import com.kusitms.connectdog.feature.home.component.SelectDogSize
 import com.kusitms.connectdog.feature.home.component.SelectKennel
 import com.kusitms.connectdog.feature.home.model.Detail
 import com.kusitms.connectdog.feature.home.model.Filter
-import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 
 private val TAG = "FilterSearch"
 @Composable
 internal fun FilterSearchScreen(
     onBackClick: () -> Unit,
+    filterArg: Filter? = Filter(),
     viewModel: HomeViewModel = hiltViewModel(),
     onNavigateToSearch: (Filter) -> Unit
 ) {
+    Log.d(TAG, "filterArg = $filterArg")
     val filter by viewModel.filter.collectAsStateWithLifecycle()
     Log.d(TAG, "filter = $filter")
 
@@ -536,7 +537,7 @@ private fun BottomBar(
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
-    FilterSearchScreen({}, hiltViewModel(), {})
+    FilterSearchScreen({}, Filter(), hiltViewModel(), {})
 }
 
 

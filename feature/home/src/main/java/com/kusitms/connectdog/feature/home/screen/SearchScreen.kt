@@ -56,7 +56,8 @@ private val TAG = "SearchScreen"
 internal fun SearchScreen(
     onBackClick: () -> Unit,
     filter: Filter? = Filter(),
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToFilter: (Filter) -> Unit,
 ) {
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
 
@@ -68,11 +69,13 @@ internal fun SearchScreen(
             modifier = Modifier
                 .padding(horizontal = 13.dp, vertical = 6.dp)
                 .fillMaxWidth()
-        ) {} // todo 검색 popup
+        ) {
+            onNavigateToFilter(filter!!)
+        }
         if (filter != null && filter.isNotEmpty()) {
             FilterBar(
                 filter = filter,
-                onClick = { /*TODO*/ }
+                onClick = { onNavigateToFilter(filter) }
             )
         }
         AnnouncementContent(uiState = announcementUiState) {

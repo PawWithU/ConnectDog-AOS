@@ -53,6 +53,9 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                             navigator.navigateHomeSearchWithFilter(filter)
                         },
                         onNavigateToFilterSearch = { navigator.navigateHomeFilterSearch() },
+                        onNavigateToFilter = { filter ->
+                            navigator.navigateHomeFilter(filter)
+                        },
                         onNavigateToReview = { navigator.navigateHomeReview() },
                         onNavigateToDetail = { navigator.navigateHomeDetail() },
                         onShowErrorSnackBar = {}
