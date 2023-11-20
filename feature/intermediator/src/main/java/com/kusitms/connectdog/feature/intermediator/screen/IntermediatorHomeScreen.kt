@@ -20,6 +20,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -45,8 +48,29 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogIntermediato
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.theme.Brown5
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Typography
 import com.kusitms.connectdog.feature.intermediator.R
+
+val imageList = listOf(
+    R.drawable.ic_recruit,
+    R.drawable.ic_waiting,
+    R.drawable.ic_progress,
+    R.drawable.ic_complete
+)
+
+val titleList = listOf(
+    R.string.recruit,
+    R.string.waiting,
+    R.string.progress,
+    R.string.complete
+)
+
+data class CardItem(
+    @DrawableRes val image: Int,
+    @StringRes val title: Int,
+    val value: Int
+)
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -68,12 +92,19 @@ fun IntermediatorHomeScreen(
 
 @Composable
 private fun Content() {
+    val list = List(4) {
+        CardItem(
+            image = imageList[it],
+            title = titleList[it],
+            3
+        )
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(48.dp))
         Information()
-        ManageBoard()
+        ManageBoard(list)
     }
 }
 
@@ -131,7 +162,7 @@ private fun ProfileCard() {
                 Image(
                     painter = painterResource(id = R.drawable.ic_dog),
                     contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterHorizontally) // Image를 수평 중앙에 정렬
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
         }
@@ -139,7 +170,9 @@ private fun ProfileCard() {
 }
 
 @Composable
-private fun ManageBoard() {
+private fun ManageBoard(
+    list: List<CardItem>
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -148,36 +181,19 @@ private fun ManageBoard() {
         Spacer(modifier = Modifier.height(20.dp))
         Text("전체 12건", modifier = Modifier.padding(start = 20.dp), style = MaterialTheme.typography.titleLarge, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(20.dp))
-        Row(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            ManageCard(
-                title = R.string.recruit,
-                painter = R.drawable.ic_recruit,
-                value = 3
-            )
-            Spacer(modifier = Modifier.width(20.dp))
-            ManageCard(
-                title = R.string.recruit,
-                painter = R.drawable.ic_recruit,
-                value = 3
-            )
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            ManageCard(
-                title = R.string.recruit,
-                painter = R.drawable.ic_recruit,
-                value = 3
-            )
-            ManageCard(
-                title = R.string.recruit,
-                painter = R.drawable.ic_recruit,
-                value = 3
-            )
+            items(list) {
+                ManageCard(
+                    title = it.title,
+                    painter = it.image,
+                    value = it.value
+                )
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         Row(
@@ -205,7 +221,7 @@ private fun ApplyButton(onClick: () -> Unit) {
             contentDescription = null,
             modifier = Modifier.size(24.dp)
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(6.dp))
         Text(text = "공고 등록", color = Color.White, style = Typography.titleSmall, fontSize = 12.sp)
     }
 }
@@ -222,18 +238,19 @@ private fun ManageCard(
             containerColor = Color.White,
         ),
         modifier = Modifier
-            .width(150.dp)
-            .height(180.dp),
+            .width(170.dp)
+            .height(200.dp),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp),
+                .padding(start = 20.dp, top = 20.dp),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(id = title),
+                style = MaterialTheme.typography.titleSmall,
+                color = Gray2
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -241,11 +258,16 @@ private fun ManageCard(
                 fontWeight = FontWeight.Bold,
                 fontSize =  18.sp
             )
-            Spacer(modifier = Modifier.height(16.dp)) // 텍스트와 이미지 사이의 간격을 조정합니다.
-            Image(
-                painter = painterResource(id = painter),
-                contentDescription = null,
-            )
+            Spacer(modifier = Modifier.weight(1f))
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(id = painter),
+                    contentDescription = null,
+                )
+            }
         }
     }
 }
