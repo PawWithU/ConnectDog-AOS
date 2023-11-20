@@ -62,6 +62,7 @@ internal fun SearchScreen(
     Log.d(TAG, "filter = $filter")
 
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
+    val isByDeadline by viewModel.isDeadlineOrder.collectAsStateWithLifecycle()
 
     Column {
         TopAppBar { onBackClick() }
@@ -83,8 +84,8 @@ internal fun SearchScreen(
                 modifier = Modifier
                     .padding(top = 20.dp, end = 20.dp)
                     .fillMaxWidth(),
-                isByDeadline = true
-            ) { /*todo sort*/ }
+                isByDeadline = isByDeadline
+            ) { viewModel.changeOrderCondition() }
         }
     }
 }
@@ -204,26 +205,29 @@ private fun SortButton(
     isByDeadline: Boolean = true,
     onClick: () -> Unit
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End,
-        modifier = modifier.clickable { onClick() }
-    ) {
-        Text(
-            text = if (isByDeadline) {
-                stringResource(id = R.string.search_sort_end)
-            } else {
-                stringResource(id = R.string.search_sort_recent)
-            },
-            style = MaterialTheme.typography.bodyMedium,
-            color = Gray2
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Icon(
-            painter = painterResource(id = R.drawable.ic_sort),
-            contentDescription = "정렬",
-            tint = Gray2
-        )
+    Row(modifier = modifier.fillMaxWidth()) {
+        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier.clickable { onClick() }
+        ) {
+            Text(
+                text = if (isByDeadline) {
+                    stringResource(id = R.string.search_sort_end)
+                } else {
+                    stringResource(id = R.string.search_sort_recent)
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = Gray2
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.ic_sort),
+                contentDescription = "정렬",
+                tint = Gray2
+            )
+        }
     }
 }
 
