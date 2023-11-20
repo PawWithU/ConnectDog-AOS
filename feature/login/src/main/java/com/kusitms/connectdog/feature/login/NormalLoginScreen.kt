@@ -1,74 +1,79 @@
 package com.kusitms.connectdog.feature.login
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
-import com.kusitms.connectdog.core.designsystem.theme.Red1
-import com.kusitms.connectdog.core.designsystem.theme.Red2
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun EmailLoginScreen(
     title: String,
-    navController: NavController,
-    onclick: () -> Unit
+    navigator: NavController,
+    onClick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-    Box(
-        modifier =
-        Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(top = 32.dp, bottom = 32.dp)
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
+
+    Scaffold(
+        modifier = Modifier.clickable(
+            onClick = { focusManager.clearFocus() },
+            indication = null,
+            interactionSource = interactionSource
+        ),
+        topBar = {
+            ConnectDogTopAppBar(
+                titleRes = R.string.volunteer_signup,
+                navigationType = TopAppBarNavigationType.BACK,
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = {
+                    navigator.popBackStack()
+                }
             )
+        }
+    ) {
+        Content(onClick)
+    }
+}
+
+@Composable
+private fun Content(onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 98.dp)
     ) {
         Column(
-            modifier =
-            Modifier
-                .align(Alignment.TopCenter)
-                .background(Color.White),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
         ) {
-            TopBar(title = title, navController)
-            Spacer(modifier = Modifier.height(37.dp))
-            Logo(175, 119)
             NormalTextField(
                 label = "휴대폰 번호",
                 placeholder = "예)01012341234",
@@ -81,93 +86,39 @@ fun EmailLoginScreen(
                 keyboardType = KeyboardType.Password
             )
             Spacer(modifier = Modifier.height(12.dp))
-            ErrorCard()
-        }
-        NormalButton(
-            content = "로그인",
-            color = MaterialTheme.colorScheme.primary,
-            onClick = onclick,
-            modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .padding(horizontal = 20.dp)
-                .align(Alignment.BottomCenter)
-        )
-    }
-}
-
-@Composable
-fun TopBar(
-    title: String,
-    navController: NavController
-) {
-    Row(
-        modifier =
-        Modifier
-            .fillMaxWidth(),
-        verticalAlignment = CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        IconButton(
-            onClick = { navController.popBackStack() },
-            modifier =
-            Modifier
-                .weight(1f)
-                .padding(end = 84.dp)
-                .background(Color.Transparent)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_left),
-                contentDescription = "Back Button"
+            NormalButton(
+                content = "로그인",
+                color = MaterialTheme.colorScheme.primary,
+                onClick = onClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
             )
         }
-        Text(
-            text = title,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(1f),
-            maxLines = 1
-        )
-        Spacer(
-            modifier =
-            Modifier
-                .size(24.dp)
-                .weight(1f)
-        )
-    }
-}
 
-@Composable
-fun ErrorCard() {
-    Card(
-        colors =
-        CardDefaults.cardColors(
-            containerColor = Red2
-        ),
-        modifier =
-        Modifier
-            .fillMaxWidth()
-            .height(40.dp)
-            .padding(horizontal = 20.dp)
-    ) {
-        Row(
-            modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(start = 13.dp),
-            verticalAlignment = CenterVertically
+        Spacer(modifier = Modifier.weight(1f))
+        Box(
+            modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ic_error),
-                contentDescription = "ErrorIcon"
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = "이메일 혹은 비밀번호가 일치하지 않습니다.",
-                color = Red1,
-                fontSize = 13.sp
+                painter = painterResource(id = R.drawable.ic_main_large),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
             )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun tes() {
+    ConnectDogTheme {
+        EmailLoginScreen(
+            title = "이동봉사자 로그인",
+            navigator = rememberNavController(),
+            onClick = {}
+        )
     }
 }
