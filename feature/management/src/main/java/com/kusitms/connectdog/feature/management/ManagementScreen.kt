@@ -6,11 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -122,7 +125,9 @@ private fun ManagementScreen(
             }
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
                 verticalAlignment = Alignment.Top
             ) { index ->
                 when (index) {
@@ -194,7 +199,12 @@ private fun Completed(
 
 @Composable
 private fun PendingContent(application: Application, onClick: () -> Unit) {
-    Column(modifier = Modifier.padding(20.dp).fillMaxWidth().wrapContentSize()) {
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+            .wrapContentSize()
+    ) {
         ListForUserItem(
             imageUrl = application.imageUrl,
             location = application.location,
@@ -230,26 +240,26 @@ private fun CompletedContent(
 ) {
     Column(
         modifier = Modifier
-            .padding(20.dp)
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
-        ListForUserItem(
-            imageUrl = application.imageUrl,
-            location = application.location,
-            date = application.date,
-            organization = application.organization,
-            hasKennel = application.hasKennel,
-        )
-        ReviewRecentButton(
-            modifier = Modifier
-                .padding(vertical = 8.dp)
-                .height(40.dp),
-            onClickReview = onClickReview,
-            onClickRecent = onClickRecent,
-        )
+        Column(modifier = Modifier.padding(20.dp)) {
+            ListForUserItem(
+                imageUrl = application.imageUrl,
+                location = application.location,
+                date = application.date,
+                organization = application.organization,
+                hasKennel = application.hasKennel,
+            )
+            Spacer(modifier = Modifier.size(20.dp))
+            ReviewRecentButton(
+                modifier = Modifier.height(40.dp),
+                onClickReview = onClickReview,
+                onClickRecent = onClickRecent,
+            )
+        }
+        Divider(thickness = 8.dp, color = Gray7)
     }
-    Divider(thickness = 8.dp, color = Gray7)
 }
 
 @Composable
@@ -271,31 +281,47 @@ private fun ReviewRecentButton(
     onClickReview: () -> Unit,
     onClickRecent: () -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .height(40.dp)
-            .fillMaxWidth()
-    ) {
-        Text(
+    Box(modifier = modifier.fillMaxWidth()) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Box(
+                modifier = modifier
+                    .fillMaxHeight()
+                    .weight(0.5f)
+                    .clickable { onClickReview() },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.create_review),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Box(
+                modifier = modifier
+                    .fillMaxHeight()
+                    .weight(0.5f)
+                    .clickable { onClickReview() },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(id = R.string.check_recent),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 12.sp,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+        Divider(
+            color = MaterialTheme.colorScheme.outline,
             modifier = modifier
-                .weight(0.5f)
+                .align(Alignment.Center)
+                .width(1.dp)
                 .fillMaxHeight()
-                .clickable { onClickReview() },
-            text = stringResource(id = R.string.create_review),
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center
-        )
-        Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
-        Text(
-            modifier = modifier
-                .weight(0.5f)
-                .fillMaxHeight()
-                .clickable { onClickRecent() },
-            text = stringResource(id = R.string.check_recent),
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center
+                .padding(vertical = 8.dp)
         )
     }
 }
@@ -304,5 +330,14 @@ private fun ReviewRecentButton(
 private fun Loading() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
+    }
+}
+
+@Preview
+@Composable
+private fun CompletedContentPreview() {
+    val application = Application("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false, 0, 0)
+    ConnectDogTheme {
+        CompletedContent(application = application, onClickReview = { }, onClickRecent = {})
     }
 }

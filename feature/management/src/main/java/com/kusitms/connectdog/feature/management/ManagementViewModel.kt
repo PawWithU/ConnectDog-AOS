@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.management
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.repository.ManagementRepository
@@ -59,12 +60,14 @@ class ManagementViewModel @Inject constructor(
         flow{
             emit(managementRepository.getApplicationCompleted())
         }.map {
+            Log.d("ManagementViewModel", "completedUiState = $it")
             if (it.isNotEmpty()){
                 ApplicationUiState.Applications(it)
             } else {
                 ApplicationUiState.Empty
             }
         }.catch {
+            Log.e("ManagementViewModel", "completedUiState = $it")
             _errorFlow.emit(it)
         }.stateIn(
             scope = viewModelScope,
