@@ -47,7 +47,7 @@ internal interface ApiService {
         @Query("size") size: Int?
     ): List<ApplicationInProgressResponseItem>
 
-    @GET("/volunteers/applications/complete")
+    @GET("/volunteers/applications/completed")
     suspend fun getApplicationCompleted(
         @Query("page") page: Int?,
         @Query("size") size: Int?

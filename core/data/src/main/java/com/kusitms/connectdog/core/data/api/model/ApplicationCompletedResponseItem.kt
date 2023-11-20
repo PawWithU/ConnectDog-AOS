@@ -8,7 +8,7 @@ import com.squareup.moshi.JsonClass
 data class ApplicationCompletedResponseItem(
     val arrivalLoc: String,
     val departureLoc: String,
-    val dogStatusId: Int,
+    val dogStatusId: Long,
     val endDate: String,
     val intermediaryName: String,
     val isKennel: Boolean,
