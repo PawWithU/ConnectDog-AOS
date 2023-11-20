@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
@@ -35,7 +36,10 @@ import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogIconBottomButton
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.KAKAO
+import com.kusitms.connectdog.core.designsystem.theme.NAVER
 import kotlinx.coroutines.launch
 
 val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
@@ -138,22 +142,27 @@ fun Individual(
             .fillMaxHeight(),
         verticalArrangement = Arrangement.Top
     ) {
-        NormalButton(
-            content = "카카오톡으로 시작하기",
-            color = Color(0xFFFEE500),
-            textColor = Color(0xFF373737),
-            onClick = {
-                viewModel.initKakaoLogin(context)
-            }
+        ConnectDogIconBottomButton(
+            iconId = com.kusitms.connectdog.feature.login.R.drawable.ic_kakao,
+            contentDescription = "카카오톡 로그인",
+            onClick = { viewModel.initKakaoLogin(context) },
+            content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.kakao_login),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            color = KAKAO,
+            textColor = Color(0xFF373737)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        NormalButton(
-            content = "네이버로 시작하기",
-            color = Color(0xFF1EC800),
-            onClick = {
-                Log.d("testt", "tests")
-                viewModel.initNaverLogin(context)
-            }
+        ConnectDogIconBottomButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            color = NAVER,
+            iconId = com.kusitms.connectdog.feature.login.R.drawable.ic_naver,
+            contentDescription = "네이버 로그인",
+            onClick = { viewModel.initKakaoLogin(context) },
+            content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.naver_login),
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
@@ -162,7 +171,7 @@ fun Individual(
             color = Color(0xFF7B7B7B)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        NormalButton(content = "코넥독 계정으로 회원가입하기", onClick = { navigator.navigate("volunteerSignUp") })
+        NormalButton(content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.signup_with_connectdog), onClick = { navigator.navigate("volunteerSignUp") })
         Spacer(modifier = Modifier.height(16.dp))
         LoginText(navigator)
     }
