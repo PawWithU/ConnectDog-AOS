@@ -111,7 +111,8 @@ fun NormalTextField(
     label: String,
     placeholder: String,
     keyboardType: KeyboardType,
-    height: Int = 65
+    height: Int = 65,
+    modifier: Modifier = Modifier
 ) {
     val (text, onTextChanged) =
         remember {
