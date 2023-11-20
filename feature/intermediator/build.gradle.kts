@@ -52,6 +52,9 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
 
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
