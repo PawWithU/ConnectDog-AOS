@@ -2,6 +2,7 @@ package com.kusitms.connectdog.feature.management
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -120,9 +122,8 @@ private fun ManagementScreen(
             }
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                modifier = Modifier.fillMaxWidth().weight(1f),
+                verticalAlignment = Alignment.Top
             ) { index ->
                 when (index) {
                     0 -> firstContent()
@@ -141,13 +142,12 @@ private fun PendingApproval(
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
-            LazyColumn {
+            LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     PendingContent(application = it) { onClick() }
                 }
             }
         }
-
         else -> Loading()
     }
 }
@@ -158,7 +158,7 @@ private fun InProgress(
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
-            LazyColumn {
+            LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     InProgressContent(application = it)
                 }
@@ -177,7 +177,7 @@ private fun Completed(
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
-            LazyColumn {
+            LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     CompletedContent(
                         application = it,
@@ -194,21 +194,19 @@ private fun Completed(
 
 @Composable
 private fun PendingContent(application: Application, onClick: () -> Unit) {
-    Column {
-        Column(modifier = Modifier.padding(20.dp)) {
-            ListForUserItem(
-                imageUrl = application.imageUrl,
-                location = application.location,
-                date = application.date,
-                organization = application.organization,
-                hasKennel = application.hasKennel,
-            )
-            OutlinedButton(modifier = Modifier.padding(top = 20.dp)) {
-                onClick()
-            }
+    Column(modifier = Modifier.padding(20.dp).fillMaxWidth().wrapContentSize()) {
+        ListForUserItem(
+            imageUrl = application.imageUrl,
+            location = application.location,
+            date = application.date,
+            organization = application.organization,
+            hasKennel = application.hasKennel,
+        )
+        OutlinedButton(modifier = Modifier.padding(top = 20.dp)) {
+            onClick()
         }
-        Divider(thickness = 8.dp, color = Gray7)
     }
+    Divider(thickness = 8.dp, color = Gray7)
 }
 
 @Composable
