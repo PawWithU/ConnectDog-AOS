@@ -76,6 +76,8 @@ fun ConnectDogTopAppBar(
                     iconContentDescription = "connect dog home"
                 )
             }
+
+            else -> {}
         }
 
         Row(modifier = Modifier.align(Alignment.CenterEnd)) {
