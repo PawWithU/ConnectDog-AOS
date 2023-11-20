@@ -1,0 +1,12 @@
+com.kusitms.connectdog.feature.intermediator
+drawable ic_complete
+drawable ic_default_intermediator
+drawable ic_dog
+drawable ic_progress
+drawable ic_recruit
+drawable ic_waiting
+string complete
+string edit_profile
+string progress
+string recruit
+string waiting

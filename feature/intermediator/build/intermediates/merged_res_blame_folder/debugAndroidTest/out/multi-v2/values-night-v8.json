@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.kusitms.connectdog.feature.intermediator.test.intermediator-mergeDebugAndroidTestResources-71:/values-night-v8/values-night-v8.xml",
+            "map": [
+                {
+                    "source": "/Users/kangseunggu/.gradle/caches/transforms-3/d76a8f9d461c83a6e55d51b2041a12f0/transformed/oauth-5.8.0/res/values-night-v8/values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,120",
+                        "endColumns": "64,58",
+                        "endOffsets": "115,174"
+                    }
+                },
+                {
+                    "source": "/Users/kangseunggu/.gradle/caches/transforms-3/7717e298f0ada87fdbd6d4a937a8973b/transformed/appcompat-1.6.1/res/values-night-v8/values-night-v8.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,125,209,293,389,491,593,687",
+                        "endColumns": "69,83,83,95,101,101,93,88",
+                        "endOffsets": "120,204,288,384,486,588,682,771"
+                    },
+                    "to": {
+                        "startLines": "4,5,6,7,8,9,10,11",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "179,249,333,417,513,615,717,811",
+                        "endColumns": "69,83,83,95,101,101,93,88",
+                        "endOffsets": "244,328,412,508,610,712,806,895"
+                    }
+                }
+            ]
+        }
+    ]
+}

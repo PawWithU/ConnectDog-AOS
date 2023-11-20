@@ -1,0 +1,39 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.kusitms.connectdog.feature.intermediator.test.intermediator-mergeDebugAndroidTestResources-71:/values-v28/values-v28.xml",
+            "map": [
+                {
+                    "source": "/Users/kangseunggu/.gradle/caches/transforms-3/38de3454595dbe47d4b5f1cee0e4be4e/transformed/core-1.5.0/res/values-v28/values.xml",
+                    "from": {
+                        "startLines": "4,13",
+                        "startColumns": "0,0",
+                        "startOffsets": "180,659",
+                        "endLines": "12,21",
+                        "endColumns": "8,8",
+                        "endOffsets": "658,1135"
+                    },
+                    "to": {
+                        "startLines": "12,21",
+                        "startColumns": "4,4",
+                        "startOffsets": "589,1072",
+                        "endLines": "20,29",
+                        "endColumns": "8,8",
+                        "endOffsets": "1067,1548"
+                    }
+                },
+                {
+                    "source": "/Users/kangseunggu/.gradle/caches/transforms-3/7717e298f0ada87fdbd6d4a937a8973b/transformed/appcompat-1.6.1/res/values-v28/values-v28.xml",
+                    "from": {
+                        "startLines": "2,3,4,8",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,130,217,397",
+                        "endLines": "2,3,7,11",
+                        "endColumns": "74,86,12,12",
+                        "endOffsets": "125,212,392,584"
+                    }
+                }
+            ]
+        }
+    ]
+}
