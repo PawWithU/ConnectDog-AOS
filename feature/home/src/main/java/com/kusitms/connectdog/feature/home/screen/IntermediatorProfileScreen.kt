@@ -33,6 +33,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.DetailInfo
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
