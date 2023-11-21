@@ -34,7 +34,8 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 @Composable
 fun SettingScreen(
     onBackClick: () -> Unit,
-    onManageAccountClick: () -> Unit
+    onManageAccountClick: () -> Unit,
+    onLogoutClick: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -46,12 +47,15 @@ fun SettingScreen(
             )
         }
     ) {
-        Content(onManageAccountClick)
+        Content(onManageAccountClick, onLogoutClick)
     }
 }
 
 @Composable
-private fun Content(onClick: () -> Unit) {
+private fun Content(
+    onClick: () -> Unit,
+    onLogout: () -> Unit
+) {
     var checked by remember { mutableStateOf(true) }
 
     Column(
@@ -112,7 +116,10 @@ private fun Content(onClick: () -> Unit) {
         Text(
             text = "로그아웃",
             fontSize = 16.sp,
-            color = Gray2
+            color = Gray2,
+            modifier = Modifier.clickable {
+                onLogout()
+            }
         )
     }
 }
@@ -121,6 +128,6 @@ private fun Content(onClick: () -> Unit) {
 @Composable
 private fun test() {
     ConnectDogTheme {
-        SettingScreen(onBackClick = {}, onManageAccountClick = {})
+        SettingScreen(onBackClick = {}, onManageAccountClick = {}, onLogoutClick = {})
     }
 }

@@ -89,7 +89,7 @@ fun BadgeScreen(
     ) {
         Content(viewModel)
 
-        if(showBottomSheet) {
+        if (showBottomSheet) {
             ModalBottomSheet(
                 onDismissRequest = {
                     viewModel.updateBottomSheet()
@@ -106,8 +106,10 @@ fun BadgeScreen(
                         placeholder = painterResource(id = R.drawable.ic_lock)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text(text = stringResource(
-                        id = viewModel.badgeItem.value!!.description),
+                    Text(
+                        text = stringResource(
+                            id = viewModel.badgeItem.value!!.description
+                        ),
                         style = MaterialTheme.typography.titleMedium,
                         fontSize = 12.sp,
                         textAlign = TextAlign.Center
