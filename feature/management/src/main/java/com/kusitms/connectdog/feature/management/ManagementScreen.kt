@@ -77,7 +77,9 @@ internal fun ManagementRoute(
             onNavigationClick = onBackClick
         )
         ManagementScreen(
-            firstContent = { PendingApproval(pendingUiState) { /*todo*/ } },
+            firstContent = { PendingApproval(pendingUiState) {
+
+            } },
             secondContent = { InProgress(inProgressUiState) },
             thirdContent = { Completed(completedUiState, onClickReview = {}, onClickRecent = {}) }
         )
@@ -150,13 +152,13 @@ private fun ManagementScreen(
 @Composable
 private fun PendingApproval(
     uiState: ApplicationUiState,
-    onClick: () -> Unit
+    onClick: (Application) -> Unit
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
-                    PendingContent(application = it) { onClick() }
+                    PendingContent(application = it) { onClick(it) }
                 }
             }
         }

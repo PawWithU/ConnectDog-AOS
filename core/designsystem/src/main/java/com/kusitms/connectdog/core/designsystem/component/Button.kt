@@ -33,6 +33,7 @@ fun ConnectDogBottomButton(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
+    border: BorderStroke = BorderStroke(width = 0.dp, color = MaterialTheme.colorScheme.outline),
     onClick: () -> Unit,
     content: String
 ) {
@@ -40,8 +41,9 @@ fun ConnectDogBottomButton(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
-        modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        modifier = modifier.height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
+        border = border,
     ) {
         Text(text = content, style = Typography.titleSmall, color = textColor)
     }
