@@ -112,12 +112,10 @@ fun NormalTextField(
     placeholder: String,
     keyboardType: KeyboardType,
     height: Int = 65,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onTextChanged: (String) -> Unit = {},
+    text: String = ""
 ) {
-    val (text, onTextChanged) =
-        remember {
-            mutableStateOf("")
-        }
     ConnectDogTextField(
         text = text,
         onTextChanged = onTextChanged,
@@ -186,13 +184,15 @@ fun ConnectDogTextFieldWithButton(
     buttonLabel: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     padding: Int,
-    onclick: () -> Unit
+    onclick: () -> Unit = {},
+    onTextChanged: (String) -> Unit = {}
 ) {
     Box {
         NormalTextField(
             label = textFieldLabel,
             placeholder = placeholder,
-            keyboardType = keyboardType
+            keyboardType = keyboardType,
+            onTextChanged = onTextChanged
         )
 
         ConnectDogOutlinedButton(
