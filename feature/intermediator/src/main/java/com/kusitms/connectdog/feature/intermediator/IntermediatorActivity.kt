@@ -13,7 +13,7 @@ class IntermediatorActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide()
-        
+
         setContent {
             val navigator = rememberNavController()
             ConnectDogTheme {

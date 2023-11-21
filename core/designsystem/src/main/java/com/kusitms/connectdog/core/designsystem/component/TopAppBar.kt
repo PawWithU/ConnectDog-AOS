@@ -133,7 +133,7 @@ fun ConnectDogIntermediatorTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
-            .background(MaterialTheme.colorScheme.primary),
+            .background(MaterialTheme.colorScheme.primary)
     ) {
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = onNotificationClick) {

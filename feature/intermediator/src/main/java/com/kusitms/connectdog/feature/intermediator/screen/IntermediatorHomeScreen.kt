@@ -230,22 +230,22 @@ private fun ApplyButton(onClick: () -> Unit) {
 private fun ManageCard(
     @StringRes title: Int,
     @DrawableRes painter: Int,
-    value: Int,
+    value: Int
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
+            containerColor = Color.White
         ),
         modifier = Modifier
             .width(170.dp)
-            .height(200.dp),
+            .height(200.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 20.dp, top = 20.dp),
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Top
         ) {
             Text(
                 text = stringResource(id = title),
@@ -256,7 +256,7 @@ private fun ManageCard(
             Text(
                 text = "${value}건",
                 fontWeight = FontWeight.Bold,
-                fontSize =  18.sp
+                fontSize = 18.sp
             )
             Spacer(modifier = Modifier.weight(1f))
             Row(
@@ -265,13 +265,12 @@ private fun ManageCard(
                 Spacer(modifier = Modifier.weight(1f))
                 Image(
                     painter = painterResource(id = painter),
-                    contentDescription = null,
+                    contentDescription = null
                 )
             }
         }
     }
 }
-
 
 @Preview
 @Composable

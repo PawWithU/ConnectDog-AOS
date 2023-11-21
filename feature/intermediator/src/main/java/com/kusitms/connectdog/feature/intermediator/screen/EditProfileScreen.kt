@@ -51,7 +51,8 @@ private fun Content() {
             height = 14,
             text = "봉사 3회 진행",
             padding = 5,
-            onClick = { /*TODO*/ })
+            onClick = { /*TODO*/ }
+        )
     }
 }
 
