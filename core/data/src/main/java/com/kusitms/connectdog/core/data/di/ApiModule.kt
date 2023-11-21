@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.core.data.di
 
 import com.kusitms.connectdog.core.data.api.ApiService
+import com.kusitms.connectdog.core.data.api.InterApiService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -82,6 +83,19 @@ internal object ApiModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient).build()
             .create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIntermediatorApiService(
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
+    ): InterApiService {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okHttpClient).build()
+            .create(InterApiService::class.java)
     }
 
     @Provides
