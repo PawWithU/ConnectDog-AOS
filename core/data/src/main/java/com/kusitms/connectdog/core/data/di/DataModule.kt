@@ -26,7 +26,7 @@ internal class DataModule {
 
     @Provides
     @Singleton
-    fun provideManagementRepository(apiService: ApiService): ManagementRepository{
+    fun provideManagementRepository(apiService: ApiService): ManagementRepository {
         return ManagementRepositoryImpl(apiService)
     }
 

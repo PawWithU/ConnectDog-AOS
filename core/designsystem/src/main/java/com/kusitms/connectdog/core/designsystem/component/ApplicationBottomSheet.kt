@@ -2,7 +2,6 @@ package com.kusitms.connectdog.core.designsystem.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,20 +40,22 @@ fun ApplicationBottomSheet(
     volunteer: Volunteer,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    bottomButton: @Composable () -> Unit,
+    bottomButton: @Composable () -> Unit
 ) {
     ConnectDogBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = onDismissRequest
     ) {
         Column(
             modifier = modifier
                 .fillMaxSize()
         ) {
             TopAppBar(titleRes = titleRes) { onDismissRequest() }
-            Column(modifier = Modifier
-                .weight(1f)
-                .padding(20.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(20.dp)
+            ) {
                 ApplicationContent(application = application)
                 Divider(
                     thickness = 1.dp,
@@ -141,7 +141,7 @@ private fun CommentContent(comment: String) {
 
 @Preview
 @Composable
-private fun CommentContentPreview(){
+private fun CommentContentPreview() {
     ConnectDogTheme {
         CommentContent(comment = "이동봉사 신청합니다!")
     }

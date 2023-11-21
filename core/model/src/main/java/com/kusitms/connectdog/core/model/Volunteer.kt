@@ -5,5 +5,5 @@ data class Volunteer(
     val phoneNumber: String,
     val vehicle: String,
     val comment: String,
-    val id: Long,
+    val id: Long
 )

@@ -9,5 +9,5 @@ data class Application(
     val postId: Long,
     val applicationId: Long ? = null,
     val reviewId: Long? = null,
-    val dogStatusId: Long? = null,
+    val dogStatusId: Long? = null
 )

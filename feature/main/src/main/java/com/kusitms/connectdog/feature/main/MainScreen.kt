@@ -67,7 +67,8 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onShowErrorSnackbar = {})
+                        onShowErrorSnackbar = {}
+                    )
                     mypageNavGraph(
                         padding = it,
                         onClick = {},

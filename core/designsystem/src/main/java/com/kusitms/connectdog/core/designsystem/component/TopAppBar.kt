@@ -82,7 +82,6 @@ fun ConnectDogTopAppBar(
             }
 
             TopAppBarNavigationType.MYPAGE -> {
-
             }
 
             TopAppBarNavigationType.MANAGEMENT -> {

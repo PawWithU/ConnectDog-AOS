@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 fun ConnectDogBottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        containerColor =  MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         content()
     }

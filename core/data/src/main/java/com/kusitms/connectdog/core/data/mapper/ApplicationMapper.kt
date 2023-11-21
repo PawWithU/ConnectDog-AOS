@@ -37,7 +37,7 @@ internal fun ApplicationInProgressResponseItem.toData(): Application {
         date = "$start-$end",
         organization = intermediaryName,
         hasKennel = isKennel,
-        postId = postId,
+        postId = postId
     )
 }
 
@@ -55,6 +55,6 @@ internal fun ApplicationCompletedResponseItem.toData(): Application {
         hasKennel = isKennel,
         postId = postId,
         reviewId = reviewId,
-        dogStatusId = dogStatusId,
+        dogStatusId = dogStatusId
     )
 }

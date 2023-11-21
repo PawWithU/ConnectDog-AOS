@@ -9,7 +9,6 @@ import com.kusitms.connectdog.core.data.repository.ManagementRepository
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.model.Volunteer
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,21 +18,22 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ManagementViewModel @Inject constructor(
     private val managementRepository: ManagementRepository
-): ViewModel(){
+) : ViewModel() {
     private val TAG = "ManagementViewModel"
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
     val waitingUiState: StateFlow<ApplicationUiState> =
-        flow{
+        flow {
             emit(managementRepository.getApplicationWaiting())
         }.map {
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 ApplicationUiState.Applications(it)
             } else {
                 ApplicationUiState.Empty
@@ -47,10 +47,10 @@ class ManagementViewModel @Inject constructor(
         )
 
     val progressUiState: StateFlow<ApplicationUiState> =
-        flow{
+        flow {
             emit(managementRepository.getApplicationInProgress())
         }.map {
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 ApplicationUiState.Applications(it)
             } else {
                 ApplicationUiState.Empty
@@ -64,11 +64,11 @@ class ManagementViewModel @Inject constructor(
         )
 
     val completedUiState: StateFlow<ApplicationUiState> =
-        flow{
+        flow {
             emit(managementRepository.getApplicationCompleted())
         }.map {
             Log.d("ManagementViewModel", "completedUiState = $it")
-            if (it.isNotEmpty()){
+            if (it.isNotEmpty()) {
                 ApplicationUiState.Applications(it)
             } else {
                 ApplicationUiState.Empty
@@ -87,11 +87,11 @@ class ManagementViewModel @Inject constructor(
 
     var selectedApplication: Application? = null
 
-    fun getMyApplication(applicationId: Long){
+    fun getMyApplication(applicationId: Long) {
         viewModelScope.launch {
             try {
                 _volunteerResponse.value = managementRepository.getMyApplication(applicationId)
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e(TAG, "getMyApplication ${e.stackTrace}")
             }
         }

@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.feature.management
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -36,7 +35,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,8 +58,6 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Application
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 
 val TAG = "ManagementScreen"
 
@@ -69,7 +68,6 @@ internal fun ManagementRoute(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: ManagementViewModel = hiltViewModel()
 ) {
-
     val pendingUiState by viewModel.waitingUiState.collectAsStateWithLifecycle()
     val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
     val completedUiState by viewModel.completedUiState.collectAsStateWithLifecycle()
@@ -96,7 +94,7 @@ internal fun ManagementRoute(
         )
     }
 
-    if (isSheetOpen && viewModel.selectedApplication != null){
+    if (isSheetOpen && viewModel.selectedApplication != null) {
         MyApplicationBottomSheet(
             application = viewModel.selectedApplication!!,
             sheetState = sheetState,
@@ -111,9 +109,8 @@ internal fun ManagementRoute(
 private fun ManagementScreen(
     firstContent: @Composable () -> Unit,
     secondContent: @Composable () -> Unit,
-    thirdContent: @Composable () -> Unit,
+    thirdContent: @Composable () -> Unit
 ) {
-
     val tabItems = listOf(
         stringResource(id = R.string.pending_approval),
         stringResource(id = R.string.inProgress),
@@ -189,7 +186,7 @@ private fun PendingApproval(
 
 @Composable
 private fun InProgress(
-    uiState: ApplicationUiState,
+    uiState: ApplicationUiState
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
@@ -240,7 +237,7 @@ private fun PendingContent(application: Application, onClick: () -> Unit) {
             location = application.location,
             date = application.date,
             organization = application.organization,
-            hasKennel = application.hasKennel,
+            hasKennel = application.hasKennel
         )
         OutlinedButton(modifier = Modifier.padding(top = 20.dp)) {
             onClick()
@@ -257,7 +254,7 @@ private fun InProgressContent(application: Application) {
         location = application.location,
         date = application.date,
         organization = application.organization,
-        hasKennel = application.hasKennel,
+        hasKennel = application.hasKennel
     )
     Divider(thickness = 8.dp, color = Gray7)
 }
@@ -279,7 +276,7 @@ private fun CompletedContent(
                 location = application.location,
                 date = application.date,
                 organization = application.organization,
-                hasKennel = application.hasKennel,
+                hasKennel = application.hasKennel
             )
             Spacer(modifier = Modifier.size(20.dp))
             ReviewRecentButton(
@@ -287,7 +284,7 @@ private fun CompletedContent(
                 hasReview = application.reviewId != null,
                 hasRecent = application.dogStatusId != null,
                 onClickReview = onClickReview,
-                onClickRecent = onClickRecent,
+                onClickRecent = onClickRecent
             )
         }
         Divider(thickness = 8.dp, color = Gray7)

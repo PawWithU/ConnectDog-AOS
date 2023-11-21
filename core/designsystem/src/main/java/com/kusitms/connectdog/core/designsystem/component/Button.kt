@@ -43,7 +43,7 @@ fun ConnectDogBottomButton(
         shape = RoundedCornerShape(12.dp),
         modifier = modifier.height(56.dp).fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
-        border = border,
+        border = border
     ) {
         Text(text = content, style = Typography.titleSmall, color = textColor)
     }
@@ -153,8 +153,8 @@ fun ConnectDogSecondaryButton(
     textColor: Color = MaterialTheme.colorScheme.primary,
     borderColor: Color = MaterialTheme.colorScheme.primary,
     @StringRes contentRes: Int,
-    onClick: () -> Unit,
-){
+    onClick: () -> Unit
+) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 11.dp),
