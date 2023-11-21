@@ -25,11 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.feature.intermediator.InterApplicationUiState
+import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.component.CompletedContent
 import com.kusitms.connectdog.feature.intermediator.component.InProgressContent
@@ -40,16 +43,22 @@ import com.kusitms.connectdog.feature.intermediator.component.RecruitingContent
 @Composable
 private fun ManagementRoute(
     onBackClick: () -> Unit,
+    viewModel: InterManagementViewModel = hiltViewModel()
 ) {
+    val recruitingUiState by viewModel.recruitingUiState.collectAsStateWithLifecycle()
+    val pendingUiState by viewModel.waitingUiState.collectAsStateWithLifecycle()
+    val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
+    val completedUiState by viewModel.completedUiState.collectAsStateWithLifecycle()
+
     Column {
         TopAppBar(titleRes = R.string.manage_application) { onBackClick() }
         ManagementScreen(
-            firstContent = { Recruiting(uiState =) },
-            secondContent = { PendingApproval(uiState =, onClick =) },
-            thirdContent = { InProgress(uiState =) },
+            firstContent = { Recruiting(uiState = recruitingUiState) },
+            secondContent = { PendingApproval(uiState = pendingUiState, onClick = { /*todo*/ }) },
+            thirdContent = { InProgress(uiState = inProgressUiState) },
             fourthContent = {
                 Completed(
-                    uiState =,
+                    uiState = completedUiState,
                     onClickReview = { /*TODO*/ },
                     onClickRecent = {})
             }
