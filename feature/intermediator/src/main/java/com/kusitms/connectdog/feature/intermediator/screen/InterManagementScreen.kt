@@ -11,16 +11,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +44,9 @@ import com.kusitms.connectdog.feature.intermediator.component.InProgressContent
 import com.kusitms.connectdog.feature.intermediator.component.Loading
 import com.kusitms.connectdog.feature.intermediator.component.PendingContent
 import com.kusitms.connectdog.feature.intermediator.component.RecruitingContent
+import com.kusitms.connectdog.feature.intermediator.component.VolunteerBottomSheet
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun InterManagementRoute(
     onBackClick: () -> Unit,
@@ -52,12 +58,18 @@ internal fun InterManagementRoute(
     val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
     val completedUiState by viewModel.completedUiState.collectAsStateWithLifecycle()
 
+    val sheetState = rememberModalBottomSheetState()
+    var isSheetOpen by rememberSaveable { mutableStateOf(false) }
+
     Column {
         TopAppBar(titleRes = R.string.manage_application) { onBackClick() }
         ManagementScreen(
             tabIndex = tabIndex,
             firstContent = { Recruiting(uiState = recruitingUiState) },
-            secondContent = { PendingApproval(uiState = pendingUiState, onClick = { /*todo*/ }) },
+            secondContent = { PendingApproval(uiState = pendingUiState, onClick = {
+                viewModel.selectedApplication = it
+                isSheetOpen = true
+            }) },
             thirdContent = { InProgress(uiState = inProgressUiState) },
             fourthContent = {
                 Completed(
@@ -65,6 +77,15 @@ internal fun InterManagementRoute(
                     onClickReview = { /*TODO*/ },
                     onClickRecent = {})
             }
+        )
+    }
+
+    if (isSheetOpen && viewModel.selectedApplication != null) {
+        VolunteerBottomSheet(
+            interApplication = viewModel.selectedApplication!!,
+            sheetState = sheetState,
+            onDismissRequest = { isSheetOpen = false },
+            viewModel = viewModel
         )
     }
 }

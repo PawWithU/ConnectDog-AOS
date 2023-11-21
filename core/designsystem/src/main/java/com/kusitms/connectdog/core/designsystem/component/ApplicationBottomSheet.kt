@@ -29,6 +29,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray6
 import com.kusitms.connectdog.core.designsystem.theme.Orange20
 import com.kusitms.connectdog.core.model.Application
+import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.core.model.Volunteer
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -42,6 +43,52 @@ fun ApplicationBottomSheet(
     onDismissRequest: () -> Unit,
     bottomButton: @Composable () -> Unit
 ) {
+    ABottomSheet(
+        modifier = modifier,
+        titleRes = titleRes,
+        volunteer = volunteer,
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest,
+        bottomButton = bottomButton
+    ){
+        ApplicationContent(application = application)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun InterApplicationBottomSheet(
+    modifier: Modifier = Modifier,
+    @StringRes titleRes: Int,
+    interApplication: InterApplication,
+    volunteer: Volunteer,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit,
+    bottomButton: @Composable () -> Unit
+) {
+    ABottomSheet(
+        modifier = modifier,
+        titleRes = titleRes,
+        volunteer = volunteer,
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest,
+        bottomButton = bottomButton
+    ){
+        InterApplicationContent(application = interApplication)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ABottomSheet(
+    modifier: Modifier = Modifier,
+    @StringRes titleRes: Int,
+    volunteer: Volunteer,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit,
+    bottomButton: @Composable () -> Unit,
+    informContent: @Composable () -> Unit,
+){
     ConnectDogBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest
@@ -56,7 +103,7 @@ fun ApplicationBottomSheet(
                     .weight(1f)
                     .padding(20.dp)
             ) {
-                ApplicationContent(application = application)
+                informContent()
                 Divider(
                     thickness = 1.dp,
                     color = Gray6,
@@ -90,6 +137,17 @@ private fun ApplicationContent(application: Application) {
         date = application.date,
         organization = application.organization,
         hasKennel = application.hasKennel
+    )
+}
+
+@Composable
+private fun InterApplicationContent(application: InterApplication) {
+    ListForOrganizationItem(
+        imageUrl = application.imageUrl,
+        dogName = application.dogName,
+        date = application.date,
+        location = application.location,
+        volunteerName = application.volunteerName,
     )
 }
 
