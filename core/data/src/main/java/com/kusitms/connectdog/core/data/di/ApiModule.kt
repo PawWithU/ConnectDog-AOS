@@ -27,13 +27,14 @@ internal object ApiModule {
 
     private val networkInterceptor: Interceptor = Interceptor { chain ->
         val request = chain.request()
-        val jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiVk9MVU5URUVSIiwiaWQiOjEsImV4cCI6MTcwMTY4OTU0NX0.Icz7auxDCkiUSaCaEQYzMibizObIrOniP5WmjX8cn54T56kA_i2bfG9IxUne3exWdFGq7DPWp7i-prpq5LgfXw"
+        val jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiVk9MVU5URUVSIiwiaWQiOjEsImV4cCI6MTcwMTc4MDEwNX0.wRNKOcfnFxvXmsGFXPZ3aSsGcOXxbUXczsjC_BRtHmhGmKJalOE4P7rcY_eAdOIKldtX3xE6Gdb3DYkLGEPP5A"
+        val interJwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiSU5URVJNRURJQVJZIiwiaWQiOjEsImV4cCI6MTcwMTc4MDA4OX0.IxtBsu26aVswZpyfXBEYcpyLIb_IxAgFkCQTkJfG2QCeU29VfwO7ixBNACcDlvdPp2nR1PD8T6STPZKfpDW_Gw"
         try {
             chain.proceed(
                 request.newBuilder()
                     .addHeader(
                         "Authorization",
-                        "Bearer $jwt"
+                        "Bearer $interJwt"
                     ) // todo
                     .build()
             )
