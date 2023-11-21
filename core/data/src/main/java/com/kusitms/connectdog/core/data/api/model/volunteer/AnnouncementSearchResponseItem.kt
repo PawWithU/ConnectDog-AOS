@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.core.data.api.model
+package com.kusitms.connectdog.core.data.api.model.volunteer
 
 import com.squareup.moshi.JsonClass
 

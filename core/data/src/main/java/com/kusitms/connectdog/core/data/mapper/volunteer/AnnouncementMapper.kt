@@ -1,7 +1,7 @@
-package com.kusitms.connectdog.core.data.mapper
+package com.kusitms.connectdog.core.data.mapper.volunteer
 
-import com.kusitms.connectdog.core.data.api.model.AnnouncementHomeResponseItem
-import com.kusitms.connectdog.core.data.api.model.AnnouncementSearchResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchResponseItem
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.core.util.toLocalDate

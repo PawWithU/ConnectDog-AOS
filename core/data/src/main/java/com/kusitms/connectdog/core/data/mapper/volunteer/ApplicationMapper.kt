@@ -1,12 +1,10 @@
-package com.kusitms.connectdog.core.data.mapper
+package com.kusitms.connectdog.core.data.mapper.volunteer
 
-import com.kusitms.connectdog.core.data.api.model.ApplicationCompletedResponseItem
-import com.kusitms.connectdog.core.data.api.model.ApplicationInProgressResponseItem
-import com.kusitms.connectdog.core.data.api.model.ApplicationWaitingResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
 import com.kusitms.connectdog.core.model.Application
-import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.core.util.dateRangeFormat
-import com.kusitms.connectdog.core.util.toLocalDate
 
 internal fun ApplicationWaitingResponseItem.toData(): Application {
     return Application(
