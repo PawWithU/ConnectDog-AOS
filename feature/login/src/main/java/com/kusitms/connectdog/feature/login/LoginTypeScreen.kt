@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.feature.login
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -162,7 +161,7 @@ fun Individual(
             iconId = com.kusitms.connectdog.feature.login.R.drawable.ic_naver,
             contentDescription = "네이버 로그인",
             onClick = { viewModel.initKakaoLogin(context) },
-            content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.naver_login),
+            content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.naver_login)
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
