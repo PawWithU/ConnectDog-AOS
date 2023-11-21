@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.intermediator.screen
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -41,8 +42,9 @@ import com.kusitms.connectdog.feature.intermediator.component.PendingContent
 import com.kusitms.connectdog.feature.intermediator.component.RecruitingContent
 
 @Composable
-private fun ManagementRoute(
+internal fun InterManagementRoute(
     onBackClick: () -> Unit,
+    tabIndex: Int = 0,
     viewModel: InterManagementViewModel = hiltViewModel()
 ) {
     val recruitingUiState by viewModel.recruitingUiState.collectAsStateWithLifecycle()
@@ -53,6 +55,7 @@ private fun ManagementRoute(
     Column {
         TopAppBar(titleRes = R.string.manage_application) { onBackClick() }
         ManagementScreen(
+            tabIndex = tabIndex,
             firstContent = { Recruiting(uiState = recruitingUiState) },
             secondContent = { PendingApproval(uiState = pendingUiState, onClick = { /*todo*/ }) },
             thirdContent = { InProgress(uiState = inProgressUiState) },
@@ -160,11 +163,13 @@ private fun Completed(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ManagementScreen(
+    tabIndex: Int,
     firstContent: @Composable () -> Unit,
     secondContent: @Composable () -> Unit,
     thirdContent: @Composable () -> Unit,
     fourthContent: @Composable () -> Unit
 ) {
+    Log.d("InterManagementScreen", "ManagementScreen: tabIndex = $tabIndex")
     val tabItems = listOf(
         stringResource(id = R.string.recruit),
         stringResource(id = R.string.waiting),
@@ -173,10 +178,8 @@ private fun ManagementScreen(
     )
 
     Surface(modifier = Modifier.fillMaxSize()) {
-        var selectedTabIndex by remember {
-            mutableIntStateOf(0)
-        }
-        val pagerState = rememberPagerState {
+        var selectedTabIndex by remember { mutableIntStateOf(tabIndex) }
+        val pagerState = rememberPagerState (initialPage = tabIndex){
             tabItems.size
         }
         LaunchedEffect(selectedTabIndex) {
@@ -185,6 +188,7 @@ private fun ManagementScreen(
         LaunchedEffect(pagerState.currentPage) {
             selectedTabIndex = pagerState.currentPage
         }
+
         Column(modifier = Modifier.fillMaxSize()) {
             TabRow(selectedTabIndex = selectedTabIndex) {
                 tabItems.forEachIndexed { index, title ->
