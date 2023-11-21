@@ -299,9 +299,7 @@ private fun OutlinedButton(
     ConnectDogSecondaryButton(
         modifier = modifier,
         contentRes = R.string.check_my_appliance
-    ) {
-        onClick()
-    }
+    ) { onClick() }
 }
 
 @Composable
