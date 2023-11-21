@@ -13,13 +13,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,20 +33,18 @@ fun ApplicationBottomSheet(
     @StringRes titleRes: Int,
     application: Application,
     volunteer: Volunteer,
-    bottomButton: @Composable () -> Unit
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit,
+    bottomButton: @Composable () -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    var isSheetOpen by rememberSaveable {
-        mutableStateOf(false)
-    }
     ConnectDogBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { isSheetOpen = false }
+        onDismissRequest = onDismissRequest
     ) {
         Column(modifier = modifier.fillMaxSize()) {
             Column(modifier = Modifier.weight(1f)) {
                 TopAppBar(titleRes = titleRes) {
-                    isSheetOpen = false
+                    onDismissRequest
                 }
                 ApplicationContent(application = application)
                 Divider(
