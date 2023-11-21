@@ -8,7 +8,7 @@ fun NavController.navigateIntermediatorHome(navOptions: NavOptions) {
     navigate(IntermediatorRoute.route, navOptions)
 }
 
-fun NavController.navigateInterManagement(tabIndex: Int){
+fun NavController.navigateInterManagement(tabIndex: Int) {
     Log.d("InterNavigation", "navigateInterManagement: tabIndex = $tabIndex")
     val route = "${IntermediatorRoute.management}?tabIndex=$tabIndex"
     navigate(route)

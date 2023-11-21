@@ -15,7 +15,7 @@ internal fun InterApplicationRecruitingResponseItem.toData(): InterApplication =
         date = dateRangeFormat(startDate, endDate),
         volunteerName = volunteerName ?: "-",
         postId = postId,
-        postStatus = postStatus,
+        postStatus = postStatus
     )
 
 internal fun InterApplicationWaitingResponseItem.toData(): InterApplication =

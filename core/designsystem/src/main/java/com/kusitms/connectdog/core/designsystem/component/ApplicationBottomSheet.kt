@@ -50,7 +50,7 @@ fun ApplicationBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         bottomButton = bottomButton
-    ){
+    ) {
         ApplicationContent(application = application)
     }
 }
@@ -73,7 +73,7 @@ fun InterApplicationBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
         bottomButton = bottomButton
-    ){
+    ) {
         InterApplicationContent(application = interApplication)
     }
 }
@@ -87,8 +87,8 @@ private fun ABottomSheet(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     bottomButton: @Composable () -> Unit,
-    informContent: @Composable () -> Unit,
-){
+    informContent: @Composable () -> Unit
+) {
     ConnectDogBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest
@@ -147,7 +147,7 @@ private fun InterApplicationContent(application: InterApplication) {
         dogName = application.dogName,
         date = application.date,
         location = application.location,
-        volunteerName = application.volunteerName,
+        volunteerName = application.volunteerName
     )
 }
 

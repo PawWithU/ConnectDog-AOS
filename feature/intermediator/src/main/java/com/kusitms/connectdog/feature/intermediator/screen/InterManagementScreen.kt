@@ -66,16 +66,19 @@ internal fun InterManagementRoute(
         ManagementScreen(
             tabIndex = tabIndex,
             firstContent = { Recruiting(uiState = recruitingUiState) },
-            secondContent = { PendingApproval(uiState = pendingUiState, onClick = {
-                viewModel.selectedApplication = it
-                isSheetOpen = true
-            }) },
+            secondContent = {
+                PendingApproval(uiState = pendingUiState, onClick = {
+                    viewModel.selectedApplication = it
+                    isSheetOpen = true
+                })
+            },
             thirdContent = { InProgress(uiState = inProgressUiState) },
             fourthContent = {
                 Completed(
                     uiState = completedUiState,
                     onClickReview = { /*TODO*/ },
-                    onClickRecent = {})
+                    onClickRecent = {}
+                )
             }
         )
     }
@@ -147,7 +150,7 @@ private fun InProgress(
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     InProgressContent(application = it) {
-                        //todo
+                        // todo
                     }
                 }
             }
@@ -180,7 +183,6 @@ private fun Completed(
     }
 }
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ManagementScreen(
@@ -195,12 +197,12 @@ private fun ManagementScreen(
         stringResource(id = R.string.recruit),
         stringResource(id = R.string.waiting),
         stringResource(id = R.string.progress),
-        stringResource(id = R.string.complete),
+        stringResource(id = R.string.complete)
     )
 
     Surface(modifier = Modifier.fillMaxSize()) {
         var selectedTabIndex by remember { mutableIntStateOf(tabIndex) }
-        val pagerState = rememberPagerState (initialPage = tabIndex){
+        val pagerState = rememberPagerState(initialPage = tabIndex) {
             tabItems.size
         }
         LaunchedEffect(selectedTabIndex) {
@@ -244,6 +246,5 @@ private fun ManagementScreen(
                 }
             }
         }
-
     }
 }

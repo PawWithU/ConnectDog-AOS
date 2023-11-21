@@ -23,7 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -79,7 +78,7 @@ data class CardItem(
 fun IntermediatorHomeScreen(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
-    onDataClick: (Int) -> Unit,
+    onDataClick: (Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -89,7 +88,7 @@ fun IntermediatorHomeScreen(
             )
         }
     ) {
-        Content{
+        Content {
             onDataClick(it)
         }
     }

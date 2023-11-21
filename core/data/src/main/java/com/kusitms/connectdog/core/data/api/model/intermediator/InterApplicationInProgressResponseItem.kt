@@ -1,7 +1,5 @@
 package com.kusitms.connectdog.core.data.api.model.intermediator
 
-
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)

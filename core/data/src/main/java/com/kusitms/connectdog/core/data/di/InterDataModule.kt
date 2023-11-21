@@ -18,5 +18,4 @@ internal class InterDataModule {
     fun provideInterManagementRepository(apiService: InterApiService): InterManagementRepository {
         return InterManagementRepositoryImpl(apiService)
     }
-
 }

@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ListForOrganizationItem
-import com.kusitms.connectdog.core.designsystem.component.ListForOrganizationItem
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
@@ -41,7 +40,6 @@ import com.kusitms.connectdog.core.designsystem.theme.Red2
 import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.core.util.calDateTimeDifference
 import com.kusitms.connectdog.feature.intermediator.R
-
 
 @Composable
 internal fun RecruitingContent(application: InterApplication) {
@@ -51,7 +49,7 @@ internal fun RecruitingContent(application: InterApplication) {
         dogName = application.dogName,
         date = application.date,
         location = application.location,
-        volunteerName = application.volunteerName,
+        volunteerName = application.volunteerName
     )
     Divider(thickness = 8.dp, color = Gray7)
 }
@@ -83,7 +81,7 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
             dogName = application.dogName,
             date = application.date,
             location = application.location,
-            volunteerName = application.volunteerName,
+            volunteerName = application.volunteerName
         )
         ConnectDogSecondaryButton(
             contentRes = R.string.check_volunteer
@@ -92,13 +90,11 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
     Divider(thickness = 8.dp, color = Gray7)
 }
 
-
-
 @Composable
 internal fun InProgressContent(
     application: InterApplication,
     onClick: () -> Unit
-){
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,7 +106,7 @@ internal fun InProgressContent(
             dogName = application.dogName,
             date = application.date,
             location = application.location,
-            volunteerName = application.volunteerName,
+            volunteerName = application.volunteerName
         )
         ConnectDogSecondaryButton(
             modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
@@ -137,7 +133,7 @@ internal fun CompletedContent(
                 dogName = application.dogName,
                 date = application.date,
                 location = application.location,
-                volunteerName = application.volunteerName,
+                volunteerName = application.volunteerName
             )
             Spacer(modifier = Modifier.size(20.dp))
             ReviewRecentButton(
@@ -214,7 +210,6 @@ private fun ReviewRecentButton(
         )
     }
 }
-
 
 @Composable
 internal fun Loading() {

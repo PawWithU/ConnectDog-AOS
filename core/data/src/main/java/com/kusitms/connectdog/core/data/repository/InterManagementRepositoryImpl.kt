@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 internal class InterManagementRepositoryImpl @Inject constructor(
     private val api: InterApiService
-): InterManagementRepository {
+) : InterManagementRepository {
     override suspend fun getApplicationRecruiting(page: Int?, size: Int?): List<InterApplication> {
         return api.getApplicationRecruiting(page, size).map { it.toData() }
     }
@@ -30,5 +30,4 @@ internal class InterManagementRepositoryImpl @Inject constructor(
     override suspend fun getApplicationVolunteer(applicationId: Long): Volunteer {
         return api.getApplicationVolunteer(applicationId).toData()
     }
-
 }

@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.feature.intermediator.component
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,12 +13,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.kusitms.connectdog.core.designsystem.component.ApplicationBottomSheet
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.InterApplicationBottomSheet
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray6
-import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
 import com.kusitms.connectdog.feature.intermediator.R
@@ -35,7 +32,7 @@ internal fun VolunteerBottomSheet(
     val volunteer by viewModel.volunteerResponse.observeAsState(null)
     interApplication.applicationId?.let { id -> viewModel.getVolunteer(id) }
 
-    volunteer?.let {vol ->
+    volunteer?.let { vol ->
         InterApplicationBottomSheet(
             titleRes = R.string.check_volunteer_top_title,
             interApplication = interApplication,

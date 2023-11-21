@@ -1,12 +1,12 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
+import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
-import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
-import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
