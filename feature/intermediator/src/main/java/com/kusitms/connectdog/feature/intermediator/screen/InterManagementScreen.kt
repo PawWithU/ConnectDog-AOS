@@ -29,7 +29,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.InterApplication
-import com.kusitms.connectdog.feature.intermediator.IntermediatorApplicationUiState
+import com.kusitms.connectdog.feature.intermediator.InterApplicationUiState
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.component.CompletedContent
 import com.kusitms.connectdog.feature.intermediator.component.InProgressContent
@@ -72,10 +72,10 @@ private fun TopAppBar(
 
 @Composable
 private fun Recruiting(
-    uiState: IntermediatorApplicationUiState
+    uiState: InterApplicationUiState
 ) {
     when (uiState) {
-        is IntermediatorApplicationUiState.IntermediatorApplications -> {
+        is InterApplicationUiState.InterApplications -> {
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     RecruitingContent(application = it)
@@ -89,11 +89,11 @@ private fun Recruiting(
 
 @Composable
 private fun PendingApproval(
-    uiState: IntermediatorApplicationUiState,
+    uiState: InterApplicationUiState,
     onClick: (InterApplication) -> Unit
 ) {
     when (uiState) {
-        is IntermediatorApplicationUiState.IntermediatorApplications -> {
+        is InterApplicationUiState.InterApplications -> {
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     PendingContent(application = it) { onClick(it) }
@@ -107,10 +107,10 @@ private fun PendingApproval(
 
 @Composable
 private fun InProgress(
-    uiState: IntermediatorApplicationUiState
+    uiState: InterApplicationUiState
 ) {
     when (uiState) {
-        is IntermediatorApplicationUiState.IntermediatorApplications -> {
+        is InterApplicationUiState.InterApplications -> {
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     InProgressContent(application = it) {
@@ -126,12 +126,12 @@ private fun InProgress(
 
 @Composable
 private fun Completed(
-    uiState: IntermediatorApplicationUiState,
+    uiState: InterApplicationUiState,
     onClickReview: () -> Unit,
     onClickRecent: () -> Unit
 ) {
     when (uiState) {
-        is IntermediatorApplicationUiState.IntermediatorApplications -> {
+        is InterApplicationUiState.InterApplications -> {
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
                     CompletedContent(
