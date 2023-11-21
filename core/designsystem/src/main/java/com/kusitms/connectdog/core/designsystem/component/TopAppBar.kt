@@ -31,7 +31,7 @@ fun ConnectDogTopAppBar(
     @StringRes titleRes: Int?,
     navigationType: TopAppBarNavigationType,
     modifier: Modifier = Modifier,
-    navigationIconContentDescription: String?,
+    navigationIconContentDescription: String? = null,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     actionButtons: @Composable () -> Unit = {},

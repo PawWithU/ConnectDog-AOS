@@ -36,8 +36,7 @@ val Typography = Typography(
         fontFamily = fonts,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.sp,
+        letterSpacing = (-0.2).sp,
         color = Gray1
     ),
     bodyLarge = TextStyle(
@@ -53,7 +52,7 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 20.sp,
-        letterSpacing = 0.5.sp,
+        letterSpacing = (-0.6).sp,
         color = Gray1
     ),
     labelLarge = TextStyle(

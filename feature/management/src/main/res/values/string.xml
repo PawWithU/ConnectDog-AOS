@@ -6,4 +6,8 @@
     <string name="check_my_appliance">내 신청 확인</string>
     <string name="create_review">후기 등록</string>
     <string name="check_recent">근황 확인</string>
+    <string name="name">이름</string>
+    <string name="phone">전화번호</string>
+    <string name="vehicle">이동봉사 수단</string>
+    <string name="volunteer_comment">봉사자의 한마디</string>
 </resources>
