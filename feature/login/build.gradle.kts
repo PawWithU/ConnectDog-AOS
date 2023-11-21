@@ -76,6 +76,10 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
 
+//     social login
+    implementation(libs.kakao.oauth)
+    implementation(libs.naver.oauth)
+
     // test
     implementation(libs.androidx.junit.ktx)
 }
