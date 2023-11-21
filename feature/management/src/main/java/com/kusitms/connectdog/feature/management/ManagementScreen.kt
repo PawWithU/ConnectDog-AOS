@@ -50,7 +50,9 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Application
 
@@ -260,6 +262,8 @@ private fun CompletedContent(
             Spacer(modifier = Modifier.size(20.dp))
             ReviewRecentButton(
                 modifier = Modifier.height(40.dp),
+                hasReview = application.reviewId != null,
+                hasRecent = application.dogStatusId != null,
                 onClickReview = onClickReview,
                 onClickRecent = onClickRecent,
             )
@@ -284,6 +288,8 @@ private fun OutlinedButton(
 @Composable
 private fun ReviewRecentButton(
     modifier: Modifier = Modifier,
+    hasReview: Boolean,
+    hasRecent: Boolean,
     onClickReview: () -> Unit,
     onClickRecent: () -> Unit
 ) {
@@ -304,28 +310,30 @@ private fun ReviewRecentButton(
                 modifier = modifier
                     .fillMaxHeight()
                     .weight(0.5f)
-                    .clickable { onClickReview() },
+                    .clickable(enabled = hasReview) { onClickReview() },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = stringResource(id = R.string.create_review),
                     style = MaterialTheme.typography.titleSmall,
                     fontSize = 12.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if (!hasReview) Gray4 else Gray1
                 )
             }
             Box(
                 modifier = modifier
                     .fillMaxHeight()
                     .weight(0.5f)
-                    .clickable { onClickRecent() },
+                    .clickable(enabled = hasRecent) { onClickRecent() },
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = stringResource(id = R.string.check_recent),
                     style = MaterialTheme.typography.titleSmall,
                     fontSize = 12.sp,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if (!hasRecent) Gray4 else Gray1
                 )
             }
         }
