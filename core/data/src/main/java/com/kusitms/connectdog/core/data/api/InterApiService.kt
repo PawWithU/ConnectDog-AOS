@@ -1,10 +1,12 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationRecruitingResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationWaitingResponseItem
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface InterApiService {
@@ -34,4 +36,9 @@ internal interface InterApiService {
         @Query("page") page: Int?,
         @Query("size") size: Int?
     ): List<InterApplicationCompletedResponseItem>
+
+    @GET("/intermediaries/applications/{applicationId}")
+    suspend fun getApplicationVolunteer(
+        @Path("applicationId") applicationId: Long
+    ): VolunteerResponse
 }
