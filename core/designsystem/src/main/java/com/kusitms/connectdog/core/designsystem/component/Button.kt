@@ -35,7 +35,8 @@ fun ConnectDogBottomButton(
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     border: BorderStroke = BorderStroke(width = 0.dp, color = MaterialTheme.colorScheme.outline),
     onClick: () -> Unit,
-    content: String
+    content: String,
+    fontSize: Int = 16
 ) {
     Button(
         onClick = onClick,
@@ -45,7 +46,7 @@ fun ConnectDogBottomButton(
         colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
         border = border
     ) {
-        Text(text = content, style = Typography.titleSmall, color = textColor)
+        Text(text = content, style = Typography.titleSmall, color = textColor, fontSize = fontSize.sp)
     }
 }
 
@@ -82,6 +83,7 @@ fun NormalButton(
     color: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit = {},
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
+    fontSize: Int = 16,
     modifier: Modifier = Modifier
         .fillMaxWidth()
         .height(56.dp)
@@ -91,7 +93,8 @@ fun NormalButton(
         content = content,
         color = color,
         modifier = modifier,
-        textColor = textColor
+        textColor = textColor,
+        fontSize = fontSize
     )
 }
 

@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.home.screen
+package com.kusitms.connectdog.feature.intermediator.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -35,20 +34,19 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButt
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.DetailInfo
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
+import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
-import com.kusitms.connectdog.core.designsystem.theme.Gray7
-import com.kusitms.connectdog.feature.home.R
 import kotlinx.coroutines.launch
 
 val pages = listOf("기본 정보", "후기", "근황")
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun IntermediatorProfileScreen(
+fun ProfileScreen(
     onBackClick: () -> Unit = {}
 ) {
     Scaffold(
@@ -150,21 +148,16 @@ fun TabLayout() {
 }
 
 @Composable
-fun Information() {
+private fun Information() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
         IntermediatorInformation()
-        Divider(
-            Modifier
-                .height(8.dp)
-                .fillMaxWidth(),
-            color = Gray7
-        )
-        Announcement()
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.weight(1f))
+        NormalButton(content = "수정하기", modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp))
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 
@@ -189,23 +182,12 @@ fun IntermediatorInformation() {
 }
 
 @Composable
-fun Announcement() {
-    val modifier = Modifier.padding(horizontal = 20.dp)
-    Column(
-//        modifier = Modifier.padding(horizontal = )
-    ) {
-        MoveContent(onClick = { }, titleRes = R.string.home_navigate_search)
-        AnnouncementLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp), onClick = { })
-    }
-}
-
-@Composable
 fun Review() {
     val modifier = Modifier.padding(horizontal = 0.dp)
     Column(
         verticalArrangement = Arrangement.Top
     ) {
-        ReviewLoading(modifier = modifier)
+//        ReviewLoading(modifier = modifier)
     }
 }
 
@@ -222,6 +204,6 @@ fun News() {
 @Composable
 private fun test() {
     ConnectDogTheme {
-        IntermediatorProfileScreen()
+        ProfileScreen()
     }
 }
