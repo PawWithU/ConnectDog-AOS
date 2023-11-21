@@ -1,6 +1,8 @@
 package com.kusitms.connectdog.feature.management
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -50,6 +53,8 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Application
+
+val TAG = "ManagementScreen"
 
 @Composable
 internal fun ManagementRoute(
@@ -133,7 +138,7 @@ private fun ManagementScreen(
                 when (index) {
                     0 -> firstContent()
                     1 -> secondContent()
-                    3 -> thirdContent()
+                    2 -> thirdContent()
                 }
             }
         }
@@ -153,6 +158,7 @@ private fun PendingApproval(
                 }
             }
         }
+
         else -> Loading()
     }
 }
@@ -281,7 +287,15 @@ private fun ReviewRecentButton(
     onClickReview: () -> Unit,
     onClickRecent: () -> Unit
 ) {
-    Box(modifier = modifier.fillMaxWidth()) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                shape = RoundedCornerShape(6.dp),
+                color = MaterialTheme.colorScheme.outline,
+                width = 1.dp
+            )
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -304,7 +318,7 @@ private fun ReviewRecentButton(
                 modifier = modifier
                     .fillMaxHeight()
                     .weight(0.5f)
-                    .clickable { onClickReview() },
+                    .clickable { onClickRecent() },
                 contentAlignment = Alignment.Center
             ) {
                 Text(

@@ -54,6 +54,7 @@ internal fun ApplicationCompletedResponseItem.toData(): Application {
         organization = intermediaryName,
         hasKennel = isKennel,
         postId = postId,
-        reviewId = reviewId
+        reviewId = reviewId,
+        dogStatusId = dogStatusId,
     )
 }
