@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -85,7 +86,10 @@ internal fun HomeRoute(
     }
 
     Column {
-        TopAppBar(onClickSearch = onNavigateToSearch, onNotificationClick = onNavigateToNotification)
+        TopAppBar(
+            onClickSearch = onNavigateToSearch,
+            onNotificationClick = onNavigateToNotification
+        )
         HomeScreen(
             announcementUiState = announcementUiState,
             reviewUiState = reviewUiState,
@@ -181,28 +185,36 @@ private fun StatisticBanner(modifier: Modifier) {
                 color = Gray3
             )
         }
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
-            color = MaterialTheme.colorScheme.primaryContainer
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(12.dp)
+                )
         ) {
+            Divider(
+                color = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .height(80.dp)
+                    .width(1.dp)
+                    .align(Alignment.Center)
+            )
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.Bottom,
-                modifier = Modifier.height(80.dp)
+                modifier = Modifier
+                    .height(80.dp)
+                    .fillMaxWidth()
             ) {
                 StatisticInfoItem(
+                    modifier = Modifier.weight(1f),
                     number = "105",
                     descriptionRes = R.string.home_need_move_description,
                     painter = painterResource(id = R.drawable.img_man_dog)
                 )
-                Divider(
-                    color = MaterialTheme.colorScheme.background,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp)
-                )
                 StatisticInfoItem(
+                    modifier = Modifier.weight(1f),
                     number = "22",
                     descriptionRes = R.string.home_moved_description,
                     painter = painterResource(id = R.drawable.img_woman)
@@ -214,6 +226,7 @@ private fun StatisticBanner(modifier: Modifier) {
 
 @Composable
 private fun StatisticInfoItem(
+    modifier: Modifier = Modifier,
     number: String = "0",
     descriptionRes: Int,
     painter: Painter
@@ -322,7 +335,11 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: () -> Uni
             )
         }
 
-        else -> AnnouncementLoading(modifier = modifier, arrangement = Arrangement.spacedBy(12.dp), onClick = onClick)
+        else -> AnnouncementLoading(
+            modifier = modifier,
+            arrangement = Arrangement.spacedBy(12.dp),
+            onClick = onClick
+        )
     }
 }
 
@@ -356,7 +373,11 @@ private fun AnnouncementListContent(
 }
 
 @Composable
-fun AnnouncementLoading(modifier: Modifier, arrangement: Arrangement.Horizontal, onClick: () -> Unit) {
+fun AnnouncementLoading(
+    modifier: Modifier,
+    arrangement: Arrangement.Horizontal,
+    onClick: () -> Unit
+) {
     val list = List(4) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
     }
@@ -408,9 +429,11 @@ private fun AnnouncementCardContent(
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier.width(150.dp).clickable {
-            onClick()
-        }
+        modifier = Modifier
+            .width(150.dp)
+            .clickable {
+                onClick()
+            }
     ) {
         NetworkImage(
             imageUrl = announcement.imageUrl,
