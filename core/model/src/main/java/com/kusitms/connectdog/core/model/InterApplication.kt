@@ -1,6 +1,6 @@
 package com.kusitms.connectdog.core.model
 
-data class IntermediatorApplication(
+data class InterApplication(
     val imageUrl: String,
     val location: String,
     val date: String,

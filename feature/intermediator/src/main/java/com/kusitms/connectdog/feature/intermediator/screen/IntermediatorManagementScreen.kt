@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
-import com.kusitms.connectdog.core.model.IntermediatorApplication
+import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.feature.intermediator.IntermediatorApplicationUiState
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.component.CompletedContent
@@ -90,7 +90,7 @@ private fun Recruiting(
 @Composable
 private fun PendingApproval(
     uiState: IntermediatorApplicationUiState,
-    onClick: (IntermediatorApplication) -> Unit
+    onClick: (InterApplication) -> Unit
 ) {
     when (uiState) {
         is IntermediatorApplicationUiState.IntermediatorApplications -> {

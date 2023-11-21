@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -39,14 +37,12 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.Red2
-import com.kusitms.connectdog.core.model.Application
-import com.kusitms.connectdog.core.model.IntermediatorApplication
-import com.kusitms.connectdog.feature.intermediator.IntermediatorApplicationUiState
+import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.feature.intermediator.R
 
 
 @Composable
-internal fun RecruitingContent(application: IntermediatorApplication) {
+internal fun RecruitingContent(application: InterApplication) {
     ListForUserItem(
         modifier = Modifier.padding(20.dp),
         imageUrl = application.imageUrl,
@@ -59,7 +55,7 @@ internal fun RecruitingContent(application: IntermediatorApplication) {
 }
 
 @Composable
-internal fun PendingContent(application: IntermediatorApplication, onClick: () -> Unit) {
+internal fun PendingContent(application: InterApplication, onClick: () -> Unit) {
     // todo 시간 계산 필요
     Column(
         modifier = Modifier
@@ -97,7 +93,7 @@ internal fun PendingContent(application: IntermediatorApplication, onClick: () -
 
 @Composable
 internal fun InProgressContent(
-    application: IntermediatorApplication,
+    application: InterApplication,
     onClick: () -> Unit
 ){
     Column(
@@ -123,7 +119,7 @@ internal fun InProgressContent(
 
 @Composable
 internal fun CompletedContent(
-    application: IntermediatorApplication,
+    application: InterApplication,
     onClickReview: () -> Unit,
     onClickRecent: () -> Unit
 ) {
