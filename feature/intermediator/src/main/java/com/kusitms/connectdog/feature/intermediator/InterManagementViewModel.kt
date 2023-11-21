@@ -33,11 +33,7 @@ class InterManagementViewModel @Inject constructor(
         createUiStateFlow { managementRepository.getApplicationInProgress() }
 
     val completedUiState: StateFlow<InterApplicationUiState> =
-        createUiStateFlow {
-            val applications = managementRepository.getApplicationCompleted()
-            Log.d("ManagementViewModel", "completedUiState = $applications")
-            applications
-        }
+        createUiStateFlow { managementRepository.getApplicationCompleted() }
 
     private fun createUiStateFlow(getApplication: suspend () -> List<InterApplication>) =
         flow {
@@ -50,6 +46,7 @@ class InterManagementViewModel @Inject constructor(
             }
         }.catch {
             _errorFlow.emit(it)
+            Log.e("InterManagementViewModel", "${it.message}")
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

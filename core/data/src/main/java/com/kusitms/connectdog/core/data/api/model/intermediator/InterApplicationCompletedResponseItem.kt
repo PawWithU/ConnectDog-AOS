@@ -13,8 +13,8 @@ data class InterApplicationCompletedResponseItem(
     val endDate: String,
     val mainImage: String,
     val postId: Long,
-    val reviewId: Long,
-    val dogStatusId: Long,
+    val reviewId: Long?,
+    val dogStatusId: Long?,
     val startDate: String,
     val volunteerName: String
 )
