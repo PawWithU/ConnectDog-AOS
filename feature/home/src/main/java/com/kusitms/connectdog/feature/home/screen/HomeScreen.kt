@@ -275,7 +275,8 @@ private fun BannerGuideline() {
             Text(
                 text = stringResource(id = R.string.home_banner_button_guideline),
                 style = MaterialTheme.typography.titleMedium,
-                fontSize = 10.sp
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }

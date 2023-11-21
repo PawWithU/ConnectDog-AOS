@@ -43,7 +43,7 @@ fun ConnectDogTopAppBar(
                 Icon(
                     modifier = modifier
                         .fillMaxSize()
-                        .padding(vertical = 16.dp, horizontal = 12.dp),
+                        .padding(vertical = 12.dp, horizontal = 12.dp),
                     painter = painterResource(id = imageRes),
                     contentDescription = navigationIconContentDescription
                 )
