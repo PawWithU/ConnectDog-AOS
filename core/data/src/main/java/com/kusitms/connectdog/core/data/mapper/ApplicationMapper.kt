@@ -5,18 +5,14 @@ import com.kusitms.connectdog.core.data.api.model.ApplicationInProgressResponseI
 import com.kusitms.connectdog.core.data.api.model.ApplicationWaitingResponseItem
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.util.dateFormat
+import com.kusitms.connectdog.core.util.dateRangeFormat
 import com.kusitms.connectdog.core.util.toLocalDate
 
 internal fun ApplicationWaitingResponseItem.toData(): Application {
-    val datePattern = "yyyy-MM-dd"
-    val uiPattern = "YY.MM.dd(E)"
-    val start = this.startDate.toLocalDate(datePattern).dateFormat(uiPattern)
-    val end = this.endDate.toLocalDate(datePattern).dateFormat(uiPattern)
-
     return Application(
         imageUrl = mainImage,
         location = "${this.departureLoc} → ${this.arrivalLoc}",
-        date = "$start-$end",
+        date = dateRangeFormat(startDate, endDate),
         organization = intermediaryName,
         hasKennel = isKennel,
         postId = postId,
@@ -26,15 +22,10 @@ internal fun ApplicationWaitingResponseItem.toData(): Application {
 }
 
 internal fun ApplicationInProgressResponseItem.toData(): Application {
-    val datePattern = "yyyy-MM-dd"
-    val uiPattern = "YY.MM.dd(E)"
-    val start = this.startDate.toLocalDate(datePattern).dateFormat(uiPattern)
-    val end = this.endDate.toLocalDate(datePattern).dateFormat(uiPattern)
-
     return Application(
         imageUrl = mainImage,
         location = "${this.departureLoc} → ${this.arrivalLoc}",
-        date = "$start-$end",
+        date = dateRangeFormat(startDate, endDate),
         organization = intermediaryName,
         hasKennel = isKennel,
         postId = postId
@@ -42,15 +33,10 @@ internal fun ApplicationInProgressResponseItem.toData(): Application {
 }
 
 internal fun ApplicationCompletedResponseItem.toData(): Application {
-    val datePattern = "yyyy-MM-dd"
-    val uiPattern = "YY.MM.dd(E)"
-    val start = this.startDate.toLocalDate(datePattern).dateFormat(uiPattern)
-    val end = this.endDate.toLocalDate(datePattern).dateFormat(uiPattern)
-
     return Application(
         imageUrl = mainImage,
         location = "${this.departureLoc} → ${this.arrivalLoc}",
-        date = "$start-$end",
+        date = dateRangeFormat(startDate, endDate),
         organization = intermediaryName,
         hasKennel = isKennel,
         postId = postId,
