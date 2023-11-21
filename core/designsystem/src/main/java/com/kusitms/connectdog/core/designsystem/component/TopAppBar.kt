@@ -94,6 +94,8 @@ fun ConnectDogTopAppBar(
                         .padding(horizontal = 20.dp, vertical = 10.dp)
                 )
             }
+
+            else -> {}
         }
 
         Row(modifier = Modifier.align(Alignment.CenterEnd)) {

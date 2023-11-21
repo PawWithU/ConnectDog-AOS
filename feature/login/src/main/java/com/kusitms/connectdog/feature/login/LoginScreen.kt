@@ -54,10 +54,9 @@ fun Logo(
 }
 
 @Composable
-fun MainLogo(modifier: Modifier = Modifier) {
+fun MainLogo() {
     Image(
         painter = painterResource(com.kusitms.connectdog.core.designsystem.R.drawable.ic_main),
-        modifier = modifier,
         contentDescription = "Local Image"
     )
 }
