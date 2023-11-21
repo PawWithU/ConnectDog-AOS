@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.designsystem.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,7 @@ fun ConnectDogBottomButton(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
+    border: BorderStroke = BorderStroke(width = 0.dp, color = MaterialTheme.colorScheme.outline),
     onClick: () -> Unit,
     content: String
 ) {
@@ -38,8 +41,9 @@ fun ConnectDogBottomButton(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
-        modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        modifier = modifier.height(56.dp).fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
+        border = border
     ) {
         Text(text = content, style = Typography.titleSmall, color = textColor)
     }
@@ -139,6 +143,27 @@ fun ConnectDogOutlinedButton(
         colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
     ) {
         content()
+    }
+}
+
+@Composable
+fun ConnectDogSecondaryButton(
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.surface,
+    textColor: Color = MaterialTheme.colorScheme.primary,
+    borderColor: Color = MaterialTheme.colorScheme.primary,
+    @StringRes contentRes: Int,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        contentPadding = PaddingValues(vertical = 11.dp),
+        shape = RoundedCornerShape(6.dp),
+        border = BorderStroke(1.dp, borderColor),
+        modifier = modifier.fillMaxWidth().height(40.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+    ) {
+        Text(text = stringResource(id = contentRes), style = Typography.titleSmall, color = textColor, fontSize = 12.sp)
     }
 }
 
