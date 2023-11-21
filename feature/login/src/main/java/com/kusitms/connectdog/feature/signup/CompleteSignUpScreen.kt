@@ -27,11 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
 fun CompleteSignUpScreen(
-    onclick: () -> Unit
+    onClick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -87,13 +88,15 @@ fun CompleteSignUpScreen(
                         placeable.place(0, 0)
                     }
                 },
-            onClick = onclick
+            onClick = onClick
         )
     }
 }
 
 @Preview
 @Composable
-fun test() {
-//    CompleteSignUpScreen()
+private fun test() {
+    ConnectDogTheme {
+        CompleteSignUpScreen(onClick = {})
+    }
 }

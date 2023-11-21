@@ -48,7 +48,7 @@ fun ListItem(
             NetworkImage(
                 imageUrl = imageUrl,
                 modifier = Modifier
-                    .size(85.dp)
+                    .size(100.dp)
                     .clip(shape = RoundedCornerShape(12.dp))
                     .alpha(if (!isValid) 0.4F else 1.0F),
                 placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer)
@@ -83,6 +83,25 @@ fun ListForUserItem(
             date = announcement.date,
             organization = announcement.organization,
             hasKennel = announcement.hasKennel
+        )
+    }
+}
+
+@Composable
+fun ListForUserItem(
+    modifier: Modifier = Modifier,
+    imageUrl: String,
+    location: String,
+    date: String,
+    organization: String,
+    hasKennel: Boolean,
+    isValid: Boolean = true
+) {
+    ListItem(modifier = modifier, imageUrl = imageUrl, title = location, isValid = isValid) {
+        AnnouncementContent(
+            date = date,
+            organization = organization,
+            hasKennel = hasKennel
         )
     }
 }

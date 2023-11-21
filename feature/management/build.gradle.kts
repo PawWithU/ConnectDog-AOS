@@ -56,10 +56,12 @@ dependencies {
     implementation(libs.androidx.compose.navigation)
     implementation(libs.hilt.navigation.compose)
 
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.viewModelKtx)
+    implementation(libs.androidx.compose.runtime.livedata)
 
     // compose
     implementation(platform(libs.androidx.compose.bom))

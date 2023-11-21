@@ -1,28 +1,39 @@
 package com.kusitms.connectdog.core.designsystem.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.designsystem.theme.Red1
+import com.kusitms.connectdog.core.designsystem.theme.Red2
 
 @Composable
 fun ConnectDogCard(
@@ -108,4 +119,38 @@ fun ConnectDogCardButton(
         shape = RoundedCornerShape(12.dp),
         content = content
     )
+}
+
+@Composable
+fun ErrorCard() {
+    Card(
+        colors =
+        CardDefaults.cardColors(
+            containerColor = Red2
+        ),
+        modifier =
+        Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            .padding(horizontal = 20.dp)
+    ) {
+        Row(
+            modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(start = 13.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_error),
+                contentDescription = "ErrorIcon"
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(
+                text = "이메일 혹은 비밀번호가 일치하지 않습니다.",
+                color = Red1,
+                fontSize = 13.sp
+            )
+        }
+    }
 }

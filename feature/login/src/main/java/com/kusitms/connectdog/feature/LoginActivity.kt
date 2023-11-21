@@ -38,7 +38,7 @@ class LoginActivity : ComponentActivity() {
             val navigator = rememberNavController()
 
             ConnectDogTheme {
-                NavHost(navigator, startDestination = "login") {
+                NavHost(navigator, startDestination = "selectLogin") {
                     composable("login") {
                         LoginScreen(navigator)
                     }

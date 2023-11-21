@@ -2,7 +2,10 @@ package com.kusitms.connectdog.feature.mypage
 
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,22 +15,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.Orange20
 
 private val volunteerDescriptionList = listOf(
     R.string.review_first,
@@ -52,11 +66,17 @@ data class BadgeItem(
     @StringRes val description: Int
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun BadgeScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: MyScreenViewModel = MyScreenViewModel()
 ) {
+    val showBottomSheet by viewModel.showBottomSheet.observeAsState(initial = false)
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
@@ -67,12 +87,61 @@ fun BadgeScreen(
             )
         }
     ) {
-        Content()
+        Content(viewModel)
+
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    viewModel.updateBottomSheet()
+                },
+                sheetState = sheetState
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    NetworkImage(
+                        imageUrl = viewModel.badgeItem.value!!.imageUrl,
+                        placeholder = painterResource(id = R.drawable.ic_lock)
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = stringResource(
+                            id = viewModel.badgeItem.value!!.description
+                        ),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Orange20)
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                            .height(40.dp)
+                    ) {
+                        Text(
+                            text = "이동봉사를 1회 진행했어요",
+                            textAlign = TextAlign.Center,
+                            fontSize = 12.sp,
+                            color = Gray2,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
+        }
     }
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    viewModel: MyScreenViewModel
+) {
     val volunteerItems = List(6) {
         BadgeItem(null, reviewDescriptionList[it])
     }
@@ -86,15 +155,16 @@ private fun Content() {
             .fillMaxSize()
             .padding(top = 48.dp)
     ) {
-        BadgeGrid(titleRes = R.string.volunteer_title, volunteerItems)
-        BadgeGrid(titleRes = R.string.review_title, reviewItems)
+        BadgeGrid(titleRes = R.string.volunteer_title, volunteerItems, viewModel)
+        BadgeGrid(titleRes = R.string.review_title, reviewItems, viewModel)
     }
 }
 
 @Composable
 private fun BadgeGrid(
     @StringRes titleRes: Int,
-    list: List<BadgeItem>
+    list: List<BadgeItem>,
+    viewModel: MyScreenViewModel
 ) {
     Column(
         modifier = Modifier
@@ -112,7 +182,10 @@ private fun BadgeGrid(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             items(list) {
-                BadgeContent(it)
+                BadgeContent(it) {
+                    viewModel.updateBottomSheet()
+                    viewModel.updateBottomSheetData(it)
+                }
             }
         }
     }
@@ -120,9 +193,13 @@ private fun BadgeGrid(
 
 @Composable
 private fun BadgeContent(
-    item: BadgeItem
+    item: BadgeItem,
+    onClick: () -> Unit
 ) {
     Column(
+        modifier = Modifier.clickable {
+            onClick()
+        },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         NetworkImage(
@@ -143,6 +220,6 @@ private fun BadgeContent(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        Content()
+//        Content()
     }
 }
