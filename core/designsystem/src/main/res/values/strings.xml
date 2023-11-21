@@ -17,4 +17,8 @@
     <string name="volunteer_signup">이동봉사자 회원가입</string>
     <string name="apply_volunter">이동봉사 신청하기</string>
     <string name="management">봉사관리</string>
+    <string name="name">이름</string>
+    <string name="phone">전화번호</string>
+    <string name="vehicle">이동봉사 수단</string>
+    <string name="volunteer_comment">봉사자의 한마디</string>
 </resources>

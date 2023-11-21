@@ -1,10 +1,11 @@
-package com.kusitms.connectdog.feature.management
+package com.kusitms.connectdog.core.designsystem.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,22 +24,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomSheet
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
-import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray6
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.model.Volunteer
-import org.w3c.dom.Comment
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ApplicationBottomSheet(
+fun ApplicationBottomSheet(
     modifier: Modifier = Modifier,
+    @StringRes titleRes: Int,
     application: Application,
-    volunteer: Volunteer
+    volunteer: Volunteer,
+    bottomButton: @Composable () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable {
@@ -46,24 +45,33 @@ internal fun ApplicationBottomSheet(
     }
     ConnectDogBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { isSheetOpen = false }) {
-        Column(modifier = modifier) {
-            TopAppBar {
-                isSheetOpen = false
+        onDismissRequest = { isSheetOpen = false }
+    ) {
+        Column(modifier = modifier.fillMaxSize()) {
+            Column(modifier = Modifier.weight(1f)) {
+                TopAppBar(titleRes = titleRes) {
+                    isSheetOpen = false
+                }
+                ApplicationContent(application = application)
+                Divider(
+                    thickness = 1.dp,
+                    color = Gray6,
+                    modifier = Modifier.padding(vertical = 40.dp)
+                )
+                InformationContent(volunteer = volunteer)
             }
-            ApplicationContent(application = application)
-            Divider(thickness = 1.dp, color = Gray6, modifier = Modifier.padding(vertical = 40.dp))
-            InformationContent(volunteer = volunteer)
+            bottomButton()
         }
     }
 }
 
 @Composable
 private fun TopAppBar(
+    @StringRes titleRes: Int,
     onBackClick: () -> Unit
 ) {
     ConnectDogTopAppBar(
-        titleRes = R.string.check_my_appliance,
+        titleRes = titleRes,
         navigationType = TopAppBarNavigationType.CLOSE,
         navigationIconContentDescription = "close",
         onNavigationClick = onBackClick
