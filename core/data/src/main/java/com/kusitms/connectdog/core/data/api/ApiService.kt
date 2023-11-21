@@ -6,11 +6,16 @@ import com.kusitms.connectdog.core.data.api.model.ApplicationCompletedResponseIt
 import com.kusitms.connectdog.core.data.api.model.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.ApplicationWaitingResponseItem
 import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
+import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface ApiService {
 
+    /**
+     * 이동봉사자 > 홈
+     */
     @GET("/volunteers/posts/home")
     suspend fun getAnnouncementPostsHome(): List<AnnouncementHomeResponseItem>
 
@@ -35,6 +40,9 @@ internal interface ApiService {
         @Query("size") size: Int
     ): List<ReviewResponseItem>
 
+    /**
+     * 이동봉사자 > 봉사관리
+     */
     @GET("/volunteers/applications/waiting")
     suspend fun getApplicationWaiting(
         @Query("page") page: Int?,
@@ -52,4 +60,9 @@ internal interface ApiService {
         @Query("page") page: Int?,
         @Query("size") size: Int?
     ): List<ApplicationCompletedResponseItem>
+
+    @GET("/volunteers/applications/{applicationId}")
+    suspend fun getMyApplication(
+        @Path("applicationId") applicationId: Long
+    ): VolunteerResponse
 }

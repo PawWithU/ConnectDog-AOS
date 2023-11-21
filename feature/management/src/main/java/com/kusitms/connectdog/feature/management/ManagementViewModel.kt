@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ManagementViewModel @Inject constructor(
@@ -74,4 +75,10 @@ class ManagementViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = ApplicationUiState.Loading
         )
+
+    private fun getMyApplication(applicationId: Long){
+        viewModelScope.launch {
+
+        }
+    }
 }
