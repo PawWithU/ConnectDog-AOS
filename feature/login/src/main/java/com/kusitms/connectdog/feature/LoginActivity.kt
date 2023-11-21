@@ -46,7 +46,7 @@ class LoginActivity : ComponentActivity() {
                         LoginTypeScreen(navigator, loginViewModel, this@LoginActivity)
                     }
                     composable("emailLogin") {
-                        EmailLoginScreen(title = "이동봉사자 로그인", navigator) { initMainActivity() }
+                        EmailLoginScreen(title = "이동봉사자 로그인", navigator = navigator, onClick = { initMainActivity() })
                     }
                     composable("volunteerSignUp") {
                         VolunteerSignUpScreen(navigator, termsViewModel)
