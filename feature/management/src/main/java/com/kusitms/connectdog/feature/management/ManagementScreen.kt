@@ -25,11 +25,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,9 +57,12 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Application
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 
 val TAG = "ManagementScreen"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ManagementRoute(
     onBackClick: () -> Unit,
@@ -69,6 +74,9 @@ internal fun ManagementRoute(
     val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
     val completedUiState by viewModel.completedUiState.collectAsStateWithLifecycle()
 
+    val sheetState = rememberModalBottomSheetState()
+    var isSheetOpen by rememberSaveable { mutableStateOf(false) }
+
     Column {
         ConnectDogTopAppBar(
             titleRes = null,
@@ -77,11 +85,23 @@ internal fun ManagementRoute(
             onNavigationClick = onBackClick
         )
         ManagementScreen(
-            firstContent = { PendingApproval(pendingUiState) {
-
-            } },
+            firstContent = {
+                PendingApproval(pendingUiState) { application ->
+                    viewModel.selectedApplication = application
+                    isSheetOpen = true
+                }
+            },
             secondContent = { InProgress(inProgressUiState) },
             thirdContent = { Completed(completedUiState, onClickReview = {}, onClickRecent = {}) }
+        )
+    }
+
+    if (isSheetOpen && viewModel.selectedApplication != null){
+        MyApplicationBottomSheet(
+            application = viewModel.selectedApplication!!,
+            sheetState = sheetState,
+            onDismissRequest = { isSheetOpen = false },
+            viewModel = viewModel
         )
     }
 }

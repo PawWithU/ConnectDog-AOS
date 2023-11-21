@@ -1,9 +1,13 @@
 package com.kusitms.connectdog.feature.management
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.repository.ManagementRepository
+import com.kusitms.connectdog.core.model.Application
+import com.kusitms.connectdog.core.model.Volunteer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,8 +22,10 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ManagementViewModel @Inject constructor(
-    managementRepository: ManagementRepository
+    private val managementRepository: ManagementRepository
 ): ViewModel(){
+    private val TAG = "ManagementViewModel"
+
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
@@ -76,9 +82,18 @@ class ManagementViewModel @Inject constructor(
             initialValue = ApplicationUiState.Loading
         )
 
-    private fun getMyApplication(applicationId: Long){
-        viewModelScope.launch {
+    private val _volunteerResponse = MutableLiveData<Volunteer>()
+    val volunteerResponse: LiveData<Volunteer> get() = _volunteerResponse
 
+    var selectedApplication: Application? = null
+
+    fun getMyApplication(applicationId: Long){
+        viewModelScope.launch {
+            try {
+                _volunteerResponse.value = managementRepository.getMyApplication(applicationId)
+            } catch (e: Exception){
+                Log.e(TAG, "getMyApplication ${e.stackTrace}")
+            }
         }
     }
 }
