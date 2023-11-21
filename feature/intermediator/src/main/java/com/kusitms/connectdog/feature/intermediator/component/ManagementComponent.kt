@@ -39,6 +39,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.Red2
 import com.kusitms.connectdog.core.model.InterApplication
+import com.kusitms.connectdog.core.util.calDateTimeDifference
 import com.kusitms.connectdog.feature.intermediator.R
 
 
@@ -58,6 +59,7 @@ internal fun RecruitingContent(application: InterApplication) {
 @Composable
 internal fun PendingContent(application: InterApplication, onClick: () -> Unit) {
     // todo 시간 계산 필요
+    val diffTime = application.applicationTime?.calDateTimeDifference()
     Column(
         modifier = Modifier
             .padding(20.dp)
@@ -73,7 +75,7 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
         ) {
             Icon(painter = painterResource(id = R.drawable.ic_info), contentDescription = "info")
             Spacer(modifier = Modifier.size(5.dp))
-            Text(text = stringResource(id = R.string.will_be_canceled), style = MaterialTheme.typography.labelLarge)
+            Text(text = "$diffTime ${stringResource(id = R.string.will_be_canceled)}", style = MaterialTheme.typography.labelLarge)
         }
         ListForOrganizationItem(
             modifier = Modifier.padding(20.dp),
