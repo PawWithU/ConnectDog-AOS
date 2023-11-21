@@ -41,7 +41,7 @@ fun ConnectDogBottomButton(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
-        modifier = modifier.height(56.dp),
+        modifier = modifier.height(56.dp).fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
         border = border,
     ) {

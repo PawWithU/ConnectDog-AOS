@@ -40,7 +40,7 @@ internal fun MyApplicationBottomSheet(
                 textColor = MaterialTheme.colorScheme.error,
                 color = MaterialTheme.colorScheme.surface,
                 border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.error),
-                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 32.dp)
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 52.dp)
             )
         }
     }
