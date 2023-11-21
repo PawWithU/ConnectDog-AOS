@@ -13,7 +13,7 @@ internal fun InterApplicationRecruitingResponseItem.toData(): InterApplication =
         dogName = dogName,
         location = "${this.departureLoc} → ${this.arrivalLoc}",
         date = dateRangeFormat(startDate, endDate),
-        volunteerName = volunteerName,
+        volunteerName = volunteerName ?: "-",
         postId = postId,
         postStatus = postStatus,
     )

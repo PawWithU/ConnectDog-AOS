@@ -5,7 +5,7 @@ data class InterApplication(
     val dogName: String,
     val location: String,
     val date: String,
-    val volunteerName: String? = null,
+    val volunteerName: String = "",
     val postId: Long,
     val postStatus: String? = null,
     val applicationTime: String? = null,

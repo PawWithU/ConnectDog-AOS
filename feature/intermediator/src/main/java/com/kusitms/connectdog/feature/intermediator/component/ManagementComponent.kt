@@ -32,7 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
-import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
+import com.kusitms.connectdog.core.designsystem.component.ListForOrganizationItem
+import com.kusitms.connectdog.core.designsystem.component.ListForOrganizationItem
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
@@ -43,13 +44,13 @@ import com.kusitms.connectdog.feature.intermediator.R
 
 @Composable
 internal fun RecruitingContent(application: InterApplication) {
-    ListForUserItem(
+    ListForOrganizationItem(
         modifier = Modifier.padding(20.dp),
         imageUrl = application.imageUrl,
-        location = application.location,
+        dogName = application.dogName,
         date = application.date,
-        organization = application.organization,
-        hasKennel = application.hasKennel
+        location = application.location,
+        volunteerName = application.volunteerName,
     )
     Divider(thickness = 8.dp, color = Gray7)
 }
@@ -74,13 +75,13 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
             Spacer(modifier = Modifier.size(5.dp))
             Text(text = stringResource(id = R.string.will_be_canceled), style = MaterialTheme.typography.labelLarge)
         }
-        ListForUserItem(
+        ListForOrganizationItem(
             modifier = Modifier.padding(20.dp),
             imageUrl = application.imageUrl,
-            location = application.location,
+            dogName = application.dogName,
             date = application.date,
-            organization = application.organization,
-            hasKennel = application.hasKennel
+            location = application.location,
+            volunteerName = application.volunteerName,
         )
         ConnectDogSecondaryButton(
             contentRes = R.string.check_volunteer
@@ -102,13 +103,13 @@ internal fun InProgressContent(
             .fillMaxWidth()
             .wrapContentSize()
     ) {
-        ListForUserItem(
+        ListForOrganizationItem(
             modifier = Modifier.padding(20.dp),
             imageUrl = application.imageUrl,
-            location = application.location,
+            dogName = application.dogName,
             date = application.date,
-            organization = application.organization,
-            hasKennel = application.hasKennel
+            location = application.location,
+            volunteerName = application.volunteerName,
         )
         ConnectDogSecondaryButton(
             contentRes = R.string.make_complete
@@ -129,12 +130,12 @@ internal fun CompletedContent(
             .wrapContentHeight()
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            ListForUserItem(
+            ListForOrganizationItem(
                 imageUrl = application.imageUrl,
-                location = application.location,
+                dogName = application.dogName,
                 date = application.date,
-                organization = application.organization,
-                hasKennel = application.hasKennel
+                location = application.location,
+                volunteerName = application.volunteerName,
             )
             Spacer(modifier = Modifier.size(20.dp))
             ReviewRecentButton(
