@@ -80,7 +80,6 @@ fun ConnectDogTopAppBar(
                     iconContentDescription = "connect dog home"
                 )
             }
-
             TopAppBarNavigationType.MYPAGE -> {
             }
 
@@ -94,7 +93,7 @@ fun ConnectDogTopAppBar(
                 )
             }
 
-            else -> {}
+            else -> null
         }
 
         Row(modifier = Modifier.align(Alignment.CenterEnd)) {
