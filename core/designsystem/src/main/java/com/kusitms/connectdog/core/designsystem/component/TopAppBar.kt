@@ -4,13 +4,16 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +34,7 @@ fun ConnectDogTopAppBar(
     @StringRes titleRes: Int?,
     navigationType: TopAppBarNavigationType,
     modifier: Modifier = Modifier,
-    navigationIconContentDescription: String?,
+    navigationIconContentDescription: String? = null,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     actionButtons: @Composable () -> Unit = {},
@@ -43,7 +46,7 @@ fun ConnectDogTopAppBar(
                 Icon(
                     modifier = modifier
                         .fillMaxSize()
-                        .padding(vertical = 16.dp, horizontal = 12.dp),
+                        .padding(vertical = 12.dp, horizontal = 12.dp),
                     painter = painterResource(id = imageRes),
                     contentDescription = navigationIconContentDescription
                 )
@@ -63,17 +66,34 @@ fun ConnectDogTopAppBar(
                     R.drawable.ic_left
                 )
             }
+
             TopAppBarNavigationType.CLOSE -> {
                 icon(
                     Modifier.align(Alignment.CenterStart),
                     R.drawable.ic_x
                 )
             }
+
             TopAppBarNavigationType.HOME -> {
                 HomeIcon(
-                    modifier = Modifier.size(66.dp, 45.dp).align(Alignment.CenterStart),
+                    modifier = Modifier
+                        .size(66.dp, 45.dp)
+                        .align(Alignment.CenterStart),
                     imageRes = R.drawable.ic_logo_home,
                     iconContentDescription = "connect dog home"
+                )
+            }
+
+            TopAppBarNavigationType.MYPAGE -> {
+            }
+
+            TopAppBarNavigationType.MANAGEMENT -> {
+                Text(
+                    text = stringResource(id = R.string.management),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
                 )
             }
 
@@ -89,12 +109,45 @@ fun ConnectDogTopAppBar(
                 color = contentColor,
                 style = if (navigationType == TopAppBarNavigationType.MYPAGE) {
                     MaterialTheme.typography.titleLarge
-                } else { MaterialTheme.typography.titleMedium },
+                } else {
+                    MaterialTheme.typography.titleMedium
+                },
                 modifier = if (navigationType == TopAppBarNavigationType.MYPAGE) {
-                    Modifier.align(Alignment.CenterStart).padding(start = 24.dp)
+                    Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 24.dp)
                 } else {
                     Modifier.align(Alignment.Center)
                 }
+            )
+        }
+    }
+}
+
+@Composable
+fun ConnectDogIntermediatorTopAppBar(
+    onNotificationClick: () -> Unit,
+    onSettingClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .background(MaterialTheme.colorScheme.primary)
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        IconButton(onClick = onNotificationClick) {
+            Icon(
+                imageVector = Icons.Outlined.Notifications,
+                tint = Color.White,
+                contentDescription = "Navigate to Search"
+            )
+        }
+        IconButton(onClick = onSettingClick) {
+            Icon(
+                imageVector = Icons.Outlined.Settings,
+                tint = Color.White,
+                contentDescription = null
             )
         }
     }
@@ -116,7 +169,7 @@ private fun HomeIcon(
     )
 }
 
-enum class TopAppBarNavigationType { BACK, HOME, CLOSE, MYPAGE }
+enum class TopAppBarNavigationType { BACK, HOME, CLOSE, MYPAGE, MANAGEMENT }
 
 @Preview
 @Composable
@@ -153,5 +206,13 @@ private fun ConnectDogTopAppBarPreviewHome() {
                 }
             }
         )
+    }
+}
+
+@Preview
+@Composable
+private fun IntermediatorAppBarPreview() {
+    ConnectDogTheme {
+        ConnectDogIntermediatorTopAppBar(onNotificationClick = {}, onSettingClick = {})
     }
 }

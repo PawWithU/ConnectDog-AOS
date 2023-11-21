@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class MyScreenViewModel: ViewModel() {
+class MyScreenViewModel : ViewModel() {
     private val _showBottomSheet = MutableLiveData(false)
     val showBottomSheet: LiveData<Boolean> = _showBottomSheet
 

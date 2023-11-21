@@ -53,6 +53,7 @@ android {
 dependencies {
     implementation(project(":feature:main"))
     implementation(project(":feature:login"))
+    implementation(project(":feature:intermediator"))
 
     implementation(libs.androidx.core.splashscreen)
 

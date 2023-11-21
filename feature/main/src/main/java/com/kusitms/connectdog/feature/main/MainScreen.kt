@@ -65,7 +65,10 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {}
                     )
-                    managementNavGraph(padding = it, onClick = {}, onShowErrorSnackbar = {})
+                    managementNavGraph(
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        onShowErrorSnackbar = {}
+                    )
                     mypageNavGraph(
                         padding = it,
                         onClick = {},

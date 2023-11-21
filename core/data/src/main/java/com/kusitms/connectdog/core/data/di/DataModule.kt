@@ -4,6 +4,8 @@ import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.repository.HomeRepository
 import com.kusitms.connectdog.core.data.repository.HomeRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.LoginRepository
+import com.kusitms.connectdog.core.data.repository.ManagementRepository
+import com.kusitms.connectdog.core.data.repository.ManagementRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.LoginRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -25,5 +27,20 @@ internal class DataModule {
     @Singleton
     fun provideLoginRepository(apiService: ApiService): LoginRepository {
         return LoginRepositoryImpl(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideManagementRepository(apiService: ApiService): ManagementRepository {
+        return ManagementRepositoryImpl(apiService)
+    }
+
+    companion object {
+        @Provides
+        fun provideLoginRepository(
+            @ApplicationContext context: Context
+        ): LoginRepository {
+            return LoginRepository(context)
+        }
     }
 }

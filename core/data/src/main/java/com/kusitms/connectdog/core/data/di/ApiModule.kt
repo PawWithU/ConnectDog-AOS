@@ -26,7 +26,7 @@ internal object ApiModule {
 
     private val networkInterceptor: Interceptor = Interceptor { chain ->
         val request = chain.request()
-        val jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiVk9MVU5URUVSIiwiaWQiOjEsImV4cCI6MTcwMDQyMTc2NH0.sn-XWVtZEp4gI_yq4D9-UCXCJpxOcdqBdnlIW_n2PMcI_KSWWfYiLboZG3RE4uwyReo90_XjcLSUA4a2MPyHZA"
+        val jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiVk9MVU5URUVSIiwiaWQiOjEsImV4cCI6MTcwMTY4OTU0NX0.Icz7auxDCkiUSaCaEQYzMibizObIrOniP5WmjX8cn54T56kA_i2bfG9IxUne3exWdFGq7DPWp7i-prpq5LgfXw"
         try {
             chain.proceed(
                 request.newBuilder()

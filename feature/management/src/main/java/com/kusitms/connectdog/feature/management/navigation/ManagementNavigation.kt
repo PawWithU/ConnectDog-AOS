@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.feature.management.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -12,14 +11,12 @@ fun NavController.navigateManagement(navOptions: NavOptions) {
 }
 
 fun NavGraphBuilder.managementNavGraph(
-    padding: PaddingValues,
-    onClick: () -> Unit,
+    onBackClick: () -> Unit,
     onShowErrorSnackbar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = ManagementRoute.route) {
         ManagementRoute(
-            padding,
-            onClick,
+            onBackClick,
             onShowErrorSnackbar
         )
     }
