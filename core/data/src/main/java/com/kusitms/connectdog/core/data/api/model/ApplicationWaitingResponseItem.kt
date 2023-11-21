@@ -11,6 +11,7 @@ data class ApplicationWaitingResponseItem(
     val intermediaryName: String,
     val isKennel: Boolean,
     val mainImage: String,
+    val applicationId: Long,
     val postId: Long,
     val startDate: String
 )

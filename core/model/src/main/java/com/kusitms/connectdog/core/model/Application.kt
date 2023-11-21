@@ -7,6 +7,7 @@ data class Application(
     val organization: String,
     val hasKennel: Boolean,
     val postId: Long,
+    val applicationId: Long ? = null,
     val reviewId: Long? = null,
     val dogStatusId: Long? = null,
 )

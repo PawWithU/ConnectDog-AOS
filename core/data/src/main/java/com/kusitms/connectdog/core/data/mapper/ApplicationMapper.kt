@@ -20,6 +20,7 @@ internal fun ApplicationWaitingResponseItem.toData(): Application {
         organization = intermediaryName,
         hasKennel = isKennel,
         postId = postId,
+        applicationId = applicationId,
         reviewId = -1
     )
 }
@@ -37,7 +38,6 @@ internal fun ApplicationInProgressResponseItem.toData(): Application {
         organization = intermediaryName,
         hasKennel = isKennel,
         postId = postId,
-        reviewId = -1
     )
 }
 
