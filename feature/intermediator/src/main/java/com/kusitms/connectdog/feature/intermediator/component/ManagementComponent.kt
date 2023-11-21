@@ -58,7 +58,6 @@ internal fun RecruitingContent(application: InterApplication) {
 
 @Composable
 internal fun PendingContent(application: InterApplication, onClick: () -> Unit) {
-    // todo 시간 계산 필요
     val diffTime = application.applicationTime?.calDateTimeDifference()
     Column(
         modifier = Modifier
@@ -70,12 +69,13 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
             Modifier
                 .fillMaxWidth()
                 .height(40.dp)
-                .background(shape = RoundedCornerShape(6.dp), color = Red2),
+                .background(shape = RoundedCornerShape(6.dp), color = Red2)
+                .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(painter = painterResource(id = R.drawable.ic_info), contentDescription = "info")
+            Icon(painter = painterResource(id = R.drawable.ic_info), contentDescription = "info", tint = MaterialTheme.colorScheme.error)
             Spacer(modifier = Modifier.size(5.dp))
-            Text(text = "$diffTime ${stringResource(id = R.string.will_be_canceled)}", style = MaterialTheme.typography.labelLarge)
+            Text(text = "$diffTime ${stringResource(id = R.string.will_be_canceled)}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.error)
         }
         ListForOrganizationItem(
             modifier = Modifier.padding(20.dp),
@@ -101,7 +101,6 @@ internal fun InProgressContent(
 ){
     Column(
         modifier = Modifier
-            .padding(20.dp)
             .fillMaxWidth()
             .wrapContentSize()
     ) {
@@ -114,6 +113,7 @@ internal fun InProgressContent(
             volunteerName = application.volunteerName,
         )
         ConnectDogSecondaryButton(
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
             contentRes = R.string.make_complete
         ) { onClick() }
     }
