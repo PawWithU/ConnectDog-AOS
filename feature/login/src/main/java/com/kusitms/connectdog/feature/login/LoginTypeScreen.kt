@@ -142,7 +142,7 @@ fun Individual(
         verticalArrangement = Arrangement.Top
     ) {
         ConnectDogIconBottomButton(
-            iconId = com.kusitms.connectdog.feature.login.R.drawable.ic_kakao,
+            iconId = R.drawable.ic_kakao,
             contentDescription = "카카오톡 로그인",
             onClick = { viewModel.initKakaoLogin(context) },
             content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.kakao_login),
@@ -158,10 +158,10 @@ fun Individual(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             color = NAVER,
-            iconId = com.kusitms.connectdog.feature.login.R.drawable.ic_naver,
+            iconId = R.drawable.ic_naver,
             contentDescription = "네이버 로그인",
-            onClick = { viewModel.initKakaoLogin(context) },
-            content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.naver_login)
+            onClick = { viewModel.initNaverLogin(context) },
+            content = stringResource(id = R.string.naver_login)
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
