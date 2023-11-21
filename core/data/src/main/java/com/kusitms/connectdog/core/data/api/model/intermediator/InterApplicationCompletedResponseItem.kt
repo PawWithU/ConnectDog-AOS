@@ -6,15 +6,15 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class InterApplicationCompletedResponseItem(
-    val applicationId: Int,
+    val applicationId: Long,
     val arrivalLoc: String,
     val departureLoc: String,
     val dogName: String,
-    val dogStatusId: Int,
     val endDate: String,
     val mainImage: String,
-    val postId: Int,
-    val reviewId: Int,
+    val postId: Long,
+    val reviewId: Long,
+    val dogStatusId: Long,
     val startDate: String,
     val volunteerName: String
 )

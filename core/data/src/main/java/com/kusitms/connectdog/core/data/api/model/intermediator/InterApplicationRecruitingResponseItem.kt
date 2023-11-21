@@ -14,5 +14,5 @@ data class InterApplicationRecruitingResponseItem(
     val mainImage: String,
     val postStatus: String,
     val startDate: String,
-    val volunteerName: Any
+    val volunteerName: String?
 )
