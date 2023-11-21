@@ -14,8 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -23,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.kusitms.connectdog.core.designsystem.R
@@ -36,8 +39,15 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 fun EmailLoginScreen(
     title: String,
     navigator: NavController,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val loginSuccess by viewModel.loginSuccess.observeAsState()
+
+    if (loginSuccess != null) {
+        onClick()
+    }
+
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -58,12 +68,12 @@ fun EmailLoginScreen(
             )
         }
     ) {
-        Content(onClick)
+        Content(onClick, viewModel)
     }
 }
 
 @Composable
-private fun Content(onClick: () -> Unit) {
+private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,22 +84,38 @@ private fun Content(onClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
+            val (phoneNumber, onPhoneNumberChanged) =
+                remember {
+                    mutableStateOf("")
+                }
+
+            val (password, onPasswordChanged) =
+                remember {
+                    mutableStateOf("")
+                }
+
             NormalTextField(
+                text = phoneNumber,
                 label = "휴대폰 번호",
                 placeholder = "예)01012341234",
-                keyboardType = KeyboardType.Text
+                keyboardType = KeyboardType.Text,
+                onTextChanged = onPhoneNumberChanged
             )
             Spacer(modifier = Modifier.height(12.dp))
             NormalTextField(
+                text = password,
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
-                keyboardType = KeyboardType.Password
+                keyboardType = KeyboardType.Password,
+                onTextChanged = onPasswordChanged
             )
             Spacer(modifier = Modifier.height(12.dp))
             NormalButton(
                 content = "로그인",
                 color = MaterialTheme.colorScheme.primary,
-                onClick = onClick,
+                onClick = {
+                    viewModel.normalLogin(phoneNumber, password)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
