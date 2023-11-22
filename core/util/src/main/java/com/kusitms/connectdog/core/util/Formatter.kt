@@ -20,7 +20,7 @@ fun dateRangeFormat(startDate: String, endDate: String): String {
     val start = startDate.toLocalDate(datePattern).dateFormat(uiPattern)
     val end = endDate.toLocalDate(datePattern).dateFormat(uiPattern)
 
-    return "$start-$end"
+    return "$start - $end"
 }
 
 fun String.calDateTimeDifference(): String {

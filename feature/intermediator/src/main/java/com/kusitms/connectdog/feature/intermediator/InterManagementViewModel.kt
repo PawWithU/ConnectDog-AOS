@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class InterManagementViewModel @Inject constructor(
@@ -32,8 +35,11 @@ class InterManagementViewModel @Inject constructor(
     val recruitingUiState: StateFlow<InterApplicationUiState> =
         createUiStateFlow { managementRepository.getApplicationRecruiting() }
 
-    val waitingUiState: StateFlow<InterApplicationUiState> =
-        createUiStateFlow { managementRepository.getApplicationWaiting() }
+    //    val waitingUiState: StateFlow<InterApplicationUiState> =
+//        createUiStateFlow { managementRepository.getApplicationWaiting() }
+    private val _waitingUiState =
+        MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+    val waitingUiState: StateFlow<InterApplicationUiState> = _waitingUiState
 
     val progressUiState: StateFlow<InterApplicationUiState> =
         createUiStateFlow { managementRepository.getApplicationInProgress() }
@@ -45,6 +51,13 @@ class InterManagementViewModel @Inject constructor(
     val volunteerResponse: LiveData<Volunteer> get() = _volunteerResponse
 
     var selectedApplication: InterApplication? = null
+
+    private val _dataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
+    val dataState = _dataState.asStateFlow()
+
+    init {
+        refreshWaitingUiState()
+    }
 
     fun getVolunteer(applicationId: Long) {
         viewModelScope.launch {
@@ -58,26 +71,50 @@ class InterManagementViewModel @Inject constructor(
     }
 
     fun confirmVolunteer(applicationId: Long) {
-        viewModelScope.launch {
+        _dataState.value = DataUiState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                managementRepository.confirmApplicationVolunteer(applicationId)
+                managementRepository.confirmApplicationVolunteer(applicationId).let {
+                    if (it.isSuccess) _dataState.value = DataUiState.Success
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "confirmVolunteer ${e.message}")
             }
         }
     }
 
-    fun rejectVolunteer(applicationId: Long){
+    fun rejectVolunteer(applicationId: Long) {
+        _dataState.value = DataUiState.Loading
         viewModelScope.launch {
             try {
-                managementRepository.rejectApplicationVolunteer(applicationId)
-            }catch (e: Exception){
+                managementRepository.rejectApplicationVolunteer(applicationId).let {
+                    if (it.isSuccess) _dataState.value = DataUiState.Success
+                }
+            } catch (e: Exception) {
                 Log.e(TAG, "rejectVolunteer ${e.message}")
             }
         }
     }
 
-    private fun createUiStateFlow(getApplication: suspend () -> List<InterApplication>) =
+    fun refreshWaitingUiState() {
+        viewModelScope.launch {
+            try {
+                val applications = managementRepository.getApplicationWaiting()
+                _waitingUiState.value = if (applications.isNotEmpty()) {
+                    InterApplicationUiState.InterApplications(applications)
+                } else {
+                    InterApplicationUiState.Empty
+                }
+                Log.d(TAG, "refreshWaitingUiState = $applications")
+            } catch (e: Exception) {
+                _errorFlow.emit(e)
+                Log.e("InterManagementViewModel", "${e.message}")
+            }
+        }
+    }
+
+
+    private fun createUiStateFlow(getApplication: suspend () -> List<InterApplication>): StateFlow<InterApplicationUiState> =
         flow {
             emit(getApplication())
         }.map {
