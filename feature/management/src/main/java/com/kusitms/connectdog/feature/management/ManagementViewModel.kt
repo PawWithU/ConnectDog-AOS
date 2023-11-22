@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kusitms.connectdog.core.data.repository.ManagementRepository
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.model.Volunteer
@@ -93,6 +94,16 @@ class ManagementViewModel @Inject constructor(
                 _volunteerResponse.value = managementRepository.getMyApplication(applicationId)
             } catch (e: Exception) {
                 Log.e(TAG, "getMyApplication ${e.stackTrace}")
+            }
+        }
+    }
+
+    fun deleteMyApplication(applicationId: Long){
+        viewModelScope.launch {
+            try {
+                managementRepository.deleteMyApplication(applicationId)
+            }catch (e: Exception){
+                Log.e(TAG, "deleteMyApplication ${e.message}")
             }
         }
     }

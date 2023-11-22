@@ -25,4 +25,8 @@ internal class ManagementRepositoryImpl @Inject constructor(
     override suspend fun getMyApplication(applicationId: Long): Volunteer {
         return api.getMyApplication(applicationId).toData()
     }
+
+    override suspend fun deleteMyApplication(applicationId: Long) {
+        api.deleteMyApplication(applicationId)
+    }
 }

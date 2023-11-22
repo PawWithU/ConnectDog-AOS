@@ -7,6 +7,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -65,4 +66,9 @@ internal interface ApiService {
     suspend fun getMyApplication(
         @Path("applicationId") applicationId: Long
     ): VolunteerResponse
+
+    @DELETE("/volunteers/applications/{applicationId}")
+    suspend fun deleteMyApplication(
+        @Path("applicationId") applicationId: Long
+    )
 }
