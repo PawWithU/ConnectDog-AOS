@@ -25,6 +25,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.util.getProfileImage
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -61,7 +62,7 @@ private fun Content() {
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_1), contentDescription = null, modifier = Modifier.size(100.dp))
+        Image(painter = painterResource(id = getProfileImage(0)), contentDescription = null, modifier = Modifier.size(100.dp))
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogOutlinedButton(
             width = 110,
