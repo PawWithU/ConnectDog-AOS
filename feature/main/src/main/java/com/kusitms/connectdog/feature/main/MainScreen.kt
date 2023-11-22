@@ -78,6 +78,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         onNotificationClick = { navigator.navigateNotification() },
                         onSettingClick = { navigator.navigateSetting() },
                         onBadgeClick = { navigator.navigateBadge() },
+                        onBookmarkClick = { navigator.navigateBookmark() },
                         onShowErrorSnackbar = {}
                     )
                 }
