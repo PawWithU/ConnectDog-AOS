@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.intermediator
+package com.kusitms.connectdog.core.model
 
 sealed interface DataUiState {
     object Yet : DataUiState

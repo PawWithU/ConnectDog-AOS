@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.model.DataUiState
 
 @Composable
 fun Loading() {
@@ -41,5 +42,14 @@ fun Empty(
         Text(text = stringResource(id = titleRes), style = MaterialTheme.typography.bodyMedium, color = Gray2, fontWeight = FontWeight.Medium)
         Spacer(modifier = Modifier.size(6.dp))
         Text(text = stringResource(id = descriptionRes), style = MaterialTheme.typography.labelLarge, color = Gray2)
+    }
+}
+
+@Composable
+fun UiState(dataUiState: DataUiState, onSuccess: () -> Unit) {
+    when (dataUiState) {
+        is DataUiState.Loading -> Loading()
+        is DataUiState.Success -> onSuccess()
+        is DataUiState.Yet -> {}
     }
 }
