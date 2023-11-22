@@ -10,19 +10,19 @@ import com.kusitms.connectdog.core.model.DataUiState
 import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.core.model.Volunteer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class InterManagementViewModel @Inject constructor(
@@ -134,10 +134,10 @@ class InterManagementViewModel @Inject constructor(
         }
     }
 
-    fun refreshCompletedUiState(){
+    fun refreshCompletedUiState() {
         viewModelScope.launch {
             refreshUiState(
-                getApplications = {managementRepository.getApplicationCompleted()},
+                getApplications = { managementRepository.getApplicationCompleted() },
                 uiState = _completedUiState,
                 tag = "refreshCompletedUiState"
             )

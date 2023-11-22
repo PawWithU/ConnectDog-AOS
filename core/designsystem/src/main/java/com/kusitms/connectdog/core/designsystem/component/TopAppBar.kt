@@ -91,13 +91,11 @@ fun ConnectDogTopAppBar(
                 Text(
                     text = stringResource(id = R.string.management),
                     style = MaterialTheme.typography.titleLarge,
-                          modifier = Modifier
-                            .align(Alignment.CenterStart)
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
                         .padding(horizontal = 20.dp, vertical = 10.dp)
                 )
             }
-
-            else -> null
         }
 
         Row(modifier = Modifier.align(Alignment.CenterEnd)) {

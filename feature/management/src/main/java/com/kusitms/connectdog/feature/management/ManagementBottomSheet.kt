@@ -51,8 +51,8 @@ internal fun MyApplicationBottomSheet(
         }
     }
 
-    if (isCancelDialogVisible){
-        CancelDialog(onDismiss = { isCancelDialogVisible = false}) {
+    if (isCancelDialogVisible) {
+        CancelDialog(onDismiss = { isCancelDialogVisible = false }) {
             viewModel.deleteMyApplication(application.applicationId!!)
             onDismissRequest()
         }

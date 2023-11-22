@@ -34,7 +34,7 @@ fun Loading() {
 fun Empty(
     modifier: Modifier = Modifier,
     @StringRes titleRes: Int,
-    @StringRes descriptionRes: Int,
+    @StringRes descriptionRes: Int
 ) {
     Column(modifier = modifier.fillMaxSize().offset(y = (-60).dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
         Image(painter = painterResource(id = R.drawable.img_dog_sad), contentDescription = "empty", modifier.size(width = 65.dp, height = 139.dp))

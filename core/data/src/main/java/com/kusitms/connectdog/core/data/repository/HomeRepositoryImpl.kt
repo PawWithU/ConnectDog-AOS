@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.core.data.repository
 
-import android.util.Log
 import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.mapper.toData
 import com.kusitms.connectdog.core.data.mapper.volunteer.toData

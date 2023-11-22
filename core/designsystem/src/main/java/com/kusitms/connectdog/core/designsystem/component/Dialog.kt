@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -29,7 +28,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 fun ConnectDogAlertDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(),
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -49,7 +48,7 @@ fun ConnectDogAlertDialog(
     @StringRes descriptionRes: Int,
     @StringRes okText: Int,
     @StringRes cancelText: Int,
-    onClickOk: () -> Unit,
+    onClickOk: () -> Unit
 ) {
     ConnectDogAlertDialog(onDismissRequest = {}, properties = properties) {
         Column(
@@ -95,7 +94,7 @@ fun ConnectDogAlertDialog(
                     content = stringResource(id = cancelText),
                     color = MaterialTheme.colorScheme.surface,
                     textColor = Gray2,
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth()
                 )
             }
         }

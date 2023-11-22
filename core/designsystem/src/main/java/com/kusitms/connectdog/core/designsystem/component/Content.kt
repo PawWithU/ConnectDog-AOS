@@ -3,9 +3,6 @@ package com.kusitms.connectdog.core.designsystem.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,7 +61,7 @@ fun TitleValue(
         Text(
             text = title,
             style = style,
-            color = if (isValid) Gray3 else Gray6,
+            color = if (isValid) Gray3 else Gray6
         )
         Text(
             text = value,

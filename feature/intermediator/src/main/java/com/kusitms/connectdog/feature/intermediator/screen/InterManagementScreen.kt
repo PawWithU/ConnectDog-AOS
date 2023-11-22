@@ -66,7 +66,7 @@ internal fun InterManagementRoute(
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
 
     val pendingDataState by viewModel.pendingDataState.collectAsState()
-    //Log.d("InterManagementRoute", "dataUiState = $dataUiState")
+    // Log.d("InterManagementRoute", "dataUiState = $dataUiState")
     UiState(dataUiState = pendingDataState) {
         viewModel.refreshWaitingUiState()
     }
@@ -108,7 +108,6 @@ internal fun InterManagementRoute(
             }
         )
     }
-
 
     if (isSheetOpen && viewModel.selectedApplication != null) {
         VolunteerBottomSheet(
@@ -195,7 +194,6 @@ private fun InProgress(
             Empty(titleRes = R.string.no_progressing, descriptionRes = R.string.no_description)
         }
         is InterApplicationUiState.Loading -> Loading()
-        
     }
 }
 
