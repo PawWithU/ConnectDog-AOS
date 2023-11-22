@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,8 +51,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.component.UiState
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -74,6 +77,11 @@ internal fun ManagementRoute(
 
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
+
+    val deleteDataState by viewModel.deleteDataUiState.collectAsState()
+    UiState(dataUiState = deleteDataState) {
+        viewModel.refreshWaitingApplications()
+    }
 
     Column {
         ConnectDogTopAppBar(
@@ -179,8 +187,10 @@ private fun PendingApproval(
                 }
             }
         }
-
-        else -> Loading()
+        is ApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_pending, descriptionRes = R.string.no_description)
+        }
+        is ApplicationUiState.Loading -> Loading()
     }
 }
 
@@ -196,8 +206,10 @@ private fun InProgress(
                 }
             }
         }
-
-        else -> Loading()
+        is ApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_progressing, descriptionRes = R.string.no_description)
+        }
+        is ApplicationUiState.Loading -> Loading()
     }
 }
 
@@ -219,8 +231,10 @@ private fun Completed(
                 }
             }
         }
-
-        else -> Loading()
+        is ApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_completed, descriptionRes = R.string.no_description)
+        }
+        is ApplicationUiState.Loading -> Loading()
     }
 }
 

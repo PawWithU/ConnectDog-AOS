@@ -185,14 +185,14 @@ private fun CommentContent(comment: String) {
             .fillMaxWidth()
             .background(color = Orange20, shape = RoundedCornerShape(4.dp))
             .padding(10.dp),
-        horizontalAlignment = Alignment.Start
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
             text = stringResource(id = R.string.volunteer_comment),
             style = MaterialTheme.typography.titleSmall,
             fontSize = 14.sp
         )
-        Spacer(modifier = Modifier.size(6.dp))
         Text(text = comment, style = MaterialTheme.typography.bodyMedium)
     }
 }

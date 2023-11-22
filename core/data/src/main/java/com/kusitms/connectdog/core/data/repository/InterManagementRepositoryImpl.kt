@@ -3,7 +3,7 @@ package com.kusitms.connectdog.core.data.repository
 import com.kusitms.connectdog.core.data.api.InterApiService
 import com.kusitms.connectdog.core.data.mapper.intermediator.toData
 import com.kusitms.connectdog.core.data.mapper.toData
-import com.kusitms.connectdog.core.data.mapper.volunteer.toData
+import com.kusitms.connectdog.core.model.ConnectDogResult
 import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.core.model.Volunteer
 import javax.inject.Inject
@@ -29,5 +29,17 @@ internal class InterManagementRepositoryImpl @Inject constructor(
 
     override suspend fun getApplicationVolunteer(applicationId: Long): Volunteer {
         return api.getApplicationVolunteer(applicationId).toData()
+    }
+
+    override suspend fun confirmApplicationVolunteer(applicationId: Long): ConnectDogResult {
+        return api.patchApplicationVolunteer(applicationId).toData()
+    }
+
+    override suspend fun rejectApplicationVolunteer(applicationId: Long): ConnectDogResult {
+        return api.deleteApplicationVolunteer(applicationId).toData()
+    }
+
+    override suspend fun completeApllication(applicationId: Long): ConnectDogResult {
+        return api.patchApplicationCompleted(applicationId).toData()
     }
 }

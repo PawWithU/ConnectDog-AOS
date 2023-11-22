@@ -3,9 +3,6 @@ package com.kusitms.connectdog.core.designsystem.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,14 +57,12 @@ fun TitleValue(
     style: TextStyle,
     isValid: Boolean = true
 ) {
-    Row {
+    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = title,
             style = style,
-            color = if (isValid) Gray3 else Gray6,
-            modifier = Modifier.defaultMinSize(minWidth = 35.dp)
+            color = if (isValid) Gray3 else Gray6
         )
-        Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = value,
             style = style,

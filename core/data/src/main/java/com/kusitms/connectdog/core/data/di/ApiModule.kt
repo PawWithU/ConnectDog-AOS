@@ -59,19 +59,6 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideIntermediatorApiService(
-        okHttpClient: OkHttpClient,
-        moshi: Moshi
-    ): InterApiService {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(okHttpClient).build()
-            .create(InterApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideDataStoreRepository(@ApplicationContext context: Context): DataStoreRepository {
         return DataStoreRepository(context)
     }
@@ -110,6 +97,19 @@ internal object ApiModule {
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient).build()
             .create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideIntermediatorApiService(
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
+    ): InterApiService {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okHttpClient).build()
+            .create(InterApiService::class.java)
     }
 
     @Provides

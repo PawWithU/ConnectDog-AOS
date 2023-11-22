@@ -35,19 +35,8 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.core.util.getProfileImage
 import com.kusitms.connectdog.feature.login.NormalButton
-
-val profileImageList = listOf(
-    R.drawable.ic_profile_1,
-    R.drawable.ic_profile_2,
-    R.drawable.ic_profile_3,
-    R.drawable.ic_profile_4,
-    R.drawable.ic_profile_5,
-    R.drawable.ic_profile_6,
-    R.drawable.ic_profile_7,
-    R.drawable.ic_profile_8,
-    R.drawable.ic_profile_9
-)
 
 @Composable
 fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileImageViewModel) {
@@ -129,7 +118,7 @@ fun ProfileImageGrid(navigator: NavController, selectedImageIndex: MutableState<
                 for (j in 0 until 3) {
                     val index = i * 3 + j
                     Image(
-                        painter = painterResource(id = profileImageList[index]),
+                        painter = painterResource(id = getProfileImage(index)),
                         contentDescription = "description for accessibility",
                         modifier = Modifier
                             .weight(1f)

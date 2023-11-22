@@ -3,6 +3,7 @@ package com.kusitms.connectdog.core.data.api
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
+import com.kusitms.connectdog.core.data.api.model.Response
 import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
 import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
@@ -15,6 +16,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -24,7 +26,7 @@ import retrofit2.http.Query
 internal interface ApiService {
 
     /**
-     * 이동봉사자 > 홈
+     * 홈
      */
     @GET("/volunteers/posts/home")
     suspend fun getAnnouncementPostsHome(): List<AnnouncementHomeResponseItem>
@@ -51,7 +53,7 @@ internal interface ApiService {
     ): List<ReviewResponseItem>
 
     /**
-     * 이동봉사자 > 봉사관리
+     * 봉사관리
      */
     @GET("/volunteers/applications/waiting")
     suspend fun getApplicationWaiting(
@@ -75,6 +77,11 @@ internal interface ApiService {
     suspend fun getMyApplication(
         @Path("applicationId") applicationId: Long
     ): VolunteerResponse
+
+    @DELETE("/volunteers/applications/{applicationId}")
+    suspend fun deleteMyApplication(
+        @Path("applicationId") applicationId: Long
+    ): Response
 
     /**
      * 로그인

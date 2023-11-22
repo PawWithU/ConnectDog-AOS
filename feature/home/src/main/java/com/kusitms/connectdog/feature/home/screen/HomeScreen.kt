@@ -86,7 +86,7 @@ internal fun HomeRoute(
 
     Column {
         TopAppBar(
-            onClickSearch = onNavigateToSearch,
+            onClickSearch = onNavigateToFilterSearch,
             onNotificationClick = onNavigateToNotification
         )
         HomeScreen(
@@ -184,6 +184,7 @@ private fun StatisticBanner(modifier: Modifier) {
                 color = Gray3
             )
         }
+        Spacer(modifier = Modifier.size(6.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -406,7 +407,7 @@ private fun ReviewListContent(
 private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
     val list = List(4) {
         Review(
-            profileUrl = "",
+            profileNum = 0,
             dogName = "멍멍이",
             userName = "츄",
             contentUrl = "",
@@ -432,16 +433,14 @@ private fun AnnouncementCardContent(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
             .width(150.dp)
-            .clickable {
-                onClick()
-            }
+            .clickable { onClick() }
     ) {
         NetworkImage(
             imageUrl = announcement.imageUrl,
             placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier
                 .size(150.dp)
-                .shadow(shape = RoundedCornerShape(12.dp), elevation = 2.dp)
+                .shadow(shape = RoundedCornerShape(12.dp), elevation = 1.dp)
         )
         Text(
             text = announcement.location,
@@ -466,7 +465,6 @@ private fun ReviewCardContent(
     Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),
-        shadowElevation = 1.dp,
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline)
     ) {
         ConnectDogReview(review = review, modifier = Modifier.width(272.dp))
