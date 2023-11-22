@@ -1,13 +1,19 @@
 package com.kusitms.connectdog.core.data.di
 
+import android.content.Context
+import android.util.Log
 import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.api.InterApiService
+import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -20,22 +26,24 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+private const val TAG = "API Module"
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
     private const val BASE_URL = "https://dev-api.connectdog.site"
 
-    private val networkInterceptor: Interceptor = Interceptor { chain ->
+    @Provides
+    fun provideNetworkInterceptor(dataStoreRepository: DataStoreRepository): Interceptor = Interceptor { chain ->
         val request = chain.request()
-        val jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiVk9MVU5URUVSIiwiaWQiOjEsImV4cCI6MTcwMTc4MDEwNX0.wRNKOcfnFxvXmsGFXPZ3aSsGcOXxbUXczsjC_BRtHmhGmKJalOE4P7rcY_eAdOIKldtX3xE6Gdb3DYkLGEPP5A"
-        val interJwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiSU5URVJNRURJQVJZIiwiaWQiOjEsImV4cCI6MTcwMTc4MDA4OX0.IxtBsu26aVswZpyfXBEYcpyLIb_IxAgFkCQTkJfG2QCeU29VfwO7ixBNACcDlvdPp2nR1PD8T6STPZKfpDW_Gw"
+        val jwt = runBlocking { dataStoreRepository.accessTokenFlow.first().toString() }
+
+        Log.d(TAG, "AccessToken: $jwt")
+
         try {
             chain.proceed(
                 request.newBuilder()
-                    .addHeader(
-                        "Authorization",
-                        "Bearer $interJwt"
-                    ) // todo
+                    .addHeader("Authorization", "Bearer $jwt")
                     .build()
             )
         } catch (e: Exception) {
@@ -51,13 +59,18 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideOkhttpClient(): OkHttpClient {
-        val httpLoggingInterceptor =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
+    fun provideDataStoreRepository(@ApplicationContext context: Context): DataStoreRepository {
+        return DataStoreRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkhttpClient(interceptor: Interceptor): OkHttpClient {
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
         return OkHttpClient.Builder()
-            .addInterceptor(networkInterceptor)
+            .addInterceptor(interceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)

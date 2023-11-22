@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -178,7 +181,11 @@ private fun MypageTab(
 }
 
 @Composable
-private fun InformationBox() {
+private fun InformationBox(
+    viewModel: MyPageViewModel = hiltViewModel()
+) {
+    val myInformation by viewModel.myInfo.observeAsState(null)
+
     val shape = RoundedCornerShape(12.dp)
     Box(
         modifier = Modifier
@@ -188,10 +195,12 @@ private fun InformationBox() {
             .clip(shape)
             .background(MaterialTheme.colorScheme.primary)
     ) {
-        Row {
-            Information(3, "진행한 이동봉사", Modifier.weight(1f))
-            Information(12, "봉사 후기", Modifier.weight(1f))
-            Information(5, "입양 근황", Modifier.weight(1f))
+        myInformation?.let {
+            Row {
+                Information(it.completedCount, "진행한 이동봉사", Modifier.weight(1f))
+                Information(it.reviewCount, "봉사 후기", Modifier.weight(1f))
+                Information(it.dogStatusCount, "입양 근황", Modifier.weight(1f))
+            }
         }
     }
 }
