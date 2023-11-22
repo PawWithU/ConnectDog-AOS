@@ -71,7 +71,7 @@ internal fun HomeRoute(
     onNavigateToSearch: () -> Unit,
     onNavigateToFilterSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (Long) -> Unit,
     onNavigateToNotification: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
@@ -105,7 +105,7 @@ private fun HomeScreen(
     reviewUiState: ReviewUiState,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
-    onNavigateToDetail: () -> Unit
+    onNavigateToDetail: (Long) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -323,7 +323,7 @@ fun MoveContent(
 }
 
 @Composable
-private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: () -> Unit) {
+private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: (Long) -> Unit) {
     val modifier = Modifier.padding(horizontal = 20.dp)
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
@@ -338,7 +338,6 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: () -> Uni
         else -> AnnouncementLoading(
             modifier = modifier,
             arrangement = Arrangement.spacedBy(12.dp),
-            onClick = onClick
         )
     }
 }
@@ -360,15 +359,15 @@ private fun ReviewContent(uiState: ReviewUiState) {
 }
 
 @Composable
-private fun AnnouncementListContent(
+fun AnnouncementListContent(
     list: List<Announcement>,
     modifier: Modifier,
     arrangement: Arrangement.Horizontal,
-    onClick: () -> Unit
+    onClick: (Long) -> Unit
 ) {
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list.take(10)) {
-            AnnouncementCardContent(announcement = it, onClick = onClick)
+            AnnouncementCardContent(announcement = it, onClick = { onClick(it.postId.toLong()) })
         }
     }
 }
@@ -377,14 +376,13 @@ private fun AnnouncementListContent(
 fun AnnouncementLoading(
     modifier: Modifier,
     arrangement: Arrangement.Horizontal,
-    onClick: () -> Unit
 ) {
     val list = List(4) {
-        Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
+        Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false, -1)
     }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
-            AnnouncementCardContent(announcement = it, onClick = onClick)
+            AnnouncementCardContent(announcement = it, onClick = {})
         }
     }
 }
@@ -500,7 +498,8 @@ private fun AnnouncementPreview() {
                 "서울시 강남구 -> 서울시 도봉구",
                 "23.10.19(수)",
                 "단체이름이름",
-                true
+                true,
+                -1
             )
         )
     }
