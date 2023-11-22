@@ -14,6 +14,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
 import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
+import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.data.repository.LoginRepository
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
@@ -21,6 +22,7 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,7 +36,8 @@ private const val TAG = "LoginViewModel"
 class LoginViewModel
 @Inject
 constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     private val _volunteerLoginSuccess = MutableLiveData<LoginResponseItem?>()
     val volunteerLoginSuccess: LiveData<LoginResponseItem?> = _volunteerLoginSuccess
@@ -47,6 +50,11 @@ constructor(
             try {
                 val response = loginRepository.postLoginData(NormalLoginBody(email, password))
                 _volunteerLoginSuccess.postValue(response)
+
+                viewModelScope.launch {
+                    dataStoreRepository.saveAccessToken(response.accessToken)
+                    Log.d(TAG, dataStoreRepository.accessTokenFlow.first().toString())
+                }
 
                 Log.d(TAG, "login success")
             } catch (e: Exception) {
