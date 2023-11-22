@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recruit">모집중</string>
+    <string name="progress">진행중</string>
+    <string name="waiting">승인 대기중</string>
+    <string name="complete">봉사 완료</string>
+    <string name="edit_profile">프로필 수정</string>
+
+    <!-- 봉사 관리 -->
+    <string name="manage_application">봉사 관리</string>
+    <string name="will_be_canceled">뒤 자동으로 취소됩니다</string>
+    <string name="check_volunteer">이동봉사자 확인하기</string>
+    <string name="check_volunteer_top_title">이동봉사자 확인</string>
+    <string name="make_complete">봉사 완료하기</string>
+    <string name="create_review">후기 등록</string>
+    <string name="check_recent">근황 확인</string>
+    <string name="reject">반려하기</string>
+    <string name="confirm">확정하기</string>
+</resources>

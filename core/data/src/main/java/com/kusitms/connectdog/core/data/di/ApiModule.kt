@@ -1,12 +1,18 @@
 package com.kusitms.connectdog.core.data.di
 
+import android.content.Context
+import android.util.Log
 import com.kusitms.connectdog.core.data.api.ApiService
+import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -19,21 +25,24 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+private const val TAG = "API Module"
+
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
     private const val BASE_URL = "https://dev-api.connectdog.site"
 
-    private val networkInterceptor: Interceptor = Interceptor { chain ->
+    @Provides
+    fun provideNetworkInterceptor(dataStoreRepository: DataStoreRepository): Interceptor = Interceptor { chain ->
         val request = chain.request()
-        val jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsInJvbGVOYW1lIjoiVk9MVU5URUVSIiwiaWQiOjEsImV4cCI6MTcwMTY4OTU0NX0.Icz7auxDCkiUSaCaEQYzMibizObIrOniP5WmjX8cn54T56kA_i2bfG9IxUne3exWdFGq7DPWp7i-prpq5LgfXw"
+        val jwt = runBlocking { dataStoreRepository.accessTokenFlow.first().toString() }
+
+        Log.d(TAG, "AccessToken: $jwt")
+
         try {
             chain.proceed(
                 request.newBuilder()
-                    .addHeader(
-                        "Authorization",
-                        "Bearer $jwt"
-                    ) // todo
+                    .addHeader("Authorization", "Bearer $jwt")
                     .build()
             )
         } catch (e: Exception) {
@@ -49,13 +58,18 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideOkhttpClient(): OkHttpClient {
-        val httpLoggingInterceptor =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
+    fun provideDataStoreRepository(@ApplicationContext context: Context): DataStoreRepository {
+        return DataStoreRepository(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkhttpClient(interceptor: Interceptor): OkHttpClient {
+        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
         return OkHttpClient.Builder()
-            .addInterceptor(networkInterceptor)
+            .addInterceptor(interceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)

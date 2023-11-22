@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.feature.intermediator.IntermediatorActivity
 import com.kusitms.connectdog.feature.login.EmailLoginScreen
 import com.kusitms.connectdog.feature.login.LoginScreen
 import com.kusitms.connectdog.feature.login.LoginTypeScreen
@@ -46,7 +47,12 @@ class LoginActivity : ComponentActivity() {
                         LoginTypeScreen(navigator, loginViewModel, this@LoginActivity)
                     }
                     composable("emailLogin") {
-                        EmailLoginScreen(title = "이동봉사자 로그인", navigator) { initMainActivity() }
+                        EmailLoginScreen(
+                            title = "이동봉사자 로그인",
+                            navigator = navigator,
+                            initVolunteer = { initMainActivity() },
+                            initIntermediator = { initIntermediatorActivity() }
+                        )
                     }
                     composable("volunteerSignUp") {
                         VolunteerSignUpScreen(navigator, termsViewModel)
@@ -76,6 +82,12 @@ class LoginActivity : ComponentActivity() {
 
     private fun initMainActivity() {
         val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun initIntermediatorActivity() {
+        val intent = Intent(this, IntermediatorActivity::class.java)
         startActivity(intent)
         finish()
     }

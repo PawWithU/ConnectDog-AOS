@@ -5,9 +5,21 @@ import com.kusitms.connectdog.core.data.api.model.AnnouncementSearchResponseItem
 import com.kusitms.connectdog.core.data.api.model.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.ApplicationWaitingResponseItem
+import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
+import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
+import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
 import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
+import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
+import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -65,4 +77,18 @@ internal interface ApiService {
     suspend fun getMyApplication(
         @Path("applicationId") applicationId: Long
     ): VolunteerResponse
+
+    @Headers("Content-Type: application/json")
+    @POST("/volunteers/login")
+    suspend fun postLoginData(
+        @Body loginBody: NormalLoginBody
+    ): LoginResponseItem
+
+    @POST("/volunteers/login/social")
+    suspend fun postSocialLoginData(
+        @Body socialLoginBody: SocialLoginBody
+    ): LoginResponseItem
+
+    @GET("/volunteers/my/info")
+    suspend fun getMyInfo(): MyInfoResponseItem
 }

@@ -45,6 +45,10 @@
             android:name=".feature.main.MainActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".feature.intermediator.IntermediatorActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

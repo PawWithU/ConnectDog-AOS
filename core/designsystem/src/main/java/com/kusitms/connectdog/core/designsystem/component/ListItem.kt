@@ -29,7 +29,7 @@ import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.Announcement
-import com.kusitms.connectdog.core.model.Applicant
+import com.kusitms.connectdog.core.model.InterApplication
 
 @Composable
 fun ListItem(
@@ -110,14 +110,33 @@ fun ListForUserItem(
 fun ListForOrganizationItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
-    applicant: Applicant,
+    applicant: InterApplication,
     isValid: Boolean = true
 ) {
     ListItem(modifier = modifier, imageUrl = imageUrl, title = applicant.dogName, isValid = isValid) {
         ApplicantContent(
             date = applicant.date,
             location = applicant.location,
-            volunteer = applicant.volunteer
+            volunteer = applicant.volunteerName
+        )
+    }
+}
+
+@Composable
+fun ListForOrganizationItem(
+    modifier: Modifier = Modifier,
+    imageUrl: String,
+    dogName: String,
+    date: String,
+    location: String,
+    volunteerName: String,
+    isValid: Boolean = true
+) {
+    ListItem(modifier = modifier, imageUrl = imageUrl, title = dogName, isValid = isValid) {
+        ApplicantContent(
+            date = date,
+            location = location,
+            volunteer = volunteerName
         )
     }
 }
