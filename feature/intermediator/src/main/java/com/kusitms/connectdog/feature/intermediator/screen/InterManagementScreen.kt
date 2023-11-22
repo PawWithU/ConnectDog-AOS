@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.Loading
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -150,8 +151,10 @@ private fun Recruiting(
                 }
             }
         }
-
-        else -> Loading()
+        is InterApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_recruiting, descriptionRes = R.string.no_description)
+        }
+        is InterApplicationUiState.Loading -> Loading()
     }
 }
 
@@ -168,8 +171,10 @@ private fun PendingApproval(
                 }
             }
         }
-
-        else -> Loading()
+        is InterApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_waiting, descriptionRes = R.string.no_description)
+        }
+        is InterApplicationUiState.Loading -> Loading()
     }
 }
 
@@ -186,8 +191,11 @@ private fun InProgress(
                 }
             }
         }
-
-        else -> Loading()
+        is InterApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_progressing, descriptionRes = R.string.no_description)
+        }
+        is InterApplicationUiState.Loading -> Loading()
+        
     }
 }
 
@@ -209,8 +217,10 @@ private fun Completed(
                 }
             }
         }
-
-        else -> Loading()
+        is InterApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_completed, descriptionRes = R.string.no_description)
+        }
+        is InterApplicationUiState.Loading -> Loading()
     }
 }
 

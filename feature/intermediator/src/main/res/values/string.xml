@@ -26,4 +26,9 @@
     <string name="dialog_completed_volunteer">봉사 완료 처리가 되었습니다!</string>
     <string name="dialog_completed_description">완료된 봉사는 [봉사 완료]에서 확인 가능합니다.</string>
     <string name="ok">확인</string>
+    <string name="no_recruiting">모집중인 공고가 없어요</string>
+    <string name="no_waiting">승인 대기중인 공고가 없어요</string>
+    <string name="no_progressing">진행중인 공고가 없어요</string>
+    <string name="no_completed">완료된 공고가 없어요</string>
+    <string name="no_description">홈에서 이동봉사 공고를 등록해주세요!</string>
 </resources>
