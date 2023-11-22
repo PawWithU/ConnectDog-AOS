@@ -28,14 +28,16 @@ enum class Provider {
     KAKAO, NAVER
 }
 
+private const val TAG = "LoginViewModel"
+
 @HiltViewModel
 class LoginViewModel
 @Inject
 constructor(
     private val loginRepository: LoginRepository
 ) : ViewModel() {
-    private val _loginSuccess = MutableLiveData<LoginResponseItem?>()
-    val loginSuccess: LiveData<LoginResponseItem?> = _loginSuccess
+    private val _volunteerLoginSuccess = MutableLiveData<LoginResponseItem?>()
+    val volunteerLoginSuccess: LiveData<LoginResponseItem?> = _volunteerLoginSuccess
 
     private val _loginError = MutableLiveData<String>()
     val loginError: LiveData<String> = _loginError
@@ -44,10 +46,13 @@ constructor(
         viewModelScope.launch {
             try {
                 val response = loginRepository.postLoginData(NormalLoginBody(email, password))
-                _loginSuccess.postValue(response)
+                _volunteerLoginSuccess.postValue(response)
+
+                Log.d(TAG, "login success")
+
             } catch (e: Exception) {
                 _loginError.postValue(e.message ?: "로그인 실패")
-                Log.d("testt", e.message.toString())
+                Log.d(TAG, e.message.toString())
             }
         }
     }
@@ -61,10 +66,10 @@ constructor(
                         provider = provider.toString()
                     )
                 )
-                _loginSuccess.postValue(response)
+                _volunteerLoginSuccess.postValue(response)
             } catch (e: Exception) {
                 _loginError.postValue(e.message ?: "로그인 실패")
-                Log.d("testt", e.message.toString())
+                Log.d(TAG, e.message.toString())
             }
         }
     }
