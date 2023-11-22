@@ -9,7 +9,7 @@ data class ReviewResponseItem(
     val departureLoc: String,
     val dogName: String,
     val endDate: String,
-    val images: List<String>,
+    val images: List<String>?,
     val intermediaryName: String,
     val mainImage: String,
     val startDate: String,

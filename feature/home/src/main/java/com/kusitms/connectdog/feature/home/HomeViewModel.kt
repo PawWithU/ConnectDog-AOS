@@ -58,6 +58,7 @@ constructor(
             }
         }.catch {
             _errorFlow.emit(it)
+            Log.e(TAG, "reviewUiState = ${it.message}")
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
