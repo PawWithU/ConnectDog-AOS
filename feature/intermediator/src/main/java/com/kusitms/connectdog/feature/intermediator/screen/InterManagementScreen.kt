@@ -37,9 +37,9 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.Loading
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.component.UiState
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.InterApplication
-import com.kusitms.connectdog.feature.intermediator.DataUiState
 import com.kusitms.connectdog.feature.intermediator.InterApplicationUiState
 import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
 import com.kusitms.connectdog.feature.intermediator.R
@@ -287,14 +287,5 @@ private fun ManagementScreen(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun UiState(dataUiState: DataUiState, onSuccess: () -> Unit) {
-    when (dataUiState) {
-        is DataUiState.Loading -> Loading()
-        is DataUiState.Success -> onSuccess()
-        is DataUiState.Yet -> {}
     }
 }

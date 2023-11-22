@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository
+import com.kusitms.connectdog.core.model.DataUiState
 import com.kusitms.connectdog.core.model.InterApplication
 import com.kusitms.connectdog.core.model.Volunteer
 import dagger.hilt.android.lifecycle.HiltViewModel
