@@ -73,6 +73,7 @@ internal fun InterManagementRoute(
     val progressDataState by viewModel.progressDataState.collectAsState()
     UiState(dataUiState = progressDataState) {
         viewModel.refreshInProgressUiState()
+        viewModel.refreshCompletedUiState()
     }
 
     var isCompletedDialogVisible by remember { mutableStateOf(false) }

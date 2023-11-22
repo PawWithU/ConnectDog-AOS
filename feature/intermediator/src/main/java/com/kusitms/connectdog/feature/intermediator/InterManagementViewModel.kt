@@ -39,13 +39,12 @@ class InterManagementViewModel @Inject constructor(
         MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
     val waitingUiState: StateFlow<InterApplicationUiState> = _waitingUiState
 
-
     private val _progressUiState =
         MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
     val progressUiState: StateFlow<InterApplicationUiState> = _progressUiState
 
-    val completedUiState: StateFlow<InterApplicationUiState> =
-        createUiStateFlow { managementRepository.getApplicationCompleted() }
+    private val _completedUiState = MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+    val completedUiState: StateFlow<InterApplicationUiState> = _completedUiState
 
     private val _volunteerResponse = MutableLiveData<Volunteer>()
     val volunteerResponse: LiveData<Volunteer> get() = _volunteerResponse
@@ -61,6 +60,7 @@ class InterManagementViewModel @Inject constructor(
     init {
         refreshWaitingUiState()
         refreshInProgressUiState()
+        refreshCompletedUiState()
     }
 
     fun getVolunteer(applicationId: Long) {
@@ -118,7 +118,6 @@ class InterManagementViewModel @Inject constructor(
             refreshUiState(
                 getApplications = { managementRepository.getApplicationWaiting() },
                 uiState = _waitingUiState,
-                errorFlow = _errorFlow,
                 tag = "refreshWaitingUiState"
             )
         }
@@ -129,7 +128,16 @@ class InterManagementViewModel @Inject constructor(
             refreshUiState(
                 getApplications = { managementRepository.getApplicationInProgress() },
                 uiState = _progressUiState,
-                errorFlow = _errorFlow,
+                tag = "refreshCompletedUiState"
+            )
+        }
+    }
+
+    fun refreshCompletedUiState(){
+        viewModelScope.launch {
+            refreshUiState(
+                getApplications = {managementRepository.getApplicationCompleted()},
+                uiState = _completedUiState,
                 tag = "refreshCompletedUiState"
             )
         }
@@ -138,7 +146,6 @@ class InterManagementViewModel @Inject constructor(
     private suspend fun refreshUiState(
         getApplications: suspend () -> List<InterApplication>,
         uiState: MutableStateFlow<InterApplicationUiState>,
-        errorFlow: MutableSharedFlow<Throwable>,
         tag: String
     ) {
         try {
@@ -150,7 +157,7 @@ class InterManagementViewModel @Inject constructor(
             }
             Log.d(TAG, "$tag = $applications")
         } catch (e: Exception) {
-            errorFlow.emit(e)
+            _errorFlow.emit(e)
             Log.e("InterManagementViewModel", "${e.message}")
         }
     }
