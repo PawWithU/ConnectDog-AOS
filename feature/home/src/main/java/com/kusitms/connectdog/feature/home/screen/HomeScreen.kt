@@ -440,7 +440,7 @@ private fun AnnouncementCardContent(
             placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier
                 .size(150.dp)
-                .shadow(shape = RoundedCornerShape(12.dp), elevation = 2.dp)
+                .shadow(shape = RoundedCornerShape(12.dp), elevation = 1.dp)
         )
         Text(
             text = announcement.location,
@@ -465,7 +465,6 @@ private fun ReviewCardContent(
     Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),
-        shadowElevation = 1.dp,
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline)
     ) {
         ConnectDogReview(review = review, modifier = Modifier.width(272.dp))

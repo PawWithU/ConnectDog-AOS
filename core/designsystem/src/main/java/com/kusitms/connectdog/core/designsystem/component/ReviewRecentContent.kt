@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.Orange10
 import com.kusitms.connectdog.core.model.Recent
 import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.core.util.getProfileImage
@@ -149,7 +150,7 @@ fun ProfileContent(
                 modifier = Modifier
                     .background(
                         shape = RoundedCornerShape(4.dp),
-                        color = MaterialTheme.colorScheme.primaryContainer
+                        color = Orange10
                     )
                     .padding(horizontal = 7.dp, vertical = 2.dp)
             )
