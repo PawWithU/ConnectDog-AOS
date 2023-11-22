@@ -4,6 +4,7 @@ import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.mapper.toData
 import com.kusitms.connectdog.core.data.mapper.volunteer.toData
 import com.kusitms.connectdog.core.model.Application
+import com.kusitms.connectdog.core.model.ConnectDogResult
 import com.kusitms.connectdog.core.model.Volunteer
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ internal class ManagementRepositoryImpl @Inject constructor(
         return api.getMyApplication(applicationId).toData()
     }
 
-    override suspend fun deleteMyApplication(applicationId: Long) {
-        api.deleteMyApplication(applicationId)
+    override suspend fun deleteMyApplication(applicationId: Long): ConnectDogResult {
+        return api.deleteMyApplication(applicationId).toData()
     }
 }
