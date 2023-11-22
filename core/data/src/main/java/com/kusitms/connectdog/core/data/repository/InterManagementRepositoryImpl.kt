@@ -39,4 +39,10 @@ internal class InterManagementRepositoryImpl @Inject constructor(
     override suspend fun rejectApplicationVolunteer(applicationId: Long): ConnectDogResult {
         return api.deleteApplicationVolunteer(applicationId).toData()
     }
+
+    override suspend fun completeApllication(applicationId: Long): ConnectDogResult {
+        return api.patchApplicationCompleted(applicationId).toData()
+    }
+
+
 }

@@ -35,14 +35,14 @@ class InterManagementViewModel @Inject constructor(
     val recruitingUiState: StateFlow<InterApplicationUiState> =
         createUiStateFlow { managementRepository.getApplicationRecruiting() }
 
-    //    val waitingUiState: StateFlow<InterApplicationUiState> =
-//        createUiStateFlow { managementRepository.getApplicationWaiting() }
     private val _waitingUiState =
         MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
     val waitingUiState: StateFlow<InterApplicationUiState> = _waitingUiState
 
-    val progressUiState: StateFlow<InterApplicationUiState> =
-        createUiStateFlow { managementRepository.getApplicationInProgress() }
+
+    private val _progressUiState =
+        MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+    val progressUiState: StateFlow<InterApplicationUiState> = _progressUiState
 
     val completedUiState: StateFlow<InterApplicationUiState> =
         createUiStateFlow { managementRepository.getApplicationCompleted() }
@@ -52,11 +52,15 @@ class InterManagementViewModel @Inject constructor(
 
     var selectedApplication: InterApplication? = null
 
-    private val _dataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
-    val dataState = _dataState.asStateFlow()
+    private val _pendingDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
+    val pendingDataState = _pendingDataState.asStateFlow()
+
+    private val _progressDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
+    val progressDataState = _progressDataState.asStateFlow()
 
     init {
         refreshWaitingUiState()
+        refreshInProgressUiState()
     }
 
     fun getVolunteer(applicationId: Long) {
@@ -71,11 +75,11 @@ class InterManagementViewModel @Inject constructor(
     }
 
     fun confirmVolunteer(applicationId: Long) {
-        _dataState.value = DataUiState.Loading
+        _pendingDataState.value = DataUiState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 managementRepository.confirmApplicationVolunteer(applicationId).let {
-                    if (it.isSuccess) _dataState.value = DataUiState.Success
+                    if (it.isSuccess) _pendingDataState.value = DataUiState.Success
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "confirmVolunteer ${e.message}")
@@ -84,11 +88,11 @@ class InterManagementViewModel @Inject constructor(
     }
 
     fun rejectVolunteer(applicationId: Long) {
-        _dataState.value = DataUiState.Loading
+        _pendingDataState.value = DataUiState.Loading
         viewModelScope.launch {
             try {
                 managementRepository.rejectApplicationVolunteer(applicationId).let {
-                    if (it.isSuccess) _dataState.value = DataUiState.Success
+                    if (it.isSuccess) _pendingDataState.value = DataUiState.Success
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "rejectVolunteer ${e.message}")
@@ -96,23 +100,60 @@ class InterManagementViewModel @Inject constructor(
         }
     }
 
-    fun refreshWaitingUiState() {
+    fun completeApplication(applicationId: Long) {
+        _progressDataState.value = DataUiState.Loading
         viewModelScope.launch {
             try {
-                val applications = managementRepository.getApplicationWaiting()
-                _waitingUiState.value = if (applications.isNotEmpty()) {
-                    InterApplicationUiState.InterApplications(applications)
-                } else {
-                    InterApplicationUiState.Empty
+                managementRepository.completeApllication(applicationId).let {
+                    if (it.isSuccess) _progressDataState.value = DataUiState.Success
                 }
-                Log.d(TAG, "refreshWaitingUiState = $applications")
             } catch (e: Exception) {
-                _errorFlow.emit(e)
-                Log.e("InterManagementViewModel", "${e.message}")
+                Log.e(TAG, "completeApplication ${e.message}")
             }
         }
     }
 
+    fun refreshWaitingUiState() {
+        viewModelScope.launch {
+            refreshUiState(
+                getApplications = { managementRepository.getApplicationWaiting() },
+                uiState = _waitingUiState,
+                errorFlow = _errorFlow,
+                tag = "refreshWaitingUiState"
+            )
+        }
+    }
+
+    fun refreshInProgressUiState() {
+        viewModelScope.launch {
+            refreshUiState(
+                getApplications = { managementRepository.getApplicationInProgress() },
+                uiState = _progressUiState,
+                errorFlow = _errorFlow,
+                tag = "refreshCompletedUiState"
+            )
+        }
+    }
+
+    private suspend fun refreshUiState(
+        getApplications: suspend () -> List<InterApplication>,
+        uiState: MutableStateFlow<InterApplicationUiState>,
+        errorFlow: MutableSharedFlow<Throwable>,
+        tag: String
+    ) {
+        try {
+            val applications = getApplications()
+            uiState.value = if (applications.isNotEmpty()) {
+                InterApplicationUiState.InterApplications(applications)
+            } else {
+                InterApplicationUiState.Empty
+            }
+            Log.d(TAG, "$tag = $applications")
+        } catch (e: Exception) {
+            errorFlow.emit(e)
+            Log.e("InterManagementViewModel", "${e.message}")
+        }
+    }
 
     private fun createUiStateFlow(getApplication: suspend () -> List<InterApplication>): StateFlow<InterApplicationUiState> =
         flow {

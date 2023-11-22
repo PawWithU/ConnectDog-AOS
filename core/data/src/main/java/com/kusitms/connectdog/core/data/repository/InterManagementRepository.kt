@@ -13,4 +13,6 @@ interface InterManagementRepository {
 
     suspend fun confirmApplicationVolunteer(applicationId: Long): ConnectDogResult
     suspend fun rejectApplicationVolunteer(applicationId: Long): ConnectDogResult
+
+    suspend fun completeApllication(applicationId: Long): ConnectDogResult
 }

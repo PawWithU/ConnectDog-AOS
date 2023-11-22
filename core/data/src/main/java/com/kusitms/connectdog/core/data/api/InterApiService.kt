@@ -54,4 +54,9 @@ internal interface InterApiService {
     suspend fun deleteApplicationVolunteer(
         @Path("applicationId") applicationId: Long
     ): Response
+
+    @PATCH("/intermediaries/applications/{applicationId}/completed")
+    suspend fun patchApplicationCompleted(
+        @Path("applicationId") applicationId: Long
+    ): Response
 }
