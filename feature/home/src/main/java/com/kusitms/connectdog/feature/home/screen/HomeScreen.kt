@@ -86,7 +86,7 @@ internal fun HomeRoute(
 
     Column {
         TopAppBar(
-            onClickSearch = onNavigateToSearch,
+            onClickSearch = onNavigateToFilterSearch,
             onNotificationClick = onNavigateToNotification
         )
         HomeScreen(
@@ -431,9 +431,7 @@ private fun AnnouncementCardContent(
         horizontalAlignment = Alignment.Start,
         modifier = Modifier
             .width(150.dp)
-            .clickable {
-                onClick()
-            }
+            .clickable { onClick() }
     ) {
         NetworkImage(
             imageUrl = announcement.imageUrl,
