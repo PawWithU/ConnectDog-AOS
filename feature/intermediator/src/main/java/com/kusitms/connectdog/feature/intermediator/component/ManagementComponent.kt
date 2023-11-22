@@ -51,7 +51,8 @@ internal fun RecruitingContent(application: InterApplication) {
         dogName = application.dogName,
         date = application.date,
         location = application.location,
-        volunteerName = application.volunteerName
+        volunteerName = application.volunteerName,
+        isValid = !(application.postStatus != null && application.postStatus == "모집 마감")
     )
     Divider(thickness = 8.dp, color = Gray7)
 }

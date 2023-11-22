@@ -53,8 +53,8 @@ fun NavController.navigateReview() {
     navigate(HomeRoute.review)
 }
 
-fun NavController.navigateDetail() {
-    navigate(HomeRoute.detail)
+fun NavController.navigateDetail(postId: Long) {
+    navigate("${HomeRoute.detail}/$postId")
 }
 
 fun NavController.navigateCertification() {
@@ -69,8 +69,8 @@ fun NavController.navigateComplete() {
     navigate(HomeRoute.complete)
 }
 
-fun NavController.navigateIntermediatorProfile() {
-    navigate(HomeRoute.intermediatorProfile)
+fun NavController.navigateIntermediatorProfile(intermediaryId: Long) {
+    navigate("${HomeRoute.intermediatorProfile}/$intermediaryId")
 }
 
 fun NavController.navigateNotification() {
@@ -84,11 +84,11 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToFilterSearch: () -> Unit,
     onNavigateToFilter: (Filter) -> Unit,
     onNavigateToReview: () -> Unit,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (Long) -> Unit,
     onNavigateToCertification: () -> Unit,
     onNavigateToApply: () -> Unit,
     onNavigateToComplete: () -> Unit,
-    onNavigateToIntermediatorProfile: () -> Unit,
+    onNavigateToIntermediatorProfile: (Long) -> Unit,
     onNavigateToNotification: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
@@ -156,12 +156,19 @@ fun NavGraphBuilder.homeNavGraph(
             onBackClick = onBackClick
         )
     }
-
-    composable(route = HomeRoute.detail) {
+    composable(
+        route = "${HomeRoute.detail}/{postId}",
+        arguments = listOf(
+            navArgument("postId") {
+                type = NavType.LongType
+            }
+        )
+    ) {
         DetailScreen(
             onBackClick = onBackClick,
             onCertificationClick = onNavigateToCertification,
-            onIntermediatorProfileClick = onNavigateToIntermediatorProfile
+            onIntermediatorProfileClick = onNavigateToIntermediatorProfile,
+            postId = it.arguments!!.getLong("postId")
         )
     }
 
@@ -185,9 +192,17 @@ fun NavGraphBuilder.homeNavGraph(
         )
     }
 
-    composable(route = HomeRoute.intermediatorProfile) {
+    composable(
+        route = "${HomeRoute.intermediatorProfile}/{intermediaryId}",
+        arguments = listOf(
+            navArgument("intermediaryId") {
+                type = NavType.LongType
+            }
+        )
+    ) {
         IntermediatorProfileScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
+            intermediaryId = it.arguments!!.getLong("intermediaryId")
         )
     }
 

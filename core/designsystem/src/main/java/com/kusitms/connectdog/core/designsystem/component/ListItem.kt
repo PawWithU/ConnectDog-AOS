@@ -177,7 +177,7 @@ private fun ListForUserItemPreivew() {
     ConnectDogTheme {
         ListForUserItem(
             imageUrl = "",
-            announcement = Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false),
+            announcement = Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false, -1),
             isValid = false
         )
     }

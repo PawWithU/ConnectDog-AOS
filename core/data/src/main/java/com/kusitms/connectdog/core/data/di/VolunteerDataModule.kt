@@ -1,6 +1,8 @@
 package com.kusitms.connectdog.core.data.di
 
 import com.kusitms.connectdog.core.data.api.ApiService
+import com.kusitms.connectdog.core.data.repository.DetailRepository
+import com.kusitms.connectdog.core.data.repository.DetailRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.HomeRepository
 import com.kusitms.connectdog.core.data.repository.HomeRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.LoginRepository
@@ -41,5 +43,11 @@ internal class VolunteerDataModule {
     @Singleton
     fun provideMyPageRepository(apiService: ApiService): MyPageRepository {
         return MyPageRepositoryImpl(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoticeRepository(apiService: ApiService): DetailRepository {
+        return DetailRepositoryImpl(apiService)
     }
 }

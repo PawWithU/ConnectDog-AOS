@@ -11,7 +11,8 @@ internal fun AnnouncementHomeResponseItem.toData(): Announcement {
         location = "${this.departureLoc} → ${this.arrivalLoc}",
         date = dateRangeFormat(startDate, endDate),
         organization = this.intermediaryName,
-        hasKennel = this.isKennel
+        hasKennel = this.isKennel,
+        postId = this.postId
     )
 }
 
@@ -21,6 +22,7 @@ internal fun AnnouncementSearchResponseItem.toData(): Announcement {
         location = "${this.departureLoc} → ${this.arrivalLoc}",
         date = dateRangeFormat(startDate, endDate),
         organization = this.intermediaryName,
-        hasKennel = this.isKennel
+        hasKennel = this.isKennel,
+        postId = this.postId
     )
 }

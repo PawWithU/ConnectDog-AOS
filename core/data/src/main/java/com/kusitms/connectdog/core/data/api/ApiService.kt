@@ -7,6 +7,7 @@ import com.kusitms.connectdog.core.data.api.model.Response
 import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
 import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
+import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
@@ -14,6 +15,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgres
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -111,4 +113,25 @@ internal interface ApiService {
 
     @GET("/volunteers/my/bookmarks")
     suspend fun getBookmarkData(): List<BookmarkResponseItem>
+
+    /**
+     * 이동봉사자 > 공고 상세조회
+     */
+    @GET("/volunteers/posts/{postId}")
+    suspend fun getNoticeDetail(
+        @Path("postId") postId: Long
+    ): NoticeDetailResponseItem
+
+    /**
+     * 이동봉사자 > 공고 상세조회 > 중개자 프로필 조회
+     */
+    @GET("/volunteers/intermediaries/{intermediaryId}")
+    suspend fun getIntermediatorInfo(
+        @Path("intermediaryId") intermediaryId: Long
+    ): IntermediatorInfoResponseItem
+
+    @GET("/volunteers/intermediaries/{intermediaryId}/posts")
+    suspend fun getIntermediatorReview(
+        @Path("intermediaryId") intermediaryId: Long
+    ): List<BookmarkResponseItem>
 }
