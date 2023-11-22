@@ -23,4 +23,7 @@
     <string name="question_reject">봉사 신청을 정말로 반려하시겠습니까?</string>
     <string name="question_reject_description">봉사 신청을 반려하실 경우\n신청 봉사 건은 복구가 어렵습니다.</string>
     <string name="ok_reject">반려</string>
+    <string name="dialog_completed_volunteer">봉사 완료 처리가 되었습니다!</string>
+    <string name="dialog_completed_description">완료된 봉사는 [봉사 완료]에서 확인 가능합니다.</string>
+    <string name="ok">확인</string>
 </resources>

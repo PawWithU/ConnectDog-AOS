@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.intermediator.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,9 +32,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ListForOrganizationItem
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
+import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.Red2
@@ -71,9 +75,17 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
                 .padding(horizontal = 12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(painter = painterResource(id = R.drawable.ic_info), contentDescription = "info", tint = MaterialTheme.colorScheme.error)
+            Icon(
+                painter = painterResource(id = R.drawable.ic_info),
+                contentDescription = "info",
+                tint = MaterialTheme.colorScheme.error
+            )
             Spacer(modifier = Modifier.size(5.dp))
-            Text(text = "$diffTime ${stringResource(id = R.string.will_be_canceled)}", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.error)
+            Text(
+                text = "$diffTime ${stringResource(id = R.string.will_be_canceled)}",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.error
+            )
         }
         ListForOrganizationItem(
             modifier = Modifier.padding(20.dp),
@@ -215,5 +227,49 @@ private fun ReviewRecentButton(
 internal fun Loading() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
+    }
+}
+
+@Composable
+internal fun CompletedDialog(
+    onDismissRequest: () -> Unit
+) {
+    ConnectDogAlertDialog(onDismissRequest = onDismissRequest) {
+        Column(
+            modifier = Modifier
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(20.dp)
+                )
+                .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.img_dog_running),
+                contentDescription = stringResource(id = R.string.dialog_completed_volunteer)
+            )
+            Spacer(modifier = Modifier.size(30.dp))
+            Column(
+                verticalArrangement = Arrangement.spacedBy(9.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.dialog_completed_volunteer),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = stringResource(id = R.string.dialog_completed_description),
+                    color = Gray2,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp
+                )
+            }
+            Spacer(modifier = Modifier.size(40.dp))
+            ConnectDogBottomButton(
+                onClick = onDismissRequest,
+                content = stringResource(id = R.string.ok)
+            )
+        }
     }
 }

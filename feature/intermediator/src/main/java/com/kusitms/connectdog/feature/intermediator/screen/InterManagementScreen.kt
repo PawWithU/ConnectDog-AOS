@@ -42,6 +42,7 @@ import com.kusitms.connectdog.feature.intermediator.InterApplicationUiState
 import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.component.CompletedContent
+import com.kusitms.connectdog.feature.intermediator.component.CompletedDialog
 import com.kusitms.connectdog.feature.intermediator.component.InProgressContent
 import com.kusitms.connectdog.feature.intermediator.component.Loading
 import com.kusitms.connectdog.feature.intermediator.component.PendingContent
@@ -63,13 +64,18 @@ internal fun InterManagementRoute(
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
 
-    val dataUiState by viewModel.dataState.collectAsState()
-    Log.d("InterManagementRoute", "dataUiState = $dataUiState")
-    when (dataUiState){
-        is DataUiState.Loading -> Loading()
-        is DataUiState.Success -> viewModel.refreshWaitingUiState()
-        is DataUiState.Yet -> {}
+    val pendingDataState by viewModel.pendingDataState.collectAsState()
+    //Log.d("InterManagementRoute", "dataUiState = $dataUiState")
+    UiState(dataUiState = pendingDataState) {
+        viewModel.refreshWaitingUiState()
     }
+
+    val progressDataState by viewModel.progressDataState.collectAsState()
+    UiState(dataUiState = progressDataState) {
+        viewModel.refreshInProgressUiState()
+    }
+
+    var isCompletedDialogVisible by remember { mutableStateOf(false) }
 
     Column {
         TopAppBar(titleRes = R.string.manage_application) { onBackClick() }
@@ -82,7 +88,15 @@ internal fun InterManagementRoute(
                     isSheetOpen = true
                 })
             },
-            thirdContent = { InProgress(uiState = inProgressUiState) },
+            thirdContent = {
+                InProgress(
+                    uiState = inProgressUiState,
+                    onClick = {
+                        viewModel.completeApplication(it.applicationId!!)
+                        isCompletedDialogVisible = true
+                    }
+                )
+            },
             fourthContent = {
                 Completed(
                     uiState = completedUiState,
@@ -101,6 +115,12 @@ internal fun InterManagementRoute(
             onDismissRequest = { isSheetOpen = false },
             viewModel = viewModel
         )
+    }
+
+    if (isCompletedDialogVisible) {
+        CompletedDialog {
+            isCompletedDialogVisible = false
+        }
     }
 }
 
@@ -154,15 +174,14 @@ private fun PendingApproval(
 
 @Composable
 private fun InProgress(
-    uiState: InterApplicationUiState
+    uiState: InterApplicationUiState,
+    onClick: (InterApplication) -> Unit
 ) {
     when (uiState) {
         is InterApplicationUiState.InterApplications -> {
             LazyColumn(verticalArrangement = Arrangement.Top) {
                 items(uiState.applications) {
-                    InProgressContent(application = it) {
-                        // todo
-                    }
+                    InProgressContent(application = it) { onClick(it) }
                 }
             }
         }
@@ -257,5 +276,14 @@ private fun ManagementScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun UiState(dataUiState: DataUiState, onSuccess: () -> Unit) {
+    when (dataUiState) {
+        is DataUiState.Loading -> Loading()
+        is DataUiState.Success -> onSuccess()
+        is DataUiState.Yet -> {}
     }
 }
