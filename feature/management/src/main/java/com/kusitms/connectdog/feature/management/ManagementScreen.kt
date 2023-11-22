@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
@@ -179,8 +180,10 @@ private fun PendingApproval(
                 }
             }
         }
-
-        else -> Loading()
+        is ApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_pending, descriptionRes = R.string.no_description)
+        }
+        is ApplicationUiState.Loading -> Loading()
     }
 }
 
@@ -196,8 +199,10 @@ private fun InProgress(
                 }
             }
         }
-
-        else -> Loading()
+        is ApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_progressing, descriptionRes = R.string.no_description)
+        }
+        is ApplicationUiState.Loading -> Loading()
     }
 }
 
@@ -219,8 +224,10 @@ private fun Completed(
                 }
             }
         }
-
-        else -> Loading()
+        is ApplicationUiState.Empty -> {
+            Empty(titleRes = R.string.no_completed, descriptionRes = R.string.no_description)
+        }
+        is ApplicationUiState.Loading -> Loading()
     }
 }
 
