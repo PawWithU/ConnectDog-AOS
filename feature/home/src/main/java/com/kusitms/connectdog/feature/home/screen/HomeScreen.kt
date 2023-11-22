@@ -184,6 +184,7 @@ private fun StatisticBanner(modifier: Modifier) {
                 color = Gray3
             )
         }
+        Spacer(modifier = Modifier.size(6.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -404,7 +405,7 @@ private fun ReviewListContent(
 private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
     val list = List(4) {
         Review(
-            profileUrl = "",
+            profileNum = 0,
             dogName = "멍멍이",
             userName = "츄",
             contentUrl = "",
