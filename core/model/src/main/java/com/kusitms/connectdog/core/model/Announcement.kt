@@ -5,5 +5,6 @@ data class Announcement(
     val location: String,
     val date: String,
     val organization: String,
-    val hasKennel: Boolean
+    val hasKennel: Boolean,
+    val postId: Int
 )
