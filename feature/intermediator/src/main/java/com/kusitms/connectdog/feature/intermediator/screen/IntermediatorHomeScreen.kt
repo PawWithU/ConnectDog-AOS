@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +23,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -76,7 +77,8 @@ data class CardItem(
 @Composable
 fun IntermediatorHomeScreen(
     onNotificationClick: () -> Unit,
-    onSettingClick: () -> Unit
+    onSettingClick: () -> Unit,
+    onDataClick: (Int) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -86,12 +88,16 @@ fun IntermediatorHomeScreen(
             )
         }
     ) {
-        Content()
+        Content {
+            onDataClick(it)
+        }
     }
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    onClick: (Int) -> Unit
+) {
     val list = List(4) {
         CardItem(
             image = imageList[it],
@@ -104,7 +110,7 @@ private fun Content() {
     ) {
         Spacer(modifier = Modifier.height(48.dp))
         Information()
-        ManageBoard(list)
+        ManageBoard(list) { onClick(it) }
     }
 }
 
@@ -133,7 +139,10 @@ private fun ProfileCard() {
                 .align(Alignment.Center)
         ) {
             Column {
-                NetworkImage(imageUrl = "", placeholder = painterResource(id = R.drawable.ic_default_intermediator))
+                NetworkImage(
+                    imageUrl = "",
+                    placeholder = painterResource(id = R.drawable.ic_default_intermediator)
+                )
                 Spacer(modifier = Modifier.height(18.dp))
                 Text(
                     text = "중개자 이름",
@@ -171,7 +180,8 @@ private fun ProfileCard() {
 
 @Composable
 private fun ManageBoard(
-    list: List<CardItem>
+    list: List<CardItem>,
+    onClick: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -179,20 +189,27 @@ private fun ManageBoard(
             .background(Brown5)
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        Text("전체 12건", modifier = Modifier.padding(start = 20.dp), style = MaterialTheme.typography.titleLarge, fontSize = 18.sp)
+        Text(
+            "전체 12건",
+            modifier = Modifier.padding(start = 20.dp),
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 18.sp
+        )
         Spacer(modifier = Modifier.height(20.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            items(list) {
+            itemsIndexed(list) { index, item ->
                 ManageCard(
-                    title = it.title,
-                    painter = it.image,
-                    value = it.value
-                )
+                    title = item.title,
+                    painter = item.image,
+                    value = item.value
+                ) { onClick(index) }
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
@@ -214,7 +231,10 @@ private fun ApplyButton(onClick: () -> Unit) {
         modifier = Modifier
             .width(117.dp)
             .height(44.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = Color.White)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = Color.White
+        )
     ) {
         Icon(
             imageVector = Icons.Outlined.Add,
@@ -230,7 +250,8 @@ private fun ApplyButton(onClick: () -> Unit) {
 private fun ManageCard(
     @StringRes title: Int,
     @DrawableRes painter: Int,
-    value: Int
+    value: Int,
+    onClick: () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(12.dp),
@@ -240,6 +261,7 @@ private fun ManageCard(
         modifier = Modifier
             .width(170.dp)
             .height(200.dp)
+            .clickable { onClick() }
     ) {
         Column(
             modifier = Modifier
@@ -276,6 +298,6 @@ private fun ManageCard(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        IntermediatorHomeScreen(onNotificationClick = {}, onSettingClick = {})
+        IntermediatorHomeScreen(onNotificationClick = {}, onSettingClick = {}, {})
     }
 }
