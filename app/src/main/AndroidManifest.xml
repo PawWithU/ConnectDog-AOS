@@ -34,8 +34,12 @@
         <activity
             android:name=".feature.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.ConnectDog.Splash"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.ConnectDog.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".feature.main.MainActivity"
@@ -44,11 +48,6 @@
         <activity
             android:name=".feature.intermediator.IntermediatorActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

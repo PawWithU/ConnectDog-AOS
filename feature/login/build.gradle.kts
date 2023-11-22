@@ -47,6 +47,7 @@ dependencies {
 
     implementation(project(":feature:main"))
     implementation(project(":core:designsystem"))
+    implementation(project(":feature:intermediator"))
 
     implementation(libs.androidx.core.splashscreen)
     implementation(project(mapOf("path" to ":core:data")))
@@ -75,6 +76,10 @@ dependencies {
 
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
+
+//     social login
+    implementation(libs.kakao.oauth)
+    implementation(libs.naver.oauth)
 
     // test
     implementation(libs.androidx.junit.ktx)

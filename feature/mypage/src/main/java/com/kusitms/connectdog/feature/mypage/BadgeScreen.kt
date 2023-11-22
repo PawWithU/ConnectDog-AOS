@@ -36,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -71,7 +72,7 @@ data class BadgeItem(
 @Composable
 fun BadgeScreen(
     onBackClick: () -> Unit,
-    viewModel: MyScreenViewModel = MyScreenViewModel()
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val showBottomSheet by viewModel.showBottomSheet.observeAsState(initial = false)
     val sheetState = rememberModalBottomSheetState()
@@ -87,7 +88,7 @@ fun BadgeScreen(
             )
         }
     ) {
-        Content(viewModel)
+        Content()
 
         if (showBottomSheet) {
             ModalBottomSheet(
@@ -97,7 +98,9 @@ fun BadgeScreen(
                 sheetState = sheetState
             ) {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.height(24.dp))
@@ -140,7 +143,7 @@ fun BadgeScreen(
 
 @Composable
 private fun Content(
-    viewModel: MyScreenViewModel
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val volunteerItems = List(6) {
         BadgeItem(null, reviewDescriptionList[it])
@@ -164,7 +167,7 @@ private fun Content(
 private fun BadgeGrid(
     @StringRes titleRes: Int,
     list: List<BadgeItem>,
-    viewModel: MyScreenViewModel
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier
