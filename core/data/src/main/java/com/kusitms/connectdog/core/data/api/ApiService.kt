@@ -1,10 +1,5 @@
 package com.kusitms.connectdog.core.data.api
 
-import com.kusitms.connectdog.core.data.api.model.AnnouncementHomeResponseItem
-import com.kusitms.connectdog.core.data.api.model.AnnouncementSearchResponseItem
-import com.kusitms.connectdog.core.data.api.model.ApplicationCompletedResponseItem
-import com.kusitms.connectdog.core.data.api.model.ApplicationInProgressResponseItem
-import com.kusitms.connectdog.core.data.api.model.ApplicationWaitingResponseItem
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
@@ -16,6 +11,9 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
+import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -78,6 +76,9 @@ internal interface ApiService {
         @Path("applicationId") applicationId: Long
     ): VolunteerResponse
 
+    /**
+     * 로그인
+     */
     @Headers("Content-Type: application/json")
     @POST("/volunteers/login")
     suspend fun postLoginData(
@@ -89,6 +90,18 @@ internal interface ApiService {
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
 
+    /**
+     * 이동봉사자 > 마이페이지
+     */
     @GET("/volunteers/my/info")
     suspend fun getMyInfo(): MyInfoResponseItem
+
+    @GET("/volunteers/my/profile")
+    suspend fun getUserInfo(): UserInfoResponse
+
+    @GET("/volunteers/my/badges")
+    suspend fun getBadge(): List<BadgeResponse>
+
+    @GET("/volunteers/my/bookmarks")
+    suspend fun getBookmarkData(): List<BookmarkResponseItem>
 }

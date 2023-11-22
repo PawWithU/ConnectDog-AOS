@@ -42,6 +42,18 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 
+val profileImage = listOf(
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_1,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_2,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_3,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_4,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_5,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_6,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_7,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_8,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_9
+)
+
 @Composable
 internal fun MypageRoute(
     padding: PaddingValues,
@@ -51,6 +63,7 @@ internal fun MypageRoute(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onBadgeClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     MypageScreen(
@@ -60,7 +73,8 @@ internal fun MypageRoute(
         onSettingClick = onSettingClick,
         onManageAccountClick = onManageAccountClick,
         onNotificationClick = onNotificationClick,
-        onBadgeClick = onBadgeClick
+        onBadgeClick = onBadgeClick,
+        onBookmarkClick = onBookmarkClick
     )
 }
 
@@ -100,7 +114,8 @@ private fun MypageScreen(
     onManageAccountClick: () -> Unit,
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
-    onBadgeClick: () -> Unit
+    onBadgeClick: () -> Unit,
+    onBookmarkClick: () -> Unit
 ) {
     Column {
         TopBar(onSettingClick, onNotificationClick)
@@ -111,7 +126,7 @@ private fun MypageScreen(
         Spacer(modifier = Modifier.height(40.dp))
         Text(text = "나의 이동봉사", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 20.dp))
         Spacer(modifier = Modifier.height(20.dp))
-        MypageTab(painter = R.drawable.ic_bookmark, title = "저장한 이동봉사 공고", onClick = {})
+        MypageTab(painter = R.drawable.ic_bookmark, title = "저장한 이동봉사 공고", onClick = onBookmarkClick)
         Spacer(modifier = Modifier.height(20.dp))
         MypageTab(painter = R.drawable.ic_badge, title = "내 활동 배지", onClick = onBadgeClick)
     }
@@ -119,27 +134,32 @@ private fun MypageScreen(
 
 @Composable
 private fun MyInformation(
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
+    val userInfo by viewModel.userInfo.observeAsState(null)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(
-                id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_1
-            ),
-            contentDescription = null,
-            modifier = Modifier.size(50.dp)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = "이름",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold
-        )
+        userInfo?.let {
+            Image(
+                painter = painterResource(
+                    id = profileImage[it.profileImageNum - 1]
+                ),
+                contentDescription = null,
+                modifier = Modifier.size(50.dp)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = it.nickname,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogOutlinedButton(
             width = 80,
