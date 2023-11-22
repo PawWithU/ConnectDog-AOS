@@ -1,7 +1,7 @@
 package com.kusitms.connectdog.core.model
 
 data class Review(
-    val profileUrl: String,
+    val profileNum: Int,
     val dogName: String,
     val userName: String,
     val contentUrl: String,

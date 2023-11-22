@@ -33,7 +33,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
+import com.kusitms.connectdog.core.designsystem.component.Loading
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -144,14 +146,14 @@ private fun FilterBar(
         if (filter.startDate != null && filter.endDate != null) {
             dateRangeDisplay(filter.startDate!!, filter.endDate!!)
         } else {
-            stringResource(id = R.string.search_location)
+            stringResource(id = R.string.search_date)
         }
 
     val locationFilter: String =
         if (filter.departure.isNotEmpty() && filter.arrival.isNotEmpty()) {
             filter.departure + " -> " + filter.arrival
         } else {
-            stringResource(id = R.string.search_date)
+            stringResource(id = R.string.search_location)
         }
 
     val scrollState = rememberScrollState()
@@ -247,7 +249,14 @@ private fun AnnouncementContent(
             AnnouncementList(list = uiState.announcements, sortBtn = sortBtn, onClick = onClick)
         }
 
-        else -> AnnouncementLoading(sortBtn)
+        is AnnouncementUiState.Empty -> {
+            Empty(
+                titleRes = R.string.filter_no_announcement,
+                descriptionRes = R.string.filter_no_announcement_description
+            )
+        }
+
+        is AnnouncementUiState.Loading -> Loading()
     }
 }
 
@@ -288,15 +297,18 @@ private fun AnnouncementLoading(
 private fun AnnouncementContent(announcement: Announcement, onClick: (Long) -> Unit) {
     Column(
         modifier = Modifier
-            .padding(20.dp)
             .clickable { onClick(announcement.postId.toLong()) }
     ) {
         ListForUserItem(
-            modifier = Modifier.padding(vertical = 20.dp),
+            modifier = Modifier.padding(20.dp),
             imageUrl = announcement.imageUrl,
             announcement = announcement
         )
-        Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
+        Divider(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
     }
 }
 

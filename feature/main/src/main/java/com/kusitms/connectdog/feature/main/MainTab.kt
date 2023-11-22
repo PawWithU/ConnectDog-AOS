@@ -15,7 +15,7 @@ internal enum class MainTab(
         route = HomeRoute.route
     ),
     MANAGEMENT(
-        iconResId = R.drawable.ic_paw,
+        iconResId = R.drawable.ic_list,
         contentDescription = "신청 관리",
         route = ManagementRoute.route
     ),

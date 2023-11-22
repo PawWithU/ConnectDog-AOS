@@ -3,18 +3,13 @@ package com.kusitms.connectdog.core.data.mapper.volunteer
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchResponseItem
 import com.kusitms.connectdog.core.model.Announcement
-import com.kusitms.connectdog.core.util.dateFormat
-import com.kusitms.connectdog.core.util.toLocalDate
+import com.kusitms.connectdog.core.util.dateRangeFormat
 
 internal fun AnnouncementHomeResponseItem.toData(): Announcement {
-    val datePattern = "yyyy-MM-dd"
-    val uiPattern = "YY.MM.dd(E)"
-    val start = this.startDate.toLocalDate(datePattern).dateFormat(uiPattern)
-    val end = this.endDate.toLocalDate(datePattern).dateFormat(uiPattern)
     return Announcement(
         imageUrl = this.mainImage,
         location = "${this.departureLoc} → ${this.arrivalLoc}",
-        date = "$start-$end",
+        date = dateRangeFormat(startDate, endDate),
         organization = this.intermediaryName,
         hasKennel = this.isKennel,
         postId = this.postId
@@ -22,14 +17,10 @@ internal fun AnnouncementHomeResponseItem.toData(): Announcement {
 }
 
 internal fun AnnouncementSearchResponseItem.toData(): Announcement {
-    val datePattern = "yyyy-MM-dd"
-    val uiPattern = "YY.MM.dd(E)"
-    val start = this.startDate.toLocalDate(datePattern).dateFormat(uiPattern)
-    val end = this.endDate.toLocalDate(datePattern).dateFormat(uiPattern)
     return Announcement(
         imageUrl = this.mainImage,
         location = "${this.departureLoc} → ${this.arrivalLoc}",
-        date = "$start-$end",
+        date = dateRangeFormat(startDate, endDate),
         organization = this.intermediaryName,
         hasKennel = this.isKennel,
         postId = this.postId

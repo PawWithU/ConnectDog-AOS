@@ -7,4 +7,12 @@
     <string name="create_review">후기 등록</string>
     <string name="check_recent">근황 확인</string>
     <string name="cancel_appliance">봉사 신청 취소</string>
+    <string name="question_cancel">봉사 신청을 정말로 취소하시겠습니까?</string>
+    <string name="question_cancel_description">봉사 신청을 삭제하실 경우 \n신청 봉사 건은 복구가 어렵습니다.</string>
+    <string name="ok_cancel">취소</string>
+    <string name="cancel_back">뒤로 가기</string>
+    <string name="no_pending">승인 대기중인 이동봉사가 없어요</string>
+    <string name="no_progressing">진행 중인 이동봉사가 없어요</string>
+    <string name="no_completed">완료된 이동봉사가 없어요</string>
+    <string name="no_description">홈에서 원하는 공고를 신청해보세요!</string>
 </resources>

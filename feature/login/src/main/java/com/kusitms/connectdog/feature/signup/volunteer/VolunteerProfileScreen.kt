@@ -30,6 +30,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWit
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.core.util.getProfileImage
 import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
@@ -40,7 +41,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
     val profileImageId = if (viewModel.selectedImageIndex.value == null) {
         com.kusitms.connectdog.core.designsystem.R.drawable.ic_circle
     } else {
-        profileImageList[viewModel.selectedImageIndex.value!!]
+        getProfileImage(viewModel.selectedImageIndex.value!!)
     }
 
     Box(

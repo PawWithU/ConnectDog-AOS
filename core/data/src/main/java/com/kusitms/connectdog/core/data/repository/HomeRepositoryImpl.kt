@@ -27,9 +27,17 @@ internal class HomeRepositoryImpl @Inject constructor(
         page: Int?,
         size: Int?
     ): List<Announcement> {
+        var depart = departureLoc
+        if (depart != null) {
+            if ("전체" in depart) depart = depart.take(2)
+        }
+        var dest = arrivalLoc
+        if (dest != null) {
+            if ("전체" in dest) dest = dest.take(2)
+        }
         return api.getAnnouncementFilterPosts(
             postStatus,
-            departureLoc, arrivalLoc,
+            depart, dest,
             startDate, endDate,
             dogSize, isKennel, intermediaryName,
             orderCondition,
