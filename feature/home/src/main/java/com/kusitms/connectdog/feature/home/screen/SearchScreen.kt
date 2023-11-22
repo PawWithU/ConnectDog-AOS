@@ -269,7 +269,7 @@ private fun AnnouncementList(
 
 @Composable
 private fun AnnouncementLoading(
-    sortBtn: @Composable () -> Unit,
+    sortBtn: @Composable () -> Unit
 ) {
     val list = List(10) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
