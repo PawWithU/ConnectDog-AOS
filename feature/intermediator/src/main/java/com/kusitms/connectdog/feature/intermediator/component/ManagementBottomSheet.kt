@@ -10,9 +10,13 @@ import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.InterApplicationBottomSheet
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
@@ -32,6 +36,9 @@ internal fun VolunteerBottomSheet(
     val volunteer by viewModel.volunteerResponse.observeAsState(null)
     interApplication.applicationId?.let { id -> viewModel.getVolunteer(id) }
 
+    var isConfirmDialogVisible by remember { mutableStateOf(false) }
+    var isRejectDialogVisible by remember { mutableStateOf(false) }
+
     volunteer?.let { vol ->
         InterApplicationBottomSheet(
             titleRes = R.string.check_volunteer_top_title,
@@ -47,14 +54,14 @@ internal fun VolunteerBottomSheet(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 ConnectDogBottomButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { isRejectDialogVisible = true },
                     content = stringResource(id = R.string.reject),
                     textColor = Gray1,
                     color = Gray6,
                     modifier = Modifier.weight(0.5f)
                 )
                 ConnectDogBottomButton(
-                    onClick = { /*TODO*/ },
+                    onClick = { isConfirmDialogVisible = true },
                     content = stringResource(id = R.string.confirm),
                     textColor = MaterialTheme.colorScheme.onPrimary,
                     color = MaterialTheme.colorScheme.primary,
@@ -62,5 +69,49 @@ internal fun VolunteerBottomSheet(
                 )
             }
         }
+    }
+
+    if (isConfirmDialogVisible) {
+        ConfirmDialog(onDismiss = { isConfirmDialogVisible = false }) {
+            //todo viewModel.confirm
+        }
+    }
+
+    if (isRejectDialogVisible) {
+        RejectDialog(onDismiss = { isRejectDialogVisible = false }) {
+            //todo viewModel.reject
+        }
+    }
+}
+
+@Composable
+private fun RejectDialog(
+    onDismiss: () -> Unit,
+    onOkClick: () -> Unit
+) {
+    ConnectDogAlertDialog(
+        onDismissRequest = onDismiss,
+        titleRes = R.string.question_reject,
+        descriptionRes = R.string.question_reject_description,
+        okText = R.string.ok_reject,
+        cancelText = R.string.cancel_back
+    ) {
+        onOkClick()
+    }
+}
+
+@Composable
+private fun ConfirmDialog(
+    onDismiss: () -> Unit,
+    onOkClick: () -> Unit
+) {
+    ConnectDogAlertDialog(
+        onDismissRequest = onDismiss,
+        titleRes = R.string.question_confirm,
+        descriptionRes = R.string.question_confirm_description,
+        okText = R.string.ok_confirm,
+        cancelText = R.string.cancel_back
+    ) {
+        onOkClick()
     }
 }
