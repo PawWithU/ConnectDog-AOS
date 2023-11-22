@@ -55,6 +55,7 @@ internal fun SearchScreen(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
+    onDetailClick: () -> Unit,
     onNavigateToFilter: (Filter) -> Unit
 ) {
     viewModel.setFilter(filterArg!!)
@@ -79,14 +80,18 @@ internal fun SearchScreen(
                 onClick = { onNavigateToFilter(filter) }
             )
         }
-        AnnouncementContent(uiState = announcementUiState) {
-            SortButton(
-                modifier = Modifier
-                    .padding(top = 20.dp, end = 20.dp)
-                    .fillMaxWidth(),
-                isByDeadline = isByDeadline
-            ) { viewModel.changeOrderCondition() }
-        }
+        AnnouncementContent(
+            uiState = announcementUiState,
+            sortBtn = {
+                SortButton(
+                    modifier = Modifier
+                        .padding(top = 20.dp, end = 20.dp)
+                        .fillMaxWidth(),
+                    isByDeadline = isByDeadline
+                ) { viewModel.changeOrderCondition() }
+            },
+            onClick = onDetailClick
+        )
     }
 }
 
@@ -232,10 +237,14 @@ private fun SortButton(
 }
 
 @Composable
-private fun AnnouncementContent(uiState: AnnouncementUiState, sortBtn: @Composable () -> Unit) {
+private fun AnnouncementContent(
+    uiState: AnnouncementUiState,
+    sortBtn: @Composable () -> Unit,
+    onClick: () -> Unit
+) {
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
-            AnnouncementList(list = uiState.announcements, sortBtn = sortBtn)
+            AnnouncementList(list = uiState.announcements, sortBtn = sortBtn, onClick = onClick)
         }
 
         else -> AnnouncementLoading(sortBtn)
@@ -245,21 +254,22 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, sortBtn: @Composab
 @Composable
 private fun AnnouncementList(
     list: List<Announcement>,
-    sortBtn: @Composable () -> Unit
+    sortBtn: @Composable () -> Unit,
+    onClick: () -> Unit
 ) {
     LazyColumn {
         item {
             sortBtn()
         }
         items(list) {
-            AnnouncementContent(announcement = it)
+            AnnouncementContent(announcement = it, onClick = onClick)
         }
     }
 }
 
 @Composable
 private fun AnnouncementLoading(
-    sortBtn: @Composable () -> Unit
+    sortBtn: @Composable () -> Unit,
 ) {
     val list = List(10) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
@@ -269,14 +279,18 @@ private fun AnnouncementLoading(
             sortBtn()
         }
         items(list) {
-            AnnouncementContent(announcement = it)
+            AnnouncementContent(announcement = it, onClick = {})
         }
     }
 }
 
 @Composable
-private fun AnnouncementContent(announcement: Announcement) {
-    Column(modifier = Modifier.padding(20.dp)) {
+private fun AnnouncementContent(announcement: Announcement, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .padding(20.dp)
+            .clickable { onClick() }
+    ) {
         ListForUserItem(
             modifier = Modifier.padding(vertical = 20.dp),
             imageUrl = announcement.imageUrl,
@@ -302,14 +316,18 @@ private fun SearchScreenPreview() {
                 filter = Filter(),
                 onClick = { /*TODO*/ }
             )
-            AnnouncementContent(uiState = AnnouncementUiState.Loading) {
-                SortButton(
-                    modifier = Modifier
-                        .padding(top = 20.dp, end = 20.dp)
-                        .fillMaxWidth(),
-                    isByDeadline = true
-                ) { /*todo sort*/ }
-            }
+            AnnouncementContent(
+                uiState = AnnouncementUiState.Loading,
+                sortBtn = {
+                    SortButton(
+                        modifier = Modifier
+                            .padding(top = 20.dp, end = 20.dp)
+                            .fillMaxWidth(),
+                        isByDeadline = true
+                    ) { /*todo sort*/ }
+                },
+                onClick = {}
+            )
         }
     }
 }
