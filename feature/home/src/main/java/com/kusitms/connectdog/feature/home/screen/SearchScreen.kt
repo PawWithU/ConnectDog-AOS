@@ -57,6 +57,7 @@ internal fun SearchScreen(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
+    onDetailClick: () -> Unit,
     onNavigateToFilter: (Filter) -> Unit
 ) {
     viewModel.setFilter(filterArg!!)
@@ -81,14 +82,18 @@ internal fun SearchScreen(
                 onClick = { onNavigateToFilter(filter) }
             )
         }
-        AnnouncementContent(uiState = announcementUiState) {
-            SortButton(
-                modifier = Modifier
-                    .padding(top = 20.dp, end = 20.dp)
-                    .fillMaxWidth(),
-                isByDeadline = isByDeadline
-            ) { viewModel.changeOrderCondition() }
-        }
+        AnnouncementContent(
+            uiState = announcementUiState,
+            sortBtn = {
+                SortButton(
+                    modifier = Modifier
+                        .padding(top = 20.dp, end = 20.dp)
+                        .fillMaxWidth(),
+                    isByDeadline = isByDeadline
+                ) { viewModel.changeOrderCondition() }
+            },
+            onClick = onDetailClick
+        )
     }
 }
 
@@ -234,10 +239,14 @@ private fun SortButton(
 }
 
 @Composable
-private fun AnnouncementContent(uiState: AnnouncementUiState, sortBtn: @Composable () -> Unit) {
+private fun AnnouncementContent(
+    uiState: AnnouncementUiState,
+    sortBtn: @Composable () -> Unit,
+    onClick: () -> Unit
+) {
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
-            AnnouncementList(list = uiState.announcements, sortBtn = sortBtn)
+            AnnouncementList(list = uiState.announcements, sortBtn = sortBtn, onClick = onClick)
         }
 
         is AnnouncementUiState.Empty -> {
@@ -254,14 +263,15 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, sortBtn: @Composab
 @Composable
 private fun AnnouncementList(
     list: List<Announcement>,
-    sortBtn: @Composable () -> Unit
+    sortBtn: @Composable () -> Unit,
+    onClick: () -> Unit
 ) {
     LazyColumn {
         item {
             sortBtn()
         }
         items(list) {
-            AnnouncementContent(announcement = it)
+            AnnouncementContent(announcement = it, onClick = onClick)
         }
     }
 }
@@ -278,23 +288,26 @@ private fun AnnouncementLoading(
             sortBtn()
         }
         items(list) {
-            AnnouncementContent(announcement = it)
+            AnnouncementContent(announcement = it, onClick = {})
         }
     }
 }
 
 @Composable
-private fun AnnouncementContent(announcement: Announcement) {
-    ListForUserItem(
-        modifier = Modifier.padding(20.dp),
-        imageUrl = announcement.imageUrl,
-        announcement = announcement
-    )
-    Divider(
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.outline,
-        modifier = Modifier.padding(horizontal = 20.dp)
-    )
+private fun AnnouncementContent(announcement: Announcement, onClick: () -> Unit) {
+    Column(modifier = Modifier
+        .clickable { onClick() }) {
+        ListForUserItem(
+            modifier = Modifier.padding(20.dp),
+            imageUrl = announcement.imageUrl,
+            announcement = announcement
+        )
+        Divider(
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+            modifier = Modifier.padding(horizontal = 20.dp)
+        )
+    }
 }
 
 @Preview
@@ -313,14 +326,18 @@ private fun SearchScreenPreview() {
                 filter = Filter(),
                 onClick = { /*TODO*/ }
             )
-            AnnouncementContent(uiState = AnnouncementUiState.Loading) {
-                SortButton(
-                    modifier = Modifier
-                        .padding(top = 20.dp, end = 20.dp)
-                        .fillMaxWidth(),
-                    isByDeadline = true
-                ) { /*todo sort*/ }
-            }
+            AnnouncementContent(
+                uiState = AnnouncementUiState.Loading,
+                sortBtn = {
+                    SortButton(
+                        modifier = Modifier
+                            .padding(top = 20.dp, end = 20.dp)
+                            .fillMaxWidth(),
+                        isByDeadline = true
+                    ) { /*todo sort*/ }
+                },
+                onClick = {}
+            )
         }
     }
 }

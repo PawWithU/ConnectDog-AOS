@@ -104,7 +104,7 @@ fun NavGraphBuilder.homeNavGraph(
     }
 
     composable(route = HomeRoute.search) {
-        SearchScreen(onBackClick = onBackClick, onNavigateToFilter = onNavigateToFilter)
+        SearchScreen(onBackClick = onBackClick, onNavigateToFilter = onNavigateToFilter, onDetailClick = onNavigateToDetail)
     }
 
     composable(
@@ -121,7 +121,8 @@ fun NavGraphBuilder.homeNavGraph(
         SearchScreen(
             onBackClick = onBackClick,
             filterArg = filter ?: Filter(),
-            onNavigateToFilter = onNavigateToFilter
+            onNavigateToFilter = onNavigateToFilter,
+            onDetailClick = onNavigateToDetail
         )
     }
 

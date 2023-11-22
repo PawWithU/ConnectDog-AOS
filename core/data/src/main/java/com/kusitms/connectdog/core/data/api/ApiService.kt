@@ -12,6 +12,9 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
+import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -94,6 +97,18 @@ internal interface ApiService {
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
 
+    /**
+     * 이동봉사자 > 마이페이지
+     */
     @GET("/volunteers/my/info")
     suspend fun getMyInfo(): MyInfoResponseItem
+
+    @GET("/volunteers/my/profile")
+    suspend fun getUserInfo(): UserInfoResponse
+
+    @GET("/volunteers/my/badges")
+    suspend fun getBadge(): List<BadgeResponse>
+
+    @GET("/volunteers/my/bookmarks")
+    suspend fun getBookmarkData(): List<BookmarkResponseItem>
 }

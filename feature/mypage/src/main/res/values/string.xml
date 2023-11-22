@@ -6,6 +6,7 @@
     <string name="manage_account">계정 정보 관리</string>
     <string name="notification">알림</string>
     <string name="badge">내 활동 배지</string>
+    <string name="bookmark">저장한 이동봉사 공고</string>
 
     <!--volunteer badge-->
     <string name="volunteer_title">이동봉사 활동</string>

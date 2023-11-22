@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.kusitms.connectdog.feature.mypage.BadgeScreen
+import com.kusitms.connectdog.feature.mypage.BookmarkScreen
 import com.kusitms.connectdog.feature.mypage.EditProfileScreen
 import com.kusitms.connectdog.feature.mypage.ManageAccountScreen
 import com.kusitms.connectdog.feature.mypage.MypageRoute
@@ -36,6 +37,10 @@ fun NavController.navigateBadge() {
     navigate(MypageRoute.badge)
 }
 
+fun NavController.navigateBookmark() {
+    navigate(MypageRoute.bookmark)
+}
+
 fun NavGraphBuilder.mypageNavGraph(
     padding: PaddingValues,
     onClick: () -> Unit,
@@ -45,6 +50,7 @@ fun NavGraphBuilder.mypageNavGraph(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onBadgeClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
     onShowErrorSnackbar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = MypageRoute.route) {
@@ -56,6 +62,7 @@ fun NavGraphBuilder.mypageNavGraph(
             onNotificationClick,
             onSettingClick,
             onBadgeClick,
+            onBookmarkClick,
             onShowErrorSnackbar
         )
     }
@@ -90,6 +97,12 @@ fun NavGraphBuilder.mypageNavGraph(
             onBackClick = onBackClick
         )
     }
+
+    composable(route = MypageRoute.bookmark) {
+        BookmarkScreen(
+            onBackClick = onBackClick
+        )
+    }
 }
 
 object MypageRoute {
@@ -99,4 +112,5 @@ object MypageRoute {
     const val notification = "notification"
     const val setting = "setting"
     const val badge = "badge"
+    const val bookmark = "bookmark"
 }
