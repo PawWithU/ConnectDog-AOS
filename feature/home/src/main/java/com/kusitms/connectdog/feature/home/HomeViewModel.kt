@@ -48,7 +48,7 @@ constructor(
 
     val reviewUiState: StateFlow<ReviewUiState> =
         flow {
-            emit(homeRepository.getReviewList())
+            emit(homeRepository.getReviewList(0, 20))
         }.map {
             Log.d(TAG, "reviewUiState = ${it.size}")
             if (it.isNotEmpty()) {
