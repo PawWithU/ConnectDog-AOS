@@ -55,7 +55,7 @@ internal fun SearchScreen(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
-    onDetailClick: () -> Unit,
+    onDetailClick: (Long) -> Unit,
     onNavigateToFilter: (Filter) -> Unit
 ) {
     viewModel.setFilter(filterArg!!)
@@ -240,7 +240,7 @@ private fun SortButton(
 private fun AnnouncementContent(
     uiState: AnnouncementUiState,
     sortBtn: @Composable () -> Unit,
-    onClick: () -> Unit
+    onClick: (Long) -> Unit
 ) {
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
@@ -255,7 +255,7 @@ private fun AnnouncementContent(
 private fun AnnouncementList(
     list: List<Announcement>,
     sortBtn: @Composable () -> Unit,
-    onClick: () -> Unit
+    onClick: (Long) -> Unit
 ) {
     LazyColumn {
         item {
@@ -272,24 +272,24 @@ private fun AnnouncementLoading(
     sortBtn: @Composable () -> Unit
 ) {
     val list = List(10) {
-        Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false)
+        Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false, -1)
     }
     LazyColumn {
         item {
             sortBtn()
         }
         items(list) {
-            AnnouncementContent(announcement = it, onClick = {})
+            AnnouncementContent(announcement = it) {}
         }
     }
 }
 
 @Composable
-private fun AnnouncementContent(announcement: Announcement, onClick: () -> Unit) {
+private fun AnnouncementContent(announcement: Announcement, onClick: (Long) -> Unit) {
     Column(
         modifier = Modifier
             .padding(20.dp)
-            .clickable { onClick() }
+            .clickable { onClick(announcement.postId.toLong()) }
     ) {
         ListForUserItem(
             modifier = Modifier.padding(vertical = 20.dp),
