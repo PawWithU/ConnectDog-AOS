@@ -23,6 +23,9 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,9 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTag
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -45,18 +51,26 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.feature.home.DetailViewModel
 import com.kusitms.connectdog.feature.home.R
+
+private const val TAG = "DetailScreen"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 internal fun DetailScreen(
     onBackClick: () -> Unit,
-    imageUrl: String = "",
-    title: String = "인천 댕댕구 -> 서울 댕댕구",
-    content: String = "내용",
     onCertificationClick: () -> Unit,
-    onIntermediatorProfileClick: () -> Unit
+    onIntermediatorProfileClick: (Long) -> Unit,
+    postId: Long,
+    viewModel: DetailViewModel = hiltViewModel()
 ) {
+    val detail by viewModel.detail.observeAsState(null)
+
+    LaunchedEffect(postId) {
+        viewModel.initNoticeDetail(postId)
+    }
+
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
@@ -74,16 +88,18 @@ internal fun DetailScreen(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            Spacer(modifier = Modifier.height(48.dp))
-            NetworkImage(
-                imageUrl = "https://dimg.donga.com/wps/NEWS/IMAGE/2022/01/28/111500268.2.jpg",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-            )
-            Content(title, content)
-            DogInfo()
-            IntermediatorInfo(onIntermediatorProfileClick)
+            if(detail != null) {
+                Spacer(modifier = Modifier.height(48.dp))
+                NetworkImage(
+                    imageUrl = detail!!.mainImage,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                )
+                Content(detail!!)
+                DogInfo(detail!!)
+                IntermediatorInfo(detail!!, onIntermediatorProfileClick)
+            }
         }
     }
 }
@@ -124,28 +140,34 @@ fun BookmarkButton(onClick: () -> Unit = {}) {
 }
 
 @Composable
-fun Content(title: String, content: String) {
+fun Content(detail: NoticeDetailResponseItem) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(all = 24.dp)
     ) {
-        ConnectDogTag("모집중")
+        ConnectDogTag(detail.postStatus)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = title,
+            text = "${detail.departureLoc} → ${detail.arrivalLoc}",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
         Spacer(modifier = Modifier.height(20.dp))
-        DetailInfo("일정", "23.08.01(수)")
+        DetailInfo("일정", "${detail.startDate} ~ ${detail.endDate}")
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("픽업시간", "23.08.01(수)")
+        DetailInfo("픽업시간", detail.pickUpTime)
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("켄넬 여부", "23.08.01(수)")
+        DetailInfo("켄넬 여부",
+            if(detail.isKennel) {
+                stringResource(id = com.kusitms.connectdog.core.designsystem.R.string.has_kennel)
+            } else {
+                stringResource(id = com.kusitms.connectdog.core.designsystem.R.string.has_not_kennel)
+            }
+        )
         Spacer(modifier = Modifier.height(40.dp))
         Text(
-            text = content,
+            text = detail.content,
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal
         )
@@ -159,7 +181,7 @@ fun Content(title: String, content: String) {
 }
 
 @Composable
-fun DogInfo() {
+fun DogInfo(detail: NoticeDetailResponseItem) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -171,15 +193,15 @@ fun DogInfo() {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(20.dp))
-        DetailInfo("이름", "밍밍이")
+        DetailInfo("이름", detail.dogName)
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("사이즈", "밍밍이")
+        DetailInfo("사이즈", detail.dogSize)
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("성별", "밍밍이")
+        DetailInfo("성별", detail.dogGender)
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("몸무게", "밍밍이")
+        DetailInfo("몸무게", "${detail.dogWeight.toString()}kg")
         Spacer(modifier = Modifier.height(20.dp))
-        ConnectDogInformationCard(title = "특이사항", content = "특이사항")
+        ConnectDogInformationCard(title = "특이사항", content = detail.specifics ?: "없습니다.")
     }
     Divider(
         Modifier
@@ -191,7 +213,8 @@ fun DogInfo() {
 
 @Composable
 fun IntermediatorInfo(
-    onClick: () -> Unit
+    detail: NoticeDetailResponseItem,
+    onClick: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -210,7 +233,7 @@ fun IntermediatorInfo(
                 .fillMaxWidth()
         ) {
             NetworkImage(
-                imageUrl = "https://png.pngtree.com/png-clipart/20201029/ourlarge/pngtree-circle-clipart-orange-circle-png-image_2381942.jpg",
+                imageUrl = detail.intermediaryProfileImage,
                 modifier = Modifier
                     .width(40.dp)
                     .height(40.dp)
@@ -222,7 +245,7 @@ fun IntermediatorInfo(
                     .width(158.dp)
                     .align(Alignment.CenterVertically)
                     .weight(1f),
-                text = "이동봉사 단체 이름",
+                text = detail.intermediaryName,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -231,7 +254,7 @@ fun IntermediatorInfo(
                     .width(100.dp)
                     .height(34.dp)
                     .align(Alignment.CenterVertically),
-                onClick = onClick
+                onClick = { onClick(detail.intermediaryId.toLong()) }
             )
         }
     }
