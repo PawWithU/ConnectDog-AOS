@@ -9,7 +9,7 @@ internal fun ReviewResponseItem.toData(): Review {
     val start = startDate.toLocalDate(datePattern)
     val end = endDate.toLocalDate(datePattern)
     return Review(
-        profileUrl = mainImage, // todo profileUrl로 바뀔 예정
+        profileNum = profileImageNum,
         dogName = dogName,
         userName = volunteerNickname,
         contentUrl = mainImage,

@@ -85,7 +85,7 @@ private fun ReviewListContent(
 fun ReviewLoading(modifier: Modifier) {
     val list = List(10) {
         Review(
-            profileUrl = "",
+            profileNum = 0,
             dogName = "멍멍이",
             userName = "츄",
             contentUrl = "",
