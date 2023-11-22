@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.viewModelKtx)
+    implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
 
