@@ -23,6 +23,7 @@ import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBadge
+import com.kusitms.connectdog.feature.mypage.navigation.navigateBookmark
 import com.kusitms.connectdog.feature.mypage.navigation.navigateEditProfile
 import com.kusitms.connectdog.feature.mypage.navigation.navigateManageAccount
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
@@ -126,6 +127,10 @@ internal class MainNavigator(
 
     fun navigateBadge() {
         navController.navigateBadge()
+    }
+
+    fun navigateBookmark() {
+        navController.navigateBookmark()
     }
 
     private fun isSameCurrentDestination(route: String) =
