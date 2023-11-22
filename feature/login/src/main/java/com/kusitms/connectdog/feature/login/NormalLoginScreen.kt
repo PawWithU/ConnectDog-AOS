@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.login
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,33 +24,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+
+
+private const val TAG = "EmailLoginScreen"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun EmailLoginScreen(
     title: String,
     navigator: NavController,
-    onClick: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel()
+    initVolunteer: () -> Unit,
+    initIntermediator: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val loginSuccess by viewModel.loginSuccess.observeAsState()
-
-    if (loginSuccess != null) {
-        onClick()
-    }
-
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    val volunteerLoginSuccess by viewModel.volunteerLoginSuccess.observeAsState()
+
+    if (volunteerLoginSuccess != null) {
+        Log.d(TAG, volunteerLoginSuccess.toString())
+        initVolunteer()
+        when(volunteerLoginSuccess!!.roleName) {
+            "VOLUNTEER" -> initVolunteer()
+            "INTERMEDIARY" -> initIntermediator()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.clickable(
@@ -59,7 +65,7 @@ fun EmailLoginScreen(
         ),
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = R.string.volunteer_signup,
+                titleRes = R.string.login,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = {
@@ -68,7 +74,7 @@ fun EmailLoginScreen(
             )
         }
     ) {
-        Content(onClick, viewModel)
+        Content(initVolunteer, viewModel)
     }
 }
 
@@ -96,8 +102,8 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
 
             NormalTextField(
                 text = phoneNumber,
-                label = "휴대폰 번호",
-                placeholder = "예)01012341234",
+                label = "이메일",
+                placeholder = "이메일 입력",
                 keyboardType = KeyboardType.Text,
                 onTextChanged = onPhoneNumberChanged
             )
@@ -136,15 +142,16 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
         }
     }
 }
-
-@Preview
-@Composable
-private fun tes() {
-    ConnectDogTheme {
-        EmailLoginScreen(
-            title = "이동봉사자 로그인",
-            navigator = rememberNavController(),
-            onClick = {}
-        )
-    }
-}
+//
+//@Preview
+//@Composable
+//private fun tes() {
+//    ConnectDogTheme {
+//        EmailLoginScreen(
+//            title = "이동봉사자 로그인",
+//            navigator = rememberNavController(),
+//            onClick = {},
+//
+//        )
+//    }
+//}
