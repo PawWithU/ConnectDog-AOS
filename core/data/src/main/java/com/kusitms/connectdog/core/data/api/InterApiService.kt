@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.Response
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationInProgressResponseItem
@@ -47,10 +48,10 @@ internal interface InterApiService {
     @PATCH("/intermediaries/applications/{applicationId}")
     suspend fun patchApplicationVolunteer(
         @Path("applicationId") applicationId: Long
-    )
+    ): Response
 
     @DELETE("/intermediaries/applications/{applicationId}")
     suspend fun deleteApplicationVolunteer(
         @Path("applicationId") applicationId: Long
-    )
+    ): Response
 }

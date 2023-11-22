@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +37,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.InterApplication
+import com.kusitms.connectdog.feature.intermediator.DataUiState
 import com.kusitms.connectdog.feature.intermediator.InterApplicationUiState
 import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
 import com.kusitms.connectdog.feature.intermediator.R
@@ -61,6 +63,14 @@ internal fun InterManagementRoute(
     val sheetState = rememberModalBottomSheetState()
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
 
+    val dataUiState by viewModel.dataState.collectAsState()
+    Log.d("InterManagementRoute", "dataUiState = $dataUiState")
+    when (dataUiState){
+        is DataUiState.Loading -> Loading()
+        is DataUiState.Success -> viewModel.refreshWaitingUiState()
+        is DataUiState.Yet -> {}
+    }
+
     Column {
         TopAppBar(titleRes = R.string.manage_application) { onBackClick() }
         ManagementScreen(
@@ -82,6 +92,7 @@ internal fun InterManagementRoute(
             }
         )
     }
+
 
     if (isSheetOpen && viewModel.selectedApplication != null) {
         VolunteerBottomSheet(

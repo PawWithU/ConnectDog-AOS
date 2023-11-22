@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.Response
 import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
@@ -70,5 +71,5 @@ internal interface ApiService {
     @DELETE("/volunteers/applications/{applicationId}")
     suspend fun deleteMyApplication(
         @Path("applicationId") applicationId: Long
-    )
+    ): Response
 }
