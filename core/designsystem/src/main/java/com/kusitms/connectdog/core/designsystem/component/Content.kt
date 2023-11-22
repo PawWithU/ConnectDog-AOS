@@ -60,14 +60,12 @@ fun TitleValue(
     style: TextStyle,
     isValid: Boolean = true
 ) {
-    Row {
+    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = title,
             style = style,
             color = if (isValid) Gray3 else Gray6,
-            modifier = Modifier.defaultMinSize(minWidth = 35.dp)
         )
-        Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = value,
             style = style,
