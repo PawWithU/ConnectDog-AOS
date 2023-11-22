@@ -75,12 +75,12 @@ fun ConnectDogTopAppBar(
             }
 
             TopAppBarNavigationType.HOME -> {
-                HomeIcon(
+                Text(
+                    text = stringResource(id = R.string.home),
+                    style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier
-                        .size(66.dp, 45.dp)
-                        .align(Alignment.CenterStart),
-                    imageRes = R.drawable.ic_logo_home,
-                    iconContentDescription = "connect dog home"
+                        .align(Alignment.CenterStart)
+                        .padding(horizontal = 20.dp, vertical = 10.dp)
                 )
             }
 
@@ -91,8 +91,8 @@ fun ConnectDogTopAppBar(
                 Text(
                     text = stringResource(id = R.string.management),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
+                          modifier = Modifier
+                            .align(Alignment.CenterStart)
                         .padding(horizontal = 20.dp, vertical = 10.dp)
                 )
             }
