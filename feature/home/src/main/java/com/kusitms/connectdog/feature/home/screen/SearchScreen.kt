@@ -295,8 +295,10 @@ private fun AnnouncementLoading(
 
 @Composable
 private fun AnnouncementContent(announcement: Announcement, onClick: () -> Unit) {
-    Column(modifier = Modifier
-        .clickable { onClick() }) {
+    Column(
+        modifier = Modifier
+            .clickable { onClick() }
+    ) {
         ListForUserItem(
             modifier = Modifier.padding(20.dp),
             imageUrl = announcement.imageUrl,
