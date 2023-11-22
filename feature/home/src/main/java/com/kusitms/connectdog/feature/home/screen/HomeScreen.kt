@@ -330,7 +330,8 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: () -> Uni
             AnnouncementListContent(
                 list = uiState.announcements,
                 modifier = modifier,
-                arrangement = Arrangement.spacedBy(12.dp)
+                arrangement = Arrangement.spacedBy(12.dp),
+                onClick = onClick
             )
         }
 
@@ -362,11 +363,12 @@ private fun ReviewContent(uiState: ReviewUiState) {
 private fun AnnouncementListContent(
     list: List<Announcement>,
     modifier: Modifier,
-    arrangement: Arrangement.Horizontal
+    arrangement: Arrangement.Horizontal,
+    onClick: () -> Unit
 ) {
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list.take(10)) {
-            AnnouncementCardContent(announcement = it)
+            AnnouncementCardContent(announcement = it, onClick = onClick)
         }
     }
 }
