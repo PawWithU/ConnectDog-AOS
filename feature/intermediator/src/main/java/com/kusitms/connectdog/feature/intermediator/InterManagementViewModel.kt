@@ -24,6 +24,8 @@ import javax.inject.Inject
 class InterManagementViewModel @Inject constructor(
     private val managementRepository: InterManagementRepository
 ) : ViewModel() {
+    private val TAG = "InterManagementViewModel"
+
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
@@ -47,9 +49,30 @@ class InterManagementViewModel @Inject constructor(
     fun getVolunteer(applicationId: Long) {
         viewModelScope.launch {
             try {
-                _volunteerResponse.value = managementRepository.getApplicationVolunteer(applicationId)
+                _volunteerResponse.value =
+                    managementRepository.getApplicationVolunteer(applicationId)
             } catch (e: Exception) {
-                Log.e("InterManagementViewModel", "getVolunteer ${e.stackTrace}")
+                Log.e(TAG, "getVolunteer ${e.stackTrace}")
+            }
+        }
+    }
+
+    fun confirmVolunteer(applicationId: Long) {
+        viewModelScope.launch {
+            try {
+                managementRepository.confirmApplicationVolunteer(applicationId)
+            } catch (e: Exception) {
+                Log.e(TAG, "confirmVolunteer ${e.message}")
+            }
+        }
+    }
+
+    fun rejectVolunteer(applicationId: Long){
+        viewModelScope.launch {
+            try {
+                managementRepository.rejectApplicationVolunteer(applicationId)
+            }catch (e: Exception){
+                Log.e(TAG, "rejectVolunteer ${e.message}")
             }
         }
     }

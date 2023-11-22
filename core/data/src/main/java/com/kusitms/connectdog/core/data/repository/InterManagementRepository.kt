@@ -9,4 +9,7 @@ interface InterManagementRepository {
     suspend fun getApplicationInProgress(page: Int? = 0, size: Int? = 5): List<InterApplication>
     suspend fun getApplicationCompleted(page: Int? = 0, size: Int? = 5): List<InterApplication>
     suspend fun getApplicationVolunteer(applicationId: Long): Volunteer
+
+    suspend fun confirmApplicationVolunteer(applicationId: Long)
+    suspend fun rejectApplicationVolunteer(applicationId: Long)
 }

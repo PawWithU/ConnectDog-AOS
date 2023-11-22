@@ -30,4 +30,12 @@ internal class InterManagementRepositoryImpl @Inject constructor(
     override suspend fun getApplicationVolunteer(applicationId: Long): Volunteer {
         return api.getApplicationVolunteer(applicationId).toData()
     }
+
+    override suspend fun confirmApplicationVolunteer(applicationId: Long) {
+        return api.patchApplicationVolunteer(applicationId)
+    }
+
+    override suspend fun rejectApplicationVolunteer(applicationId: Long) {
+        return api.deleteApplicationVolunteer(applicationId)
+    }
 }

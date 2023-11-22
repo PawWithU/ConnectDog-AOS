@@ -73,13 +73,13 @@ internal fun VolunteerBottomSheet(
 
     if (isConfirmDialogVisible) {
         ConfirmDialog(onDismiss = { isConfirmDialogVisible = false }) {
-            //todo viewModel.confirm
+            interApplication.applicationId?.let { viewModel.confirmVolunteer(it) }
         }
     }
 
     if (isRejectDialogVisible) {
         RejectDialog(onDismiss = { isRejectDialogVisible = false }) {
-            //todo viewModel.reject
+            viewModel.rejectVolunteer(interApplication.applicationId!!)
         }
     }
 }
