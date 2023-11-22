@@ -265,7 +265,7 @@ private fun ManagementScreen(
                             Text(
                                 text = title,
                                 style = MaterialTheme.typography.titleSmall,
-                                fontSize = 14.sp,
+                                fontSize = 13.sp,
                                 color = if (index == selectedTabIndex) MaterialTheme.colorScheme.primary else Gray2
                             )
                         }

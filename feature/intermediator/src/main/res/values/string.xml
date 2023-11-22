@@ -2,7 +2,7 @@
 <resources>
     <string name="recruit">모집중</string>
     <string name="progress">진행중</string>
-    <string name="waiting">승인 대기중</string>
+    <string name="waiting">승인대기중</string>
     <string name="complete">봉사 완료</string>
     <string name="edit_profile">프로필 수정</string>
 
