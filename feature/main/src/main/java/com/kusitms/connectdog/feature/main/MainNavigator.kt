@@ -83,8 +83,8 @@ internal class MainNavigator(
         navController.navigateReview()
     }
 
-    fun navigateHomeDetail() {
-        navController.navigateDetail()
+    fun navigateHomeDetail(postId: Long) {
+        navController.navigateDetail(postId)
     }
 
     fun navigateCertification() {
@@ -105,8 +105,8 @@ internal class MainNavigator(
         navController.navigateComplete()
     }
 
-    fun navigateIntermediatorProfile() {
-        navController.navigateIntermediatorProfile()
+    fun navigateIntermediatorProfile(intermediaryId: Long) {
+        navController.navigateIntermediatorProfile(intermediaryId)
     }
 
     fun navigateEditProfile() {
