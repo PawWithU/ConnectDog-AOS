@@ -57,11 +57,11 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                             navigator.navigateHomeFilter(filter)
                         },
                         onNavigateToReview = { navigator.navigateHomeReview() },
-                        onNavigateToDetail = { navigator.navigateHomeDetail() },
+                        onNavigateToDetail = { navigator.navigateHomeDetail(it) },
                         onNavigateToCertification = { navigator.navigateCertification() },
                         onNavigateToApply = { navigator.navigateApply() },
                         onNavigateToComplete = { navigator.navigateComplete() },
-                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
+                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile(it) },
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {}
                     )
