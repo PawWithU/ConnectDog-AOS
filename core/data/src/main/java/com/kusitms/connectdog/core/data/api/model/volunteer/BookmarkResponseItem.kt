@@ -8,5 +8,5 @@ data class BookmarkResponseItem(
     val mainImage: String,
     val postId: Long,
     val startDate: String,
-    val isKennel: Boolean,
+    val isKennel: Boolean
 )

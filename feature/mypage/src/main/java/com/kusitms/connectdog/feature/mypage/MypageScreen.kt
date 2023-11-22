@@ -51,7 +51,7 @@ val profileImage = listOf(
     com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_6,
     com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_7,
     com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_8,
-    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_9,
+    com.kusitms.connectdog.core.designsystem.R.drawable.ic_profile_9
 )
 
 @Composable
@@ -74,7 +74,7 @@ internal fun MypageRoute(
         onManageAccountClick = onManageAccountClick,
         onNotificationClick = onNotificationClick,
         onBadgeClick = onBadgeClick,
-        onBookmarkClick = onBookmarkClick,
+        onBookmarkClick = onBookmarkClick
     )
 }
 
@@ -148,7 +148,7 @@ private fun MyInformation(
         userInfo?.let {
             Image(
                 painter = painterResource(
-                    id = profileImage[it.profileImageNum-1]
+                    id = profileImage[it.profileImageNum - 1]
                 ),
                 contentDescription = null,
                 modifier = Modifier.size(50.dp)

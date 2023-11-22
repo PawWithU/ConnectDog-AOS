@@ -6,8 +6,8 @@ data class BadgeResponse(
     val name: String
 )
 
-//data class BadgeResponseItem(
+// data class BadgeResponseItem(
 //    val badgeId: Long,
 //    val image: String?,
 //    val name: String
-//)
+// )

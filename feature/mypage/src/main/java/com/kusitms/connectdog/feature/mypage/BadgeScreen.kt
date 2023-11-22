@@ -155,7 +155,7 @@ private fun Content(
 
     val reviewItems = List(6) { cnt ->
         badgeData?.let {
-            BadgeItem(it[cnt+6].image, reviewDescriptionList[cnt])
+            BadgeItem(it[cnt + 6].image, reviewDescriptionList[cnt])
         }
     }
 
@@ -205,7 +205,7 @@ private fun BadgeGrid(
 @Composable
 private fun BadgeContent(
     item: BadgeItem,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier.clickable {
