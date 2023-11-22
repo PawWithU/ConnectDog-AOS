@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
+import com.kusitms.connectdog.core.designsystem.component.Loading
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.InterApplication
@@ -44,7 +45,6 @@ import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.component.CompletedContent
 import com.kusitms.connectdog.feature.intermediator.component.CompletedDialog
 import com.kusitms.connectdog.feature.intermediator.component.InProgressContent
-import com.kusitms.connectdog.feature.intermediator.component.Loading
 import com.kusitms.connectdog.feature.intermediator.component.PendingContent
 import com.kusitms.connectdog.feature.intermediator.component.RecruitingContent
 import com.kusitms.connectdog.feature.intermediator.component.VolunteerBottomSheet

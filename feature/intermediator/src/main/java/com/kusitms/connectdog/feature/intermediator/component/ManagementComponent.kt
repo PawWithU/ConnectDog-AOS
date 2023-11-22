@@ -224,13 +224,6 @@ private fun ReviewRecentButton(
 }
 
 @Composable
-internal fun Loading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
 internal fun CompletedDialog(
     onDismissRequest: () -> Unit
 ) {
