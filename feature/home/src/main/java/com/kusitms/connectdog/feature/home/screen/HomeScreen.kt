@@ -337,7 +337,7 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: (Long) ->
 
         else -> AnnouncementLoading(
             modifier = modifier,
-            arrangement = Arrangement.spacedBy(12.dp),
+            arrangement = Arrangement.spacedBy(12.dp)
         )
     }
 }
@@ -375,7 +375,7 @@ fun AnnouncementListContent(
 @Composable
 fun AnnouncementLoading(
     modifier: Modifier,
-    arrangement: Arrangement.Horizontal,
+    arrangement: Arrangement.Horizontal
 ) {
     val list = List(4) {
         Announcement("", "이동봉사 위치", "YY.mm.dd(요일)", "단체이름", false, -1)

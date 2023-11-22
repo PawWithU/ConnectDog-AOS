@@ -158,9 +158,11 @@ fun NavGraphBuilder.homeNavGraph(
     }
     composable(
         route = "${HomeRoute.detail}/{postId}",
-        arguments = listOf(navArgument("postId") {
-            type = NavType.LongType
-        })
+        arguments = listOf(
+            navArgument("postId") {
+                type = NavType.LongType
+            }
+        )
     ) {
         DetailScreen(
             onBackClick = onBackClick,
@@ -192,9 +194,11 @@ fun NavGraphBuilder.homeNavGraph(
 
     composable(
         route = "${HomeRoute.intermediatorProfile}/{intermediaryId}",
-        arguments = listOf(navArgument("intermediaryId") {
-            type = NavType.LongType
-        })
+        arguments = listOf(
+            navArgument("intermediaryId") {
+                type = NavType.LongType
+            }
+        )
     ) {
         IntermediatorProfileScreen(
             onBackClick = onBackClick,

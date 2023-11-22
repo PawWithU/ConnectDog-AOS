@@ -1,6 +1,8 @@
 package com.kusitms.connectdog.core.data.di
 
 import com.kusitms.connectdog.core.data.api.ApiService
+import com.kusitms.connectdog.core.data.repository.DetailRepository
+import com.kusitms.connectdog.core.data.repository.DetailRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.HomeRepository
 import com.kusitms.connectdog.core.data.repository.HomeRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.LoginRepository
@@ -9,8 +11,6 @@ import com.kusitms.connectdog.core.data.repository.ManagementRepository
 import com.kusitms.connectdog.core.data.repository.ManagementRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.MyPageRepository
 import com.kusitms.connectdog.core.data.repository.MyPageRepositoryImpl
-import com.kusitms.connectdog.core.data.repository.DetailRepository
-import com.kusitms.connectdog.core.data.repository.DetailRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

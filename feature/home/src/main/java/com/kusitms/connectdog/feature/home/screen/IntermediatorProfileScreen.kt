@@ -231,8 +231,7 @@ fun IntermediatorInformation(intermediator: IntermediatorInfoResponseItem) {
 @Composable
 fun Announcement(noticeItem: List<Announcement>) {
     val modifier = Modifier.padding(horizontal = 20.dp)
-    Column(
-    ) {
+    Column() {
         MoveContent(onClick = { }, titleRes = R.string.home_navigate_search)
         AnnouncementListContent(list = noticeItem, modifier = modifier, arrangement = Arrangement.spacedBy(12.dp), onClick = {})
     }
@@ -257,10 +256,10 @@ fun News() {
     }
 }
 
-//@Preview
-//@Composable
-//private fun test() {
+// @Preview
+// @Composable
+// private fun test() {
 //    ConnectDogTheme {
 //        IntermediatorProfileScreen(intermediaryId = it.arguments!!.getLong("intermediaryId"))
 //    }
-//}
+// }

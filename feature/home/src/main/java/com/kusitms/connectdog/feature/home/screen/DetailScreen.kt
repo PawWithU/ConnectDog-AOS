@@ -88,7 +88,7 @@ internal fun DetailScreen(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            if(detail != null) {
+            if (detail != null) {
                 Spacer(modifier = Modifier.height(48.dp))
                 NetworkImage(
                     imageUrl = detail!!.mainImage,
@@ -158,8 +158,9 @@ fun Content(detail: NoticeDetailResponseItem) {
         Spacer(modifier = Modifier.height(8.dp))
         DetailInfo("픽업시간", detail.pickUpTime)
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("켄넬 여부",
-            if(detail.isKennel) {
+        DetailInfo(
+            "켄넬 여부",
+            if (detail.isKennel) {
                 stringResource(id = com.kusitms.connectdog.core.designsystem.R.string.has_kennel)
             } else {
                 stringResource(id = com.kusitms.connectdog.core.designsystem.R.string.has_not_kennel)
@@ -199,7 +200,7 @@ fun DogInfo(detail: NoticeDetailResponseItem) {
         Spacer(modifier = Modifier.height(8.dp))
         DetailInfo("성별", detail.dogGender)
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("몸무게", "${detail.dogWeight.toString()}kg")
+        DetailInfo("몸무게", "${detail.dogWeight}kg")
         Spacer(modifier = Modifier.height(20.dp))
         ConnectDogInformationCard(title = "특이사항", content = detail.specifics ?: "없습니다.")
     }

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 internal class DetailRepositoryImpl @Inject constructor(
     private val api: ApiService
-): DetailRepository {
+) : DetailRepository {
     override suspend fun getNoticeDetail(postId: Long): NoticeDetailResponseItem {
         return api.getNoticeDetail(postId)
     }

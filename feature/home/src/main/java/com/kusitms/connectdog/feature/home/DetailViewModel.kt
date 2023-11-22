@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val detailRepository: DetailRepository
-): ViewModel() {
+) : ViewModel() {
     private val _detail = MutableLiveData<NoticeDetailResponseItem>()
     val detail: LiveData<NoticeDetailResponseItem> = _detail
 

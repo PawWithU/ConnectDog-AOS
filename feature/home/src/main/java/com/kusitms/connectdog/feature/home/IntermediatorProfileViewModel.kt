@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IntermediatorProfileViewModel @Inject constructor(
     private val detailRepository: DetailRepository
-): ViewModel() {
+) : ViewModel() {
     private val _intermediator = MutableLiveData<IntermediatorInfoResponseItem>()
     val intermediator: LiveData<IntermediatorInfoResponseItem> = _intermediator
 
