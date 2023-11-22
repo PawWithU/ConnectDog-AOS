@@ -49,7 +49,6 @@ constructor(
                 _volunteerLoginSuccess.postValue(response)
 
                 Log.d(TAG, "login success")
-
             } catch (e: Exception) {
                 _loginError.postValue(e.message ?: "로그인 실패")
                 Log.d(TAG, e.message.toString())
@@ -153,7 +152,6 @@ constructor(
                     if (error != null) {
                         Log.e("Kakao Login", "사용자 정보 요청 실패", error)
                     } else if (user != null) {
-
                     }
                 }
             }

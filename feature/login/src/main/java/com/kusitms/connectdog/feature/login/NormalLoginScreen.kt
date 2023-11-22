@@ -32,7 +32,6 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 
-
 private const val TAG = "EmailLoginScreen"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -42,7 +41,7 @@ fun EmailLoginScreen(
     navigator: NavController,
     initVolunteer: () -> Unit,
     initIntermediator: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -51,7 +50,7 @@ fun EmailLoginScreen(
     if (volunteerLoginSuccess != null) {
         Log.d(TAG, volunteerLoginSuccess.toString())
         initVolunteer()
-        when(volunteerLoginSuccess!!.roleName) {
+        when (volunteerLoginSuccess!!.roleName) {
             "VOLUNTEER" -> initVolunteer()
             "INTERMEDIARY" -> initIntermediator()
         }
@@ -143,9 +142,9 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
     }
 }
 //
-//@Preview
-//@Composable
-//private fun tes() {
+// @Preview
+// @Composable
+// private fun tes() {
 //    ConnectDogTheme {
 //        EmailLoginScreen(
 //            title = "이동봉사자 로그인",
@@ -154,4 +153,4 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
 //
 //        )
 //    }
-//}
+// }

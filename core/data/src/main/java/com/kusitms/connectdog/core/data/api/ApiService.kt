@@ -2,15 +2,16 @@ package com.kusitms.connectdog.core.data.api
 
 import com.kusitms.connectdog.core.data.api.model.AnnouncementHomeResponseItem
 import com.kusitms.connectdog.core.data.api.model.AnnouncementSearchResponseItem
-import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
-import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
 import com.kusitms.connectdog.core.data.api.model.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.ApplicationWaitingResponseItem
+import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
+import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
+import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
 import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
 import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
-import retrofit2.http.Body
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -75,11 +76,14 @@ internal interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("/volunteers/login")
     suspend fun postLoginData(
-        @Body loginBody: NormalLoginBody,
+        @Body loginBody: NormalLoginBody
     ): LoginResponseItem
 
     @POST("/volunteers/login/social")
     suspend fun postSocialLoginData(
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
+
+    @GET("/volunteers/my/info")
+    suspend fun getMyInfo(): MyInfoResponseItem
 }
