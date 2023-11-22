@@ -145,12 +145,18 @@ fun BadgeScreen(
 private fun Content(
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
-    val volunteerItems = List(6) {
-        BadgeItem(null, reviewDescriptionList[it])
+    val badgeData by viewModel.badge.observeAsState()
+
+    val volunteerItems = List(6) { cnt ->
+        badgeData?.let {
+            BadgeItem(it[cnt].image, volunteerDescriptionList[cnt])
+        }
     }
 
-    val reviewItems = List(6) {
-        BadgeItem(null, volunteerDescriptionList[it])
+    val reviewItems = List(6) { cnt ->
+        badgeData?.let {
+            BadgeItem(it[cnt+6].image, reviewDescriptionList[cnt])
+        }
     }
 
     Column(
@@ -158,15 +164,15 @@ private fun Content(
             .fillMaxSize()
             .padding(top = 48.dp)
     ) {
-        BadgeGrid(titleRes = R.string.volunteer_title, volunteerItems, viewModel)
-        BadgeGrid(titleRes = R.string.review_title, reviewItems, viewModel)
+        BadgeGrid(titleRes = R.string.volunteer_title, volunteerItems)
+        BadgeGrid(titleRes = R.string.review_title, reviewItems)
     }
 }
 
 @Composable
 private fun BadgeGrid(
     @StringRes titleRes: Int,
-    list: List<BadgeItem>,
+    list: List<BadgeItem?>,
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     Column(
@@ -185,9 +191,11 @@ private fun BadgeGrid(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             items(list) {
-                BadgeContent(it) {
-                    viewModel.updateBottomSheet()
-                    viewModel.updateBottomSheetData(it)
+                if (it != null) {
+                    BadgeContent(item = it) {
+                        viewModel.updateBottomSheet()
+                        viewModel.updateBottomSheetData(it)
+                    }
                 }
             }
         }
@@ -197,7 +205,7 @@ private fun BadgeGrid(
 @Composable
 private fun BadgeContent(
     item: BadgeItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.clickable {
