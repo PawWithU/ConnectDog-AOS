@@ -72,6 +72,7 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                     mypageNavGraph(
                         padding = it,
                         onClick = {},
+                        onLogoutClick = {},
                         onBackClick = navigator::popBackStackIfNotHome,
                         onEditProfileClick = { navigator.navigateEditProfile() },
                         onManageAccountClick = { navigator.navigateManageAccount() },
