@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.designsystem.component
 
+import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
@@ -45,7 +47,7 @@ fun ConnectDogTextField(
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false,
-    @StringRes errorMessageRes: Int = 0,
+    @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = androidx.compose.ui.R.string.default_error_message,
     height: Int = 65
 ) {
     val visualTransformation =
@@ -114,7 +116,8 @@ fun NormalTextField(
     height: Int = 65,
     modifier: Modifier = Modifier,
     onTextChanged: (String) -> Unit = {},
-    text: String = ""
+    text: String = "",
+    isError: Boolean = false
 ) {
     ConnectDogTextField(
         text = text,
@@ -122,7 +125,8 @@ fun NormalTextField(
         label = label,
         placeholder = placeholder,
         keyboardType = keyboardType,
-        height = height
+        height = height,
+        isError = isError
     )
 }
 
@@ -185,14 +189,16 @@ fun ConnectDogTextFieldWithButton(
     keyboardType: KeyboardType = KeyboardType.Text,
     padding: Int,
     onclick: () -> Unit = {},
-    onTextChanged: (String) -> Unit = {}
+    onTextChanged: (String) -> Unit = {},
+    isError: Boolean = false
 ) {
     Box {
         NormalTextField(
             label = textFieldLabel,
             placeholder = placeholder,
             keyboardType = keyboardType,
-            onTextChanged = onTextChanged
+            onTextChanged = onTextChanged,
+            isError = isError
         )
 
         ConnectDogOutlinedButton(
