@@ -45,6 +45,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
+import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.feature.home.IntermediatorProfileViewModel
 import com.kusitms.connectdog.feature.home.R
 import kotlinx.coroutines.launch
@@ -55,15 +56,17 @@ val pages = listOf("기본 정보", "후기", "근황")
 @Composable
 fun IntermediatorProfileScreen(
     onBackClick: () -> Unit = {},
-//    onDetailClick: (Long) -> Unit,
+    onDetailClick: (Long) -> Unit,
     intermediaryId: Long,
     viewModel: IntermediatorProfileViewModel = hiltViewModel()
 ) {
     viewModel.initIntermediatorProfile(intermediaryId)
+    viewModel.initIntermediatorNotice(intermediaryId)
     viewModel.initIntermediatorReview(intermediaryId)
+
     val intermediator by viewModel.intermediator.observeAsState(null)
     val notice by viewModel.notice.observeAsState(null)
-//    val review by viewModel.review.observeAsState(null)
+    val review by viewModel.review.observeAsState(null)
 
     val noticeItem = notice?.let { item ->
         List(item.size) {
@@ -77,6 +80,13 @@ fun IntermediatorProfileScreen(
             )
         }
     }
+
+    val reviewItem = review?.let { item ->
+        List(item.size) {
+            item[it]
+        }
+    }
+
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
@@ -88,25 +98,31 @@ fun IntermediatorProfileScreen(
         }
     ) {
         intermediator?.let {
-            if (noticeItem != null) {
-                Content(it, noticeItem)
+            if (noticeItem != null && reviewItem != null) {
+                Content(it, noticeItem, reviewItem, onDetailClick)
             }
         }
     }
 }
 
 @Composable
-private fun Content(intermediator: IntermediatorInfoResponseItem, noticeItem: List<Announcement>) {
+private fun Content(
+    intermediator: IntermediatorInfoResponseItem,
+    noticeItem: List<Announcement>,
+    reviewItem: List<Review>,
+    onDetailClick: (Long) -> Unit) {
     Column {
         Spacer(modifier = Modifier.height(80.dp))
-        IntermediatorProfile(intermediator, noticeItem)
+        IntermediatorProfile(intermediator, noticeItem, reviewItem, onDetailClick)
     }
 }
 
 @Composable
 fun IntermediatorProfile(
     intermediator: IntermediatorInfoResponseItem,
-    noticeItem: List<Announcement>
+    noticeItem: List<Announcement>,
+    reviewItem: List<Review>,
+    onDetailClick: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -133,7 +149,7 @@ fun IntermediatorProfile(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(32.dp))
-        TabLayout(intermediator, noticeItem)
+        TabLayout(intermediator, noticeItem, reviewItem, onDetailClick)
     }
 }
 
@@ -141,7 +157,9 @@ fun IntermediatorProfile(
 @Composable
 fun TabLayout(
     intermediator: IntermediatorInfoResponseItem,
-    noticeItem: List<Announcement>
+    noticeItem: List<Announcement>,
+    reviewItem: List<Review>,
+    onDetailClick: (Long) -> Unit
 ) {
     Surface {
         Column {
@@ -177,8 +195,8 @@ fun TabLayout(
                 state = pagerState
             ) {
                 when (it) {
-                    0 -> Information(intermediator, noticeItem)
-                    1 -> Review()
+                    0 -> Information(intermediator, noticeItem, onDetailClick)
+                    1 -> Review(reviewItem)
                     2 -> News()
                 }
             }
@@ -189,7 +207,8 @@ fun TabLayout(
 @Composable
 fun Information(
     intermediator: IntermediatorInfoResponseItem,
-    noticeItem: List<Announcement>
+    noticeItem: List<Announcement>,
+    onDetailClick: (Long) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -203,7 +222,7 @@ fun Information(
                 .fillMaxWidth(),
             color = Gray7
         )
-        Announcement(noticeItem)
+        Announcement(noticeItem, onDetailClick)
         Spacer(modifier = Modifier.height(30.dp))
     }
 }
@@ -229,23 +248,33 @@ fun IntermediatorInformation(intermediator: IntermediatorInfoResponseItem) {
 }
 
 @Composable
-fun Announcement(noticeItem: List<Announcement>) {
+fun Announcement(noticeItem: List<Announcement>, onDetailClick: (Long) -> Unit) {
     val modifier = Modifier.padding(horizontal = 20.dp)
-    Column() {
+    Column {
         MoveContent(onClick = { }, titleRes = R.string.home_navigate_search)
-        AnnouncementListContent(list = noticeItem, modifier = modifier, arrangement = Arrangement.spacedBy(12.dp), onClick = {})
+        AnnouncementListContent(
+            list = noticeItem,
+            modifier = modifier,
+            arrangement = Arrangement.spacedBy(12.dp),
+            onClick = onDetailClick
+        )
     }
 }
 
 @Composable
-fun Review() {
+fun Review(reviewItem: List<Review>) {
     val modifier = Modifier.padding(horizontal = 0.dp)
     Column(
         verticalArrangement = Arrangement.Top
     ) {
-        ReviewLoading(modifier = modifier)
+        ReviewListContent(
+            list = reviewItem,
+            modifier = modifier,
+        )
     }
 }
+
+
 
 @Composable
 fun News() {
