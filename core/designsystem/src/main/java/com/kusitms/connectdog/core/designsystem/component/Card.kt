@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -122,7 +123,7 @@ fun ConnectDogCardButton(
 }
 
 @Composable
-fun ErrorCard() {
+fun ConnectDogErrorCard() {
     Card(
         colors =
         CardDefaults.cardColors(
@@ -132,7 +133,6 @@ fun ErrorCard() {
         Modifier
             .fillMaxWidth()
             .height(40.dp)
-            .padding(horizontal = 20.dp)
     ) {
         Row(
             modifier =
@@ -147,7 +147,7 @@ fun ErrorCard() {
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "이메일 혹은 비밀번호가 일치하지 않습니다.",
+                text = stringResource(id = R.string.login_error),
                 color = Red1,
                 fontSize = 13.sp
             )

@@ -73,8 +73,7 @@ fun RegisterEmailScreen(
                 placeholder = "이메일 입력",
                 buttonLabel = "인증 요청",
                 padding = 5
-            ) {
-            }
+            )
             Spacer(modifier = Modifier.height(12.dp))
 
             ConnectDogTextFieldWithButton(
@@ -84,8 +83,7 @@ fun RegisterEmailScreen(
                 placeholder = "숫자 6자리",
                 buttonLabel = "인증 확인",
                 padding = 5
-            ) {
-            }
+            )
         }
         NormalButton(
             content = "다음",

@@ -23,4 +23,5 @@
     <string name="phone">전화번호</string>
     <string name="vehicle">이동봉사 수단</string>
     <string name="volunteer_comment">봉사자의 한마디</string>
+    <string name="login_error">아이디 혹은 비밀번호가 일치하지 않습니다</string>
 </resources>

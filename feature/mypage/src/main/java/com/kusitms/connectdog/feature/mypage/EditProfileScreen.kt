@@ -79,8 +79,7 @@ private fun Content() {
             placeholder = "닉네임 입력",
             buttonLabel = "중복 확인",
             padding = 5
-        ) {
-        }
+        )
         Spacer(modifier = Modifier.weight(1f))
         NormalButton(content = "완료")
     }
