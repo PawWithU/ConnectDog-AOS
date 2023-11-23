@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var verificationId: String
-    private var isCertified: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,28 +36,33 @@ class MainActivity : ComponentActivity() {
                     },
                     verifyCode = {
                         verifyCode(it)
+                    },
+                    finish = {
+                        finish()
                     }
                 )
             }
         }
     }
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): Boolean {
+        var isCertified = false
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     isCertified = true
                     Toast.makeText(this, "인증에 성공했습니다.", Toast.LENGTH_SHORT).show()
                 } else {
+                    isCertified = false
                     Toast.makeText(this, "인증에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
+        return isCertified
     }
 
     private fun verifyCode(code: String): Boolean {
         val credential = PhoneAuthProvider.getCredential(verificationId, code)
-        signInWithPhoneAuthCredential(credential)
-        return isCertified
+        return signInWithPhoneAuthCredential(credential)
     }
 
     private fun sendVerificationCode(phoneNumber: String) {

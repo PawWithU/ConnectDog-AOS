@@ -36,6 +36,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(),
     sendVerificationCode: (String) -> Unit,
+    finish: () -> Unit,
     verifyCode: (String) -> Boolean
 ) {
     Scaffold(
@@ -78,7 +79,7 @@ internal fun MainScreen(
                     mypageNavGraph(
                         padding = it,
                         onClick = {},
-                        onLogoutClick = {},
+                        onLogoutClick = { finish() },
                         onBackClick = navigator::popBackStackIfNotHome,
                         onEditProfileClick = { navigator.navigateEditProfile() },
                         onManageAccountClick = { navigator.navigateManageAccount() },
