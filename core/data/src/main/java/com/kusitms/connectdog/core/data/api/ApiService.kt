@@ -94,10 +94,17 @@ internal interface ApiService {
         @Body loginBody: NormalLoginBody
     ): LoginResponseItem
 
+    @Headers("Content-Type: application/json")
+    @POST("/intermediaries/login")
+    suspend fun postIntermediatorLoginData(
+        @Body loginBody: NormalLoginBody
+    ): LoginResponseItem
+
     @POST("/volunteers/login/social")
     suspend fun postSocialLoginData(
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
+
 
     /**
      * 이동봉사자 > 마이페이지
