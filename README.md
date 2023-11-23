@@ -1,5 +1,3 @@
-
-
 # 🐕 ConnectDog, 코넥독
 <img width="75%" height="75%" src="https://github.com/PawWithU/ConnectDog-AOS/assets/63611804/3004f263-a37c-4025-9d9f-4460a8badb65"/>
 
@@ -423,7 +421,15 @@
 <img src="https://github.com/PawWithU/.github/assets/80199502/0bffa118-c37f-4192-9426-6c7416618bd9"  width="830">
 
 <br>
+<br>
 
+## **📑 ERD**
+
+<img src="https://github.com/PawWithU/ConnectDog-AOS/assets/80199502/d855face-ffd0-4fc2-8fb8-dd15536f294a"  width="830">
+
+<br>
+<br>
+<br>
 
 ## **💻 Technology**
 
