@@ -8,4 +8,6 @@ interface DetailRepository {
     suspend fun getNoticeDetail(postId: Long): NoticeDetailResponseItem
     suspend fun getIntermediatorInfo(intermediaryId: Long): IntermediatorInfoResponseItem
     suspend fun getIntermediatorReview(intermediaryId: Long): List<BookmarkResponseItem>
+    suspend fun postBookmark(postId: Long)
+    suspend fun deleteBookmark(postId: Long)
 }
