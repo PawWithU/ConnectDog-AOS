@@ -1,10 +1,8 @@
 package com.kusitms.connectdog.feature.home.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +31,6 @@ import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Orange40
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.feature.home.ApplyViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -97,7 +94,9 @@ private fun Content(
         Spacer(modifier = Modifier.height(40.dp))
         NormalTextField(
             text = name,
-            label = "이름", placeholder = "이름 입력", keyboardType = KeyboardType.Text,
+            label = "이름",
+            placeholder = "이름 입력",
+            keyboardType = KeyboardType.Text,
             onTextChanged = onNameChanged
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -123,7 +122,7 @@ private fun Content(
             keyboardType = KeyboardType.Number,
             padding = 5,
             onClick = {
-                if(onVerifyCodeClick(it)) {
+                if (onVerifyCodeClick(it)) {
                     viewModel.updateIsCertified(true)
                 }
             }

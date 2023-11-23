@@ -83,6 +83,7 @@ class MainActivity : ComponentActivity() {
                     Toast.makeText(this@MainActivity, "인증번호를 전송했습니다", Toast.LENGTH_SHORT).show()
                     this@MainActivity.verificationId = verificationId
                 }
-            })
+            }
+        )
     }
 }

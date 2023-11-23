@@ -101,7 +101,7 @@ fun NavGraphBuilder.homeNavGraph(
             onNavigateToReview,
             onNavigateToDetail,
             onNavigateToNotification,
-            onShowErrorSnackBar,
+            onShowErrorSnackBar
         )
     }
 

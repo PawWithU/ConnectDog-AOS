@@ -14,9 +14,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ApplyViewModel @Inject constructor(
     private val applyRepository: ApplyRepository
-): ViewModel() {
+) : ViewModel() {
     private val _isCertified = MutableLiveData<Boolean>()
-    val isCertified: LiveData<Boolean> =_isCertified
+    val isCertified: LiveData<Boolean> = _isCertified
 
     fun postApplyVolunteer(postId: Long, applyBody: ApplyBody) {
         viewModelScope.launch {

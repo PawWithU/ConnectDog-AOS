@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class ApplyRepositoryImpl @Inject constructor(
     private val api: ApiService
-): ApplyRepository {
+) : ApplyRepository {
     override suspend fun postApplyVolunteer(postId: Long, applyBody: ApplyBody) {
         api.postApplyVolunteer(postId, applyBody)
     }
