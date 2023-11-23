@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.core.designsystem.component
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,8 +17,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -188,12 +191,17 @@ fun ConnectDogTextFieldWithButton(
     buttonLabel: String,
     keyboardType: KeyboardType = KeyboardType.Text,
     padding: Int,
-    onclick: () -> Unit = {},
-    onTextChanged: (String) -> Unit = {},
+    onClick: (String) -> Unit = {},
     isError: Boolean = false
 ) {
+    val (text, onTextChanged) =
+        remember {
+            mutableStateOf("")
+        }
+
     Box {
         NormalTextField(
+            text = text,
             label = textFieldLabel,
             placeholder = placeholder,
             keyboardType = keyboardType,
@@ -209,7 +217,10 @@ fun ConnectDogTextFieldWithButton(
             modifier = Modifier
                 .padding(top = 6.dp, end = 16.dp)
                 .align(Alignment.CenterEnd),
-            onClick = onclick
+            onClick = {
+                Log.d("testts", text)
+                onClick(text)
+            }
         )
     }
 }
