@@ -36,6 +36,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,12 +47,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIntermediatorTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.theme.Brown5
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Typography
+import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
 import com.kusitms.connectdog.feature.intermediator.R
 
 val imageList = listOf(
@@ -78,8 +83,12 @@ data class CardItem(
 fun IntermediatorHomeScreen(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
-    onDataClick: (Int) -> Unit
+    onDataClick: (Int) -> Unit,
+    viewModel: InterManagementViewModel = hiltViewModel()
 ) {
+    viewModel.getIntermediatorInfo()
+    val profile by viewModel.profile.observeAsState(null)
+
     Scaffold(
         topBar = {
             ConnectDogIntermediatorTopAppBar(
@@ -88,46 +97,54 @@ fun IntermediatorHomeScreen(
             )
         }
     ) {
-        Content {
-            onDataClick(it)
+        profile?.let { it1 ->
+            Content(
+                profile = it1
+            ) {
+                onDataClick(it)
+            }
         }
     }
 }
 
 @Composable
 private fun Content(
+    profile: IntermediatorProfileInfoResponseItem,
     onClick: (Int) -> Unit
 ) {
+    val cnt = listOf(profile.recruitingCount, profile.waitingCount, profile.progressingCount, profile.completedCount)
     val list = List(4) {
         CardItem(
             image = imageList[it],
             title = titleList[it],
-            3
+            cnt[it].toInt()
         )
     }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(48.dp))
-        Information()
+        Information(profile)
         ManageBoard(list) { onClick(it) }
     }
 }
 
 @Composable
-private fun Information() {
+private fun Information(profile: IntermediatorProfileInfoResponseItem) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primary)
             .heightIn(min = 0.dp, max = 185.dp)
     ) {
-        ProfileCard()
+        ProfileCard(profile)
     }
 }
 
 @Composable
-private fun ProfileCard() {
+private fun ProfileCard(
+    profile: IntermediatorProfileInfoResponseItem
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -140,19 +157,20 @@ private fun ProfileCard() {
         ) {
             Column {
                 NetworkImage(
-                    imageUrl = "",
+                    imageUrl = profile.profileImage,
+                    modifier = Modifier.size(80.dp),
                     placeholder = painterResource(id = R.drawable.ic_default_intermediator)
                 )
                 Spacer(modifier = Modifier.height(18.dp))
                 Text(
-                    text = "중개자 이름",
+                    text = profile.intermediaryName,
                     style = MaterialTheme.typography.titleSmall,
                     color = Color.White,
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "프로필 설명을 여기에 넣으세요...프로필 설명을 여기에 넣으세요...프로필 설명을 여기에 넣으세요...",
+                    text = profile.intro,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
