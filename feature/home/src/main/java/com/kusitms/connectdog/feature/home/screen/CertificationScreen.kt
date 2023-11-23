@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.home.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -70,6 +71,8 @@ private fun Content(
     val (name, onNameChanged) = remember { mutableStateOf("") }
     val isCertified by viewModel.isCertified.observeAsState(false)
 
+    Log.d("asdfsd", "${name.isNotEmpty()} + name")
+
     val buttonColor = if (name.isNotEmpty() && isCertified) {
         MaterialTheme.colorScheme.primary
     } else {
@@ -122,9 +125,8 @@ private fun Content(
             keyboardType = KeyboardType.Number,
             padding = 5,
             onClick = {
-                if (onVerifyCodeClick(it)) {
-                    viewModel.updateIsCertified(true)
-                }
+                onVerifyCodeClick(it)
+                viewModel.updateIsCertified(true)
             }
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -134,9 +136,8 @@ private fun Content(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { onApplyClick(postId) }
+            onClick = { if (name.isNotEmpty() && isCertified) onApplyClick(postId) }
         )
-//        if(name.isNotEmpty() && isCertified)
     }
 }
 

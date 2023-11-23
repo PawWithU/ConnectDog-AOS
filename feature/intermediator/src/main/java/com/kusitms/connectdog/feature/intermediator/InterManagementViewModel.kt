@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository
 import com.kusitms.connectdog.core.model.DataUiState
 import com.kusitms.connectdog.core.model.InterApplication
@@ -32,6 +33,9 @@ class InterManagementViewModel @Inject constructor(
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+
+    private val _profile = MutableLiveData<IntermediatorProfileInfoResponseItem>()
+    val profile: LiveData<IntermediatorProfileInfoResponseItem> = _profile
 
     val recruitingUiState: StateFlow<InterApplicationUiState> =
         createUiStateFlow { managementRepository.getApplicationRecruiting() }
@@ -62,6 +66,13 @@ class InterManagementViewModel @Inject constructor(
         refreshWaitingUiState()
         refreshInProgressUiState()
         refreshCompletedUiState()
+    }
+
+    fun getIntermediatorInfo() {
+        viewModelScope.launch {
+            val response = managementRepository.getIntermediatorProfileInfo()
+            _profile.postValue(response)
+        }
     }
 
     fun getVolunteer(applicationId: Long) {

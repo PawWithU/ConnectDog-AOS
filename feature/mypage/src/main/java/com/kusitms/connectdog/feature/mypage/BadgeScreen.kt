@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -106,6 +107,7 @@ fun BadgeScreen(
                     Spacer(modifier = Modifier.height(24.dp))
                     NetworkImage(
                         imageUrl = viewModel.badgeItem.value!!.imageUrl,
+                        modifier = Modifier.size(80.dp),
                         placeholder = painterResource(id = R.drawable.ic_lock)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
@@ -215,6 +217,7 @@ private fun BadgeContent(
     ) {
         NetworkImage(
             imageUrl = item.imageUrl,
+            modifier = Modifier.size(80.dp),
             placeholder = painterResource(id = R.drawable.ic_lock)
         )
         Spacer(modifier = Modifier.height(6.dp))
