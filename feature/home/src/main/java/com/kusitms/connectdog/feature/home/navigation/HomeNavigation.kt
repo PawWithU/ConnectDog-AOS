@@ -57,12 +57,12 @@ fun NavController.navigateDetail(postId: Long) {
     navigate("${HomeRoute.detail}/$postId")
 }
 
-fun NavController.navigateCertification() {
-    navigate(HomeRoute.certification)
+fun NavController.navigateCertification(postId: Long) {
+    navigate("${HomeRoute.certification}/$postId")
 }
 
-fun NavController.navigateApply() {
-    navigate(HomeRoute.apply)
+fun NavController.navigateApply(postId: Long) {
+    navigate("${HomeRoute.apply}/$postId")
 }
 
 fun NavController.navigateComplete() {
@@ -85,11 +85,13 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToFilter: (Filter) -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
-    onNavigateToCertification: () -> Unit,
-    onNavigateToApply: () -> Unit,
+    onNavigateToCertification: (Long) -> Unit,
+    onNavigateToApply: (Long) -> Unit,
     onNavigateToComplete: () -> Unit,
     onNavigateToIntermediatorProfile: (Long) -> Unit,
     onNavigateToNotification: () -> Unit,
+    onSendMessage: (String) -> Unit,
+    onVerifyCode: (String) -> Boolean,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     composable(route = HomeRoute.route) {
@@ -166,23 +168,41 @@ fun NavGraphBuilder.homeNavGraph(
     ) {
         DetailScreen(
             onBackClick = onBackClick,
-            onCertificationClick = onNavigateToCertification,
+            onCertificationClick = { onNavigateToCertification(it) },
             onIntermediatorProfileClick = onNavigateToIntermediatorProfile,
             postId = it.arguments!!.getLong("postId")
         )
     }
 
-    composable(route = HomeRoute.certification) {
+    composable(
+        route = "${HomeRoute.certification}/{postId}",
+        arguments = listOf(
+            navArgument("postId") {
+                type = NavType.LongType
+            }
+        )
+    ) {
         CertificationScreen(
             onBackClick = onBackClick,
-            onApplyClick = onNavigateToApply
+            onApplyClick = { onNavigateToApply(it) },
+            onSendMessageClick = onSendMessage,
+            onVerifyCodeClick = onVerifyCode,
+            postId = it.arguments!!.getLong("postId")
         )
     }
 
-    composable(route = HomeRoute.apply) {
+    composable(
+        route = "${HomeRoute.apply}/{postId}",
+        arguments = listOf(
+            navArgument("postId") {
+                type = NavType.LongType
+            }
+        )
+    ) {
         ApplyScreen(
             onBackClick = onBackClick,
-            onClick = onNavigateToComplete
+            onClick = onNavigateToComplete,
+            postId = it.arguments!!.getLong("postId")
         )
     }
 

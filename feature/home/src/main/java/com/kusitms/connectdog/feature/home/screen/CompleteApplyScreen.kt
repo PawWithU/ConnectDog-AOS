@@ -64,7 +64,7 @@ fun CompleteApplyScreen(
                 modifier = Modifier
                     .width(200.dp)
                     .height(200.dp),
-                painter = painterResource(com.kusitms.connectdog.feature.home.R.drawable.ic_complete),
+                painter = painterResource(R.drawable.ic_complete_dog),
                 contentDescription = "Local Image"
             )
             Spacer(modifier = Modifier.height(30.dp))

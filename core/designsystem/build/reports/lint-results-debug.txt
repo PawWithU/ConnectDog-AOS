@@ -1,0 +1,87 @@
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/background.xml:2: Warning: Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more [VectorRaster]
+    android:width="360dp"
+                   ~~~~~
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/ic_main.xml:3: Warning: Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more [VectorRaster]
+    android:width="360dp"
+                   ~~~~~
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/ic_main_large.xml:3: Warning: Limit vector icons sizes to 200×200 to keep icon drawing fast; see https://developer.android.com/studio/write/vector-asset-studio#when for more [VectorRaster]
+    android:width="360dp"
+                   ~~~~~
+
+   Explanation for issues of type "VectorRaster":
+   Vector icons require API 21 or API 24 depending on used features, but when
+   minSdkVersion is less than 21 or 24 and Android Gradle plugin 1.4 or higher
+   is used, a vector drawable placed in the drawable folder is automatically
+   moved to drawable-anydpi-v21 or drawable-anydpi-v24 and bitmap images are
+   generated for different screen resolutions for backwards compatibility.
+
+   However, there are some limitations to this raster image generation, and
+   this lint check flags elements and attributes that are not fully supported.
+   You should manually check whether the generated output is acceptable for
+   those older devices.
+
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/component/Tag.kt:37: Warning: Composable functions that return Unit should start with an uppercase letter [ComposableNaming from androidx.compose.runtime]
+fun test() {
+    ~~~~
+
+   Explanation for issues of type "ComposableNaming":
+   @Composable functions without a return type should use similar naming to
+   classes, starting with an uppercase letter and ending with a noun.
+   @Composable functions with a return type should be treated as normal Kotlin
+   functions, starting with a lowercase letter.
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.runtime
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/component/Button.kt:87: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier
+    ~~~~~~~~
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/component/Button.kt:87: Warning: Optional Modifier parameter should have a default value of Modifier [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier
+    ~~~~~~~~
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/component/Dialog.kt:45: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier,
+    ~~~~~~~~
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/java/com/kusitms/connectdog/core/designsystem/component/TextField.kt:117: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+    modifier: Modifier = Modifier,
+    ~~~~~~~~
+
+   Explanation for issues of type "ModifierParameter":
+   The first (or only) Modifier parameter in a Composable function should
+   follow the following rules:
+   - Be named modifier
+   - Have a type of Modifier
+   - Either have no default value, or have a default value of Modifier
+   - If optional, be the first optional parameter in the parameter list
+
+   Vendor: Jetpack Compose
+   Identifier: androidx.compose.ui
+   Feedback: https://issuetracker.google.com/issues/new?component=612128
+
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/ic_error.xml:10: Warning: Very long vector path (1504 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector. [VectorPath]
+        android:pathData="M8,12.152C8.189,12.152 8.348,12.088 8.475,11.96C8.603,11.833 8.667,11.674 8.667,11.485V8.819C8.667,8.63 8.603,8.472 8.475,8.344C8.348,8.216 8.189,8.152 8,8.152C7.812,8.152 7.653,8.216 7.525,8.344C7.398,8.472 7.334,8.63 7.334,8.819V11.485C7.334,11.674 7.398,11.833 7.525,11.96C7.653,12.088 7.812,12.152 8,12.152ZM8,6.819C8.189,6.819 8.348,6.755 8.475,6.627C8.603,6.499 8.667,6.341 8.667,6.152C8.667,5.963 8.603,5.805 8.475,5.677C8.348,5.549 8.189,5.485 8,5.485C7.812,5.485 7.653,5.549 7.525,5.677C7.398,5.805 7.334,5.963 7.334,6.152C7.334,6.341 7.398,6.499 7.525,6.627C7.653,6.755 7.812,6.819 8,6.819ZM8,15.485C7.078,15.485 6.212,15.31 5.4,14.96C4.589,14.61 3.884,14.135 3.284,13.535C2.684,12.935 2.209,12.23 1.859,11.419C1.509,10.608 1.334,9.741 1.334,8.819C1.334,7.897 1.509,7.03 1.859,6.219C2.209,5.408 2.684,4.702 3.284,4.102C3.884,3.502 4.589,3.027 5.4,2.677C6.212,2.327 7.078,2.152 8,2.152C8.923,2.152 9.789,2.327 10.6,2.677C11.411,3.027 12.117,3.502 12.717,4.102C13.317,4.702 13.792,5.408 14.142,6.219C14.492,7.03 14.667,7.897 14.667,8.819C14.667,9.741 14.492,10.608 14.142,11.419C13.792,12.23 13.317,12.935 12.717,13.535C12.117,14.135 11.411,14.61 10.6,14.96C9.789,15.31 8.923,15.485 8,15.485ZM8,14.152C9.489,14.152 10.75,13.635 11.784,12.602C12.817,11.569 13.334,10.308 13.334,8.819C13.334,7.33 12.817,6.069 11.784,5.035C10.75,4.002 9.489,3.485 8,3.485C6.512,3.485 5.25,4.002 4.217,5.035C3.184,6.069 2.667,7.33 2.667,8.819C2.667,10.308 3.184,11.569 4.217,12.602C5.25,13.635 6.512,14.152 8,14.152Z"
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "VectorPath":
+   Using long vector paths is bad for performance. There are several ways to
+   make the pathData shorter:
+   * Using less precision
+   * Removing some minor details
+   * Using the Android Studio vector conversion tool
+   * Rasterizing the image (converting to PNG)
+
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/ic_logo_home.png: Warning: Found bitmap drawable res/drawable/ic_logo_home.png in densityless folder [IconLocation]
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/img_dog_sad.png: Warning: Found bitmap drawable res/drawable/img_dog_sad.png in densityless folder [IconLocation]
+/Users/kangseunggu/Desktop/ConnectDog-AOS/core/designsystem/src/main/res/drawable/logo.png: Warning: Found bitmap drawable res/drawable/logo.png in densityless folder [IconLocation]
+
+   Explanation for issues of type "IconLocation":
+   The res/drawable folder is intended for density-independent graphics such
+   as shapes defined in XML. For bitmaps, move it to drawable-mdpi and
+   consider providing higher and lower resolution versions in drawable-ldpi,
+   drawable-hdpi and drawable-xhdpi. If the icon really is density independent
+   (for example a solid color) you can place it in drawable-nodpi.
+
+   https://developer.android.com/guide/practices/screens_support.html
+
+0 errors, 12 warnings

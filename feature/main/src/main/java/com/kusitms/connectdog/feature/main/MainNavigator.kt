@@ -87,12 +87,12 @@ internal class MainNavigator(
         navController.navigateDetail(postId)
     }
 
-    fun navigateCertification() {
-        navController.navigateCertification()
+    fun navigateCertification(postId: Long) {
+        navController.navigateCertification(postId)
     }
 
-    fun navigateApply() {
-        navController.navigateApply()
+    fun navigateApply(postId: Long) {
+        navController.navigateApply(postId)
     }
 
     fun popBackStackIfNotHome() {

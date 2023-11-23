@@ -13,6 +13,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementSearchRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationInProgressResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
@@ -150,4 +151,10 @@ internal interface ApiService {
     suspend fun getIntermediatorReview(
         @Path("intermediaryId") intermediaryId: Long
     ): List<BookmarkResponseItem>
+
+    @POST("/volunteers/posts/{postId}/applications")
+    suspend fun postApplyVolunteer(
+        @Path("postId") postId: Long,
+        @Body applyBody: ApplyBody
+    )
 }

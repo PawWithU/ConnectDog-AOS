@@ -7,6 +7,7 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -56,12 +57,17 @@ dependencies {
     implementation(project(":core:designsystem"))
 
     implementation(libs.androidx.core.splashscreen)
+    implementation("com.google.firebase:firebase-auth:22.3.0")
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
     implementation(libs.androidx.compose.navigation)
     implementation(libs.hilt.navigation.compose)
+
+    implementation(libs.firebase.bom)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.google.service)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
