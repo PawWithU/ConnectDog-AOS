@@ -115,11 +115,11 @@ fun IntermediatorProfile(
         NetworkImage(imageUrl = intermediator.profileImage, modifier = Modifier.size(80.dp))
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogOutlinedButton(
-            width = 51,
-            height = 14,
-            text = "봉사 3회 진행",
-            padding = 4,
-            onClick = { /*TODO*/ }
+            width = 80,
+            height = 26,
+            text = "봉사 ${intermediator.completedPostCount}회 진행",
+            padding = 5,
+            onClick = {}
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(intermediator.name, fontSize = 18.sp, color = Gray1, fontWeight = FontWeight.Bold)
