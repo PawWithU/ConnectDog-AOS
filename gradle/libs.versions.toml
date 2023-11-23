@@ -21,6 +21,9 @@ accompanistPager = "0.20.1"
 accompanistPagerIndicators = "0.20.1"
 livedata = "1.3.1"
 
+googleService = "4.3.15"
+firebaseBom = "32.3.1"
+
 naverOauth = "5.8.0"
 kakaoOauth = "2.17.0"
 
@@ -104,6 +107,9 @@ accompanist-pager-indicators = { group = "com.google.accompanist", name = "accom
 naver-oauth = { group = "com.navercorp.nid", name = "oauth", version.ref = "naverOauth" }
 kakao-oauth = { group = "com.kakao.sdk", name = "v2-user", version.ref="kakaoOauth" }
 
+google-service = { group = "com.google.gms", name = "google-services", version.ref = "googleService"}
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom"}
+
 # modular graph
 dependency-graph = {group = "com.vanniktech", name = "gradle-dependency-graph-generator-plugin", version.ref = "dependencyGraph"}
 
@@ -113,6 +119,8 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version = "1.1.5" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version = "22.3.0" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version = "20.4.2" }
 
 
 [plugins]
@@ -123,6 +131,8 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = {id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
 org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleService"}
+
 
 [bundles]
 
