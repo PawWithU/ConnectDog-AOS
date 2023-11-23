@@ -33,7 +33,11 @@ import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
+internal fun MainScreen(
+    navigator: MainNavigator = rememberMainNavigator(),
+    sendVerificationCode: (String) -> Unit,
+    verifyCode: (String) -> Boolean
+) {
     Scaffold(
         content = {
             Box(
@@ -58,12 +62,14 @@ internal fun MainScreen(navigator: MainNavigator = rememberMainNavigator()) {
                         },
                         onNavigateToReview = { navigator.navigateHomeReview() },
                         onNavigateToDetail = { navigator.navigateHomeDetail(it) },
-                        onNavigateToCertification = { navigator.navigateCertification() },
-                        onNavigateToApply = { navigator.navigateApply() },
+                        onNavigateToCertification = { navigator.navigateCertification(it) },
+                        onNavigateToApply = { navigator.navigateApply(it) },
                         onNavigateToComplete = { navigator.navigateComplete() },
                         onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile(it) },
                         onNavigateToNotification = { navigator.navigateNotification() },
-                        onShowErrorSnackBar = {}
+                        onShowErrorSnackBar = {},
+                        onSendMessage = { sendVerificationCode(it) },
+                        onVerifyCode = { verifyCode(it) }
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
