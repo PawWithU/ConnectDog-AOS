@@ -62,7 +62,7 @@ private const val TAG = "DetailScreen"
 @Composable
 internal fun DetailScreen(
     onBackClick: () -> Unit,
-    onCertificationClick: () -> Unit,
+    onCertificationClick: (Long) -> Unit,
     onIntermediatorProfileClick: (Long) -> Unit,
     postId: Long,
     viewModel: DetailViewModel = hiltViewModel()
@@ -89,7 +89,7 @@ internal fun DetailScreen(
                         isBookmark = it,
                         onSaveClick = { viewModel.postBookmark(postId) },
                         onDeleteClick = { viewModel.deleteBookmark(postId) },
-                        onClick = onCertificationClick
+                        onClick = { onCertificationClick(postId) }
                     )
                 }
         }
