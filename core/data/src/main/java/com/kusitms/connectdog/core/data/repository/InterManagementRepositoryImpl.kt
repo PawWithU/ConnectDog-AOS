@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.core.data.repository
 
 import com.kusitms.connectdog.core.data.api.InterApiService
+import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.data.mapper.intermediator.toData
 import com.kusitms.connectdog.core.data.mapper.toData
 import com.kusitms.connectdog.core.model.ConnectDogResult
@@ -11,6 +12,10 @@ import javax.inject.Inject
 internal class InterManagementRepositoryImpl @Inject constructor(
     private val api: InterApiService
 ) : InterManagementRepository {
+    override suspend fun getIntermediatorProfileInfo(): IntermediatorProfileInfoResponseItem {
+        return api.getIntermediatorProfileInfo()
+    }
+
     override suspend fun getApplicationRecruiting(page: Int?, size: Int?): List<InterApplication> {
         return api.getApplicationRecruiting(page, size).map { it.toData() }
     }
