@@ -81,8 +81,7 @@ private fun Content() {
             buttonLabel = "인증 요청",
             keyboardType = KeyboardType.Number,
             padding = 5
-        ) {
-        }
+        )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextFieldWithButton(
             width = 62,
@@ -92,8 +91,7 @@ private fun Content() {
             buttonLabel = "인증 확인",
             keyboardType = KeyboardType.Number,
             padding = 5
-        ) {
-        }
+        )
     }
 }
 
