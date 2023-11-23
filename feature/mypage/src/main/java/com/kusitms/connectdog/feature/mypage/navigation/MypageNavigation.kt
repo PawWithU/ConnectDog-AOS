@@ -44,6 +44,7 @@ fun NavController.navigateBookmark() {
 fun NavGraphBuilder.mypageNavGraph(
     padding: PaddingValues,
     onClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     onBackClick: () -> Unit,
     onEditProfileClick: () -> Unit,
     onManageAccountClick: () -> Unit,
@@ -88,6 +89,7 @@ fun NavGraphBuilder.mypageNavGraph(
     composable(route = MypageRoute.setting) {
         SettingScreen(
             onBackClick = onBackClick,
+            onLogoutClick = onLogoutClick,
             onManageAccountClick = onManageAccountClick
         )
     }
