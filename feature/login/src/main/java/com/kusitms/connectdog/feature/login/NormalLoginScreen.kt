@@ -136,7 +136,7 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel, isError: Boo
                     .height(56.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            if(isError) {
+            if (isError) {
                 ConnectDogErrorCard()
             }
         }

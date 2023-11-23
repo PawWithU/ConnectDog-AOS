@@ -105,7 +105,6 @@ internal interface ApiService {
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
 
-
     /**
      * 이동봉사자 > 마이페이지
      */
