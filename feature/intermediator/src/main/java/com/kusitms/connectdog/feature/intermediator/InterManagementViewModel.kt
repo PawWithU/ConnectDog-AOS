@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository
 import com.kusitms.connectdog.core.model.DataUiState

@@ -110,7 +110,8 @@ private fun Content(
     intermediator: IntermediatorInfoResponseItem,
     noticeItem: List<Announcement>,
     reviewItem: List<Review>,
-    onDetailClick: (Long) -> Unit) {
+    onDetailClick: (Long) -> Unit
+) {
     Column {
         Spacer(modifier = Modifier.height(80.dp))
         IntermediatorProfile(intermediator, noticeItem, reviewItem, onDetailClick)
@@ -269,12 +270,10 @@ fun Review(reviewItem: List<Review>) {
     ) {
         ReviewListContent(
             list = reviewItem,
-            modifier = modifier,
+            modifier = modifier
         )
     }
 }
-
-
 
 @Composable
 fun News() {

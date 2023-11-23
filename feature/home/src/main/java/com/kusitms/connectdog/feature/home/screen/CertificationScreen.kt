@@ -136,7 +136,7 @@ private fun Content(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { if(name.isNotEmpty() && isCertified) onApplyClick(postId) }
+            onClick = { if (name.isNotEmpty() && isCertified) onApplyClick(postId) }
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.core.data.repository
 
-import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem

@@ -157,6 +157,7 @@ internal interface ApiService {
         @Path("postId") postId: Long,
         @Body applyBody: ApplyBody
     )
+
     @GET("/volunteers/intermediaries/{intermediaryId}/reviews")
     suspend fun getIntermediatorReview(
         @Path("intermediaryId") intermediaryId: Long,

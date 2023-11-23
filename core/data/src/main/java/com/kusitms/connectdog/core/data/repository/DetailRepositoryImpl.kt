@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.core.data.repository
 
 import com.kusitms.connectdog.core.data.api.ApiService
-import com.kusitms.connectdog.core.data.api.model.ReviewResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
@@ -29,7 +28,7 @@ internal class DetailRepositoryImpl @Inject constructor(
         size: Int?,
         intermediaryId: Long
     ): List<Review> {
-        return api.getIntermediatorReview(intermediaryId,page ?: 0, size ?: 0).map { it.toData() }
+        return api.getIntermediatorReview(intermediaryId, page ?: 0, size ?: 0).map { it.toData() }
     }
 
     override suspend fun postBookmark(postId: Long) {
