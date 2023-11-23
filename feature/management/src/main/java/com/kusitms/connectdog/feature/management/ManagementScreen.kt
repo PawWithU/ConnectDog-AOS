@@ -71,6 +71,8 @@ internal fun ManagementRoute(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: ManagementViewModel = hiltViewModel()
 ) {
+    viewModel.refreshWaitingApplications()
+
     val pendingUiState by viewModel.waitingUiState.collectAsStateWithLifecycle()
     val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
     val completedUiState by viewModel.completedUiState.collectAsStateWithLifecycle()

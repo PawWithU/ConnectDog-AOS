@@ -85,12 +85,12 @@ internal fun SearchScreen(
         AnnouncementContent(
             uiState = announcementUiState,
             sortBtn = {
-                SortButton(
-                    modifier = Modifier
-                        .padding(top = 20.dp, end = 20.dp)
-                        .fillMaxWidth(),
-                    isByDeadline = isByDeadline
-                ) { viewModel.changeOrderCondition() }
+//                SortButton(
+//                    modifier = Modifier
+//                        .padding(top = 20.dp, end = 20.dp)
+//                        .fillMaxWidth(),
+//                    isByDeadline = isByDeadline
+//                ) { viewModel.changeOrderCondition() }
             },
             onClick = onDetailClick
         )
@@ -331,12 +331,12 @@ private fun SearchScreenPreview() {
             AnnouncementContent(
                 uiState = AnnouncementUiState.Loading,
                 sortBtn = {
-                    SortButton(
-                        modifier = Modifier
-                            .padding(top = 20.dp, end = 20.dp)
-                            .fillMaxWidth(),
-                        isByDeadline = true
-                    ) { /*todo sort*/ }
+//                    SortButton(
+//                        modifier = Modifier
+//                            .padding(top = 20.dp, end = 20.dp)
+//                            .fillMaxWidth(),
+//                        isByDeadline = true
+//                    ) { /*todo sort*/ }
                 },
                 onClick = {}
             )

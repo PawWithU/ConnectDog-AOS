@@ -70,7 +70,7 @@ private fun ReviewContent(uiState: ReviewUiState) {
 }
 
 @Composable
-private fun ReviewListContent(
+fun ReviewListContent(
     list: List<Review>,
     modifier: Modifier
 ) {
