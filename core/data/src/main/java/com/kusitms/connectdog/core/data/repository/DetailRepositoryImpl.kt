@@ -20,4 +20,12 @@ internal class DetailRepositoryImpl @Inject constructor(
     override suspend fun getIntermediatorReview(intermediaryId: Long): List<BookmarkResponseItem> {
         return api.getIntermediatorReview(intermediaryId)
     }
+
+    override suspend fun postBookmark(postId: Long) {
+        api.postBookmark(postId)
+    }
+
+    override suspend fun deleteBookmark(postId: Long) {
+        api.deleteBookmark(postId)
+    }
 }
