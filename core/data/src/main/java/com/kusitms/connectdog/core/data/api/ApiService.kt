@@ -148,7 +148,7 @@ internal interface ApiService {
     ): IntermediatorInfoResponseItem
 
     @GET("/volunteers/intermediaries/{intermediaryId}/posts")
-    suspend fun getIntermediatorReview(
+    suspend fun getIntermediatorNotice(
         @Path("intermediaryId") intermediaryId: Long
     ): List<BookmarkResponseItem>
 
@@ -157,4 +157,10 @@ internal interface ApiService {
         @Path("postId") postId: Long,
         @Body applyBody: ApplyBody
     )
+    @GET("/volunteers/intermediaries/{intermediaryId}/reviews")
+    suspend fun getIntermediatorReview(
+        @Path("intermediaryId") intermediaryId: Long,
+        @Query("page") page: Int?,
+        @Query("size") size: Int?
+    ): List<ReviewResponseItem>
 }
