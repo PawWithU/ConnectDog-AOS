@@ -84,11 +84,13 @@ internal fun DetailScreen(
         },
         bottomBar = {
             detail?.isBookmark
-                ?.let { BottomButton(
-                    isBookmark = it,
-                    onSaveClick = { viewModel.postBookmark(postId) },
-                    onDeleteClick = { viewModel.deleteBookmark(postId) },
-                    onClick = onCertificationClick)
+                ?.let {
+                    BottomButton(
+                        isBookmark = it,
+                        onSaveClick = { viewModel.postBookmark(postId) },
+                        onDeleteClick = { viewModel.deleteBookmark(postId) },
+                        onClick = onCertificationClick
+                    )
                 }
         }
     ) {
@@ -130,7 +132,7 @@ fun BookmarkButton(
             setImageResource(if (isActive) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark)
             setBorderColor(if (isActive) PetOrange else Gray5)
             Log.d("testsss", isActive.toString())
-            if(isActive) {
+            if (isActive) {
                 onSaveClick()
             } else {
                 onDeleteClick()
