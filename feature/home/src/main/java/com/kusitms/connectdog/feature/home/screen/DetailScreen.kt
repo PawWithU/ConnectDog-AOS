@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.home.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -81,7 +83,13 @@ internal fun DetailScreen(
             )
         },
         bottomBar = {
-            BottomButton(onCertificationClick)
+            detail?.isBookmark
+                ?.let { BottomButton(
+                    isBookmark = it,
+                    onSaveClick = { viewModel.postBookmark(postId) },
+                    onDeleteClick = { viewModel.deleteBookmark(postId) },
+                    onClick = onCertificationClick)
+                }
         }
     ) {
         Column(
@@ -105,23 +113,31 @@ internal fun DetailScreen(
 }
 
 @Composable
-fun BookmarkButton(onClick: () -> Unit = {}) {
+fun BookmarkButton(
+    isBookmark: Boolean,
+    onSaveClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
+    var isActive by remember { mutableStateOf(isBookmark) }
     val shape = RoundedCornerShape(12.dp)
-    val (imageResource, setImageResource) = remember { mutableIntStateOf(R.drawable.ic_bookmark) }
-    val (borderColor, setBorderColor) = remember { mutableStateOf(Gray5) }
+    val (imageResource, setImageResource) = remember { mutableIntStateOf(if (isActive) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark) }
+    val (borderColor, setBorderColor) = remember { mutableStateOf(if (isActive) PetOrange else Gray5) }
     val imagePainter: Painter = painterResource(id = imageResource)
 
     Button(
         onClick = {
-            setImageResource(
-                if (imageResource == R.drawable.ic_bookmark) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark
-            )
-            setBorderColor(
-                if (borderColor == Gray5) PetOrange else Gray5
-            )
+            isActive = !isActive
+            setImageResource(if (isActive) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark)
+            setBorderColor(if (isActive) PetOrange else Gray5)
+            Log.d("testsss", isActive.toString())
+            if(isActive) {
+                onSaveClick()
+            } else {
+                onDeleteClick()
+            }
         },
         contentPadding = PaddingValues(vertical = 16.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = shape,
         modifier = Modifier
             .width(56.dp)
             .height(56.dp)
@@ -262,7 +278,12 @@ fun IntermediatorInfo(
 }
 
 @Composable
-private fun BottomButton(onClick: () -> Unit) {
+private fun BottomButton(
+    isBookmark: Boolean,
+    onSaveClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -273,7 +294,7 @@ private fun BottomButton(onClick: () -> Unit) {
         Row(
             modifier = Modifier.align(Alignment.Center)
         ) {
-            BookmarkButton()
+            BookmarkButton(isBookmark, onSaveClick, onDeleteClick)
             Spacer(modifier = Modifier.width(10.dp))
             NormalButton(content = "신청하기", onClick = onClick)
         }
