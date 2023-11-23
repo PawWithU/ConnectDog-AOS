@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogErrorCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -46,15 +47,21 @@ fun EmailLoginScreen(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     val volunteerLoginSuccess by viewModel.volunteerLoginSuccess.observeAsState()
+    val intermediatorLoginSuccess by viewModel.intermediatorLoginSuccess.observeAsState()
+    val loginFail by viewModel.loginError.observeAsState(null)
+
+    var isError = false
 
     if (volunteerLoginSuccess != null) {
         Log.d(TAG, volunteerLoginSuccess.toString())
         initVolunteer()
-        when (volunteerLoginSuccess!!.roleName) {
-            "VOLUNTEER" -> initVolunteer()
-            "INTERMEDIARY" -> initIntermediator()
-        }
     }
+
+    if (intermediatorLoginSuccess != null) {
+        initIntermediator()
+    }
+
+    if (loginFail != null) { isError = true }
 
     Scaffold(
         modifier = Modifier.clickable(
@@ -73,12 +80,12 @@ fun EmailLoginScreen(
             )
         }
     ) {
-        Content(initVolunteer, viewModel)
+        Content(initVolunteer, viewModel, isError)
     }
 }
 
 @Composable
-private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
+private fun Content(onClick: () -> Unit, viewModel: LoginViewModel, isError: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -104,7 +111,8 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
                 label = "이메일",
                 placeholder = "이메일 입력",
                 keyboardType = KeyboardType.Text,
-                onTextChanged = onPhoneNumberChanged
+                onTextChanged = onPhoneNumberChanged,
+                isError = isError
             )
             Spacer(modifier = Modifier.height(12.dp))
             NormalTextField(
@@ -112,19 +120,25 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel) {
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
                 keyboardType = KeyboardType.Password,
-                onTextChanged = onPasswordChanged
+                onTextChanged = onPasswordChanged,
+                isError = isError
             )
             Spacer(modifier = Modifier.height(12.dp))
             NormalButton(
                 content = "로그인",
                 color = MaterialTheme.colorScheme.primary,
                 onClick = {
-                    viewModel.normalLogin(phoneNumber, password)
+                    viewModel.normalVolunteerLogin(phoneNumber, password)
+                    viewModel.intermediatorLogin(phoneNumber, password)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
             )
+            Spacer(modifier = Modifier.height(12.dp))
+            if (isError) {
+                ConnectDogErrorCard()
+            }
         }
 
         Spacer(modifier = Modifier.weight(1f))

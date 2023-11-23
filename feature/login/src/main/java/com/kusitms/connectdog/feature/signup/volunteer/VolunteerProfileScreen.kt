@@ -104,8 +104,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
                 padding = 5
-            ) {
-            }
+            )
             Text(
                 text = "사용할 수 있는 닉네임입니다.",
                 color = PetOrange,

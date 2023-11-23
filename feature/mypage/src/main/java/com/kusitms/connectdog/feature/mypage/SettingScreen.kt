@@ -35,7 +35,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 fun SettingScreen(
     onBackClick: () -> Unit,
     onManageAccountClick: () -> Unit,
-    onLogoutClick: () -> Unit = {}
+    onLogoutClick: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -54,7 +54,7 @@ fun SettingScreen(
 @Composable
 private fun Content(
     onClick: () -> Unit,
-    onLogout: () -> Unit
+    onLogoutClick: () -> Unit
 ) {
     var checked by remember { mutableStateOf(true) }
 
@@ -118,7 +118,7 @@ private fun Content(
             fontSize = 16.sp,
             color = Gray2,
             modifier = Modifier.clickable {
-                onLogout()
+                onLogoutClick()
             }
         )
     }

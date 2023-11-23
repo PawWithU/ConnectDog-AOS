@@ -12,4 +12,8 @@ interface LoginRepository {
     suspend fun postSocialLoginData(
         socialLoginBody: SocialLoginBody
     ): LoginResponseItem
+
+    suspend fun postIntermediatorLoginData(
+        loginBody: NormalLoginBody
+    ): LoginResponseItem
 }

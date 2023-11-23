@@ -24,4 +24,8 @@ internal class LoginRepositoryImpl @Inject constructor(
             socialLoginBody
         )
     }
+
+    override suspend fun postIntermediatorLoginData(loginBody: NormalLoginBody): LoginResponseItem {
+        return api.postIntermediatorLoginData(loginBody)
+    }
 }
