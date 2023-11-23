@@ -222,7 +222,8 @@ fun NavGraphBuilder.homeNavGraph(
     ) {
         IntermediatorProfileScreen(
             onBackClick = onBackClick,
-            intermediaryId = it.arguments!!.getLong("intermediaryId")
+            intermediaryId = it.arguments!!.getLong("intermediaryId"),
+            onDetailClick = onNavigateToDetail
         )
     }
 
