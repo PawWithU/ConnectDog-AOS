@@ -42,10 +42,13 @@ constructor(
     private val _volunteerLoginSuccess = MutableLiveData<LoginResponseItem?>()
     val volunteerLoginSuccess: LiveData<LoginResponseItem?> = _volunteerLoginSuccess
 
+    private val _intermediatorLoginSuccess = MutableLiveData<LoginResponseItem?>()
+    val intermediatorLoginSuccess: LiveData<LoginResponseItem?> = _intermediatorLoginSuccess
+
     private val _loginError = MutableLiveData<String>()
     val loginError: LiveData<String> = _loginError
 
-    fun normalLogin(email: String, password: String) {
+    fun normalVolunteerLogin(email: String, password: String) {
         viewModelScope.launch {
             try {
                 val response = loginRepository.postLoginData(NormalLoginBody(email, password))
@@ -57,6 +60,22 @@ constructor(
                 }
 
                 Log.d(TAG, "login success")
+            } catch (e: Exception) {
+                _loginError.postValue(e.message ?: "로그인 실패")
+                Log.d(TAG, e.message.toString())
+            }
+        }
+    }
+
+    fun intermediatorLogin(email: String, password: String) {
+        viewModelScope.launch {
+            try {
+                val response = loginRepository.postIntermediatorLoginData(NormalLoginBody(email, password))
+                _intermediatorLoginSuccess.postValue(response)
+
+                viewModelScope.launch {
+                    dataStoreRepository.saveAccessToken(response.accessToken)
+                }
             } catch (e: Exception) {
                 _loginError.postValue(e.message ?: "로그인 실패")
                 Log.d(TAG, e.message.toString())
