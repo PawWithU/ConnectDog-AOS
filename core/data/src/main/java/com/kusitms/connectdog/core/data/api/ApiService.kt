@@ -128,6 +128,16 @@ internal interface ApiService {
         @Path("postId") postId: Long
     ): NoticeDetailResponseItem
 
+    @POST("/volunteers/posts/{postId}/bookmarks")
+    suspend fun postBookmark(
+        @Path("postId") postId: Long
+    )
+
+    @DELETE("/volunteers/posts/{postId}/bookmarks")
+    suspend fun deleteBookmark(
+        @Path("postId") postId: Long
+    )
+
     /**
      * 이동봉사자 > 공고 상세조회 > 중개자 프로필 조회
      */
