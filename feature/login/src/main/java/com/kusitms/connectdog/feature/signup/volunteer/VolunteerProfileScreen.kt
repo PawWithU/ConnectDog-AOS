@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -97,14 +98,20 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
                 )
             }
             Spacer(modifier = Modifier.height(40.dp))
-            ConnectDogTextFieldWithButton(
-                width = 62,
-                height = 27,
-                textFieldLabel = "닉네임",
-                placeholder = "닉네임 입력",
-                buttonLabel = "중복 확인",
-                padding = 5
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+                ConnectDogTextFieldWithButton(
+                    width = 62,
+                    height = 27,
+                    textFieldLabel = "닉네임",
+                    placeholder = "닉네임 입력",
+                    buttonLabel = "중복 확인",
+                    padding = 5
+                )
+            }
             Text(
                 text = "사용할 수 있는 닉네임입니다.",
                 color = PetOrange,
