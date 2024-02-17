@@ -1,5 +1,7 @@
 package com.kusitms.connectdog.feature.signup
 
+import android.view.Gravity
+import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,28 +29,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
-import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
-fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
+fun VolunteerSignupScreen(
+    viewModel: TermsViewModel = hiltViewModel()
+//    onNavigateToProfile: () -> Unit
+) {
     val allChecked by viewModel.allChecked.observeAsState(initial = false)
     val privacyChecked by viewModel.privacyChecked.observeAsState(initial = false)
     val termsChecked by viewModel.termsChecked.observeAsState(initial = false)
+    val context = LocalContext.current
 
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -79,11 +84,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
             ConnectDogTopAppBar(
                 titleRes = R.string.volunteer_signup,
                 navigationType = TopAppBarNavigationType.BACK,
-                navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = {
-                    navigator.popBackStack()
-                    viewModel.resetState()
-                }
+                navigationIconContentDescription = "Navigation icon"
             )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
@@ -111,7 +112,7 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
                 viewModel.togglePrivacyChecked()
             }
         }
-        NormalButton(
+        ConnectDogNormalButton(
             content = "다음",
             color = buttonColor,
             modifier =
@@ -122,8 +123,11 @@ fun VolunteerSignUpScreen(navigator: NavController, viewModel: TermsViewModel) {
                 .padding(horizontal = 20.dp),
             onClick = {
                 if (allChecked) {
-                    navigator.navigate("profile")
-                    viewModel.resetState()
+//                    navigator.navigate("profile")
+                } else {
+                    val toast = Toast.makeText(context, "모든 약관에 동의해주세요", Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.BOTTOM, 10, 1000)
+                    toast.show()
                 }
             }
         )
@@ -182,11 +186,4 @@ fun CustomCheckbox(text: String, checked: Boolean, onCheckedChange: (Boolean) ->
             color = if (isChecked) Color.Black else Gray2
         )
     }
-}
-
-@Composable
-@Preview
-fun VolunteerSignUpScreenPreview() {
-    val navController = rememberNavController()
-//    VolunteerSignUpScreen(navController)
 }
