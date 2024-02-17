@@ -13,9 +13,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,25 +26,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.util.getProfileImage
-import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
-fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewModel) {
+fun ProfileScreen(
+    navigator: NavController,
+    viewModel: SelectProfileImageViewModel = hiltViewModel()
+) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-
-    val profileImageId = if (viewModel.selectedImageIndex.value == null) {
-        com.kusitms.connectdog.core.designsystem.R.drawable.ic_circle
-    } else {
-        getProfileImage(viewModel.selectedImageIndex.value!!)
-    }
+    val profileImageIndex by viewModel.selectedImageIndex.collectAsState()
 
     Box(
         modifier =
@@ -81,7 +80,7 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Image(painter = painterResource(id = profileImageId), contentDescription = "")
+                Image(painter = painterResource(id = profileImageIndex), contentDescription = "")
             }
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -115,11 +114,11 @@ fun ProfileScreen(navigator: NavController, viewModel: SelectProfileImageViewMod
             Text(
                 text = "사용할 수 있는 닉네임입니다.",
                 color = PetOrange,
-                fontSize = 10.sp,
+                fontSize = 13.sp,
                 modifier = Modifier.padding(start = 28.dp, top = 4.dp)
             )
         }
-        NormalButton(
+        ConnectDogNormalButton(
             content = "다음",
             modifier =
             Modifier
