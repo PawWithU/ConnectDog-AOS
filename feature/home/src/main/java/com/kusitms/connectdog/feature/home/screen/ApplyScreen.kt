@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -158,7 +158,7 @@ private fun Content(
             onTextChanged = onContentChanged
         )
 
-        NormalButton(
+        ConnectDogNormalButton(
             content = "완료",
             onClick = {
                 viewModel.postApplyVolunteer(
@@ -175,24 +175,6 @@ private fun Content(
         )
     }
 }
-
-// @Composable
-// private fun BottomButton(
-//    onClick: () -> Unit,
-// ) {
-//    Box(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(112.dp)
-//            .background(Color.White)
-//    ) {
-//        Row(
-//            modifier = Modifier.align(Alignment.Center)
-//        ) {
-//
-//        }
-//    }
-// }
 
 @Composable
 fun NoticeCard() {

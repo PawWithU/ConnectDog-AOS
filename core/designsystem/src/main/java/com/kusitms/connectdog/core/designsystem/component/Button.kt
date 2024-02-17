@@ -78,7 +78,7 @@ fun ConnectDogIconBottomButton(
 }
 
 @Composable
-fun NormalButton(
+fun ConnectDogNormalButton(
     content: String,
     color: Color = MaterialTheme.colorScheme.primary,
     onClick: () -> Unit = {},

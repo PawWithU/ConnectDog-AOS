@@ -49,6 +49,7 @@ android {
 dependencies {
 
     // Navigation을 위해 모든 feature 의존성 추가 필요
+    implementation(project(":feature:login"))
     implementation(project(":feature:home"))
     implementation(project(":feature:management"))
     implementation(project(":feature:mypage"))

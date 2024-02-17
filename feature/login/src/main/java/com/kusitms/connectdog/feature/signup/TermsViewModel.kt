@@ -3,8 +3,11 @@ package com.kusitms.connectdog.feature.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TermsViewModel : ViewModel() {
+@HiltViewModel
+class TermsViewModel @Inject constructor() : ViewModel() {
     private val _allChecked = MutableLiveData(false)
     val allChecked: LiveData<Boolean> = _allChecked
 

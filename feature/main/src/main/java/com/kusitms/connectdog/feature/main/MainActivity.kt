@@ -25,12 +25,16 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
 
+        // 로그인, 봉사자, 중개자 모드 설정
+        val type = Mode.LOGIN
+
         installSplashScreen()
         setContent {
-            val navigator: MainNavigator = rememberMainNavigator()
+            val navigator: MainNavigator = rememberMainNavigator(type = type)
             ConnectDogTheme {
                 MainScreen(
                     navigator = navigator,
+                    mode = type,
                     sendVerificationCode = {
                         sendVerificationCode("+82${it.substring(1)}")
                     },

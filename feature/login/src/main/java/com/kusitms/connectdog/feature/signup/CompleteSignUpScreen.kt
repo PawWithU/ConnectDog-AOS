@@ -27,8 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
 fun CompleteSignUpScreen(
@@ -74,7 +74,7 @@ fun CompleteSignUpScreen(
                 fontWeight = FontWeight.SemiBold
             )
         }
-        NormalButton(
+        ConnectDogNormalButton(
             content = "확인",
             modifier =
             Modifier

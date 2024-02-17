@@ -23,10 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
 fun RegisterEmailScreen(
@@ -85,7 +85,7 @@ fun RegisterEmailScreen(
                 padding = 5
             )
         }
-        NormalButton(
+        ConnectDogNormalButton(
             content = "다음",
             color = MaterialTheme.colorScheme.primary,
             onClick = { navigator.navigate("registerPassword") },

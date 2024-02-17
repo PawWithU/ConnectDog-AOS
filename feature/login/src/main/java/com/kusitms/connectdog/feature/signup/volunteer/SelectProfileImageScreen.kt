@@ -31,12 +31,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.getProfileImage
-import com.kusitms.connectdog.feature.login.NormalButton
 
 @Composable
 fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileImageViewModel) {
@@ -84,7 +84,7 @@ fun SelectProfileImageScreen(navigator: NavController, viewModel: SelectProfileI
             ProfileImageGrid(navigator, selectedImageIndex)
         }
 
-        NormalButton(
+        ConnectDogNormalButton(
             content = "선택",
             color = buttonColor,
             modifier =

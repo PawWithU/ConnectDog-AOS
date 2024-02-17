@@ -28,16 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
+import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun MainScreen(
-    navigator: MainNavigator = rememberMainNavigator(),
+    mode: Mode,
+    navigator: MainNavigator = rememberMainNavigator(type = mode),
     sendVerificationCode: (String) -> Unit,
-    finish: () -> Unit,
-    verifyCode: (String) -> Boolean
+    verifyCode: (String) -> Boolean,
+    finish: () -> Unit
 ) {
     Scaffold(
         content = {
@@ -51,6 +53,12 @@ internal fun MainScreen(
                     navController = navigator.navController,
                     startDestination = navigator.startDestination
                 ) {
+                    loginNavGraph(
+                        onBackClick = { navigator.popBackStackIfNotHome() },
+                        onNavigateToNormalLogin = { navigator.navigateNormalLogin() },
+                        onNavigateToVolunteer = { navigator.navigateHome() },
+                        onNavigateToSignup = { navigator.navigateSignup() }
+                    )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToSearch = { navigator.navigateHomeSearch() },
