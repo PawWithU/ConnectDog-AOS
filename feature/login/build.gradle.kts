@@ -45,7 +45,6 @@ android {
 
 dependencies {
 
-    implementation(project(":feature:main"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":feature:intermediator"))
