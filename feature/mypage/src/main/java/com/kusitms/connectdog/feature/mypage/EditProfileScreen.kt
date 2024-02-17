@@ -19,10 +19,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.getProfileImage
@@ -81,7 +81,7 @@ private fun Content() {
             padding = 5
         )
         Spacer(modifier = Modifier.weight(1f))
-        NormalButton(content = "완료")
+        ConnectDogNormalButton(content = "완료")
     }
 }
 
