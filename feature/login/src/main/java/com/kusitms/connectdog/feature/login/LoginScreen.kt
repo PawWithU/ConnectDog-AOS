@@ -54,16 +54,19 @@ val text =
 
 @Composable
 internal fun LoginRoute(
-    onNavigateToNormalLogin: () -> Unit
+    onNavigateToNormalLogin: () -> Unit,
+    onNavigateToSignup: () -> Unit
 ) {
     LoginScreen(
         onNavigateToNormalLogin = onNavigateToNormalLogin,
+        onNavigateToSignup = onNavigateToSignup
     )
 }
 
 @Composable
 fun LoginScreen(
     onNavigateToNormalLogin: () -> Unit,
+    onNavigateToSignup: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -80,7 +83,8 @@ fun LoginScreen(
                 .height(200.dp)
         )
         SelectLoginType(
-            onNavigateToNormalLogin = onNavigateToNormalLogin
+            onNavigateToNormalLogin = onNavigateToNormalLogin,
+            onNavigateToSignup = onNavigateToSignup
         )
     }
 }
@@ -88,7 +92,8 @@ fun LoginScreen(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SelectLoginType(
-    onNavigateToNormalLogin: () -> Unit
+    onNavigateToNormalLogin: () -> Unit,
+    onNavigateToSignup: () -> Unit
 ) {
     Surface {
         Column() {
@@ -126,8 +131,8 @@ fun SelectLoginType(
                 state = pagerState
             ) {
                 when (it) {
-                    0 -> Volunteer(onNavigateToNormalLogin)
-                    1 -> Intermediator(onNavigateToNormalLogin)
+                    0 -> Volunteer(onNavigateToNormalLogin, onNavigateToSignup)
+                    1 -> Intermediator(onNavigateToNormalLogin, onNavigateToSignup)
                 }
             }
         }
@@ -136,7 +141,8 @@ fun SelectLoginType(
 
 @Composable
 fun Volunteer(
-    onNavigateToNormalLogin: () -> Unit
+    onNavigateToNormalLogin: () -> Unit,
+    onNavigateToSignup: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -148,7 +154,7 @@ fun Volunteer(
         ConnectDogIconBottomButton(
             iconId = R.drawable.ic_kakao,
             contentDescription = "kakao login",
-            onClick = {  },
+            onClick = { },
             content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.kakao_login),
             modifier = Modifier
                 .fillMaxWidth()
@@ -164,7 +170,7 @@ fun Volunteer(
             color = NAVER,
             iconId = R.drawable.ic_naver,
             contentDescription = "naver login",
-            onClick = {  },
+            onClick = { },
             content = stringResource(id = R.string.naver_login)
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -179,7 +185,7 @@ fun Volunteer(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             content = stringResource(id = R.string.signup_with_connectdog),
-            onClick = {  }
+            onClick = onNavigateToSignup
         )
         Spacer(modifier = Modifier.height(16.dp))
         NormalLogin(onNavigateToNormalLogin)
@@ -188,7 +194,8 @@ fun Volunteer(
 
 @Composable
 private fun Intermediator(
-    onNavigateToNormalLogin: () -> Unit
+    onNavigateToNormalLogin: () -> Unit,
+    onNavigateToSignup: () -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -202,7 +209,7 @@ private fun Intermediator(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             content = "코넥독 계정으로 회원가입하기",
-            onClick = {  }
+            onClick = onNavigateToSignup
         )
         Spacer(modifier = Modifier.height(16.dp))
         NormalLogin(onNavigateToNormalLogin)
