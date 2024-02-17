@@ -30,7 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
@@ -158,7 +158,7 @@ private fun Content(
             onTextChanged = onContentChanged
         )
 
-        NormalButton(
+        ConnectDogNormalButton(
             content = "완료",
             onClick = {
                 viewModel.postApplyVolunteer(
