@@ -37,7 +37,7 @@ private const val TAG = "EmailLoginScreen"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun EmailLoginScreen(
+fun NormalLoginScreen(
     title: String,
     navigator: NavController,
     initVolunteer: () -> Unit,
