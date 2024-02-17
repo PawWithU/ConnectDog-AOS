@@ -26,9 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogErrorCard
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -38,8 +38,8 @@ private const val TAG = "EmailLoginScreen"
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NormalLoginScreen(
-    title: String,
-    navigator: NavController,
+    test: () -> Unit,
+    onBackClick: () -> Unit,
     initVolunteer: () -> Unit,
     initIntermediator: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
@@ -74,18 +74,21 @@ fun NormalLoginScreen(
                 titleRes = R.string.login,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = {
-                    navigator.popBackStack()
-                }
+                onNavigationClick = onBackClick
             )
         }
     ) {
-        Content(initVolunteer, viewModel, isError)
+        Content(initVolunteer, viewModel, isError, test)
     }
 }
 
 @Composable
-private fun Content(onClick: () -> Unit, viewModel: LoginViewModel, isError: Boolean) {
+private fun Content(
+    onClick: () -> Unit,
+    viewModel: LoginViewModel,
+    isError: Boolean,
+    test: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -124,12 +127,13 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel, isError: Boo
                 isError = isError
             )
             Spacer(modifier = Modifier.height(12.dp))
-            NormalButton(
+            ConnectDogNormalButton(
                 content = "로그인",
                 color = MaterialTheme.colorScheme.primary,
                 onClick = {
-                    viewModel.normalVolunteerLogin(phoneNumber, password)
-                    viewModel.intermediatorLogin(phoneNumber, password)
+                    test()
+//                    viewModel.normalVolunteerLogin(phoneNumber, password)
+//                    viewModel.intermediatorLogin(phoneNumber, password)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -155,16 +159,3 @@ private fun Content(onClick: () -> Unit, viewModel: LoginViewModel, isError: Boo
         }
     }
 }
-//
-// @Preview
-// @Composable
-// private fun tes() {
-//    ConnectDogTheme {
-//        EmailLoginScreen(
-//            title = "이동봉사자 로그인",
-//            navigator = rememberNavController(),
-//            onClick = {},
-//
-//        )
-//    }
-// }
