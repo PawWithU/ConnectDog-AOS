@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.mypage
+package com.kusitms.connectdog.feature.mypage.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

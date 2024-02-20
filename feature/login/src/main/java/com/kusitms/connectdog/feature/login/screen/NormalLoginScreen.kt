@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.login
+package com.kusitms.connectdog.feature.login.screen
 
 import android.annotation.SuppressLint
 import android.util.Log

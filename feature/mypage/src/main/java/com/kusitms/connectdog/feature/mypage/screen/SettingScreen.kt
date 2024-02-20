@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.mypage
+package com.kusitms.connectdog.feature.mypage.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable

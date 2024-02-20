@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.login
+package com.kusitms.connectdog.feature.login.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

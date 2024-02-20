@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.mypage
+package com.kusitms.connectdog.feature.mypage.screen
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
