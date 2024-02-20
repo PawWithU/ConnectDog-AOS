@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.mypage
+package com.kusitms.connectdog.feature.mypage.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -26,6 +26,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.getProfileImageId
+import com.kusitms.connectdog.feature.mypage.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -73,11 +74,13 @@ private fun Content() {
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextFieldWithButton(
+            text = "",
             width = 62,
             height = 27,
             textFieldLabel = "닉네임",
             placeholder = "닉네임 입력",
             buttonLabel = "중복 확인",
+            onTextChanged = {},
             padding = 5
         )
         Spacer(modifier = Modifier.weight(1f))

@@ -6,9 +6,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.Type
-import com.kusitms.connectdog.signup.volunteer.SelectProfileImageScreen
-import com.kusitms.connectdog.signup.volunteer.VolunteerProfileScreen
-import com.kusitms.connectdog.signup.volunteer.VolunteerProfileViewModel
+import com.kusitms.connectdog.signup.screen.CompleteSignUpScreen
+import com.kusitms.connectdog.signup.screen.RegisterEmailScreen
+import com.kusitms.connectdog.signup.screen.RegisterPasswordScreen
+import com.kusitms.connectdog.signup.screen.SignUpRoute
+import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
+import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
+import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 fun NavController.navigateToIntermediatorProfile() {
     navigate(SignUpRoute.intermediator_profile)

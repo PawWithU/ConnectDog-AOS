@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.mypage
+package com.kusitms.connectdog.feature.mypage.screen
 
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
@@ -44,6 +44,8 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Orange20
+import com.kusitms.connectdog.feature.mypage.R
+import com.kusitms.connectdog.feature.mypage.viewmodel.MyPageViewModel
 
 private val volunteerDescriptionList = listOf(
     R.string.review_first,

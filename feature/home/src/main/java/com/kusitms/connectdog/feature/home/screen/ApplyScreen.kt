@@ -17,7 +17,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Orange20
@@ -68,11 +67,6 @@ private fun Content(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
-    val (name, onNameChanged) = remember { mutableStateOf("") }
-    val (phoneNumber, onPhoneNumberChanged) = remember { mutableStateOf("") }
-    val (transportation, onTransportationChanged) = remember { mutableStateOf("") }
-    val (content, onContentChanged) = remember { mutableStateOf("") }
-
     Column(
         modifier = Modifier
             .padding(start = 20.dp, end = 20.dp, top = 48.dp, bottom = 32.dp)
@@ -105,12 +99,12 @@ private fun Content(
             fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
-        NormalTextField(
-            text = name,
+        ConnectDogTextField(
+            text = viewModel.name,
             label = "이름",
             placeholder = "이름 입력",
             keyboardType = KeyboardType.Text,
-            onTextChanged = { onNameChanged(it) }
+            onTextChanged = { viewModel.updateName(it) }
         )
         Spacer(modifier = Modifier.height(30.dp))
         Text(
@@ -119,12 +113,12 @@ private fun Content(
             fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
-        NormalTextField(
-            text = phoneNumber,
+        ConnectDogTextField(
+            text = viewModel.phoneNumber,
             label = "휴대폰 번호",
             placeholder = "휴대폰 번호 입력",
             keyboardType = KeyboardType.Number,
-            onTextChanged = { onPhoneNumberChanged(it) }
+            onTextChanged = { viewModel.updatePhoneNumber(it) }
         )
         Spacer(modifier = Modifier.height(6.dp))
         NoticeCard()
@@ -135,12 +129,12 @@ private fun Content(
             fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
-        NormalTextField(
-            text = transportation,
+        ConnectDogTextField(
+            text = viewModel.transportation,
             label = "교통수단",
             placeholder = "예) 자차, 택시, KTX, 비행기 등",
             keyboardType = KeyboardType.Text,
-            onTextChanged = { onTransportationChanged(it) }
+            onTextChanged = { viewModel.updateTransportation(it) }
         )
         Spacer(modifier = Modifier.height(30.dp))
         Text(
@@ -149,13 +143,13 @@ private fun Content(
             fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
-        NormalTextField(
-            text = content,
+        ConnectDogTextField(
+            text = viewModel.content,
             label = "한마디 입력",
             placeholder = "신청한 이유, 봉사 이력 등을 간단하게 작성해주세요!\n(10자 이상, 100자 이내로 입력해주세요)",
             keyboardType = KeyboardType.Text,
             height = 129,
-            onTextChanged = onContentChanged
+            onTextChanged = { viewModel.updateContent(it) }
         )
 
         ConnectDogNormalButton(
@@ -164,10 +158,10 @@ private fun Content(
                 viewModel.postApplyVolunteer(
                     postId,
                     ApplyBody(
-                        content = content,
-                        name = name,
-                        phone = phoneNumber,
-                        transportation = transportation
+                        content = viewModel.content,
+                        name = viewModel.name,
+                        phone = viewModel.phoneNumber,
+                        transportation = viewModel.transportation
                     )
                 )
                 onClick()

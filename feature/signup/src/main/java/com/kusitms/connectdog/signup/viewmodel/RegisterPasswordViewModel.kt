@@ -1,11 +1,14 @@
-package com.kusitms.connectdog.signup
+package com.kusitms.connectdog.signup.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class RegisterPasswordViewModel : ViewModel() {
+@HiltViewModel
+class RegisterPasswordViewModel @Inject constructor() : ViewModel() {
     private var _password = mutableStateOf("")
     val password: String
         get() = _password.value

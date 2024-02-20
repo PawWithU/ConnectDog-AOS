@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup
+package com.kusitms.connectdog.signup.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

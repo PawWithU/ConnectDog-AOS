@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup
+package com.kusitms.connectdog.signup.screen
 
 import android.view.Gravity
 import android.widget.Toast
@@ -46,6 +46,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.signup.viewmodel.TermsViewModel
 
 @Composable
 internal fun SignUpRoute(

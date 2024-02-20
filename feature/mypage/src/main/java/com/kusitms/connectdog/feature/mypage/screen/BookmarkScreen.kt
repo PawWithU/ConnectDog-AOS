@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.mypage
+package com.kusitms.connectdog.feature.mypage.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +20,8 @@ import com.kusitms.connectdog.core.designsystem.component.ListForUserItem
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.feature.mypage.R
+import com.kusitms.connectdog.feature.mypage.viewmodel.MyPageViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

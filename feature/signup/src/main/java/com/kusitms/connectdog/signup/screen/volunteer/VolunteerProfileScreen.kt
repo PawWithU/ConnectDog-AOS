@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup.volunteer
+package com.kusitms.connectdog.signup.screen.volunteer
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -34,6 +34,7 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Red1
+import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -99,16 +100,19 @@ fun VolunteerProfileScreen(
             }
             Spacer(modifier = Modifier.height(40.dp))
             ConnectDogTextFieldWithButton(
+                text = viewModel.nickname,
                 width = 62,
                 height = 27,
                 textFieldLabel = "닉네임",
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
-                onClick = { nickname ->
-                    viewModel.updateNicknameAvailability(nickname)
-                },
-                isError = isAvailableNickname ?: false,
-                padding = 5
+                onClick = { viewModel.updateNicknameAvailability(it) },
+                onTextChanged = { viewModel.updateNickname(it) },
+                padding = 5,
+                isError = when (isAvailableNickname) {
+                    false -> true
+                    else -> false
+                }
             )
             Text(
                 text = when (isAvailableNickname) {

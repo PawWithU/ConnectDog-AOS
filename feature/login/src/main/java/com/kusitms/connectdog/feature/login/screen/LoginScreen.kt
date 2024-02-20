@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.login
+package com.kusitms.connectdog.feature.login.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +39,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.KAKAO
 import com.kusitms.connectdog.core.designsystem.theme.NAVER
 import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.feature.login.R
 import kotlinx.coroutines.launch
 
 val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")

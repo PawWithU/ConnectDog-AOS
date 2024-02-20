@@ -1,5 +1,7 @@
-package com.kusitms.connectdog.signup.volunteer
+package com.kusitms.connectdog.signup.viewmodel
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.kusitms.connectdog.core.util.getProfileImageId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,12 +19,20 @@ class VolunteerProfileViewModel @Inject constructor() : ViewModel() {
     val isAvailableNickname: StateFlow<Boolean?>
         get() = _isNicknameAvailable
 
+    private val _nickname: MutableState<String> = mutableStateOf("")
+    val nickname: String
+        get() = _nickname.value
+
     fun updateNicknameAvailability(nickname: String) {
         _isNicknameAvailable.value = nickname == "ssaaw"
     }
 
     fun updateProfileImageIndex(imageIndex: Int) {
         _selectedImageIndex.value = imageIndex
+    }
+
+    fun updateNickname(nickname: String) {
+        _nickname.value = nickname
     }
 
     fun getProfileImage(): Int {

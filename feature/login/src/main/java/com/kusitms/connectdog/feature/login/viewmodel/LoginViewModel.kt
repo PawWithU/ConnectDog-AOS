@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.login
+package com.kusitms.connectdog.feature.login.viewmodel
 
 import android.content.Context
 import android.util.Log
