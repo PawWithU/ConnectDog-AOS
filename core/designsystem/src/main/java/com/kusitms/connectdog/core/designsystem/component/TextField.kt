@@ -65,7 +65,7 @@ fun ConnectDogTextField(
             .fillMaxWidth()
             .height(height.dp),
         value = text,
-        onValueChange = onTextChanged,
+        onValueChange = { onTextChanged(it) },
         label = {
             Text(
                 text = label,
