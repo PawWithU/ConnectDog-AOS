@@ -15,8 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
@@ -44,10 +42,6 @@ fun RegisterPasswordScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-    val password by viewModel.password.collectAsState()
-    val confirmPassword by viewModel.confirmPassword.collectAsState()
-
-    Log.d("tesz", password.toString())
 
     Scaffold(
         topBar = {
@@ -83,18 +77,20 @@ fun RegisterPasswordScreen(
                 fontSize = 11.sp,
                 color = Gray3
             )
-            NormalTextField(
+            ConnectDogTextField(
+                text = viewModel.password,
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
-                keyboardType = KeyboardType.Password
-//                onTextChanged = { viewModel.updatePassword(it) }
+                keyboardType = KeyboardType.Password,
+                onTextChanged = { viewModel.updatePassword(it) }
             )
             Spacer(modifier = Modifier.height(12.dp))
-            NormalTextField(
+            ConnectDogTextField(
+                text = viewModel.confirmPassword,
                 label = "비밀번호 확인",
                 placeholder = "비밀번호 확인",
-                keyboardType = KeyboardType.Password
-//                onTextChanged = { viewModel.updateConfirmPassword(it) }
+                keyboardType = KeyboardType.Password,
+                onTextChanged = { viewModel.updateConfirmPassword(it) }
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
