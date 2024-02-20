@@ -29,8 +29,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogErrorCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.util.Type
 
@@ -113,7 +113,7 @@ private fun Content(
                     mutableStateOf("")
                 }
 
-            NormalTextField(
+            ConnectDogTextField(
                 text = phoneNumber,
                 label = "이메일",
                 placeholder = "이메일 입력",
@@ -122,7 +122,7 @@ private fun Content(
                 isError = isError
             )
             Spacer(modifier = Modifier.height(12.dp))
-            NormalTextField(
+            ConnectDogTextField(
                 text = password,
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
