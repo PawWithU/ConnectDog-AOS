@@ -50,12 +50,14 @@ dependencies {
 
     // Navigation을 위해 모든 feature 의존성 추가 필요
     implementation(project(":feature:login"))
+    implementation(project(":feature:signup"))
     implementation(project(":feature:home"))
     implementation(project(":feature:management"))
     implementation(project(":feature:mypage"))
 
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:util"))
 
     implementation(libs.androidx.core.splashscreen)
     implementation("com.google.firebase:firebase-auth:22.3.0")
