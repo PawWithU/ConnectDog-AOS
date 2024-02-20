@@ -41,7 +41,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButt
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.util.getProfileImage
+import com.kusitms.connectdog.core.util.getProfileImageId
 
 @Composable
 internal fun MypageRoute(
@@ -137,7 +137,7 @@ private fun MyInformation(
         userInfo?.let {
             Image(
                 painter = painterResource(
-                    id = getProfileImage(it.profileImageNum)
+                    id = getProfileImageId(it.profileImageNum)
                 ),
                 contentDescription = null,
                 modifier = Modifier.size(50.dp)
