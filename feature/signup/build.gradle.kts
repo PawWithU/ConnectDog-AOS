@@ -2,10 +2,13 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("kapt")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ktlint)
 }
 
 android {
-    namespace = "com.kusitms.connectdog.signup"
+    namespace = "com.kusitms.connectdog.feature.signup"
     compileSdk = 33
 
     defaultConfig {
@@ -25,20 +28,47 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.3"
     }
 }
 
 dependencies {
 
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:util"))
+    implementation(project(":feature:intermediator"))
+
+    implementation(libs.androidx.core.splashscreen)
+    implementation(project(mapOf("path" to ":core:data")))
+
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.android)
+
+    implementation(libs.androidx.compose.navigation)
+    implementation(libs.hilt.navigation.compose)
+
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewModelCompose)
+    implementation(libs.androidx.activity.compose)
+
+    // compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.runtime.livedata)
 }
