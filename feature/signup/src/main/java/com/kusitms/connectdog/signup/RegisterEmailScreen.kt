@@ -15,9 +15,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
@@ -31,7 +33,8 @@ import com.kusitms.connectdog.core.util.Type
 fun RegisterEmailScreen(
     onBackClick: () -> Unit,
     type: Type,
-    onNavigateToRegisterPassword: (Type) -> Unit
+    onNavigateToRegisterPassword: (Type) -> Unit,
+    viewModel: RegisterEmailViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -67,20 +70,25 @@ fun RegisterEmailScreen(
             )
             Spacer(modifier = Modifier.height(40.dp))
             ConnectDogTextFieldWithButton(
+                text = viewModel.email,
                 width = 62,
                 height = 27,
                 textFieldLabel = "이메일",
                 placeholder = "이메일 입력",
                 buttonLabel = "인증 요청",
+                onTextChanged = { viewModel.updateEmail(it) },
                 padding = 5
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogTextFieldWithButton(
+                text = viewModel.certificationNumber,
                 width = 62,
                 height = 27,
                 textFieldLabel = "인증 번호",
                 placeholder = "숫자 6자리",
                 buttonLabel = "인증 확인",
+                keyboardType = KeyboardType.Number,
+                onTextChanged = { viewModel.updateCertificationNumber(it) },
                 padding = 5
             )
             Spacer(modifier = Modifier.weight(1f))
