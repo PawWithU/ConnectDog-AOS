@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup.volunteer
+package com.kusitms.connectdog.signup.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

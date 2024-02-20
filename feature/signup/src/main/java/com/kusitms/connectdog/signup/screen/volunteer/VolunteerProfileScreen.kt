@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup.volunteer
+package com.kusitms.connectdog.signup.screen.volunteer
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -34,6 +34,7 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Red1
+import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup
+package com.kusitms.connectdog.signup.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

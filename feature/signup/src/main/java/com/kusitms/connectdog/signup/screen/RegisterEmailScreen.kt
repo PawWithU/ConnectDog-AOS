@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup
+package com.kusitms.connectdog.signup.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable

@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup.volunteer
+package com.kusitms.connectdog.signup.screen.volunteer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,6 +36,7 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.getProfileImageId
+import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 @Composable
 fun SelectProfileImageScreen(
