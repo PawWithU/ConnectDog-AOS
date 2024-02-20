@@ -27,6 +27,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.signup.viewmodel.RegisterEmailViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

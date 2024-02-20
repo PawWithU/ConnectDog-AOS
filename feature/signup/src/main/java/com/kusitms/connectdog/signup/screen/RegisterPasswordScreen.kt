@@ -34,6 +34,7 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.signup.viewmodel.RegisterPasswordViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

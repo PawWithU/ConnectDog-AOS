@@ -6,6 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.signup.screen.CompleteSignUpScreen
+import com.kusitms.connectdog.signup.screen.RegisterEmailScreen
+import com.kusitms.connectdog.signup.screen.RegisterPasswordScreen
+import com.kusitms.connectdog.signup.screen.SignUpRoute
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
