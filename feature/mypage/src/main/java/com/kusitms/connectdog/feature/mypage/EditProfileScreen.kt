@@ -73,11 +73,13 @@ private fun Content() {
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextFieldWithButton(
+            text = "",
             width = 62,
             height = 27,
             textFieldLabel = "닉네임",
             placeholder = "닉네임 입력",
             buttonLabel = "중복 확인",
+            onTextChanged = {},
             padding = 5
         )
         Spacer(modifier = Modifier.weight(1f))
