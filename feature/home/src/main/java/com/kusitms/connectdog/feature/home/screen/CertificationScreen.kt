@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Orange40
 import com.kusitms.connectdog.feature.home.ApplyViewModel
@@ -41,7 +41,7 @@ fun CertificationScreen(
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String) -> Boolean,
     postId: Long,
-    applyViewModel: ApplyViewModel = hiltViewModel()
+    viewModel: ApplyViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -53,14 +53,20 @@ fun CertificationScreen(
             )
         }
     ) {
-        Content(onApplyClick = { onApplyClick(it) }, postId, onSendMessageClick, onVerifyCodeClick, applyViewModel)
+        Content(
+            onApplyClick = { onApplyClick(it) },
+            postId = postId,
+            onSendMessageClick = onSendMessageClick,
+            onVerifyCodeClick = onVerifyCodeClick,
+            viewModel = viewModel
+        )
     }
 }
 
 @Composable
 private fun Content(
-    onApplyClick: (Long) -> Unit,
     postId: Long,
+    onApplyClick: (Long) -> Unit,
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String) -> Boolean,
     viewModel: ApplyViewModel
@@ -94,7 +100,7 @@ private fun Content(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(40.dp))
-        NormalTextField(
+        ConnectDogTextField(
             text = name,
             label = "이름",
             placeholder = "이름 입력",
@@ -103,6 +109,7 @@ private fun Content(
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextFieldWithButton(
+            text = "",
             width = 62,
             height = 27,
             textFieldLabel = "휴대폰 번호",
@@ -110,12 +117,14 @@ private fun Content(
             buttonLabel = "인증 요청",
             keyboardType = KeyboardType.Number,
             padding = 5,
+            onTextChanged = {},
             onClick = {
                 onSendMessageClick(it)
             }
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextFieldWithButton(
+            text = "",
             width = 62,
             height = 27,
             textFieldLabel = "인증번호",
@@ -123,6 +132,7 @@ private fun Content(
             buttonLabel = "인증 확인",
             keyboardType = KeyboardType.Number,
             padding = 5,
+            onTextChanged = {},
             onClick = {
                 onVerifyCodeClick(it)
                 viewModel.updateIsCertified(true)
