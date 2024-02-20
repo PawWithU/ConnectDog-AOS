@@ -29,7 +29,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Orange10
 import com.kusitms.connectdog.core.model.Recent
 import com.kusitms.connectdog.core.model.Review
-import com.kusitms.connectdog.core.util.getProfileImage
+import com.kusitms.connectdog.core.util.getProfileImageId
 
 @Composable
 fun ConnectDogCommunityContent(
@@ -135,7 +135,7 @@ fun ProfileContent(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
-            painter = painterResource(id = getProfileImage(profileNum)),
+            painter = painterResource(id = getProfileImageId(profileNum)),
             contentDescription = null,
             modifier = Modifier.size(30.dp)
         )
