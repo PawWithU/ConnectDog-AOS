@@ -33,6 +33,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.feature.login.viewmodel.LoginViewModel
 
 private const val TAG = "EmailLoginScreen"
 

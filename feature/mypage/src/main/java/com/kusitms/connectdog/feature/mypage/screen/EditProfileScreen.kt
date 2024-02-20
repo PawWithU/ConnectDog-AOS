@@ -26,6 +26,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.getProfileImageId
+import com.kusitms.connectdog.feature.mypage.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

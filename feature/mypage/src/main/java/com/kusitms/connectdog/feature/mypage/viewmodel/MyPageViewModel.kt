@@ -10,6 +10,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import com.kusitms.connectdog.core.data.repository.MyPageRepository
+import com.kusitms.connectdog.feature.mypage.screen.BadgeItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

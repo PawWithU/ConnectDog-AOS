@@ -6,6 +6,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.feature.login.screen.LoginRoute
+import com.kusitms.connectdog.feature.login.screen.NormalLoginScreen
 import com.kusitms.connectdog.signup.SignUpRoute
 
 fun NavController.navigateLogin() {
