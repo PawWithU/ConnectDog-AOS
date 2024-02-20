@@ -107,7 +107,10 @@ fun VolunteerProfileScreen(
                 onClick = { nickname ->
                     viewModel.updateNicknameAvailability(nickname)
                 },
-                isError = isAvailableNickname ?: false,
+                isError = when(isAvailableNickname) {
+                    false -> true
+                    else -> false
+                },
                 padding = 5
             )
             Text(
