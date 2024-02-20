@@ -2,7 +2,6 @@
 <resources>
     <string name="kakao_app_key">227799f94d3661c7d84b79daba3b0eaa</string>
     
-    <string name="untitled">&lt;Untitled&gt;</string>
     <string name="home">홈</string>
     <string name="date">일정</string>
     <string name="organization">중개자명</string>
@@ -16,7 +15,8 @@
     <string name="location">지역</string>
     <string name="end_recruit">모집마감</string>
     <string name="login">로그인</string>
-    <string name="volunteer_signup">회원가입</string>
+    <string name="volunteer_signup">이동봉사자 회원가입</string>
+    <string name="intermediator_signup">이동봉사 중개 회원가입</string>
     <string name="apply_volunter">이동봉사 신청하기</string>
     <string name="management">봉사관리</string>
     <string name="name">이름</string>
@@ -24,4 +24,6 @@
     <string name="vehicle">이동봉사 수단</string>
     <string name="volunteer_comment">봉사자의 한마디</string>
     <string name="login_error">아이디 혹은 비밀번호가 일치하지 않습니다</string>
+    <string name="volunteer_login">이동봉사자 로그인</string>
+    <string name="intermediator_login">이동봉사 중개 회원 로그인</string>
 </resources>
