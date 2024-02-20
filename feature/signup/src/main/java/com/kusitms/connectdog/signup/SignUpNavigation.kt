@@ -75,7 +75,7 @@ fun NavGraphBuilder.signUpGraph(
             onNavigateToRegisterPassword = navigateToRegisterPassword
         )
     }
-    
+
     composable(
         route = "${SignUpRoute.register_password}/{type}",
         arguments = typeArgument
