@@ -2,26 +2,29 @@ package com.kusitms.connectdog.feature.login
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import com.kusitms.connectdog.feature.signup.VolunteerSignupScreen
+import androidx.navigation.navArgument
+import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.signup.SignUpRoute
 
 fun NavController.navigateLogin() {
     navigate(LoginRoute.route)
 }
 
-fun NavController.navigateSignup() {
-    navigate(LoginRoute.signup)
+fun NavController.navigateSignup(type: Type) {
+    navigate("${SignUpRoute.route}/$type")
 }
 
-fun NavController.navigateNormalLogin() {
-    navigate(LoginRoute.normal_login)
+fun NavController.navigateNormalLogin(type: Type) {
+    navigate("${LoginRoute.normal_login}/$type")
 }
 
 fun NavGraphBuilder.loginNavGraph(
     onBackClick: () -> Unit,
-    onNavigateToNormalLogin: () -> Unit,
+    onNavigateToNormalLogin: (Type) -> Unit,
     onNavigateToVolunteer: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToSignup: (Type) -> Unit
 ) {
     composable(route = LoginRoute.route) {
         LoginRoute(
@@ -30,19 +33,25 @@ fun NavGraphBuilder.loginNavGraph(
         )
     }
 
-    composable(route = LoginRoute.normal_login) {
+    composable(
+        route = "${LoginRoute.normal_login}/{type}",
+        arguments = listOf(
+            navArgument("type") {
+                type = NavType.EnumType(Type::class.java)
+            }
+        )
+    ) {
         NormalLoginScreen(
             onBackClick = onBackClick,
-            initVolunteer = {},
-            initIntermediator = {},
+            type = it.arguments!!.getSerializable("type") as Type,
             test = onNavigateToVolunteer
         )
     }
 
     composable(route = LoginRoute.signup) {
-        VolunteerSignupScreen(
-//            onBackClick = onBackClick
-        )
+//        SignUpSc(
+// //            onBackClick = onBackClick
+//        )
     }
 }
 

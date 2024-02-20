@@ -38,24 +38,15 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.KAKAO
 import com.kusitms.connectdog.core.designsystem.theme.NAVER
+import com.kusitms.connectdog.core.util.Type
 import kotlinx.coroutines.launch
 
 val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
 
-val text =
-    buildAnnotatedString {
-        withStyle(style = SpanStyle(color = Color(0xFF7B7B7B), fontSize = 13.sp)) {
-            append("이미 계정이 있나요? ")
-        }
-        withStyle(style = SpanStyle(color = Color(0xFF7B7B7B), fontSize = 13.sp, textDecoration = TextDecoration.Underline)) {
-            append("로그인")
-        }
-    }
-
 @Composable
 internal fun LoginRoute(
-    onNavigateToNormalLogin: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToNormalLogin: (Type) -> Unit,
+    onNavigateToSignup: (Type) -> Unit
 ) {
     LoginScreen(
         onNavigateToNormalLogin = onNavigateToNormalLogin,
@@ -65,8 +56,8 @@ internal fun LoginRoute(
 
 @Composable
 fun LoginScreen(
-    onNavigateToNormalLogin: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToNormalLogin: (Type) -> Unit,
+    onNavigateToSignup: (Type) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -92,8 +83,8 @@ fun LoginScreen(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SelectLoginType(
-    onNavigateToNormalLogin: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToNormalLogin: (Type) -> Unit,
+    onNavigateToSignup: (Type) -> Unit
 ) {
     Surface {
         Column() {
@@ -125,7 +116,6 @@ fun SelectLoginType(
                     )
                 }
             }
-
             HorizontalPager(
                 count = pages.size,
                 state = pagerState
@@ -141,8 +131,8 @@ fun SelectLoginType(
 
 @Composable
 fun Volunteer(
-    onNavigateToNormalLogin: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToNormalLogin: (Type) -> Unit,
+    onNavigateToSignup: (Type) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -185,17 +175,17 @@ fun Volunteer(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             content = stringResource(id = R.string.signup_with_connectdog),
-            onClick = onNavigateToSignup
+            onClick = { onNavigateToSignup(Type.NORMAL_VOLUNTEER) }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        NormalLogin(onNavigateToNormalLogin)
+        NormalLogin(onNavigateToNormalLogin, Type.NORMAL_VOLUNTEER)
     }
 }
 
 @Composable
 private fun Intermediator(
-    onNavigateToNormalLogin: () -> Unit,
-    onNavigateToSignup: () -> Unit
+    onNavigateToNormalLogin: (Type) -> Unit,
+    onNavigateToSignup: (Type) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -208,18 +198,36 @@ private fun Intermediator(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            content = "코넥독 계정으로 회원가입하기",
-            onClick = onNavigateToSignup
+            content = stringResource(id = R.string.signup_with_connectdog),
+            onClick = { onNavigateToSignup(Type.INTERMEDIATOR) }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        NormalLogin(onNavigateToNormalLogin)
+        NormalLogin(onNavigateToNormalLogin, Type.INTERMEDIATOR)
     }
 }
 
 @Composable
-private fun NormalLogin(onNavigateToNormalLogin: () -> Unit) {
+private fun NormalLogin(onNavigateToNormalLogin: (Type) -> Unit, type: Type) {
     ClickableText(
-        text = text,
-        onClick = { onNavigateToNormalLogin() }
+        text = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    color = Color(0xFF7B7B7B),
+                    fontSize = 13.sp
+                )
+            ) {
+                append("이미 계정이 있나요? ")
+            }
+            withStyle(
+                style = SpanStyle(
+                    color = Color(0xFF7B7B7B),
+                    fontSize = 13.sp,
+                    textDecoration = TextDecoration.Underline
+                )
+            ) {
+                append("로그인")
+            }
+        },
+        onClick = { onNavigateToNormalLogin(type) }
     )
 }

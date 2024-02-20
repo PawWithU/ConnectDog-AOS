@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.kusitms.connectdog.feature.login"
+    namespace = "com.kusitms.connectdog.feature.signup"
     compileSdk = 33
 
     defaultConfig {
@@ -48,7 +48,6 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
     implementation(project(":feature:intermediator"))
-    implementation(project(":feature:signup"))
 
     implementation(libs.androidx.core.splashscreen)
     implementation(project(mapOf("path" to ":core:data")))
@@ -72,16 +71,4 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.runtime.livedata)
-
-    implementation(libs.kotlinx.collection.imuutable)
-
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.pager.indicators)
-
-//     social login
-    implementation(libs.kakao.oauth)
-    implementation(libs.naver.oauth)
-
-    // test
-    implementation(libs.androidx.junit.ktx)
 }

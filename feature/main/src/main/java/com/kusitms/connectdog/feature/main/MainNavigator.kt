@@ -8,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.kusitms.connectdog.core.util.Mode
+import com.kusitms.connectdog.core.util.Type
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateApply
@@ -32,12 +34,12 @@ import com.kusitms.connectdog.feature.mypage.navigation.navigateManageAccount
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 import com.kusitms.connectdog.feature.mypage.navigation.navigateNotification
 import com.kusitms.connectdog.feature.mypage.navigation.navigateSetting
-
-enum class Mode {
-    LOGIN,
-    VOLUNTEER,
-    INTERMEDIATOR
-}
+import com.kusitms.connectdog.signup.navigateCompleteSignUp
+import com.kusitms.connectdog.signup.navigateRegisterEmail
+import com.kusitms.connectdog.signup.navigateRegisterPassword
+import com.kusitms.connectdog.signup.navigateSelectProfileImage
+import com.kusitms.connectdog.signup.navigateToIntermediatorProfile
+import com.kusitms.connectdog.signup.navigateToVolunteerProfile
 
 internal class MainNavigator(
     val navController: NavHostController,
@@ -79,8 +81,16 @@ internal class MainNavigator(
     }
 
     // login navigator
-    fun navigateNormalLogin() = navController.navigateNormalLogin()
-    fun navigateSignup() = navController.navigateSignup()
+    fun navigateNormalLogin(type: Type) = navController.navigateNormalLogin(type)
+    fun navigateSignup(type: Type) = navController.navigateSignup(type)
+
+    // signup navigator
+    fun navigateVolunteerProfile() = navController.navigateToVolunteerProfile()
+    fun navigateIntermediatorProfile() = navController.navigateToIntermediatorProfile()
+    fun navigateRegisterEmail(type: Type) = navController.navigateRegisterEmail(type)
+    fun navigateRegisterPassword(type: Type) = navController.navigateRegisterPassword(type)
+    fun navigateSelectProfileImage() = navController.navigateSelectProfileImage()
+    fun navigateCompleteSignUp() = navController.navigateCompleteSignUp()
 
     // volunteer navigator
     fun navigateHome() = navigate(MainTab.HOME)

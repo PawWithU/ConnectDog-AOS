@@ -25,12 +25,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.util.Mode
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
+import com.kusitms.connectdog.signup.signUpGraph
+import com.kusitms.connectdog.signup.volunteer.VolunteerProfileViewModel
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
@@ -41,6 +45,8 @@ internal fun MainScreen(
     verifyCode: (String) -> Boolean,
     finish: () -> Unit
 ) {
+    val viewModel: VolunteerProfileViewModel = hiltViewModel()
+
     Scaffold(
         content = {
             Box(
@@ -55,9 +61,21 @@ internal fun MainScreen(
                 ) {
                     loginNavGraph(
                         onBackClick = { navigator.popBackStackIfNotHome() },
-                        onNavigateToNormalLogin = { navigator.navigateNormalLogin() },
+                        onNavigateToNormalLogin = { navigator.navigateNormalLogin(it) },
                         onNavigateToVolunteer = { navigator.navigateHome() },
-                        onNavigateToSignup = { navigator.navigateSignup() }
+                        onNavigateToSignup = { navigator.navigateSignup(it) }
+                    )
+                    signUpGraph(
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        navigateToVolunteerProfile = { navigator.navigateVolunteerProfile() },
+                        navigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
+                        navigateToRegisterEmail = { navigator.navigateRegisterEmail(it) },
+                        navigateToRegisterPassword = { navigator.navigateRegisterPassword(it) },
+                        navigateToSelectProfileImage = { navigator.navigateSelectProfileImage() },
+                        navigateToCompleteSignUp = { navigator.navigateCompleteSignUp() },
+                        navigateToVolunteer = {},
+                        navigateToIntermediator = {},
+                        viewModel = viewModel
                     )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,

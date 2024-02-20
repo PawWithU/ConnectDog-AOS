@@ -12,6 +12,4 @@ private val profileImageList = listOf(
     R.drawable.ic_profile_9,
 )
 
-fun getProfileImage(num: Int): Int {
-    return profileImageList[num]
-}
+fun getProfileImageId(num: Int): Int = profileImageList[num]

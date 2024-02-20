@@ -32,6 +32,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NormalTextField
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.util.Type
 
 private const val TAG = "EmailLoginScreen"
 
@@ -39,9 +40,8 @@ private const val TAG = "EmailLoginScreen"
 @Composable
 fun NormalLoginScreen(
     test: () -> Unit,
+    type: Type,
     onBackClick: () -> Unit,
-    initVolunteer: () -> Unit,
-    initIntermediator: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -54,11 +54,11 @@ fun NormalLoginScreen(
 
     if (volunteerLoginSuccess != null) {
         Log.d(TAG, volunteerLoginSuccess.toString())
-        initVolunteer()
+//        initVolunteer()
     }
 
     if (intermediatorLoginSuccess != null) {
-        initIntermediator()
+//        initIntermediator()
     }
 
     if (loginFail != null) { isError = true }
@@ -71,21 +71,25 @@ fun NormalLoginScreen(
         ),
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = R.string.login,
+                titleRes = when (type) {
+                    Type.SOCIAL_VOLUNTEER -> R.string.volunteer_login
+                    Type.NORMAL_VOLUNTEER -> R.string.volunteer_login
+                    Type.INTERMEDIATOR -> R.string.intermediator_login
+                },
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
             )
         }
     ) {
-        Content(initVolunteer, viewModel, isError, test)
+        Content(viewModel, type, isError, test)
     }
 }
 
 @Composable
 private fun Content(
-    onClick: () -> Unit,
     viewModel: LoginViewModel,
+    type: Type,
     isError: Boolean,
     test: () -> Unit
 ) {
@@ -131,9 +135,11 @@ private fun Content(
                 content = "로그인",
                 color = MaterialTheme.colorScheme.primary,
                 onClick = {
-                    test()
-//                    viewModel.normalVolunteerLogin(phoneNumber, password)
-//                    viewModel.intermediatorLogin(phoneNumber, password)
+                    when (type) {
+                        Type.SOCIAL_VOLUNTEER -> {}
+                        Type.INTERMEDIATOR -> viewModel.normalVolunteerLogin(phoneNumber, password)
+                        Type.NORMAL_VOLUNTEER -> viewModel.intermediatorLogin(phoneNumber, password)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()

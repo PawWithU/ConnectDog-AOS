@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.signup
+package com.kusitms.connectdog.signup
 
 import android.view.Gravity
 import android.widget.Toast
@@ -44,11 +44,34 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
+import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.core.util.Type
 
 @Composable
-fun VolunteerSignupScreen(
+internal fun SignUpRoute(
+    onBackClick: () -> Unit,
+    navigateToVolunteerProfile: () -> Unit,
+    navigateToIntermediatorProfile: () -> Unit,
+    navigateToRegisterEmail: (Type) -> Unit,
+    type: Type
+) {
+    SignUpScreen(
+        onBackClick = onBackClick,
+        type = type,
+        navigateToVolunteerProfile = navigateToVolunteerProfile,
+        navigateToRegisterEmail = navigateToRegisterEmail,
+        navigateToIntermediatorProfile = navigateToIntermediatorProfile
+    )
+}
+
+@Composable
+fun SignUpScreen(
+    type: Type,
+    onBackClick: () -> Unit,
+    navigateToVolunteerProfile: () -> Unit,
+    navigateToRegisterEmail: (Type) -> Unit,
+    navigateToIntermediatorProfile: () -> Unit,
     viewModel: TermsViewModel = hiltViewModel()
-//    onNavigateToProfile: () -> Unit
 ) {
     val allChecked by viewModel.allChecked.observeAsState(initial = false)
     val privacyChecked by viewModel.privacyChecked.observeAsState(initial = false)
@@ -57,12 +80,6 @@ fun VolunteerSignupScreen(
 
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-
-    val buttonColor = if (allChecked) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        Orange_40
-    }
 
     Box(
         modifier =
@@ -82,9 +99,14 @@ fun VolunteerSignupScreen(
                 .background(Color.White)
         ) {
             ConnectDogTopAppBar(
-                titleRes = R.string.volunteer_signup,
+                titleRes = when (type) {
+                    Type.SOCIAL_VOLUNTEER -> R.string.volunteer_signup
+                    Type.NORMAL_VOLUNTEER -> R.string.volunteer_signup
+                    Type.INTERMEDIATOR -> R.string.intermediator_signup
+                },
                 navigationType = TopAppBarNavigationType.BACK,
-                navigationIconContentDescription = "Navigation icon"
+                navigationIconContentDescription = "Navigation icon",
+                onNavigationClick = onBackClick
             )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
@@ -114,7 +136,7 @@ fun VolunteerSignupScreen(
         }
         ConnectDogNormalButton(
             content = "다음",
-            color = buttonColor,
+            color = if (allChecked) { PetOrange } else { Orange_40 },
             modifier =
             Modifier
                 .fillMaxWidth()
@@ -123,7 +145,11 @@ fun VolunteerSignupScreen(
                 .padding(horizontal = 20.dp),
             onClick = {
                 if (allChecked) {
-//                    navigator.navigate("profile")
+                    when (type) {
+                        Type.NORMAL_VOLUNTEER -> navigateToRegisterEmail(type)
+                        Type.SOCIAL_VOLUNTEER -> navigateToVolunteerProfile()
+                        Type.INTERMEDIATOR -> {}
+                    }
                 } else {
                     val toast = Toast.makeText(context, "모든 약관에 동의해주세요", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.BOTTOM, 10, 1000)
