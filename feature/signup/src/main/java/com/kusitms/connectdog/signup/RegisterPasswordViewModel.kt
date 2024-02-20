@@ -22,7 +22,6 @@ class RegisterPasswordViewModel : ViewModel() {
     val isValidConfirmPassword: StateFlow<Boolean?>
         get() = _isValidConfirmPassword
 
-
     fun updatePassword(password: String) {
         _password.value = password
     }
