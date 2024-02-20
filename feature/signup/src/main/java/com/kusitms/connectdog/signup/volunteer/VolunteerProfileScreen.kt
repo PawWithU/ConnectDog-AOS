@@ -99,19 +99,19 @@ fun VolunteerProfileScreen(
             }
             Spacer(modifier = Modifier.height(40.dp))
             ConnectDogTextFieldWithButton(
+                text = viewModel.nickname,
                 width = 62,
                 height = 27,
                 textFieldLabel = "닉네임",
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
-                onClick = { nickname ->
-                    viewModel.updateNicknameAvailability(nickname)
-                },
-                isError = when(isAvailableNickname) {
+                onClick = { viewModel.updateNicknameAvailability(it) },
+                onTextChanged = { viewModel.updateNickname(it) },
+                padding = 5,
+                isError = when (isAvailableNickname) {
                     false -> true
                     else -> false
-                },
-                padding = 5
+                }
             )
             Text(
                 text = when (isAvailableNickname) {
