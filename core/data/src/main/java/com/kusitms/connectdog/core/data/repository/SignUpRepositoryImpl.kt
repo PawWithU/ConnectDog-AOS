@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 internal class SignUpRepositoryImpl @Inject constructor(
     private val api: ApiService
-): SignUpRepository {
+) : SignUpRepository {
     override suspend fun postNickname(nickname: IsDuplicateNicknameBody): IsDuplicateNicknameResponse {
         return api.postNickname(nickname)
     }

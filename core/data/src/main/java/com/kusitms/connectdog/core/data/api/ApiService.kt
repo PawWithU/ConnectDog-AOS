@@ -108,7 +108,6 @@ internal interface ApiService {
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
 
-
     /**
      * 회원가입
      */
@@ -116,7 +115,6 @@ internal interface ApiService {
     suspend fun postNickname(
         @Body nickname: IsDuplicateNicknameBody
     ): IsDuplicateNicknameResponse
-
 
     /**
      * 이동봉사자 > 마이페이지
