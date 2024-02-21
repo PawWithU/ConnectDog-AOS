@@ -13,6 +13,8 @@ import com.kusitms.connectdog.core.data.repository.ManagementRepository
 import com.kusitms.connectdog.core.data.repository.ManagementRepositoryImpl
 import com.kusitms.connectdog.core.data.repository.MyPageRepository
 import com.kusitms.connectdog.core.data.repository.MyPageRepositoryImpl
+import com.kusitms.connectdog.core.data.repository.SignUpRepository
+import com.kusitms.connectdog.core.data.repository.SignUpRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,14 +27,20 @@ internal class VolunteerDataModule {
 
     @Provides
     @Singleton
-    fun provideHomeRepository(apiService: ApiService): HomeRepository {
-        return HomeRepositoryImpl(apiService)
+    fun provideSignUpRepository(apiService: ApiService): SignUpRepository {
+        return SignUpRepositoryImpl(apiService)
     }
 
     @Provides
     @Singleton
     fun provideLoginRepository(apiService: ApiService): LoginRepository {
         return LoginRepositoryImpl(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeRepository(apiService: ApiService): HomeRepository {
+        return HomeRepositoryImpl(apiService)
     }
 
     @Provides
