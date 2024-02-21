@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.IsDuplicateNicknameResponse
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
@@ -16,6 +17,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
@@ -105,6 +107,16 @@ internal interface ApiService {
     suspend fun postSocialLoginData(
         @Body socialLoginBody: SocialLoginBody
     ): LoginResponseItem
+
+
+    /**
+     * 회원가입
+     */
+    @POST("/volunteers/nickname/isDuplicated")
+    suspend fun postNickname(
+        @Body nickname: IsDuplicateNicknameBody
+    ): IsDuplicateNicknameResponse
+
 
     /**
      * 이동봉사자 > 마이페이지
