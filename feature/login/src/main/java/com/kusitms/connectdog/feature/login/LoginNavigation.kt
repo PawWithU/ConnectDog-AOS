@@ -46,19 +46,12 @@ fun NavGraphBuilder.loginNavGraph(
         NormalLoginScreen(
             onBackClick = onBackClick,
             type = it.arguments!!.getSerializable("type") as Type,
-            test = onNavigateToVolunteer
+            onNavigateToVolunteerHome = onNavigateToVolunteer
         )
-    }
-
-    composable(route = LoginRoute.signup) {
-//        SignUpSc(
-// //            onBackClick = onBackClick
-//        )
     }
 }
 
 object LoginRoute {
     const val route = "login"
     const val normal_login = "normal_login"
-    const val signup = "signup"
 }
