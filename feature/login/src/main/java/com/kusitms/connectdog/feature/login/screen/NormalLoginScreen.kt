@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.feature.login.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -16,8 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -40,29 +39,24 @@ private const val TAG = "EmailLoginScreen"
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NormalLoginScreen(
-    test: () -> Unit,
     type: Type,
     onBackClick: () -> Unit,
+    onNavigateToVolunteerHome: () -> Unit,
+    onNavigateToIntermediatorHome: () -> Unit = {},
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-    val volunteerLoginSuccess by viewModel.volunteerLoginSuccess.observeAsState()
-    val intermediatorLoginSuccess by viewModel.intermediatorLoginSuccess.observeAsState()
-    val loginFail by viewModel.loginError.observeAsState(null)
+    val isLoginSuccessful by viewModel.isLoginSuccessful.collectAsState()
 
-    var isError = false
-
-    if (volunteerLoginSuccess != null) {
-        Log.d(TAG, volunteerLoginSuccess.toString())
-//        initVolunteer()
+    isLoginSuccessful?.let {
+        if (it) {
+            when (type) {
+                Type.INTERMEDIATOR -> onNavigateToIntermediatorHome()
+                else -> onNavigateToVolunteerHome()
+            }
+        }
     }
-
-    if (intermediatorLoginSuccess != null) {
-//        initIntermediator()
-    }
-
-    if (loginFail != null) { isError = true }
 
     Scaffold(
         modifier = Modifier.clickable(
@@ -83,7 +77,7 @@ fun NormalLoginScreen(
             )
         }
     ) {
-        Content(viewModel, type, isError, test)
+        Content(viewModel, type, isLoginSuccessful)
     }
 }
 
@@ -91,8 +85,7 @@ fun NormalLoginScreen(
 private fun Content(
     viewModel: LoginViewModel,
     type: Type,
-    isError: Boolean,
-    test: () -> Unit
+    isLoginSuccessful: Boolean?
 ) {
     Column(
         modifier = Modifier
@@ -104,32 +97,27 @@ private fun Content(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            val (phoneNumber, onPhoneNumberChanged) =
-                remember {
-                    mutableStateOf("")
-                }
-
             val (password, onPasswordChanged) =
                 remember {
                     mutableStateOf("")
                 }
 
             ConnectDogTextField(
-                text = phoneNumber,
+                text = viewModel.email,
                 label = "이메일",
                 placeholder = "이메일 입력",
                 keyboardType = KeyboardType.Text,
-                onTextChanged = onPhoneNumberChanged,
-                isError = isError
+                onTextChanged = { viewModel.updateEmail(it) },
+                isError = isLoginSuccessful?.let { !it } ?: run { false }
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogTextField(
-                text = password,
+                text = viewModel.password,
                 label = "비밀번호",
                 placeholder = "비밀번호 입력",
                 keyboardType = KeyboardType.Password,
-                onTextChanged = onPasswordChanged,
-                isError = isError
+                onTextChanged = { viewModel.updatePassword(it) },
+                isError = isLoginSuccessful?.let { !it } ?: run { false }
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogNormalButton(
@@ -137,9 +125,9 @@ private fun Content(
                 color = MaterialTheme.colorScheme.primary,
                 onClick = {
                     when (type) {
+                        Type.INTERMEDIATOR -> { viewModel.initIntermediatorLogin() }
+                        Type.NORMAL_VOLUNTEER -> { viewModel.initVolunteerLogin() }
                         Type.SOCIAL_VOLUNTEER -> {}
-                        Type.INTERMEDIATOR -> viewModel.normalVolunteerLogin(phoneNumber, password)
-                        Type.NORMAL_VOLUNTEER -> viewModel.intermediatorLogin(phoneNumber, password)
                     }
                 },
                 modifier = Modifier
@@ -147,8 +135,8 @@ private fun Content(
                     .height(56.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            if (isError) {
-                ConnectDogErrorCard()
+            if (isLoginSuccessful?.let { !it } ?: run { false }) {
+                ConnectDogErrorCard(R.string.login_error)
             }
         }
 
