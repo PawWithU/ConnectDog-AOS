@@ -34,6 +34,8 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Red1
+import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.feature.signup.R
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,7 +43,7 @@ import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 fun VolunteerProfileScreen(
     onBackClick: () -> Unit,
     onNavigateToSelectProfileImage: () -> Unit,
-    onNavigateToCompleteSignUp: () -> Unit,
+    onNavigateToCompleteSignUp: (Type) -> Unit,
     viewModel: VolunteerProfileViewModel
 ) {
     val focusManager = LocalFocusManager.current
@@ -52,7 +54,7 @@ fun VolunteerProfileScreen(
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = com.kusitms.connectdog.core.designsystem.R.string.volunteer_signup,
+                titleRes = R.string.volunteer_signup,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
@@ -82,7 +84,10 @@ fun VolunteerProfileScreen(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Image(painter = painterResource(id = viewModel.getProfileImage()), contentDescription = "")
+                Image(
+                    painter = painterResource(id = viewModel.getProfileImageId()),
+                    contentDescription = "volunteer profile image"
+                )
             }
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -115,11 +120,9 @@ fun VolunteerProfileScreen(
                 }
             )
             Text(
-                text = when (isAvailableNickname) {
-                    true -> "사용할 수 있는 닉네임 입니다."
-                    false -> "이미 사용중인 닉네임 입니다."
-                    null -> ""
-                },
+                text = isAvailableNickname?.let {
+                    if (it) { "사용할 수 있는 닉네임 입니다." } else { "이미 사용중인 닉네임 입니다." }
+                } ?: run { "" },
                 color = when (isAvailableNickname) {
                     false -> Red1
                     else -> PetOrange
@@ -135,7 +138,7 @@ fun VolunteerProfileScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
-                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp() }
+                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(Type.NORMAL_VOLUNTEER) }
             )
         }
     }
