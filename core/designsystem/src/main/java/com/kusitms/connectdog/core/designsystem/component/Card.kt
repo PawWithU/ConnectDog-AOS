@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.designsystem.component
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -123,7 +124,9 @@ fun ConnectDogCardButton(
 }
 
 @Composable
-fun ConnectDogErrorCard() {
+fun ConnectDogErrorCard(
+    @StringRes errorMessage: Int
+) {
     Card(
         colors =
         CardDefaults.cardColors(
@@ -147,7 +150,7 @@ fun ConnectDogErrorCard() {
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = stringResource(id = R.string.login_error),
+                text = stringResource(id = errorMessage),
                 color = Red1,
                 fontSize = 13.sp
             )
