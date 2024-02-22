@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.signup.screen
+package com.kusitms.connectdog.signup.screen.intermediator
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
@@ -15,27 +15,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.Type
-import com.kusitms.connectdog.signup.viewmodel.RegisterEmailViewModel
+import com.kusitms.connectdog.feature.signup.R
+import com.kusitms.connectdog.signup.viewmodel.IntermediatorInformationViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun RegisterEmailScreen(
+fun IntermediatorInformationScreen(
     onBackClick: () -> Unit,
-    type: Type,
-    onNavigateToRegisterPassword: (Type) -> Unit,
-    viewModel: RegisterEmailViewModel = hiltViewModel()
+    onNavigateToRegisterEmail: (Type) -> Unit,
+    viewModel: IntermediatorInformationViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -43,13 +39,8 @@ fun RegisterEmailScreen(
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = when (type) {
-                    Type.SOCIAL_VOLUNTEER -> R.string.volunteer_signup
-                    Type.NORMAL_VOLUNTEER -> R.string.volunteer_signup
-                    Type.INTERMEDIATOR -> R.string.intermediator_signup
-                },
+                titleRes = R.string.intermediator_signup,
                 navigationType = TopAppBarNavigationType.BACK,
-                navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
             )
         }
@@ -65,37 +56,28 @@ fun RegisterEmailScreen(
         ) {
             Spacer(modifier = Modifier.height(80.dp))
             Text(
-                text = "로그인에 사용할\n이메일을 입력해주세요",
+                text = "중개 회원 정보를\n입력해 주세요",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(40.dp))
-            ConnectDogTextFieldWithButton(
-                text = viewModel.email,
-                width = 62,
-                height = 27,
-                textFieldLabel = "이메일",
-                placeholder = "이메일 입력",
-                buttonLabel = "인증 요청",
-                onTextChanged = { viewModel.updateEmail(it) },
-                padding = 5
+            ConnectDogTextField(
+                text = viewModel.name,
+                onTextChanged = { viewModel.updateName(it) },
+                label = "중개자명",
+                placeholder = "중개자 이름, 중개 단체명 입력"
             )
             Spacer(modifier = Modifier.height(12.dp))
-            ConnectDogTextFieldWithButton(
-                text = viewModel.certificationNumber,
-                width = 62,
-                height = 27,
-                textFieldLabel = "인증 번호",
-                placeholder = "숫자 6자리",
-                buttonLabel = "인증 확인",
-                keyboardType = KeyboardType.Number,
-                onTextChanged = { viewModel.updateCertificationNumber(it) },
-                padding = 5
+            ConnectDogTextField(
+                text = viewModel.name,
+                onTextChanged = { viewModel.updateName(it) },
+                label = "중개자명",
+                placeholder = "중개자 이름, 중개 단체명 입력"
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
-                onClick = { onNavigateToRegisterPassword(type) },
+                onClick = { onNavigateToRegisterEmail(Type.INTERMEDIATOR) },
                 modifier =
                 Modifier
                     .fillMaxWidth()
@@ -103,13 +85,5 @@ fun RegisterEmailScreen(
             )
             Spacer(modifier = Modifier.height(32.dp))
         }
-    }
-}
-
-@Preview
-@Composable
-private fun test() {
-    ConnectDogTheme {
-        RegisterEmailScreen(onBackClick = {}, type = Type.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {})
     }
 }

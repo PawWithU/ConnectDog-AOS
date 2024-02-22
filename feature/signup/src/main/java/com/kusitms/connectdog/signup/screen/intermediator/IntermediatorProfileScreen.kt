@@ -1,6 +1,12 @@
-package com.kusitms.connectdog.signup.screen.volunteer
+package com.kusitms.connectdog.signup.screen.intermediator
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,54 +19,70 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.core.util.Type
 import com.kusitms.connectdog.feature.signup.R
-import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
+import com.kusitms.connectdog.signup.viewmodel.IntermediatorProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun VolunteerProfileScreen(
+fun IntermediatorProfileScreen(
     onBackClick: () -> Unit,
-    onNavigateToSelectProfileImage: () -> Unit,
-    onNavigateToCompleteSignUp: (Type) -> Unit,
-    viewModel: VolunteerProfileViewModel
+    navigateToCompleteSignUp: (Type) -> Unit,
+    viewModel: IntermediatorProfileViewModel = hiltViewModel()
 ) {
-    val focusManager = LocalFocusManager.current
-    val interactionSource = remember { MutableInteractionSource() }
-    val isAvailableNickname by viewModel.isAvailableNickname.collectAsState()
-    val selectedImageIndex by viewModel.selectedImageIndex.collectAsState()
+    val context = LocalContext.current
+
+    fun convertToBitmap(uri: Uri): Bitmap = ImageDecoder
+        .decodeBitmap(
+            ImageDecoder.createSource(context.contentResolver, uri)
+        )
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    val photoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { imageUri = it }
+    )
 
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = R.string.volunteer_signup,
+                titleRes = R.string.intermediator_signup,
                 navigationType = TopAppBarNavigationType.BACK,
-                navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
             )
         }
     ) {
+        val focusManager = LocalFocusManager.current
+        val interactionSource = remember { MutableInteractionSource() }
+        val scrollState = rememberScrollState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,6 +93,7 @@ fun VolunteerProfileScreen(
                     indication = null,
                     interactionSource = interactionSource
                 )
+                .verticalScroll(scrollState)
         ) {
             Spacer(modifier = Modifier.height(80.dp))
             Text(
@@ -84,10 +107,20 @@ fun VolunteerProfileScreen(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Image(
-                    painter = painterResource(id = viewModel.getProfileImageId()),
-                    contentDescription = "volunteer profile image"
-                )
+                imageUri?.let {
+                    Image(
+                        bitmap = convertToBitmap(it).asImageBitmap(),
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape),
+                        contentDescription = ""
+                    )
+                } ?: run {
+                    Image(
+                        painter = painterResource(id = com.kusitms.connectdog.core.util.R.drawable.ic_profile_1),
+                        contentDescription = ""
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(12.dp))
             Row(
@@ -100,35 +133,27 @@ fun VolunteerProfileScreen(
                     height = 27,
                     text = "프로필 사진 선택",
                     padding = 5,
-                    onClick = onNavigateToSelectProfileImage
+                    onClick = {
+                        photoPicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    }
                 )
             }
             Spacer(modifier = Modifier.height(40.dp))
-            ConnectDogTextFieldWithButton(
-                text = viewModel.nickname,
-                width = 62,
-                height = 27,
-                textFieldLabel = "닉네임",
-                placeholder = "닉네임 입력",
-                buttonLabel = "중복 확인",
-                onClick = { viewModel.updateNicknameAvailability(it) },
-                onTextChanged = { viewModel.updateNickname(it) },
-                padding = 5,
-                isError = when (isAvailableNickname) {
-                    false -> true
-                    else -> false
-                }
+            ConnectDogTextField(
+                text = viewModel.introduce,
+                onTextChanged = { viewModel.updateIntroduce(it) },
+                label = "한줄 소개",
+                placeholder = "소개 입력",
+                height = 130
             )
-            Text(
-                text = isAvailableNickname?.let {
-                    if (it) { "사용할 수 있는 닉네임 입니다." } else { "이미 사용중인 닉네임 입니다." }
-                } ?: run { "" },
-                color = when (isAvailableNickname) {
-                    false -> Red1
-                    else -> PetOrange
-                },
-                fontSize = 11.sp,
-                modifier = Modifier.padding(top = 4.dp, start = 8.dp)
+            ConnectDogTextField(
+                text = viewModel.introduce,
+                onTextChanged = { viewModel.updateIntroduce(it) },
+                label = "문의 받을 연락처",
+                placeholder = "문의받을 연락처를 입력해주세요.",
+                height = 200
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
@@ -137,8 +162,8 @@ fun VolunteerProfileScreen(
                 Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
-                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(Type.NORMAL_VOLUNTEER) }
+                color = PetOrange,
+                onClick = { navigateToCompleteSignUp(Type.INTERMEDIATOR) }
             )
         }
     }

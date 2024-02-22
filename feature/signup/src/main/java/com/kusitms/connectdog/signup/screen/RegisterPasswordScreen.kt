@@ -34,13 +34,16 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.core.util.Type
 import com.kusitms.connectdog.signup.viewmodel.RegisterPasswordViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RegisterPasswordScreen(
     onBackClick: () -> Unit,
-    navigateToVolunteerProfile: () -> Unit,
+    onNavigateToVolunteerProfile: () -> Unit,
+    onNavigateToIntermediatorProfile: () -> Unit,
+    type: Type,
     viewModel: RegisterPasswordViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -51,7 +54,10 @@ fun RegisterPasswordScreen(
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = R.string.volunteer_signup,
+                titleRes = when (type) {
+                    Type.INTERMEDIATOR -> R.string.intermediator_signup
+                    else -> R.string.volunteer_signup
+                },
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
@@ -120,7 +126,10 @@ fun RegisterPasswordScreen(
                 },
                 onClick = {
                     if (isValidPassword == false && isValidConfirmPassword == false) {
-                        navigateToVolunteerProfile()
+                        when (type) {
+                            Type.INTERMEDIATOR -> onNavigateToIntermediatorProfile()
+                            else -> onNavigateToVolunteerProfile()
+                        }
                     }
                 }
             )
@@ -132,6 +141,6 @@ fun RegisterPasswordScreen(
 @Composable
 private fun Preview() {
     ConnectDogTheme {
-        RegisterPasswordScreen({}, {})
+        RegisterPasswordScreen({}, {}, {}, Type.INTERMEDIATOR)
     }
 }

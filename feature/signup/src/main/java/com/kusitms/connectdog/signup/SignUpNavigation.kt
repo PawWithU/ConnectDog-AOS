@@ -10,6 +10,8 @@ import com.kusitms.connectdog.signup.screen.CompleteSignUpScreen
 import com.kusitms.connectdog.signup.screen.RegisterEmailScreen
 import com.kusitms.connectdog.signup.screen.RegisterPasswordScreen
 import com.kusitms.connectdog.signup.screen.SignUpRoute
+import com.kusitms.connectdog.signup.screen.intermediator.IntermediatorInformationScreen
+import com.kusitms.connectdog.signup.screen.intermediator.IntermediatorProfileScreen
 import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
@@ -34,18 +36,23 @@ fun NavController.navigateSelectProfileImage() {
     navigate(SignUpRoute.profile_image)
 }
 
-fun NavController.navigateCompleteSignUp() {
-    navigate(SignUpRoute.complete_signup)
+fun NavController.navigateCompleteSignUp(type: Type) {
+    navigate("${SignUpRoute.complete_signup}/$type")
+}
+
+fun NavController.navigateIntermediatorInformation() {
+    navigate(SignUpRoute.intermediator_information)
 }
 
 fun NavGraphBuilder.signUpGraph(
     onBackClick: () -> Unit,
     navigateToVolunteerProfile: () -> Unit,
     navigateToIntermediatorProfile: () -> Unit,
+    navigateToIntermediatorInformation: () -> Unit,
     navigateToRegisterEmail: (Type) -> Unit,
     navigateToRegisterPassword: (Type) -> Unit,
     navigateToSelectProfileImage: () -> Unit,
-    navigateToCompleteSignUp: () -> Unit,
+    navigateToCompleteSignUp: (Type) -> Unit,
     navigateToVolunteer: () -> Unit,
     navigateToIntermediator: () -> Unit,
     viewModel: VolunteerProfileViewModel
@@ -64,7 +71,7 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             type = it.arguments!!.getSerializable("type") as Type,
             navigateToVolunteerProfile = navigateToVolunteerProfile,
-            navigateToIntermediatorProfile = navigateToIntermediatorProfile,
+            navigateToIntermediatorInformation = navigateToIntermediatorInformation,
             navigateToRegisterEmail = navigateToRegisterEmail
         )
     }
@@ -86,7 +93,9 @@ fun NavGraphBuilder.signUpGraph(
     ) {
         RegisterPasswordScreen(
             onBackClick = onBackClick,
-            navigateToVolunteerProfile = navigateToVolunteerProfile
+            onNavigateToIntermediatorProfile = navigateToIntermediatorProfile,
+            onNavigateToVolunteerProfile = navigateToVolunteerProfile,
+            type = it.arguments!!.getSerializable("type") as Type
         )
     }
 
@@ -96,6 +105,20 @@ fun NavGraphBuilder.signUpGraph(
             onNavigateToSelectProfileImage = navigateToSelectProfileImage,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
             viewModel = viewModel
+        )
+    }
+
+    composable(route = SignUpRoute.intermediator_profile) {
+        IntermediatorProfileScreen(
+            onBackClick = onBackClick,
+            navigateToCompleteSignUp = navigateToCompleteSignUp
+        )
+    }
+
+    composable(route = SignUpRoute.intermediator_information) {
+        IntermediatorInformationScreen(
+            onBackClick = onBackClick,
+            onNavigateToRegisterEmail = navigateToRegisterEmail
         )
     }
 
@@ -109,9 +132,14 @@ fun NavGraphBuilder.signUpGraph(
     }
 
     composable(
-        route = SignUpRoute.complete_signup
+        route = "${SignUpRoute.complete_signup}/{type}",
+        arguments = typeArgument
     ) {
-        CompleteSignUpScreen()
+        CompleteSignUpScreen(
+            type = it.arguments!!.getSerializable("type") as Type,
+            navigateToVolunteer = navigateToVolunteer,
+            navigateToIntermediator = navigateToIntermediator
+        )
     }
 }
 
@@ -119,6 +147,7 @@ object SignUpRoute {
     const val route = "sign_up"
     const val volunteer_profile = "volunteer_profile"
     const val intermediator_profile = "intermediator_profile"
+    const val intermediator_information = "intermediator_information"
     const val register_email = "register_email"
     const val register_password = "register_password"
     const val profile_image = "profile_image"

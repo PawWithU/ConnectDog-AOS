@@ -52,7 +52,7 @@ import com.kusitms.connectdog.signup.viewmodel.TermsViewModel
 internal fun SignUpRoute(
     onBackClick: () -> Unit,
     navigateToVolunteerProfile: () -> Unit,
-    navigateToIntermediatorProfile: () -> Unit,
+    navigateToIntermediatorInformation: () -> Unit,
     navigateToRegisterEmail: (Type) -> Unit,
     type: Type
 ) {
@@ -61,7 +61,7 @@ internal fun SignUpRoute(
         type = type,
         navigateToVolunteerProfile = navigateToVolunteerProfile,
         navigateToRegisterEmail = navigateToRegisterEmail,
-        navigateToIntermediatorProfile = navigateToIntermediatorProfile
+        navigateToIntermediatorProfile = navigateToIntermediatorInformation
     )
 }
 
@@ -149,7 +149,7 @@ fun SignUpScreen(
                     when (type) {
                         Type.NORMAL_VOLUNTEER -> navigateToRegisterEmail(type)
                         Type.SOCIAL_VOLUNTEER -> navigateToVolunteerProfile()
-                        Type.INTERMEDIATOR -> {}
+                        Type.INTERMEDIATOR -> navigateToIntermediatorProfile()
                     }
                 } else {
                     val toast = Toast.makeText(context, "모든 약관에 동의해주세요", Toast.LENGTH_SHORT)

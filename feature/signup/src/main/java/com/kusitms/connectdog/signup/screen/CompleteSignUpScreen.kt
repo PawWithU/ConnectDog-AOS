@@ -29,10 +29,13 @@ import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.util.Type
 
 @Composable
 fun CompleteSignUpScreen(
-    onClick: () -> Unit = {}
+    navigateToVolunteer: () -> Unit,
+    navigateToIntermediator: () -> Unit,
+    type: Type
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -88,7 +91,10 @@ fun CompleteSignUpScreen(
                         placeable.place(0, 0)
                     }
                 },
-            onClick = onClick
+            onClick = when (type) {
+                Type.INTERMEDIATOR -> navigateToIntermediator
+                else -> navigateToVolunteer
+            }
         )
     }
 }
@@ -97,6 +103,10 @@ fun CompleteSignUpScreen(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        CompleteSignUpScreen(onClick = {})
+        CompleteSignUpScreen(
+            type = Type.INTERMEDIATOR,
+            navigateToIntermediator = {},
+            navigateToVolunteer = {}
+        )
     }
 }

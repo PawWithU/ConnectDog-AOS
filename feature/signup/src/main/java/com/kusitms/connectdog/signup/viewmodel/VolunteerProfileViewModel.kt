@@ -49,7 +49,7 @@ class VolunteerProfileViewModel @Inject constructor(
         _nickname.value = nickname
     }
 
-    fun getProfileImage(): Int {
+    fun getProfileImageId(): Int {
         return if (_selectedImageIndex.value == -1) {
             com.kusitms.connectdog.core.designsystem.R.drawable.ic_circle
         } else {

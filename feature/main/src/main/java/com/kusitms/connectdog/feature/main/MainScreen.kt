@@ -68,13 +68,14 @@ internal fun MainScreen(
                     signUpGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         navigateToVolunteerProfile = { navigator.navigateVolunteerProfile() },
+                        navigateToIntermediatorInformation = { navigator.navigateIntermediatorInformation() },
                         navigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
                         navigateToRegisterEmail = { navigator.navigateRegisterEmail(it) },
                         navigateToRegisterPassword = { navigator.navigateRegisterPassword(it) },
                         navigateToSelectProfileImage = { navigator.navigateSelectProfileImage() },
-                        navigateToCompleteSignUp = { navigator.navigateCompleteSignUp() },
-                        navigateToVolunteer = {},
-                        navigateToIntermediator = {},
+                        navigateToCompleteSignUp = { navigator.navigateCompleteSignUp(it) },
+                        navigateToVolunteer = { navigator.navigateHome() },
+                        navigateToIntermediator = { navigator.navigateManageAccount() },
                         viewModel = viewModel
                     )
                     homeNavGraph(

@@ -2,8 +2,8 @@ package com.kusitms.connectdog.feature.login.viewmodel
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
@@ -11,7 +11,6 @@ import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
-import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
 import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
 import com.kusitms.connectdog.core.data.repository.DataStoreRepository
@@ -22,6 +21,8 @@ import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,45 +40,50 @@ constructor(
     private val loginRepository: LoginRepository,
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
-    private val _volunteerLoginSuccess = MutableLiveData<LoginResponseItem?>()
-    val volunteerLoginSuccess: LiveData<LoginResponseItem?> = _volunteerLoginSuccess
+    private val _isLoginSuccessful: MutableStateFlow<Boolean?> = MutableStateFlow(null)
+    val isLoginSuccessful: StateFlow<Boolean?>
+        get() = _isLoginSuccessful
 
-    private val _intermediatorLoginSuccess = MutableLiveData<LoginResponseItem?>()
-    val intermediatorLoginSuccess: LiveData<LoginResponseItem?> = _intermediatorLoginSuccess
+    private val _email: MutableState<String> = mutableStateOf("")
+    val email: String
+        get() = _email.value
 
-    private val _loginError = MutableLiveData<String>()
-    val loginError: LiveData<String> = _loginError
+    private val _password: MutableState<String> = mutableStateOf("")
+    val password: String
+        get() = _password.value
 
-    fun normalVolunteerLogin(email: String, password: String) {
+    fun updateEmail(email: String) {
+        _email.value = email
+    }
+
+    fun updatePassword(password: String) {
+        _password.value = password
+    }
+
+    fun initVolunteerLogin() {
         viewModelScope.launch {
             try {
-                val response = loginRepository.postLoginData(NormalLoginBody(email, password))
-                _volunteerLoginSuccess.postValue(response)
-
-                viewModelScope.launch {
-                    dataStoreRepository.saveAccessToken(response.accessToken)
-                    Log.d(TAG, dataStoreRepository.accessTokenFlow.first().toString())
-                }
-
-                Log.d(TAG, "login success")
+                val response = loginRepository.postLoginData(NormalLoginBody(_email.value, _password.value))
+                dataStoreRepository.saveAccessToken(response.accessToken)
+                _isLoginSuccessful.value = true
+                Log.d(TAG, isLoginSuccessful.toString())
+                Log.d(TAG, dataStoreRepository.accessTokenFlow.first().toString())
             } catch (e: Exception) {
-                _loginError.postValue(e.message ?: "로그인 실패")
+                _isLoginSuccessful.value = false
                 Log.d(TAG, e.message.toString())
             }
         }
     }
 
-    fun intermediatorLogin(email: String, password: String) {
+    fun initIntermediatorLogin() {
         viewModelScope.launch {
             try {
-                val response = loginRepository.postIntermediatorLoginData(NormalLoginBody(email, password))
-                _intermediatorLoginSuccess.postValue(response)
+                val response = loginRepository.postIntermediatorLoginData(NormalLoginBody(_email.value, _password.value))
 
                 viewModelScope.launch {
                     dataStoreRepository.saveAccessToken(response.accessToken)
                 }
             } catch (e: Exception) {
-                _loginError.postValue(e.message ?: "로그인 실패")
                 Log.d(TAG, e.message.toString())
             }
         }
@@ -92,20 +98,10 @@ constructor(
                         provider = provider.toString()
                     )
                 )
-                _volunteerLoginSuccess.postValue(response)
             } catch (e: Exception) {
-                _loginError.postValue(e.message ?: "로그인 실패")
                 Log.d(TAG, e.message.toString())
             }
         }
-    }
-
-    fun initNaverLogin(context: Context) {
-        naverLogin(context)
-    }
-
-    fun initKakaoLogin(context: Context) {
-        kakaoLogin(context)
     }
 
     private fun naverLogin(activity: Context) {
