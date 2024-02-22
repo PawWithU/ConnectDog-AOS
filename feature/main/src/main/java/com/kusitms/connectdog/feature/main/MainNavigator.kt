@@ -35,6 +35,7 @@ import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 import com.kusitms.connectdog.feature.mypage.navigation.navigateNotification
 import com.kusitms.connectdog.feature.mypage.navigation.navigateSetting
 import com.kusitms.connectdog.signup.navigateCompleteSignUp
+import com.kusitms.connectdog.signup.navigateIntermediatorInformation
 import com.kusitms.connectdog.signup.navigateRegisterEmail
 import com.kusitms.connectdog.signup.navigateRegisterPassword
 import com.kusitms.connectdog.signup.navigateSelectProfileImage
@@ -90,7 +91,8 @@ internal class MainNavigator(
     fun navigateRegisterEmail(type: Type) = navController.navigateRegisterEmail(type)
     fun navigateRegisterPassword(type: Type) = navController.navigateRegisterPassword(type)
     fun navigateSelectProfileImage() = navController.navigateSelectProfileImage()
-    fun navigateCompleteSignUp() = navController.navigateCompleteSignUp()
+    fun navigateCompleteSignUp(type: Type) = navController.navigateCompleteSignUp(type)
+    fun navigateIntermediatorInformation() = navController.navigateIntermediatorInformation()
 
     // volunteer navigator
     fun navigateHome() = navigate(MainTab.HOME)
