@@ -95,7 +95,7 @@ fun RegisterEmailScreen(
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
-                onClick = { onNavigateToRegisterPassword(Type.NORMAL_VOLUNTEER) },
+                onClick = { onNavigateToRegisterPassword(type) },
                 modifier =
                 Modifier
                     .fillMaxWidth()
