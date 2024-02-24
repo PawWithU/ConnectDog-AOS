@@ -210,12 +210,14 @@ private fun LocationCard(
                 onClickSkip = {
                     viewModel.setLocation()
                     viewModel.updateLocationExpand(false)
-                    viewModel.updateLocationExpand(true)
+                    viewModel.updateScheduleExpand(true)
+                    viewModel.updateDetailExpand(false)
                 },
                 onClickNext = {
                     viewModel.setLocation()
                     viewModel.updateLocationExpand(false)
-                    viewModel.updateLocationExpand(true)
+                    viewModel.updateScheduleExpand(true)
+                    viewModel.updateDetailExpand(false)
                     if (departure != null && destination != null) {
                         content = "$departure -> $destination"
                         onSelectedRegion(departure!!, destination!!)
@@ -271,15 +273,17 @@ private fun ScheduleCard(
                     viewModel.setSchedule()
                     viewModel.updateScheduleExpand(false)
                     viewModel.updateDetailExpand(true)
+                    viewModel.updateLocationExpand(false)
                     startDate = start ?: LocalDate.now()
                     endDate = end ?: LocalDate.now()
                 },
                 onClickNext = {
-                    onClickNext(startDate, endDate)
+                    viewModel.setSchedule()
                     viewModel.updateScheduleExpand(false)
                     viewModel.updateDetailExpand(true)
+                    viewModel.updateLocationExpand(false)
                     content = dateRangeDisplay(startDate, endDate)
-                    viewModel.setSchedule()
+                    onClickNext(startDate, endDate)
                 }
             ) {
                 ConnectDogCalendar(
