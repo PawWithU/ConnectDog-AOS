@@ -50,7 +50,7 @@ fun ConnectDogCard(
         border = BorderStroke(width = 1.dp, color = borderColor),
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),
-        shadowElevation = 2.dp,
+//        shadowElevation = 2.dp,
         content = content
     )
 }
