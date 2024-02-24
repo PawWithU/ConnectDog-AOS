@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.signup.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,10 +37,15 @@ fun RegisterEmailScreen(
     onBackClick: () -> Unit,
     type: Type,
     onNavigateToRegisterPassword: (Type) -> Unit,
-    viewModel: RegisterEmailViewModel = hiltViewModel()
+    viewModel: RegisterEmailViewModel = hiltViewModel(),
+    imeHeight: Int
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+
+    val context = LocalContext.current
+
+    Log.d("tesa1", imeHeight.toString())
 
     Scaffold(
         topBar = {
@@ -101,7 +108,7 @@ fun RegisterEmailScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
     }
 }
@@ -110,6 +117,6 @@ fun RegisterEmailScreen(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        RegisterEmailScreen(onBackClick = {}, type = Type.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {})
+        RegisterEmailScreen(onBackClick = {}, type = Type.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {}, imeHeight = 10)
     }
 }
