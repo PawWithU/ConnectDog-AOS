@@ -43,7 +43,8 @@ internal fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(type = mode),
     sendVerificationCode: (String) -> Unit,
     verifyCode: (String) -> Boolean,
-    finish: () -> Unit
+    finish: () -> Unit,
+    imeHeight: Int
 ) {
     val viewModel: VolunteerProfileViewModel = hiltViewModel()
 
@@ -76,18 +77,15 @@ internal fun MainScreen(
                         navigateToCompleteSignUp = { navigator.navigateCompleteSignUp(it) },
                         navigateToVolunteer = { navigator.navigateHome() },
                         navigateToIntermediator = { navigator.navigateManageAccount() },
+                        imeHeight = imeHeight,
                         viewModel = viewModel
                     )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToSearch = { navigator.navigateHomeSearch() },
-                        onNavigateToSearchWithFilter = { filter ->
-                            navigator.navigateHomeSearchWithFilter(filter)
-                        },
+                        onNavigateToSearchWithFilter = { navigator.navigateHomeSearchWithFilter(it) },
                         onNavigateToFilterSearch = { navigator.navigateHomeFilterSearch() },
-                        onNavigateToFilter = { filter ->
-                            navigator.navigateHomeFilter(filter)
-                        },
+                        onNavigateToFilter = { navigator.navigateHomeFilter(it) },
                         onNavigateToReview = { navigator.navigateHomeReview() },
                         onNavigateToDetail = { navigator.navigateHomeDetail(it) },
                         onNavigateToCertification = { navigator.navigateCertification(it) },
@@ -97,7 +95,8 @@ internal fun MainScreen(
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {},
                         onSendMessage = { sendVerificationCode(it) },
-                        onVerifyCode = { verifyCode(it) }
+                        onVerifyCode = { verifyCode(it) },
+                        imeHeight = imeHeight
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
