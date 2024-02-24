@@ -24,7 +24,7 @@ private val TAG = "SearchViewModel"
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
     private var _filter = MutableStateFlow(Filter())
     val filter: StateFlow<Filter> get() = _filter
@@ -34,6 +34,39 @@ class SearchViewModel @Inject constructor(
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
     val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+
+    private val _isLocationExpanded = MutableStateFlow(true)
+    val isLocationExpanded: StateFlow<Boolean> get() = _isLocationExpanded
+
+    private val _isScheduleExpanded = MutableStateFlow(false)
+    val isScheduleExpanded: StateFlow<Boolean> get() = _isScheduleExpanded
+
+    private val _isDetailExpanded = MutableStateFlow(false)
+    val isDetailExpanded: StateFlow<Boolean> get() = _isDetailExpanded
+
+    fun updateLocationExpand(value: Boolean) {
+        _isLocationExpanded.value = value
+    }
+
+    fun updateScheduleExpand(value: Boolean) {
+        _isScheduleExpanded.value = value
+    }
+
+    fun updateDetailExpand(value: Boolean) {
+        _isDetailExpanded.value = value
+    }
+
+    fun setLocation() {
+        _isLocationExpanded.value = !_isLocationExpanded.value
+    }
+
+    fun setSchedule() {
+        _isScheduleExpanded.value = !_isScheduleExpanded.value
+    }
+
+    fun setDetail() {
+        _isDetailExpanded.value = !_isDetailExpanded.value
+    }
 
     val announcementUiState: StateFlow<AnnouncementUiState> =
         flow {
