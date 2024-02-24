@@ -92,7 +92,8 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToNotification: () -> Unit,
     onSendMessage: (String) -> Unit,
     onVerifyCode: (String) -> Boolean,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit
+    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    imeHeight: Int
 ) {
     composable(route = HomeRoute.route) {
         HomeRoute(
@@ -131,7 +132,8 @@ fun NavGraphBuilder.homeNavGraph(
     composable(route = HomeRoute.filter_search) {
         FilterSearchRoute(
             onBackClick = onBackClick,
-            onNavigateToSearch = onNavigateToSearchWithFilter
+            onNavigateToSearch = onNavigateToSearchWithFilter,
+            imeHeight = imeHeight
         )
     }
 
@@ -148,8 +150,9 @@ fun NavGraphBuilder.homeNavGraph(
         Log.d(TAG, "homeNavGraph filter = $filter")
         FilterSearchRoute(
             onBackClick = onBackClick,
+            onNavigateToSearch = onNavigateToSearchWithFilter,
             filterArg = filter,
-            onNavigateToSearch = onNavigateToSearchWithFilter
+            imeHeight = imeHeight
         )
     }
 
