@@ -88,7 +88,7 @@ fun ConnectDogInformationCard(
 @Composable
 fun ConnectDogExpandableCard(
     modifier: Modifier = Modifier,
-    isExpended: Boolean = false,
+    isExpanded: Boolean = false,
     onClick: () -> Unit,
     defaultContent: @Composable () -> Unit,
     expandedContent: @Composable () -> Unit
@@ -99,7 +99,7 @@ fun ConnectDogExpandableCard(
             .wrapContentHeight()
             .clickable { onClick() }
     ) {
-        if (isExpended) {
+        if (isExpanded) {
             expandedContent()
         } else {
             defaultContent()
