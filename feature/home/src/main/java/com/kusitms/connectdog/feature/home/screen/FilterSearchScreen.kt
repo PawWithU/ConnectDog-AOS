@@ -1,15 +1,18 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,9 +29,12 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,6 +43,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -67,65 +74,75 @@ import com.kusitms.connectdog.feature.home.model.Detail
 import com.kusitms.connectdog.feature.home.model.Filter
 import java.time.LocalDate
 
-private val TAG = "FilterSearch"
+private const val TAG = "FilterSearch"
 
 @Composable
 internal fun FilterSearchRoute(
     onBackClick: () -> Unit,
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
+    imeHeight: Int,
     onNavigateToSearch: (Filter) -> Unit
 ) {
     Log.d(TAG, "filterArg = $filterArg")
     viewModel.setFilter(filterArg!!)
     FilterSearchScreen(
         onBackClick = onBackClick,
-        onNavigateToSearch = onNavigateToSearch
+        onNavigateToSearch = onNavigateToSearch,
+        imeHeight = imeHeight
     )
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun FilterSearchScreen(
     onBackClick: () -> Unit,
-    viewModel: SearchViewModel = hiltViewModel(),
-    onNavigateToSearch: (Filter) -> Unit
+    onNavigateToSearch: (Filter) -> Unit,
+    imeHeight: Int,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
-    Log.d(TAG, "filter = $filter")
-
+    val focusManager = LocalFocusManager.current
+    val interactionSource = remember { MutableInteractionSource() }
     val scrollState = rememberScrollState()
 
-    Column(modifier = Modifier.background(color = Gray8)) {
+    Log.d(TAG, "filter = $filter")
+
+    Scaffold(
+        topBar = { TopAppBar(Gray8, onBackClick) }
+    ) {
         Column(
             modifier = Modifier
+                .background(Gray8)
+                .fillMaxSize()
                 .verticalScroll(scrollState)
-                .height(1400.dp)
-                .weight(1f)
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource
+                )
         ) {
-            TopAppBar(Gray8, onBackClick)
-            Spacer(modifier = Modifier.size(14.dp))
-            LocationCard(filter.departure, filter.arrival) { depart, dest ->
+            LaunchedEffect(imeHeight) {
+                scrollState.animateScrollTo(scrollState.maxValue)
+            }
+            Spacer(modifier = Modifier.size(48.dp))
+            LocationCard(viewModel, filter.departure, filter.arrival) { depart, dest ->
                 viewModel.setFilter(depart, dest)
                 Log.d("FilterSearch", "screen : ${filter.departure}, ${filter.arrival}")
             }
-            ScheduleCard(filter.startDate, filter.endDate) { start, end ->
+            ScheduleCard(viewModel, filter.startDate, filter.endDate) { start, end ->
                 viewModel.setFilter(start, end)
             }
-            DetailCard(filter.detail) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
+            DetailCard(
+                viewModel,
+                filter.detail
+            ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
                 viewModel.setFilter(Detail(dogSize, hasKennel, organization))
                 Log.d("FilterSearch", "${filter.detail}")
             }
+            Spacer(modifier = Modifier.weight(1f))
+            BottomBar(filter, onNavigateToSearch, imeHeight, viewModel)
         }
-
-        BottomBar(
-            modifier = Modifier
-                .padding(24.dp)
-                .wrapContentSize(),
-            onClickRefresh = {
-                viewModel.clearFilter()
-            },
-            onClickSearch = { onNavigateToSearch(filter) }
-        )
     }
 }
 
@@ -144,27 +161,45 @@ private fun TopAppBar(
 }
 
 @Composable
+private fun BottomBar(
+    filter: Filter,
+    onNavigateToSearch: (Filter) -> Unit,
+    imeHeight: Int,
+    viewModel: SearchViewModel
+) {
+    BottomBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.White)
+            .padding(top = 20.dp, bottom = (imeHeight + 20).dp),
+        onClickRefresh = { viewModel.clearFilter() },
+        onClickSearch = { onNavigateToSearch(filter) }
+    )
+}
+
+@Composable
 private fun LocationCard(
+    viewModel: SearchViewModel,
     depart: String? = null,
     dest: String? = null,
     onSelectedRegion: (String, String) -> Unit
 ) {
-    var isExpended by remember { mutableStateOf(true) }
-
+    val isExpanded by remember { viewModel.isLocationExpanded }.collectAsState()
     var departure = depart
     Log.d("FilterSearch", "LocationCard : departure = $departure, depart = $depart")
     var destination = dest
     var content =
-        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) {
-            "$depart -> $dest"
-        } else {
-            ""
-        }
+        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) { "$depart -> $dest" } else { "" }
 
     ConnectDogExpandableCard(
         modifier = Modifier.fillMaxWidth(),
-        isExpended = isExpended,
-        onClick = { isExpended = !isExpended },
+        isExpanded = isExpanded,
+        onClick = {
+            viewModel.setLocation()
+            viewModel.updateLocationExpand(!isExpanded)
+            viewModel.updateScheduleExpand(false)
+            viewModel.updateDetailExpand(false)
+        },
         defaultContent = {
             DefaultCardContent(titleRes = R.string.filter_location, content = content)
         },
@@ -173,10 +208,14 @@ private fun LocationCard(
                 titleRes = R.string.filter_location,
                 spacer = 40,
                 onClickSkip = {
-                    isExpended = false
+                    viewModel.setLocation()
+                    viewModel.updateLocationExpand(false)
+                    viewModel.updateLocationExpand(true)
                 },
                 onClickNext = {
-                    isExpended = false
+                    viewModel.setLocation()
+                    viewModel.updateLocationExpand(false)
+                    viewModel.updateLocationExpand(true)
                     if (departure != null && destination != null) {
                         content = "$departure -> $destination"
                         onSelectedRegion(departure!!, destination!!)
@@ -197,37 +236,50 @@ private fun LocationCard(
 
 @Composable
 private fun ScheduleCard(
+    viewModel: SearchViewModel,
     start: LocalDate?,
     end: LocalDate?,
     onClickNext: (LocalDate, LocalDate) -> Unit
 ) {
-    var isExpended by remember { mutableStateOf(false) }
-
+    val isExpanded by remember { viewModel.isScheduleExpanded }.collectAsState()
     var startDate: LocalDate = start ?: LocalDate.now()
     var endDate: LocalDate = end ?: LocalDate.now()
     var content =
         if (start != null && end != null) dateRangeDisplay(start, end) else ""
 
     ConnectDogExpandableCard(
-        isExpended = isExpended,
-        onClick = { isExpended = !isExpended },
+        isExpanded = isExpanded,
+        onClick = {
+            viewModel.setSchedule()
+            viewModel.updateScheduleExpand(!isExpanded)
+            viewModel.updateLocationExpand(false)
+            viewModel.updateDetailExpand(false)
+        },
         defaultContent = {
             DefaultCardContent(titleRes = R.string.filter_schedule, content = content)
         },
         expandedContent = {
             ExpandedCardContent(
-                modifier = Modifier.wrapContentHeight(),
+                modifier = if (!isExpanded) {
+                    Modifier.wrapContentHeight()
+                } else {
+                    Modifier.height(439.dp)
+                },
                 titleRes = R.string.filter_schedule,
                 spacer = 20,
                 onClickSkip = {
-                    isExpended = false
+                    viewModel.setSchedule()
+                    viewModel.updateScheduleExpand(false)
+                    viewModel.updateDetailExpand(true)
                     startDate = start ?: LocalDate.now()
                     endDate = end ?: LocalDate.now()
                 },
                 onClickNext = {
                     onClickNext(startDate, endDate)
+                    viewModel.updateScheduleExpand(false)
+                    viewModel.updateDetailExpand(true)
                     content = dateRangeDisplay(startDate, endDate)
-                    isExpended = false
+                    viewModel.setSchedule()
                 }
             ) {
                 ConnectDogCalendar(
@@ -245,53 +297,69 @@ private fun ScheduleCard(
 
 @Composable
 private fun DetailCard(
+    viewModel: SearchViewModel,
     detail: Detail,
     onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit
 ) {
-    var isExpended by remember { mutableStateOf(false) }
+    val isExpanded by remember { viewModel.isDetailExpanded }.collectAsState()
 
     var dogSize = detail.dogSize
     var hasKennel = detail.hasKennel
     var organization = detail.organization
     val detailContent = detailContentDisplay(detail.dogSize, detail.hasKennel, detail.organization)
 
-    ConnectDogExpandableCard(
-        isExpended = isExpended,
-        onClick = { isExpended = !isExpended },
-        defaultContent = {
-            DefaultCardContent(titleRes = R.string.filter_detail, content = detailContent)
-        },
-        expandedContent = {
-            ExpandedCardContent(
-                modifier = Modifier.wrapContentHeight(),
-                titleRes = R.string.filter_detail,
-                spacer = 30,
-                onClickSkip = { isExpended = false },
-                onClickNext = {
-                    isExpended = false
-                    onClickNext(dogSize, hasKennel, organization)
-                }
-            ) {
-                Column {
-                    DetailContent(titleRes = R.string.filter_dog_size) {
-                        SelectDogSize(dogSize) {
-                            dogSize = it
+    Column {
+        ConnectDogExpandableCard(
+            isExpanded = isExpanded,
+            onClick = {
+                viewModel.setDetail()
+                viewModel.updateDetailExpand(!isExpanded)
+                viewModel.updateLocationExpand(false)
+                viewModel.updateScheduleExpand(false)
+            },
+            defaultContent = {
+                DefaultCardContent(titleRes = R.string.filter_detail, content = detailContent)
+            },
+            expandedContent = {
+                ExpandedCardContent(
+                    modifier = Modifier.wrapContentHeight(),
+                    titleRes = R.string.filter_detail,
+                    spacer = 30,
+                    onClickSkip = {
+                        viewModel.setDetail()
+                        viewModel.updateDetailExpand(false)
+                        viewModel.updateLocationExpand(false)
+                        viewModel.updateScheduleExpand(false)
+                    },
+                    onClickNext = {
+                        viewModel.setDetail()
+                        viewModel.updateDetailExpand(false)
+                        viewModel.updateLocationExpand(false)
+                        viewModel.updateScheduleExpand(false)
+                        onClickNext(dogSize, hasKennel, organization)
+                    }
+                ) {
+                    Column {
+                        DetailContent(titleRes = R.string.filter_dog_size) {
+                            SelectDogSize(dogSize) {
+                                dogSize = it
+                            }
                         }
-                    }
-                    Spacer(modifier = Modifier.size(30.dp))
-                    DetailContent(titleRes = R.string.filter_kennel) {
-                        SelectKennel(hasKennel) { hasKennel = it }
-                    }
-                    Spacer(modifier = Modifier.size(30.dp))
-                    DetailContent(titleRes = R.string.filter_organization) {
-                        SearchOrganization(organizationText = organization) {
-                            organization = it
+                        Spacer(modifier = Modifier.size(30.dp))
+                        DetailContent(titleRes = R.string.filter_kennel) {
+                            SelectKennel(hasKennel) { hasKennel = it }
+                        }
+                        Spacer(modifier = Modifier.size(30.dp))
+                        DetailContent(titleRes = R.string.filter_organization) {
+                            SearchOrganization(organizationText = organization) {
+                                organization = it
+                            }
                         }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -514,7 +582,7 @@ private fun BottomBar(
         Row(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(end = 16.5.dp)
+                .padding(start = 20.dp, end = 16.5.dp)
                 .clickable { onClickRefresh() },
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
@@ -530,9 +598,8 @@ private fun BottomBar(
                 fontSize = 14.sp
             )
         }
-
         ConnectDogIconBottomButton(
-            modifier = Modifier.fillMaxWidth(1f),
+            modifier = Modifier.fillMaxWidth().padding(end = 20.dp),
             iconId = R.drawable.ic_search,
             contentDescription = stringResource(id = R.string.filter_button_search),
             onClick = onClickSearch,
@@ -544,7 +611,7 @@ private fun BottomBar(
 @Preview
 @Composable
 private fun FilterSearchScreenPreview() {
-    FilterSearchScreen({}, hiltViewModel(), {})
+    FilterSearchScreen({}, {}, 10, hiltViewModel())
 }
 
 /**
