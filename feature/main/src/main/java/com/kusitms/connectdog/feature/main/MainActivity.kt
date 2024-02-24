@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.feature.main
 
-import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
