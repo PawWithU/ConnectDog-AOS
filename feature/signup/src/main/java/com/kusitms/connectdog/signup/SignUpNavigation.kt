@@ -55,6 +55,7 @@ fun NavGraphBuilder.signUpGraph(
     navigateToCompleteSignUp: (Type) -> Unit,
     navigateToVolunteer: () -> Unit,
     navigateToIntermediator: () -> Unit,
+    imeHeight: Int,
     viewModel: VolunteerProfileViewModel
 ) {
     val typeArgument = listOf(
@@ -83,7 +84,8 @@ fun NavGraphBuilder.signUpGraph(
         RegisterEmailScreen(
             onBackClick = onBackClick,
             type = it.arguments!!.getSerializable("type") as Type,
-            onNavigateToRegisterPassword = navigateToRegisterPassword
+            onNavigateToRegisterPassword = navigateToRegisterPassword,
+            imeHeight = imeHeight
         )
     }
 
@@ -95,7 +97,8 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             onNavigateToIntermediatorProfile = navigateToIntermediatorProfile,
             onNavigateToVolunteerProfile = navigateToVolunteerProfile,
-            type = it.arguments!!.getSerializable("type") as Type
+            type = it.arguments!!.getSerializable("type") as Type,
+            imeHeight = imeHeight
         )
     }
 
@@ -104,6 +107,7 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             onNavigateToSelectProfileImage = navigateToSelectProfileImage,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
+            imeHeight = imeHeight,
             viewModel = viewModel
         )
     }
@@ -111,6 +115,7 @@ fun NavGraphBuilder.signUpGraph(
     composable(route = SignUpRoute.intermediator_profile) {
         IntermediatorProfileScreen(
             onBackClick = onBackClick,
+            imeHeight = imeHeight,
             navigateToCompleteSignUp = navigateToCompleteSignUp
         )
     }
@@ -118,6 +123,7 @@ fun NavGraphBuilder.signUpGraph(
     composable(route = SignUpRoute.intermediator_information) {
         IntermediatorInformationScreen(
             onBackClick = onBackClick,
+            imeHeight = imeHeight,
             onNavigateToRegisterEmail = navigateToRegisterEmail
         )
     }
