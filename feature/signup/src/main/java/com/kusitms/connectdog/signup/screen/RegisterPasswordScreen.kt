@@ -44,6 +44,7 @@ fun RegisterPasswordScreen(
     onNavigateToVolunteerProfile: () -> Unit,
     onNavigateToIntermediatorProfile: () -> Unit,
     type: Type,
+    imeHeight: Int,
     viewModel: RegisterPasswordViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -68,7 +69,7 @@ fun RegisterPasswordScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(start = 20.dp, end = 20.dp, bottom = 32.dp)
+                .padding(horizontal = 20.dp)
                 .clickable(
                     onClick = { focusManager.clearFocus() },
                     indication = null,
@@ -133,6 +134,7 @@ fun RegisterPasswordScreen(
                     }
                 }
             )
+            Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
     }
 }
@@ -141,6 +143,6 @@ fun RegisterPasswordScreen(
 @Composable
 private fun Preview() {
     ConnectDogTheme {
-        RegisterPasswordScreen({}, {}, {}, Type.INTERMEDIATOR)
+        RegisterPasswordScreen({}, {}, {}, Type.INTERMEDIATOR, 10)
     }
 }

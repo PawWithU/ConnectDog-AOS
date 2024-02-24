@@ -44,6 +44,7 @@ fun VolunteerProfileScreen(
     onBackClick: () -> Unit,
     onNavigateToSelectProfileImage: () -> Unit,
     onNavigateToCompleteSignUp: (Type) -> Unit,
+    imeHeight: Int,
     viewModel: VolunteerProfileViewModel
 ) {
     val focusManager = LocalFocusManager.current
@@ -65,7 +66,7 @@ fun VolunteerProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(start = 20.dp, end = 20.dp, bottom = 32.dp)
+                .padding(horizontal = 20.dp)
                 .clickable(
                     onClick = { focusManager.clearFocus() },
                     indication = null,
@@ -140,6 +141,7 @@ fun VolunteerProfileScreen(
                 color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
                 onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(Type.NORMAL_VOLUNTEER) }
             )
+            Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
     }
 }

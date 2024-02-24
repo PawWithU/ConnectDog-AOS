@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -17,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -59,11 +57,12 @@ fun NormalLoginScreen(
     }
 
     Scaffold(
-        modifier = Modifier.clickable(
-            onClick = { focusManager.clearFocus() },
-            indication = null,
-            interactionSource = interactionSource
-        ),
+        modifier = Modifier
+            .clickable(
+                onClick = { focusManager.clearFocus() },
+                indication = null,
+                interactionSource = interactionSource
+            ),
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = when (type) {
@@ -97,11 +96,6 @@ private fun Content(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp)
         ) {
-            val (password, onPasswordChanged) =
-                remember {
-                    mutableStateOf("")
-                }
-
             ConnectDogTextField(
                 text = viewModel.email,
                 label = "이메일",
@@ -139,18 +133,13 @@ private fun Content(
                 ConnectDogErrorCard(R.string.login_error)
             }
         }
-
         Spacer(modifier = Modifier.weight(1f))
-        Box(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_main_large),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_main_large),
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        )
     }
 }

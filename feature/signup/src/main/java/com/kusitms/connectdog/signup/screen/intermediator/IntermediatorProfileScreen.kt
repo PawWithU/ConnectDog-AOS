@@ -26,6 +26,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +57,7 @@ import com.kusitms.connectdog.signup.viewmodel.IntermediatorProfileViewModel
 fun IntermediatorProfileScreen(
     onBackClick: () -> Unit,
     navigateToCompleteSignUp: (Type) -> Unit,
+    imeHeight: Int,
     viewModel: IntermediatorProfileViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -87,7 +89,7 @@ fun IntermediatorProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(start = 20.dp, end = 20.dp, bottom = 32.dp)
+                .padding(horizontal = 20.dp)
                 .clickable(
                     onClick = { focusManager.clearFocus() },
                     indication = null,
@@ -95,6 +97,9 @@ fun IntermediatorProfileScreen(
                 )
                 .verticalScroll(scrollState)
         ) {
+            LaunchedEffect(imeHeight) {
+                scrollState.animateScrollTo(scrollState.maxValue)
+            }
             Spacer(modifier = Modifier.height(80.dp))
             Text(
                 text = "프로필 정보를\n입력해주세요",
@@ -165,6 +170,7 @@ fun IntermediatorProfileScreen(
                 color = PetOrange,
                 onClick = { navigateToCompleteSignUp(Type.INTERMEDIATOR) }
             )
+            Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
     }
 }

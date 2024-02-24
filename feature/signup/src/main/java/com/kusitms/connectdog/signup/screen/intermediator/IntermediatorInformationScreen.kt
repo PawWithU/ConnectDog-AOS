@@ -31,6 +31,7 @@ import com.kusitms.connectdog.signup.viewmodel.IntermediatorInformationViewModel
 fun IntermediatorInformationScreen(
     onBackClick: () -> Unit,
     onNavigateToRegisterEmail: (Type) -> Unit,
+    imeHeight: Int,
     viewModel: IntermediatorInformationViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -83,7 +84,7 @@ fun IntermediatorInformationScreen(
                     .fillMaxWidth()
                     .height(56.dp)
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
     }
 }
