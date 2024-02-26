@@ -28,15 +28,15 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWit
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.RegisterEmailViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun RegisterEmailScreen(
     onBackClick: () -> Unit,
-    type: Type,
-    onNavigateToRegisterPassword: (Type) -> Unit,
+    userType: UserType,
+    onNavigateToRegisterPassword: (UserType) -> Unit,
     viewModel: RegisterEmailViewModel = hiltViewModel(),
     imeHeight: Int
 ) {
@@ -50,10 +50,10 @@ fun RegisterEmailScreen(
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = when (type) {
-                    Type.SOCIAL_VOLUNTEER -> R.string.volunteer_signup
-                    Type.NORMAL_VOLUNTEER -> R.string.volunteer_signup
-                    Type.INTERMEDIATOR -> R.string.intermediator_signup
+                titleRes = when (userType) {
+                    UserType.SOCIAL_VOLUNTEER -> R.string.volunteer_signup
+                    UserType.NORMAL_VOLUNTEER -> R.string.volunteer_signup
+                    UserType.INTERMEDIATOR -> R.string.intermediator_signup
                 },
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
@@ -102,7 +102,7 @@ fun RegisterEmailScreen(
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
-                onClick = { onNavigateToRegisterPassword(type) },
+                onClick = { onNavigateToRegisterPassword(userType) },
                 modifier =
                 Modifier
                     .fillMaxWidth()
@@ -117,6 +117,6 @@ fun RegisterEmailScreen(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        RegisterEmailScreen(onBackClick = {}, type = Type.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {}, imeHeight = 10)
+        RegisterEmailScreen(onBackClick = {}, userType = UserType.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {}, imeHeight = 10)
     }
 }
