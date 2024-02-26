@@ -5,28 +5,27 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.screen.LoginRoute
 import com.kusitms.connectdog.feature.login.screen.NormalLoginScreen
-import com.kusitms.connectdog.signup.SignUpRoute
 
-fun NavController.navigateLogin() {
-    navigate(LoginRoute.route)
+fun NavController.onLogoutClick() {
+    navigate(LoginRoute.route) {
+        popUpTo(graph.id) {
+            inclusive = true
+        }
+    }
 }
 
-fun NavController.navigateSignup(type: Type) {
-    navigate("${SignUpRoute.route}/$type")
-}
-
-fun NavController.navigateNormalLogin(type: Type) {
-    navigate("${LoginRoute.normal_login}/$type")
+fun NavController.navigateNormalLogin(userType: UserType) {
+    navigate("${LoginRoute.normal_login}/$userType")
 }
 
 fun NavGraphBuilder.loginNavGraph(
     onBackClick: () -> Unit,
-    onNavigateToNormalLogin: (Type) -> Unit,
+    onNavigateToNormalLogin: (UserType) -> Unit,
     onNavigateToVolunteer: () -> Unit,
-    onNavigateToSignup: (Type) -> Unit
+    onNavigateToSignup: (UserType) -> Unit
 ) {
     composable(route = LoginRoute.route) {
         LoginRoute(
@@ -39,13 +38,13 @@ fun NavGraphBuilder.loginNavGraph(
         route = "${LoginRoute.normal_login}/{type}",
         arguments = listOf(
             navArgument("type") {
-                type = NavType.EnumType(Type::class.java)
+                type = NavType.EnumType(UserType::class.java)
             }
         )
     ) {
         NormalLoginScreen(
             onBackClick = onBackClick,
-            type = it.arguments!!.getSerializable("type") as Type,
+            userType = it.arguments!!.getSerializable("type") as UserType,
             onNavigateToVolunteerHome = onNavigateToVolunteer
         )
     }
