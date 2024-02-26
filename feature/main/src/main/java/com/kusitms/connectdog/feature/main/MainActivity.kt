@@ -13,21 +13,28 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.util.Mode
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var dataStore: DataStoreRepository
     private lateinit var auth: FirebaseAuth
     private lateinit var verificationId: String
-    private var isKeyboardShowing = false
     private var imeHeight by mutableIntStateOf(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,22 +42,24 @@ class MainActivity : ComponentActivity() {
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
 
-        // 로그인, 봉사자, 중개자 모드 설정
-        val type = Mode.LOGIN
-
         installSplashScreen()
         imeListener()
-        setContent {
-            val navigator: MainNavigator = rememberMainNavigator(type = type)
-            ConnectDogTheme {
-                MainScreen(
-                    navigator = navigator,
-                    mode = type,
-                    imeHeight = imeHeight,
-                    sendVerificationCode = { sendVerificationCode("+82${it.substring(1)}") },
-                    verifyCode = { verifyCode(it) },
-                    finish = { finish() }
-                )
+
+        lifecycleScope.launch {
+            val appMode = withContext(Dispatchers.IO) {
+                dataStore.appModeFlow.first()
+            }
+            setContent {
+                val navigator: MainNavigator = rememberMainNavigator(mode = appMode)
+                ConnectDogTheme {
+                    MainScreen(
+                        navigator = navigator,
+                        mode = appMode,
+                        imeHeight = imeHeight,
+                        sendVerificationCode = { sendVerificationCode("+82${it.substring(1)}") },
+                        verifyCode = { verifyCode(it) }
+                    )
+                }
             }
         }
     }
@@ -123,7 +132,8 @@ class MainActivity : ComponentActivity() {
 
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView.rootView) { view, windowInsets ->
             val density = resources.displayMetrics.density
-            val imeHeight = (windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom / density).toInt()
+            val imeHeight =
+                (windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom / density).toInt()
             Log.d("tewq", imeHeight.toString())
             if (imeHeight != 0) {
                 this@MainActivity.imeHeight = imeHeight - 20
