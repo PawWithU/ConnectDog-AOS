@@ -38,7 +38,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.KAKAO
 import com.kusitms.connectdog.core.designsystem.theme.NAVER
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.R
 import kotlinx.coroutines.launch
 
@@ -46,8 +46,8 @@ val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
 
 @Composable
 internal fun LoginRoute(
-    onNavigateToNormalLogin: (Type) -> Unit,
-    onNavigateToSignup: (Type) -> Unit
+    onNavigateToNormalLogin: (UserType) -> Unit,
+    onNavigateToSignup: (UserType) -> Unit
 ) {
     LoginScreen(
         onNavigateToNormalLogin = onNavigateToNormalLogin,
@@ -57,8 +57,8 @@ internal fun LoginRoute(
 
 @Composable
 fun LoginScreen(
-    onNavigateToNormalLogin: (Type) -> Unit,
-    onNavigateToSignup: (Type) -> Unit
+    onNavigateToNormalLogin: (UserType) -> Unit,
+    onNavigateToSignup: (UserType) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -84,8 +84,8 @@ fun LoginScreen(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun SelectLoginType(
-    onNavigateToNormalLogin: (Type) -> Unit,
-    onNavigateToSignup: (Type) -> Unit
+    onNavigateToNormalLogin: (UserType) -> Unit,
+    onNavigateToSignup: (UserType) -> Unit
 ) {
     Surface {
         Column() {
@@ -132,8 +132,8 @@ fun SelectLoginType(
 
 @Composable
 fun Volunteer(
-    onNavigateToNormalLogin: (Type) -> Unit,
-    onNavigateToSignup: (Type) -> Unit
+    onNavigateToNormalLogin: (UserType) -> Unit,
+    onNavigateToSignup: (UserType) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,17 +176,17 @@ fun Volunteer(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             content = stringResource(id = R.string.signup_with_connectdog),
-            onClick = { onNavigateToSignup(Type.NORMAL_VOLUNTEER) }
+            onClick = { onNavigateToSignup(UserType.NORMAL_VOLUNTEER) }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        NormalLogin(onNavigateToNormalLogin, Type.NORMAL_VOLUNTEER)
+        NormalLogin(onNavigateToNormalLogin, UserType.NORMAL_VOLUNTEER)
     }
 }
 
 @Composable
 private fun Intermediator(
-    onNavigateToNormalLogin: (Type) -> Unit,
-    onNavigateToSignup: (Type) -> Unit
+    onNavigateToNormalLogin: (UserType) -> Unit,
+    onNavigateToSignup: (UserType) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -200,15 +200,15 @@ private fun Intermediator(
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
             content = stringResource(id = R.string.signup_with_connectdog),
-            onClick = { onNavigateToSignup(Type.INTERMEDIATOR) }
+            onClick = { onNavigateToSignup(UserType.INTERMEDIATOR) }
         )
         Spacer(modifier = Modifier.height(16.dp))
-        NormalLogin(onNavigateToNormalLogin, Type.INTERMEDIATOR)
+        NormalLogin(onNavigateToNormalLogin, UserType.INTERMEDIATOR)
     }
 }
 
 @Composable
-private fun NormalLogin(onNavigateToNormalLogin: (Type) -> Unit, type: Type) {
+private fun NormalLogin(onNavigateToNormalLogin: (UserType) -> Unit, userType: UserType) {
     ClickableText(
         text = buildAnnotatedString {
             withStyle(
@@ -229,6 +229,6 @@ private fun NormalLogin(onNavigateToNormalLogin: (Type) -> Unit, type: Type) {
                 append("로그인")
             }
         },
-        onClick = { onNavigateToNormalLogin(type) }
+        onClick = { onNavigateToNormalLogin(userType) }
     )
 }
