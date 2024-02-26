@@ -34,7 +34,7 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.RegisterPasswordViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -43,7 +43,7 @@ fun RegisterPasswordScreen(
     onBackClick: () -> Unit,
     onNavigateToVolunteerProfile: () -> Unit,
     onNavigateToIntermediatorProfile: () -> Unit,
-    type: Type,
+    userType: UserType,
     imeHeight: Int,
     viewModel: RegisterPasswordViewModel = hiltViewModel()
 ) {
@@ -55,8 +55,8 @@ fun RegisterPasswordScreen(
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = when (type) {
-                    Type.INTERMEDIATOR -> R.string.intermediator_signup
+                titleRes = when (userType) {
+                    UserType.INTERMEDIATOR -> R.string.intermediator_signup
                     else -> R.string.volunteer_signup
                 },
                 navigationType = TopAppBarNavigationType.BACK,
@@ -127,8 +127,8 @@ fun RegisterPasswordScreen(
                 },
                 onClick = {
                     if (isValidPassword == false && isValidConfirmPassword == false) {
-                        when (type) {
-                            Type.INTERMEDIATOR -> onNavigateToIntermediatorProfile()
+                        when (userType) {
+                            UserType.INTERMEDIATOR -> onNavigateToIntermediatorProfile()
                             else -> onNavigateToVolunteerProfile()
                         }
                     }
@@ -143,6 +143,6 @@ fun RegisterPasswordScreen(
 @Composable
 private fun Preview() {
     ConnectDogTheme {
-        RegisterPasswordScreen({}, {}, {}, Type.INTERMEDIATOR, 10)
+        RegisterPasswordScreen({}, {}, {}, UserType.INTERMEDIATOR, 10)
     }
 }
