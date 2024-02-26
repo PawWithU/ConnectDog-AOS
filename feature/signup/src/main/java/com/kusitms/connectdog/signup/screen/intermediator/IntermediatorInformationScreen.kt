@@ -22,7 +22,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.signup.R
 import com.kusitms.connectdog.signup.viewmodel.IntermediatorInformationViewModel
 
@@ -30,7 +30,7 @@ import com.kusitms.connectdog.signup.viewmodel.IntermediatorInformationViewModel
 @Composable
 fun IntermediatorInformationScreen(
     onBackClick: () -> Unit,
-    onNavigateToRegisterEmail: (Type) -> Unit,
+    onNavigateToRegisterEmail: (UserType) -> Unit,
     imeHeight: Int,
     viewModel: IntermediatorInformationViewModel = hiltViewModel()
 ) {
@@ -78,7 +78,7 @@ fun IntermediatorInformationScreen(
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
-                onClick = { onNavigateToRegisterEmail(Type.INTERMEDIATOR) },
+                onClick = { onNavigateToRegisterEmail(UserType.INTERMEDIATOR) },
                 modifier =
                 Modifier
                     .fillMaxWidth()

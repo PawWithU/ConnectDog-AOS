@@ -29,7 +29,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.viewmodel.LoginViewModel
 
 private const val TAG = "EmailLoginScreen"
@@ -37,7 +37,7 @@ private const val TAG = "EmailLoginScreen"
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NormalLoginScreen(
-    type: Type,
+    userType: UserType,
     onBackClick: () -> Unit,
     onNavigateToVolunteerHome: () -> Unit,
     onNavigateToIntermediatorHome: () -> Unit = {},
@@ -49,8 +49,8 @@ fun NormalLoginScreen(
 
     isLoginSuccessful?.let {
         if (it) {
-            when (type) {
-                Type.INTERMEDIATOR -> onNavigateToIntermediatorHome()
+            when (userType) {
+                UserType.INTERMEDIATOR -> onNavigateToIntermediatorHome()
                 else -> onNavigateToVolunteerHome()
             }
         }
@@ -65,10 +65,10 @@ fun NormalLoginScreen(
             ),
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = when (type) {
-                    Type.SOCIAL_VOLUNTEER -> R.string.volunteer_login
-                    Type.NORMAL_VOLUNTEER -> R.string.volunteer_login
-                    Type.INTERMEDIATOR -> R.string.intermediator_login
+                titleRes = when (userType) {
+                    UserType.SOCIAL_VOLUNTEER -> R.string.volunteer_login
+                    UserType.NORMAL_VOLUNTEER -> R.string.volunteer_login
+                    UserType.INTERMEDIATOR -> R.string.intermediator_login
                 },
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
@@ -76,14 +76,14 @@ fun NormalLoginScreen(
             )
         }
     ) {
-        Content(viewModel, type, isLoginSuccessful)
+        Content(viewModel, userType, isLoginSuccessful)
     }
 }
 
 @Composable
 private fun Content(
     viewModel: LoginViewModel,
-    type: Type,
+    userType: UserType,
     isLoginSuccessful: Boolean?
 ) {
     Column(
@@ -118,10 +118,10 @@ private fun Content(
                 content = "로그인",
                 color = MaterialTheme.colorScheme.primary,
                 onClick = {
-                    when (type) {
-                        Type.INTERMEDIATOR -> { viewModel.initIntermediatorLogin() }
-                        Type.NORMAL_VOLUNTEER -> { viewModel.initVolunteerLogin() }
-                        Type.SOCIAL_VOLUNTEER -> {}
+                    when (userType) {
+                        UserType.INTERMEDIATOR -> { viewModel.initIntermediatorLogin() }
+                        UserType.NORMAL_VOLUNTEER -> { viewModel.initVolunteerLogin() }
+                        UserType.SOCIAL_VOLUNTEER -> {}
                     }
                 },
                 modifier = Modifier

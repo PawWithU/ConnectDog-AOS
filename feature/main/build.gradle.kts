@@ -58,6 +58,7 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
+    implementation(project(":core:data"))
 
     implementation(libs.androidx.core.splashscreen)
     implementation("com.google.firebase:firebase-auth:22.3.0")

@@ -34,7 +34,7 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Red1
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.signup.R
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
@@ -43,7 +43,7 @@ import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 fun VolunteerProfileScreen(
     onBackClick: () -> Unit,
     onNavigateToSelectProfileImage: () -> Unit,
-    onNavigateToCompleteSignUp: (Type) -> Unit,
+    onNavigateToCompleteSignUp: (UserType) -> Unit,
     imeHeight: Int,
     viewModel: VolunteerProfileViewModel
 ) {
@@ -139,7 +139,7 @@ fun VolunteerProfileScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
-                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(Type.NORMAL_VOLUNTEER) }
+                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(UserType.NORMAL_VOLUNTEER) }
             )
             Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }

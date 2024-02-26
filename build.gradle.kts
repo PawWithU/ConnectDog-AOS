@@ -19,7 +19,6 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        // gradlew generateProjectDependencyGraph
         classpath(libs.dependency.graph)
         classpath(libs.google.service)
     }

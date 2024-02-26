@@ -47,7 +47,6 @@ dependencies {
 
     implementation(project(":core:designsystem"))
     implementation(project(":core:util"))
-    implementation(project(":feature:intermediator"))
 
     implementation(libs.androidx.core.splashscreen)
     implementation(project(mapOf("path" to ":core:data")))

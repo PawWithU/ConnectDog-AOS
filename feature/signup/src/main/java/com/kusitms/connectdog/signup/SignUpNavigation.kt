@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.screen.CompleteSignUpScreen
 import com.kusitms.connectdog.signup.screen.RegisterEmailScreen
 import com.kusitms.connectdog.signup.screen.RegisterPasswordScreen
@@ -16,6 +16,10 @@ import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
+fun NavController.navigateSignup(userType: UserType) {
+    navigate("${SignUpRoute.route}/$userType")
+}
+
 fun NavController.navigateToIntermediatorProfile() {
     navigate(SignUpRoute.intermediator_profile)
 }
@@ -24,20 +28,20 @@ fun NavController.navigateToVolunteerProfile() {
     navigate(SignUpRoute.volunteer_profile)
 }
 
-fun NavController.navigateRegisterEmail(type: Type) {
-    navigate("${SignUpRoute.register_email}/$type")
+fun NavController.navigateRegisterEmail(userType: UserType) {
+    navigate("${SignUpRoute.register_email}/$userType")
 }
 
-fun NavController.navigateRegisterPassword(type: Type) {
-    navigate("${SignUpRoute.register_password}/$type")
+fun NavController.navigateRegisterPassword(userType: UserType) {
+    navigate("${SignUpRoute.register_password}/$userType")
 }
 
 fun NavController.navigateSelectProfileImage() {
     navigate(SignUpRoute.profile_image)
 }
 
-fun NavController.navigateCompleteSignUp(type: Type) {
-    navigate("${SignUpRoute.complete_signup}/$type")
+fun NavController.navigateCompleteSignUp(userType: UserType) {
+    navigate("${SignUpRoute.complete_signup}/$userType")
 }
 
 fun NavController.navigateIntermediatorInformation() {
@@ -49,28 +53,28 @@ fun NavGraphBuilder.signUpGraph(
     navigateToVolunteerProfile: () -> Unit,
     navigateToIntermediatorProfile: () -> Unit,
     navigateToIntermediatorInformation: () -> Unit,
-    navigateToRegisterEmail: (Type) -> Unit,
-    navigateToRegisterPassword: (Type) -> Unit,
+    navigateToRegisterEmail: (UserType) -> Unit,
+    navigateToRegisterPassword: (UserType) -> Unit,
     navigateToSelectProfileImage: () -> Unit,
-    navigateToCompleteSignUp: (Type) -> Unit,
+    navigateToCompleteSignUp: (UserType) -> Unit,
     navigateToVolunteer: () -> Unit,
     navigateToIntermediator: () -> Unit,
     imeHeight: Int,
     viewModel: VolunteerProfileViewModel
 ) {
-    val typeArgument = listOf(
+    val userTypeArgument = listOf(
         navArgument("type") {
-            type = NavType.EnumType(Type::class.java)
+            type = NavType.EnumType(UserType::class.java)
         }
     )
 
     composable(
         route = "${SignUpRoute.route}/{type}",
-        arguments = typeArgument
+        arguments = userTypeArgument
     ) {
         SignUpRoute(
             onBackClick = onBackClick,
-            type = it.arguments!!.getSerializable("type") as Type,
+            userType = it.arguments!!.getSerializable("type") as UserType,
             navigateToVolunteerProfile = navigateToVolunteerProfile,
             navigateToIntermediatorInformation = navigateToIntermediatorInformation,
             navigateToRegisterEmail = navigateToRegisterEmail
@@ -79,11 +83,11 @@ fun NavGraphBuilder.signUpGraph(
 
     composable(
         route = "${SignUpRoute.register_email}/{type}",
-        arguments = typeArgument
+        arguments = userTypeArgument
     ) {
         RegisterEmailScreen(
             onBackClick = onBackClick,
-            type = it.arguments!!.getSerializable("type") as Type,
+            userType = it.arguments!!.getSerializable("type") as UserType,
             onNavigateToRegisterPassword = navigateToRegisterPassword,
             imeHeight = imeHeight
         )
@@ -91,13 +95,13 @@ fun NavGraphBuilder.signUpGraph(
 
     composable(
         route = "${SignUpRoute.register_password}/{type}",
-        arguments = typeArgument
+        arguments = userTypeArgument
     ) {
         RegisterPasswordScreen(
             onBackClick = onBackClick,
             onNavigateToIntermediatorProfile = navigateToIntermediatorProfile,
             onNavigateToVolunteerProfile = navigateToVolunteerProfile,
-            type = it.arguments!!.getSerializable("type") as Type,
+            userType = it.arguments!!.getSerializable("type") as UserType,
             imeHeight = imeHeight
         )
     }
@@ -139,10 +143,10 @@ fun NavGraphBuilder.signUpGraph(
 
     composable(
         route = "${SignUpRoute.complete_signup}/{type}",
-        arguments = typeArgument
+        arguments = userTypeArgument
     ) {
         CompleteSignUpScreen(
-            type = it.arguments!!.getSerializable("type") as Type,
+            userType = it.arguments!!.getSerializable("type") as UserType,
             navigateToVolunteer = navigateToVolunteer,
             navigateToIntermediator = navigateToIntermediator
         )

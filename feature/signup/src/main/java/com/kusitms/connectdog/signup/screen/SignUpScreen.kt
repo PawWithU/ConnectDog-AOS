@@ -45,7 +45,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.TermsViewModel
 
 @Composable
@@ -53,12 +53,12 @@ internal fun SignUpRoute(
     onBackClick: () -> Unit,
     navigateToVolunteerProfile: () -> Unit,
     navigateToIntermediatorInformation: () -> Unit,
-    navigateToRegisterEmail: (Type) -> Unit,
-    type: Type
+    navigateToRegisterEmail: (UserType) -> Unit,
+    userType: UserType
 ) {
     SignUpScreen(
         onBackClick = onBackClick,
-        type = type,
+        userType = userType,
         navigateToVolunteerProfile = navigateToVolunteerProfile,
         navigateToRegisterEmail = navigateToRegisterEmail,
         navigateToIntermediatorProfile = navigateToIntermediatorInformation
@@ -67,10 +67,10 @@ internal fun SignUpRoute(
 
 @Composable
 fun SignUpScreen(
-    type: Type,
+    userType: UserType,
     onBackClick: () -> Unit,
     navigateToVolunteerProfile: () -> Unit,
-    navigateToRegisterEmail: (Type) -> Unit,
+    navigateToRegisterEmail: (UserType) -> Unit,
     navigateToIntermediatorProfile: () -> Unit,
     viewModel: TermsViewModel = hiltViewModel()
 ) {
@@ -100,10 +100,10 @@ fun SignUpScreen(
                 .background(Color.White)
         ) {
             ConnectDogTopAppBar(
-                titleRes = when (type) {
-                    Type.SOCIAL_VOLUNTEER -> R.string.volunteer_signup
-                    Type.NORMAL_VOLUNTEER -> R.string.volunteer_signup
-                    Type.INTERMEDIATOR -> R.string.intermediator_signup
+                titleRes = when (userType) {
+                    UserType.SOCIAL_VOLUNTEER -> R.string.volunteer_signup
+                    UserType.NORMAL_VOLUNTEER -> R.string.volunteer_signup
+                    UserType.INTERMEDIATOR -> R.string.intermediator_signup
                 },
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
@@ -146,10 +146,10 @@ fun SignUpScreen(
                 .padding(horizontal = 20.dp),
             onClick = {
                 if (allChecked) {
-                    when (type) {
-                        Type.NORMAL_VOLUNTEER -> navigateToRegisterEmail(type)
-                        Type.SOCIAL_VOLUNTEER -> navigateToVolunteerProfile()
-                        Type.INTERMEDIATOR -> navigateToIntermediatorProfile()
+                    when (userType) {
+                        UserType.NORMAL_VOLUNTEER -> navigateToRegisterEmail(userType)
+                        UserType.SOCIAL_VOLUNTEER -> navigateToVolunteerProfile()
+                        UserType.INTERMEDIATOR -> navigateToIntermediatorProfile()
                     }
                 } else {
                     val toast = Toast.makeText(context, "모든 약관에 동의해주세요", Toast.LENGTH_SHORT)

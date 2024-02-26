@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.util.Mode
+import com.kusitms.connectdog.core.util.AppMode
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
@@ -39,11 +39,10 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun MainScreen(
-    mode: Mode,
-    navigator: MainNavigator = rememberMainNavigator(type = mode),
+    mode: AppMode,
+    navigator: MainNavigator = rememberMainNavigator(mode = mode),
     sendVerificationCode: (String) -> Unit,
     verifyCode: (String) -> Boolean,
-    finish: () -> Unit,
     imeHeight: Int
 ) {
     val viewModel: VolunteerProfileViewModel = hiltViewModel()
@@ -105,7 +104,7 @@ internal fun MainScreen(
                     mypageNavGraph(
                         padding = it,
                         onClick = {},
-                        onLogoutClick = { finish() },
+                        onLogoutClick = { navigator.onLogoutClick() },
                         onBackClick = navigator::popBackStackIfNotHome,
                         onEditProfileClick = { navigator.navigateEditProfile() },
                         onManageAccountClick = { navigator.navigateManageAccount() },

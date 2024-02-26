@@ -15,6 +15,7 @@ import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
 import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
 import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.data.repository.LoginRepository
+import com.kusitms.connectdog.core.util.AppMode
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
@@ -65,6 +66,7 @@ constructor(
             try {
                 val response = loginRepository.postLoginData(NormalLoginBody(_email.value, _password.value))
                 dataStoreRepository.saveAccessToken(response.accessToken)
+                dataStoreRepository.saveAppMode(AppMode.VOLUNTEER)
                 _isLoginSuccessful.value = true
                 Log.d(TAG, isLoginSuccessful.toString())
                 Log.d(TAG, dataStoreRepository.accessTokenFlow.first().toString())

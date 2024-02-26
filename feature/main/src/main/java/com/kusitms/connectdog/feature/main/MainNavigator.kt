@@ -8,8 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.kusitms.connectdog.core.util.Mode
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.AppMode
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateApply
@@ -25,7 +25,7 @@ import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
 import com.kusitms.connectdog.feature.login.LoginRoute
 import com.kusitms.connectdog.feature.login.navigateNormalLogin
-import com.kusitms.connectdog.feature.login.navigateSignup
+import com.kusitms.connectdog.feature.login.onLogoutClick
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBadge
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBookmark
@@ -39,22 +39,23 @@ import com.kusitms.connectdog.signup.navigateIntermediatorInformation
 import com.kusitms.connectdog.signup.navigateRegisterEmail
 import com.kusitms.connectdog.signup.navigateRegisterPassword
 import com.kusitms.connectdog.signup.navigateSelectProfileImage
+import com.kusitms.connectdog.signup.navigateSignup
 import com.kusitms.connectdog.signup.navigateToIntermediatorProfile
 import com.kusitms.connectdog.signup.navigateToVolunteerProfile
 
 internal class MainNavigator(
     val navController: NavHostController,
-    type: Mode
+    mode: AppMode
 ) {
     private val currentDestination: NavDestination?
         @Composable get() =
             navController
                 .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = when (type) {
-        Mode.VOLUNTEER -> MainTab.HOME.route
-        Mode.INTERMEDIATOR -> MainTab.HOME.route
-        Mode.LOGIN -> LoginRoute.route
+    val startDestination = when (mode) {
+        AppMode.VOLUNTEER -> MainTab.HOME.route
+        AppMode.INTERMEDIATOR -> MainTab.HOME.route
+        AppMode.LOGIN -> LoginRoute.route
     }
 
     val currentTab: MainTab?
@@ -82,16 +83,17 @@ internal class MainNavigator(
     }
 
     // login navigator
-    fun navigateNormalLogin(type: Type) = navController.navigateNormalLogin(type)
-    fun navigateSignup(type: Type) = navController.navigateSignup(type)
+    fun navigateNormalLogin(userType: UserType) = navController.navigateNormalLogin(userType)
+    fun navigateSignup(userType: UserType) = navController.navigateSignup(userType)
+    fun onLogoutClick() = navController.onLogoutClick()
 
     // signup navigator
     fun navigateVolunteerProfile() = navController.navigateToVolunteerProfile()
     fun navigateIntermediatorProfile() = navController.navigateToIntermediatorProfile()
-    fun navigateRegisterEmail(type: Type) = navController.navigateRegisterEmail(type)
-    fun navigateRegisterPassword(type: Type) = navController.navigateRegisterPassword(type)
+    fun navigateRegisterEmail(userType: UserType) = navController.navigateRegisterEmail(userType)
+    fun navigateRegisterPassword(userType: UserType) = navController.navigateRegisterPassword(userType)
     fun navigateSelectProfileImage() = navController.navigateSelectProfileImage()
-    fun navigateCompleteSignUp(type: Type) = navController.navigateCompleteSignUp(type)
+    fun navigateCompleteSignUp(userType: UserType) = navController.navigateCompleteSignUp(userType)
     fun navigateIntermediatorInformation() = navController.navigateIntermediatorInformation()
 
     // volunteer navigator
@@ -130,7 +132,7 @@ internal class MainNavigator(
 }
 
 @Composable
-internal fun rememberMainNavigator(navController: NavHostController = rememberNavController(), type: Mode): MainNavigator =
+internal fun rememberMainNavigator(navController: NavHostController = rememberNavController(), mode: AppMode): MainNavigator =
     remember(navController) {
-        MainNavigator(navController, type)
+        MainNavigator(navController, mode)
     }
