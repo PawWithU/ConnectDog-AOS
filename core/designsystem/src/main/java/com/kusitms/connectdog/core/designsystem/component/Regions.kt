@@ -37,7 +37,7 @@ fun ConnectDogRegions(
 ) {
     var selectedRegion by remember { mutableStateOf("") }
     SiDoList { sido, gugun ->
-        selectedRegion = "$sido $gugun"
+        selectedRegion = if (gugun.contains("전체")) gugun else "$sido $gugun"
         onSelected(selectedRegion)
     }
 }

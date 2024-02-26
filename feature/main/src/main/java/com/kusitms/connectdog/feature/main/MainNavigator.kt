@@ -8,6 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.kusitms.connectdog.core.util.AppMode
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateApply
@@ -21,6 +23,9 @@ import com.kusitms.connectdog.feature.home.navigation.navigateIntermediatorProfi
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
+import com.kusitms.connectdog.feature.login.LoginRoute
+import com.kusitms.connectdog.feature.login.navigateNormalLogin
+import com.kusitms.connectdog.feature.login.onLogoutClick
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBadge
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBookmark
@@ -29,16 +34,29 @@ import com.kusitms.connectdog.feature.mypage.navigation.navigateManageAccount
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 import com.kusitms.connectdog.feature.mypage.navigation.navigateNotification
 import com.kusitms.connectdog.feature.mypage.navigation.navigateSetting
+import com.kusitms.connectdog.signup.navigateCompleteSignUp
+import com.kusitms.connectdog.signup.navigateIntermediatorInformation
+import com.kusitms.connectdog.signup.navigateRegisterEmail
+import com.kusitms.connectdog.signup.navigateRegisterPassword
+import com.kusitms.connectdog.signup.navigateSelectProfileImage
+import com.kusitms.connectdog.signup.navigateSignup
+import com.kusitms.connectdog.signup.navigateToIntermediatorProfile
+import com.kusitms.connectdog.signup.navigateToVolunteerProfile
 
 internal class MainNavigator(
-    val navController: NavHostController
+    val navController: NavHostController,
+    mode: AppMode
 ) {
     private val currentDestination: NavDestination?
         @Composable get() =
             navController
                 .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = MainTab.HOME.route
+    val startDestination = when (mode) {
+        AppMode.VOLUNTEER -> MainTab.HOME.route
+        AppMode.INTERMEDIATOR -> MainTab.HOME.route
+        AppMode.LOGIN -> LoginRoute.route
+    }
 
     val currentTab: MainTab?
         @Composable get() =
@@ -51,6 +69,7 @@ internal class MainNavigator(
             navOptions {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
+                    inclusive = true
                 }
                 launchSingleTop = true
                 restoreState = true
@@ -63,74 +82,43 @@ internal class MainNavigator(
         }
     }
 
-    fun navigateHomeSearch() {
-        navController.navigateSearch()
-    }
+    // login navigator
+    fun navigateNormalLogin(userType: UserType) = navController.navigateNormalLogin(userType)
+    fun navigateSignup(userType: UserType) = navController.navigateSignup(userType)
+    fun onLogoutClick() = navController.onLogoutClick()
 
-    fun navigateHomeSearchWithFilter(filter: Filter) {
-        navController.navigateSearchWithFilter(filter)
-    }
+    // signup navigator
+    fun navigateVolunteerProfile() = navController.navigateToVolunteerProfile()
+    fun navigateIntermediatorProfile() = navController.navigateToIntermediatorProfile()
+    fun navigateRegisterEmail(userType: UserType) = navController.navigateRegisterEmail(userType)
+    fun navigateRegisterPassword(userType: UserType) = navController.navigateRegisterPassword(userType)
+    fun navigateSelectProfileImage() = navController.navigateSelectProfileImage()
+    fun navigateCompleteSignUp(userType: UserType) = navController.navigateCompleteSignUp(userType)
+    fun navigateIntermediatorInformation() = navController.navigateIntermediatorInformation()
 
-    fun navigateHomeFilterSearch() {
-        navController.navigateFilterSearch()
-    }
-
-    fun navigateHomeFilter(filter: Filter) {
-        navController.navigateFilter(filter)
-    }
-
-    fun navigateHomeReview() {
-        navController.navigateReview()
-    }
-
-    fun navigateHomeDetail(postId: Long) {
-        navController.navigateDetail(postId)
-    }
-
-    fun navigateCertification(postId: Long) {
-        navController.navigateCertification(postId)
-    }
-
-    fun navigateApply(postId: Long) {
-        navController.navigateApply(postId)
-    }
+    // volunteer navigator
+    fun navigateHome() = navigate(MainTab.HOME)
+    fun navigateHomeSearch() = navController.navigateSearch()
+    fun navigateHomeSearchWithFilter(filter: Filter) = navController.navigateSearchWithFilter(filter)
+    fun navigateHomeFilterSearch() = navController.navigateFilterSearch()
+    fun navigateHomeFilter(filter: Filter) = navController.navigateFilter(filter)
+    fun navigateHomeReview() = navController.navigateReview()
+    fun navigateHomeDetail(postId: Long) = navController.navigateDetail(postId)
+    fun navigateCertification(postId: Long) = navController.navigateCertification(postId)
+    fun navigateApply(postId: Long) = navController.navigateApply(postId)
+    fun navigateComplete() = navController.navigateComplete()
+    fun navigateIntermediatorProfile(intermediaryId: Long) = navController.navigateIntermediatorProfile(intermediaryId)
+    fun navigateEditProfile() = navController.navigateEditProfile()
+    fun navigateManageAccount() = navController.navigateManageAccount()
+    fun navigateNotification() = navController.navigateNotification()
+    fun navigateSetting() = navController.navigateSetting()
+    fun navigateBadge() = navController.navigateBadge()
+    fun navigateBookmark() = navController.navigateBookmark()
 
     fun popBackStackIfNotHome() {
         if (!isSameCurrentDestination(HomeRoute.route)) {
             navController.popBackStack()
         }
-    }
-
-    fun navigateComplete() {
-        navController.navigateComplete()
-    }
-
-    fun navigateIntermediatorProfile(intermediaryId: Long) {
-        navController.navigateIntermediatorProfile(intermediaryId)
-    }
-
-    fun navigateEditProfile() {
-        navController.navigateEditProfile()
-    }
-
-    fun navigateManageAccount() {
-        navController.navigateManageAccount()
-    }
-
-    fun navigateNotification() {
-        navController.navigateNotification()
-    }
-
-    fun navigateSetting() {
-        navController.navigateSetting()
-    }
-
-    fun navigateBadge() {
-        navController.navigateBadge()
-    }
-
-    fun navigateBookmark() {
-        navController.navigateBookmark()
     }
 
     private fun isSameCurrentDestination(route: String) =
@@ -144,7 +132,7 @@ internal class MainNavigator(
 }
 
 @Composable
-internal fun rememberMainNavigator(navController: NavHostController = rememberNavController()): MainNavigator =
+internal fun rememberMainNavigator(navController: NavHostController = rememberNavController(), mode: AppMode): MainNavigator =
     remember(navController) {
-        MainNavigator(navController)
+        MainNavigator(navController, mode)
     }

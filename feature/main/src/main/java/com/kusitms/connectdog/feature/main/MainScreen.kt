@@ -25,20 +25,28 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.util.AppMode
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
+import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
+import com.kusitms.connectdog.signup.signUpGraph
+import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun MainScreen(
-    navigator: MainNavigator = rememberMainNavigator(),
+    mode: AppMode,
+    navigator: MainNavigator = rememberMainNavigator(mode = mode),
     sendVerificationCode: (String) -> Unit,
-    finish: () -> Unit,
-    verifyCode: (String) -> Boolean
+    verifyCode: (String) -> Boolean,
+    imeHeight: Int
 ) {
+    val viewModel: VolunteerProfileViewModel = hiltViewModel()
+
     Scaffold(
         content = {
             Box(
@@ -51,16 +59,32 @@ internal fun MainScreen(
                     navController = navigator.navController,
                     startDestination = navigator.startDestination
                 ) {
+                    loginNavGraph(
+                        onBackClick = { navigator.popBackStackIfNotHome() },
+                        onNavigateToNormalLogin = { navigator.navigateNormalLogin(it) },
+                        onNavigateToVolunteer = { navigator.navigateHome() },
+                        onNavigateToSignup = { navigator.navigateSignup(it) }
+                    )
+                    signUpGraph(
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        navigateToVolunteerProfile = { navigator.navigateVolunteerProfile() },
+                        navigateToIntermediatorInformation = { navigator.navigateIntermediatorInformation() },
+                        navigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
+                        navigateToRegisterEmail = { navigator.navigateRegisterEmail(it) },
+                        navigateToRegisterPassword = { navigator.navigateRegisterPassword(it) },
+                        navigateToSelectProfileImage = { navigator.navigateSelectProfileImage() },
+                        navigateToCompleteSignUp = { navigator.navigateCompleteSignUp(it) },
+                        navigateToVolunteer = { navigator.navigateHome() },
+                        navigateToIntermediator = { navigator.navigateManageAccount() },
+                        imeHeight = imeHeight,
+                        viewModel = viewModel
+                    )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToSearch = { navigator.navigateHomeSearch() },
-                        onNavigateToSearchWithFilter = { filter ->
-                            navigator.navigateHomeSearchWithFilter(filter)
-                        },
+                        onNavigateToSearchWithFilter = { navigator.navigateHomeSearchWithFilter(it) },
                         onNavigateToFilterSearch = { navigator.navigateHomeFilterSearch() },
-                        onNavigateToFilter = { filter ->
-                            navigator.navigateHomeFilter(filter)
-                        },
+                        onNavigateToFilter = { navigator.navigateHomeFilter(it) },
                         onNavigateToReview = { navigator.navigateHomeReview() },
                         onNavigateToDetail = { navigator.navigateHomeDetail(it) },
                         onNavigateToCertification = { navigator.navigateCertification(it) },
@@ -70,7 +94,8 @@ internal fun MainScreen(
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {},
                         onSendMessage = { sendVerificationCode(it) },
-                        onVerifyCode = { verifyCode(it) }
+                        onVerifyCode = { verifyCode(it) },
+                        imeHeight = imeHeight
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -79,7 +104,7 @@ internal fun MainScreen(
                     mypageNavGraph(
                         padding = it,
                         onClick = {},
-                        onLogoutClick = { finish() },
+                        onLogoutClick = { navigator.onLogoutClick() },
                         onBackClick = navigator::popBackStackIfNotHome,
                         onEditProfileClick = { navigator.navigateEditProfile() },
                         onManageAccountClick = { navigator.navigateManageAccount() },

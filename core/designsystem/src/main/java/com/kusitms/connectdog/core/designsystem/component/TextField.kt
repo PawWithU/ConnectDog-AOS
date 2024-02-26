@@ -17,10 +17,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -34,7 +32,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
@@ -67,7 +64,7 @@ fun ConnectDogTextField(
             .fillMaxWidth()
             .height(height.dp),
         value = text,
-        onValueChange = onTextChanged,
+        onValueChange = { onTextChanged(it) },
         label = {
             Text(
                 text = label,
@@ -108,28 +105,6 @@ fun ConnectDogTextField(
             unfocusedBorderColor = Gray5,
             errorBorderColor = MaterialTheme.colorScheme.error
         )
-    )
-}
-
-@Composable
-fun NormalTextField(
-    label: String,
-    placeholder: String,
-    keyboardType: KeyboardType,
-    height: Int = 65,
-    modifier: Modifier = Modifier,
-    onTextChanged: (String) -> Unit = {},
-    text: String = "",
-    isError: Boolean = false
-) {
-    ConnectDogTextField(
-        text = text,
-        onTextChanged = onTextChanged,
-        label = label,
-        placeholder = placeholder,
-        keyboardType = keyboardType,
-        height = height,
-        isError = isError
     )
 }
 
@@ -184,6 +159,8 @@ fun ConnectDogIconTextField(
 
 @Composable
 fun ConnectDogTextFieldWithButton(
+    text: String,
+    onTextChanged: (String) -> Unit,
     width: Int,
     height: Int,
     textFieldLabel: String,
@@ -194,18 +171,15 @@ fun ConnectDogTextFieldWithButton(
     onClick: (String) -> Unit = {},
     isError: Boolean = false
 ) {
-    val (text, onTextChanged) =
-        remember {
-            mutableStateOf("")
-        }
-
     Box {
-        NormalTextField(
+        ConnectDogTextField(
             text = text,
             label = textFieldLabel,
             placeholder = placeholder,
             keyboardType = keyboardType,
-            onTextChanged = onTextChanged,
+            onTextChanged = {
+                onTextChanged(it)
+            },
             isError = isError
         )
 

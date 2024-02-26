@@ -43,11 +43,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTag
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.DetailInfo
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
-import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
@@ -298,7 +298,7 @@ private fun BottomButton(
         ) {
             BookmarkButton(isBookmark, onSaveClick, onDeleteClick)
             Spacer(modifier = Modifier.width(10.dp))
-            NormalButton(content = "신청하기", onClick = onClick)
+            ConnectDogNormalButton(content = "신청하기", onClick = onClick)
         }
     }
 }

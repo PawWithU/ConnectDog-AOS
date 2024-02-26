@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
-import com.kusitms.connectdog.core.designsystem.component.NormalButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 
@@ -83,7 +83,7 @@ fun CompleteApplyScreen(
                 color = Gray2
             )
         }
-        NormalButton(
+        ConnectDogNormalButton(
             content = "확인",
             modifier =
             Modifier

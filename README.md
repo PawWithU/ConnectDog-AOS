@@ -1,4 +1,7 @@
-# PawWithU-AOS
+[app-debug.apk.zip](https://github.com/PawWithU/ConnectDog-AOS/files/13451235/app-debug.apk.zip)
+
+# 🐕 ConnectDog, 코넥독
+<img width="60%" height="60%" src="https://github.com/PawWithU/ConnectDog-AOS/assets/63611804/3004f263-a37c-4025-9d9f-4460a8badb65"/>
 
 ## 🖥 Development
 
@@ -82,4 +85,7 @@
   - `release` : 출시 전 QA를 위한 branch
   - `hotfix/**` : 출시된 버전의 버그를 수정하는 branch
     - 예시: hotfix/login
-  
+
+<img src="https://github.com/PawWithU/ConnectDog-AOS/assets/63611804/1e05edea-7b3a-49aa-8dd8-70faca37be28"  width="500">
+
+<br>

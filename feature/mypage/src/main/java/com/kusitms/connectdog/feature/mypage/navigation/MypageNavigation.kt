@@ -5,13 +5,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.kusitms.connectdog.feature.mypage.BadgeScreen
-import com.kusitms.connectdog.feature.mypage.BookmarkScreen
-import com.kusitms.connectdog.feature.mypage.EditProfileScreen
-import com.kusitms.connectdog.feature.mypage.ManageAccountScreen
-import com.kusitms.connectdog.feature.mypage.MypageRoute
-import com.kusitms.connectdog.feature.mypage.NotificationScreen
-import com.kusitms.connectdog.feature.mypage.SettingScreen
+import com.kusitms.connectdog.feature.mypage.screen.BadgeScreen
+import com.kusitms.connectdog.feature.mypage.screen.BookmarkScreen
+import com.kusitms.connectdog.feature.mypage.screen.EditProfileScreen
+import com.kusitms.connectdog.feature.mypage.screen.ManageAccountScreen
+import com.kusitms.connectdog.feature.mypage.screen.MypageRoute
+import com.kusitms.connectdog.feature.mypage.screen.NotificationScreen
+import com.kusitms.connectdog.feature.mypage.screen.SettingScreen
 
 fun NavController.navigateMypage(navOptions: NavOptions) {
     navigate(MypageRoute.route, navOptions)

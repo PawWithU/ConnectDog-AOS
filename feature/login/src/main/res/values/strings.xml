@@ -3,4 +3,5 @@
     <string name="naver_login">네이버로 시작하기</string>
     <string name="kakao_login">카카오로 시작하기</string>
     <string name="signup_with_connectdog">코넥독 계정으로 회원가입하기</string>
+    <string name="or">또는</string>
 </resources>

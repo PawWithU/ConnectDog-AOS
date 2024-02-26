@@ -174,7 +174,7 @@ enum class TopAppBarNavigationType { BACK, HOME, CLOSE, MYPAGE, MANAGEMENT }
 private fun ConnectDogTopAppBarPreviewBack() {
     ConnectDogTheme {
         ConnectDogTopAppBar(
-            titleRes = R.string.untitled,
+            titleRes = R.string.login,
             navigationType = TopAppBarNavigationType.BACK,
             navigationIconContentDescription = "Navigation icon"
         )

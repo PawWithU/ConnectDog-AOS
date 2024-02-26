@@ -30,11 +30,11 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.DetailInfo
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
-import com.kusitms.connectdog.core.designsystem.component.NormalButton
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
@@ -156,7 +156,7 @@ private fun Information() {
     ) {
         IntermediatorInformation()
         Spacer(modifier = Modifier.weight(1f))
-        NormalButton(content = "수정하기", modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp))
+        ConnectDogNormalButton(content = "수정하기", modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp))
         Spacer(modifier = Modifier.height(32.dp))
     }
 }

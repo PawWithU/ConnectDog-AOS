@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="volunteer_signup">이동봉사자 회원가입</string>
+    <string name="intermediator_signup">이동봉사 중개 회원가입</string>
+</resources>
