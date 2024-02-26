@@ -48,7 +48,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.util.Type
+import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.signup.R
 import com.kusitms.connectdog.signup.viewmodel.IntermediatorProfileViewModel
 
@@ -56,7 +56,7 @@ import com.kusitms.connectdog.signup.viewmodel.IntermediatorProfileViewModel
 @Composable
 fun IntermediatorProfileScreen(
     onBackClick: () -> Unit,
-    navigateToCompleteSignUp: (Type) -> Unit,
+    navigateToCompleteSignUp: (UserType) -> Unit,
     imeHeight: Int,
     viewModel: IntermediatorProfileViewModel = hiltViewModel()
 ) {
@@ -168,7 +168,7 @@ fun IntermediatorProfileScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 color = PetOrange,
-                onClick = { navigateToCompleteSignUp(Type.INTERMEDIATOR) }
+                onClick = { navigateToCompleteSignUp(UserType.INTERMEDIATOR) }
             )
             Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
