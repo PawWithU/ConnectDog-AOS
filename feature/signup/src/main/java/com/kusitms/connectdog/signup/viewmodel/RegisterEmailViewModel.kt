@@ -14,6 +14,10 @@ class RegisterEmailViewModel @Inject constructor() : ViewModel() {
     val isEmailVerified: StateFlow<Boolean>
         get() = _isEmailVerified
 
+    private val _isValidEmail: MutableStateFlow<Boolean?> = MutableStateFlow(null)
+    val isValidEmail: StateFlow<Boolean?>
+        get() = _isValidEmail
+
     private val _email: MutableState<String> = mutableStateOf("")
     val email: String
         get() = _email.value
@@ -28,5 +32,9 @@ class RegisterEmailViewModel @Inject constructor() : ViewModel() {
 
     fun updateCertificationNumber(certificationNumber: String) {
         _certificationNumber.value = certificationNumber
+    }
+
+    fun updateEmailValidity() {
+        _isValidEmail.value = !android.util.Patterns.EMAIL_ADDRESS.matcher(_email.value).matches()
     }
 }
