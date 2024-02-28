@@ -57,31 +57,32 @@ class MainActivity : ComponentActivity() {
                         mode = appMode,
                         imeHeight = imeHeight,
                         sendVerificationCode = { sendVerificationCode("+82${it.substring(1)}") },
-                        verifyCode = { verifyCode(it) }
+                        verifyCode = { code, callback -> verifyCode(code) { callback(it) } }
                     )
                 }
             }
         }
     }
 
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): Boolean {
-        var isCertified = false
+    private fun signInWithPhoneAuthCredential(
+        credential: PhoneAuthCredential,
+        callback: (Boolean) -> Unit
+    ) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    isCertified = true
                     Toast.makeText(this, "인증에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                    callback(true)
                 } else {
-                    isCertified = false
                     Toast.makeText(this, "인증에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    callback(false)
                 }
             }
-        return isCertified
     }
 
-    private fun verifyCode(code: String): Boolean {
+    private fun verifyCode(code: String, callback: (Boolean) -> Unit) {
         val credential = PhoneAuthProvider.getCredential(verificationId, code)
-        return signInWithPhoneAuthCredential(credential)
+        signInWithPhoneAuthCredential(credential) { isSuccess -> callback(isSuccess) }
     }
 
     private fun sendVerificationCode(phoneNumber: String) {
@@ -92,7 +93,7 @@ class MainActivity : ComponentActivity() {
             this,
             object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    signInWithPhoneAuthCredential(credential)
+//                    signInWithPhoneAuthCredential(credential)
                 }
 
                 override fun onVerificationFailed(e: FirebaseException) {
@@ -134,13 +135,11 @@ class MainActivity : ComponentActivity() {
             val density = resources.displayMetrics.density
             val imeHeight =
                 (windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom / density).toInt()
-            Log.d("tewq", imeHeight.toString())
             if (imeHeight != 0) {
                 this@MainActivity.imeHeight = imeHeight - 20
             } else {
                 this@MainActivity.imeHeight = 0
             }
-
             ViewCompat.onApplyWindowInsets(view, windowInsets)
         }
     }
