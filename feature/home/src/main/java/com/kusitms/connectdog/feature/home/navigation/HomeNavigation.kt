@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.localDateGson
+import com.kusitms.connectdog.feature.home.ApplyViewModel
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.screen.ApplyScreen
 import com.kusitms.connectdog.feature.home.screen.CertificationScreen
@@ -91,8 +92,9 @@ fun NavGraphBuilder.homeNavGraph(
     onNavigateToIntermediatorProfile: (Long) -> Unit,
     onNavigateToNotification: () -> Unit,
     onSendMessage: (String) -> Unit,
-    onVerifyCode: (String) -> Boolean,
+    onVerifyCode: (String, (Boolean) -> Unit) -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    applyViewModel: ApplyViewModel,
     imeHeight: Int
 ) {
     composable(route = HomeRoute.route) {
@@ -190,7 +192,9 @@ fun NavGraphBuilder.homeNavGraph(
             onApplyClick = { onNavigateToApply(it) },
             onSendMessageClick = onSendMessage,
             onVerifyCodeClick = onVerifyCode,
-            postId = it.arguments!!.getLong("postId")
+            postId = it.arguments!!.getLong("postId"),
+            imeHeight = imeHeight,
+            viewModel = applyViewModel
         )
     }
 
@@ -205,7 +209,9 @@ fun NavGraphBuilder.homeNavGraph(
         ApplyScreen(
             onBackClick = onBackClick,
             onClick = onNavigateToComplete,
-            postId = it.arguments!!.getLong("postId")
+            postId = it.arguments!!.getLong("postId"),
+            imeHeight = imeHeight,
+            viewModel = applyViewModel
         )
     }
 

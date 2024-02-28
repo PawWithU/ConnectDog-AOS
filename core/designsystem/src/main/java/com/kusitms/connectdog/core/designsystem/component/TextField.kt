@@ -17,8 +17,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -29,10 +27,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
@@ -42,6 +38,7 @@ fun ConnectDogTextField(
     text: String,
     onTextChanged: (String) -> Unit,
     label: String,
+    enabled: Boolean = true,
     placeholder: String,
     @StringRes supportingText: Int? = null,
     imeAction: ImeAction = ImeAction.Next,
@@ -59,8 +56,7 @@ fun ConnectDogTextField(
 
     OutlinedTextField(
         visualTransformation = visualTransformation,
-        modifier =
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .height(height.dp),
         value = text,
@@ -85,6 +81,7 @@ fun ConnectDogTextField(
         singleLine = true,
         shape = RoundedCornerShape(12.dp),
         isError = isError,
+        enabled = enabled,
         supportingText = {
             if (isError) {
                 Text(
@@ -105,6 +102,9 @@ fun ConnectDogTextField(
             unfocusedBorderColor = Gray5,
             errorBorderColor = MaterialTheme.colorScheme.error
         )
+//        textStyle = LocalTextStyle.current.copy(
+//            baselineShift = BaselineShift(if(height == 65) 0f else 2.5f)
+//        )
     )
 }
 
@@ -199,22 +199,22 @@ fun ConnectDogTextFieldWithButton(
     }
 }
 
-@Preview
-@Composable
-private fun ConnectDogTextFieldPreview() {
-    val (text, onTextChanged) =
-        remember {
-            mutableStateOf("")
-        }
-    ConnectDogTheme {
-        ConnectDogTextField(
-            text = text,
-            onTextChanged = onTextChanged,
-            label = "텍스트",
-            placeholder = "비밀번호"
-        )
-    }
-}
+// @Preview
+// @Composable
+// private fun ConnectDogTextFieldPreview() {
+//    val (text, onTextChanged) =
+//        remember {
+//            mutableStateOf("")
+//        }
+//    ConnectDogTheme {
+//        ConnectDogTextField(
+//            text = text,
+//            onTextChanged = onTextChanged,
+//            label = "텍스트",
+//            placeholder = "비밀번호"
+//        )
+//    }
+// }
 
 // @Preview
 // @Composable

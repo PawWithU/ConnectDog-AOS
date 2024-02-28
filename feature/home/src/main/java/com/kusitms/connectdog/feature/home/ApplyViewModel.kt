@@ -3,13 +3,13 @@ package com.kusitms.connectdog.feature.home
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.repository.ApplyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,16 +17,26 @@ import javax.inject.Inject
 class ApplyViewModel @Inject constructor(
     private val applyRepository: ApplyRepository
 ) : ViewModel() {
-    private val _isCertified = MutableLiveData<Boolean>()
-    val isCertified: LiveData<Boolean> = _isCertified
+    private val _isCertified: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isCertified: StateFlow<Boolean> = _isCertified
+
+    private val _isSendNumber: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isSendNumber: StateFlow<Boolean> = _isSendNumber
+
+    private val _isChecked = MutableStateFlow(true)
+    val isChecked: StateFlow<Boolean> = _isChecked
 
     private val _name: MutableState<String> = mutableStateOf("")
     val name: String
-        get() = _name.value
+        get() = if (_isChecked.value) { _name.value } else { "" }
 
     private val _phoneNumber: MutableState<String> = mutableStateOf("")
     val phoneNumber: String
-        get() = _phoneNumber.value
+        get() = if (_isChecked.value) { _phoneNumber.value } else { "" }
+
+    private val _certificationNumber: MutableState<String> = mutableStateOf("")
+    val certificationNumber: String
+        get() = _certificationNumber.value
 
     private val _transportation: MutableState<String> = mutableStateOf("")
     val transportation: String
@@ -44,12 +54,28 @@ class ApplyViewModel @Inject constructor(
         _phoneNumber.value = phoneNumber
     }
 
+    fun updateCertificationNumber(certificationNumber: String) {
+        _certificationNumber.value = certificationNumber
+    }
+
     fun updateTransportation(transportation: String) {
         _transportation.value = transportation
     }
 
     fun updateContent(content: String) {
         _content.value = content
+    }
+
+    fun updateIsCertified(isCertified: Boolean) {
+        _isCertified.value = isCertified
+    }
+
+    fun updateIsSendNumber(value: Boolean) {
+        _isSendNumber.value = value
+    }
+
+    fun updateIsChecked() {
+        _isChecked.value = !_isChecked.value
     }
 
     fun postApplyVolunteer(postId: Long, applyBody: ApplyBody) {
@@ -61,9 +87,5 @@ class ApplyViewModel @Inject constructor(
                 Log.d("testttserror", e.message.toString())
             }
         }
-    }
-
-    fun updateIsCertified(isCertified: Boolean) {
-        _isCertified.postValue(isCertified)
     }
 }
