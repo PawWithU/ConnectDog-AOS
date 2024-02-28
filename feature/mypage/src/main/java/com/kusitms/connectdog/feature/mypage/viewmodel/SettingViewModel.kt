@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
-): ViewModel() {
+) : ViewModel() {
     fun initLogout() {
         viewModelScope.launch {
             dataStoreRepository.saveAppMode(AppMode.LOGIN)
