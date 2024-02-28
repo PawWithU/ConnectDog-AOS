@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.AppMode
+import com.kusitms.connectdog.feature.home.ApplyViewModel
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
@@ -42,10 +43,11 @@ internal fun MainScreen(
     mode: AppMode,
     navigator: MainNavigator = rememberMainNavigator(mode = mode),
     sendVerificationCode: (String) -> Unit,
-    verifyCode: (String) -> Boolean,
+    verifyCode: (String, (Boolean) -> Unit) -> Unit,
     imeHeight: Int
 ) {
     val viewModel: VolunteerProfileViewModel = hiltViewModel()
+    val applyViewModel: ApplyViewModel = hiltViewModel()
 
     Scaffold(
         content = {
@@ -94,8 +96,9 @@ internal fun MainScreen(
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {},
                         onSendMessage = { sendVerificationCode(it) },
-                        onVerifyCode = { verifyCode(it) },
-                        imeHeight = imeHeight
+                        onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
+                        imeHeight = imeHeight,
+                        applyViewModel = applyViewModel
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
