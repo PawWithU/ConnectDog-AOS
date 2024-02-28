@@ -28,11 +28,11 @@ class ApplyViewModel @Inject constructor(
 
     private val _name: MutableState<String> = mutableStateOf("")
     val name: String
-        get() = if(_isChecked.value) { _name.value } else { "" }
+        get() = if (_isChecked.value) { _name.value } else { "" }
 
     private val _phoneNumber: MutableState<String> = mutableStateOf("")
     val phoneNumber: String
-        get() = if(_isChecked.value) { _phoneNumber.value } else { "" }
+        get() = if (_isChecked.value) { _phoneNumber.value } else { "" }
 
     private val _certificationNumber: MutableState<String> = mutableStateOf("")
     val certificationNumber: String
