@@ -12,9 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,10 +43,7 @@ fun RegisterEmailScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-
-    val context = LocalContext.current
-
-    Log.d("tesa1", imeHeight.toString())
+    val isValidEmail by viewModel.isValidEmail.collectAsState()
 
     Scaffold(
         topBar = {
@@ -84,7 +82,11 @@ fun RegisterEmailScreen(
                 textFieldLabel = "이메일",
                 placeholder = "이메일 입력",
                 buttonLabel = "인증 요청",
-                onTextChanged = { viewModel.updateEmail(it) },
+                isError = isValidEmail ?: false,
+                onTextChanged = {
+                    viewModel.updateEmail(it)
+                    viewModel.updateEmailValidity()
+                },
                 padding = 5
             )
             Spacer(modifier = Modifier.height(12.dp))
