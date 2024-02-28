@@ -158,7 +158,7 @@ private fun Content(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { if (viewModel.name.isNotEmpty() && !isCertified) onApplyClick(postId) }
+            onClick = { if (viewModel.name.isNotEmpty() && isCertified) onApplyClick(postId) }
         )
         Spacer(modifier = Modifier.height((imeHeight + 32).dp))
     }

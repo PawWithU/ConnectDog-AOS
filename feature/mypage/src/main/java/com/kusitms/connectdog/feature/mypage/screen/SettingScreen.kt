@@ -24,19 +24,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.feature.mypage.R
+import com.kusitms.connectdog.feature.mypage.viewmodel.SettingViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun SettingScreen(
     onBackClick: () -> Unit,
     onManageAccountClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    viewModel: SettingViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -48,14 +51,15 @@ fun SettingScreen(
             )
         }
     ) {
-        Content(onManageAccountClick, onLogoutClick)
+        Content(onManageAccountClick, onLogoutClick, viewModel)
     }
 }
 
 @Composable
 private fun Content(
     onClick: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    viewModel: SettingViewModel
 ) {
     var checked by remember { mutableStateOf(true) }
 
@@ -119,6 +123,7 @@ private fun Content(
             fontSize = 16.sp,
             color = Gray2,
             modifier = Modifier.clickable {
+                viewModel.initLogout()
                 onLogoutClick()
             }
         )
@@ -129,6 +134,6 @@ private fun Content(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        SettingScreen(onBackClick = {}, onManageAccountClick = {}, onLogoutClick = {})
+        SettingScreen(onBackClick = {}, onManageAccountClick = {}, onLogoutClick = {}, viewModel = hiltViewModel())
     }
 }
