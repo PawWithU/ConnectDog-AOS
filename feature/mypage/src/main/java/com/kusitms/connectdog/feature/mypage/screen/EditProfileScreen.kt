@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.mypage.screen
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,8 +32,11 @@ import com.kusitms.connectdog.feature.mypage.R
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun EditProfileScreen(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    nickname: String,
+    profileImageIndex: Int
 ) {
+    Log.d("tsaq", "$nickname $profileImageIndex")
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
@@ -43,12 +47,15 @@ fun EditProfileScreen(
             )
         }
     ) {
-        Content()
+        Content(nickname, profileImageIndex)
     }
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    nickname: String,
+    profileImageIndex: Int
+) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -63,7 +70,7 @@ private fun Content() {
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = getProfileImageId(0)), contentDescription = null, modifier = Modifier.size(100.dp))
+        Image(painter = painterResource(id = getProfileImageId(profileImageIndex)), contentDescription = null, modifier = Modifier.size(100.dp))
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogOutlinedButton(
             width = 110,
@@ -74,7 +81,7 @@ private fun Content() {
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextFieldWithButton(
-            text = "",
+            text = nickname,
             width = 62,
             height = 27,
             textFieldLabel = "닉네임",
@@ -92,6 +99,6 @@ private fun Content() {
 @Composable
 private fun test() {
     ConnectDogTheme {
-        EditProfileScreen(onBackClick = {})
+        EditProfileScreen(onBackClick = {}, nickname = "hia", profileImageIndex = 7)
     }
 }

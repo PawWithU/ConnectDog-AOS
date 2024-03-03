@@ -65,7 +65,7 @@ internal interface ApiService {
 
     @POST("/volunteers/sign-up/email")
     suspend fun postEmail(
-       @Body emailCertificationBody: EmailCertificationBody
+        @Body emailCertificationBody: EmailCertificationBody
     ): EmailCertificationResponseItem
 
     /**
