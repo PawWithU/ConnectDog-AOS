@@ -17,6 +17,8 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationBody
+import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
@@ -56,6 +58,15 @@ internal interface ApiService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): List<ReviewResponseItem>
+
+    /**
+     * 회원가입
+     */
+
+    @POST("/volunteers/sign-up/email")
+    suspend fun postEmail(
+        @Body emailCertificationBody: EmailCertificationBody
+    ): EmailCertificationResponseItem
 
     /**
      * 봉사관리

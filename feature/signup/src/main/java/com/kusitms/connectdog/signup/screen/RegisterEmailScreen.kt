@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.signup.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -12,9 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,6 +28,8 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWit
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Orange_40
+import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.RegisterEmailViewModel
 
@@ -42,10 +44,8 @@ fun RegisterEmailScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-
-    val context = LocalContext.current
-
-    Log.d("tesa1", imeHeight.toString())
+    val isValidEmail by viewModel.isValidEmail.collectAsState()
+    val isEmailVerified by viewModel.isEmailVerified.collectAsState()
 
     Scaffold(
         topBar = {
@@ -84,7 +84,12 @@ fun RegisterEmailScreen(
                 textFieldLabel = "이메일",
                 placeholder = "이메일 입력",
                 buttonLabel = "인증 요청",
-                onTextChanged = { viewModel.updateEmail(it) },
+                isError = isValidEmail ?: false,
+                onTextChanged = {
+                    viewModel.updateEmail(it)
+                    viewModel.updateEmailValidity()
+                },
+                onClick = { viewModel.postEmail() },
                 padding = 5
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -97,12 +102,14 @@ fun RegisterEmailScreen(
                 buttonLabel = "인증 확인",
                 keyboardType = KeyboardType.Number,
                 onTextChanged = { viewModel.updateCertificationNumber(it) },
+                onClick = { viewModel.checkCertificationNumber() },
                 padding = 5
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
-                onClick = { onNavigateToRegisterPassword(userType) },
+                color = if (isEmailVerified) { PetOrange } else { Orange_40 },
+                onClick = { if (isEmailVerified) onNavigateToRegisterPassword(userType) },
                 modifier =
                 Modifier
                     .fillMaxWidth()

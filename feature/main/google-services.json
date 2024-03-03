@@ -7,25 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:260494595521:android:4082b77d97edb83f428b40",
-        "android_client_info": {
-          "package_name": "com.kusitms.connectdog"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDqQ5mEJVaoopO1yxSahoDXJ4D6EvUf15U"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:260494595521:android:a5be6ee857dccfc3428b40",
         "android_client_info": {
           "package_name": "com.kusitms.connectdog.feature.main"
