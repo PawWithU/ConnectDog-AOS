@@ -14,6 +14,7 @@ import com.kusitms.connectdog.signup.screen.intermediator.IntermediatorInformati
 import com.kusitms.connectdog.signup.screen.intermediator.IntermediatorProfileScreen
 import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 fun NavController.navigateSignup(userType: UserType) {
@@ -60,7 +61,8 @@ fun NavGraphBuilder.signUpGraph(
     navigateToVolunteer: () -> Unit,
     navigateToIntermediator: () -> Unit,
     imeHeight: Int,
-    viewModel: VolunteerProfileViewModel
+    signUpViewModel: SignUpViewModel,
+    profileViewModel: VolunteerProfileViewModel
 ) {
     val userTypeArgument = listOf(
         navArgument("type") {
@@ -89,6 +91,7 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             userType = it.arguments!!.getSerializable("type") as UserType,
             onNavigateToRegisterPassword = navigateToRegisterPassword,
+            signUpViewModel = signUpViewModel,
             imeHeight = imeHeight
         )
     }
@@ -102,6 +105,7 @@ fun NavGraphBuilder.signUpGraph(
             onNavigateToIntermediatorProfile = navigateToIntermediatorProfile,
             onNavigateToVolunteerProfile = navigateToVolunteerProfile,
             userType = it.arguments!!.getSerializable("type") as UserType,
+            signUpViewModel = signUpViewModel,
             imeHeight = imeHeight
         )
     }
@@ -112,7 +116,8 @@ fun NavGraphBuilder.signUpGraph(
             onNavigateToSelectProfileImage = navigateToSelectProfileImage,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
             imeHeight = imeHeight,
-            viewModel = viewModel
+            signUpViewModel = signUpViewModel,
+            viewModel = profileViewModel
         )
     }
 
@@ -137,7 +142,7 @@ fun NavGraphBuilder.signUpGraph(
     ) {
         SelectProfileImageScreen(
             onBackClick = onBackClick,
-            viewModel = viewModel
+            viewModel = profileViewModel
         )
     }
 
