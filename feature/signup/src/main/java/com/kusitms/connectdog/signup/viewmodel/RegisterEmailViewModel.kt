@@ -21,6 +21,10 @@ class RegisterEmailViewModel @Inject constructor(
     val isEmailVerified: StateFlow<Boolean>
         get() = _isEmailVerified
 
+    private val _isEmailDuplicated: MutableStateFlow<Boolean?> = MutableStateFlow(null)
+    val isEmailDuplicated: StateFlow<Boolean?>
+        get() = _isEmailDuplicated
+
     private val _isValidEmail: MutableStateFlow<Boolean?> = MutableStateFlow(null)
     val isValidEmail: StateFlow<Boolean?>
         get() = _isValidEmail
@@ -52,9 +56,10 @@ class RegisterEmailViewModel @Inject constructor(
             val body = EmailCertificationBody(_email.value)
             try {
                 val response = signUpRepository.postEmail(body)
+                _isEmailDuplicated.value = false
                 postNumber = response.authCode
             } catch (e: Exception) {
-                Log.d("asdf", e.message.toString())
+                _isEmailDuplicated.value = true
             }
         }
     }
