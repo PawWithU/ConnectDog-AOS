@@ -36,6 +36,7 @@ import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.signup.R
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -45,12 +46,14 @@ fun VolunteerProfileScreen(
     onNavigateToSelectProfileImage: () -> Unit,
     onNavigateToCompleteSignUp: (UserType) -> Unit,
     imeHeight: Int,
+    signUpViewModel: SignUpViewModel,
     viewModel: VolunteerProfileViewModel
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-    val isAvailableNickname by viewModel.isAvailableNickname.collectAsState()
+    val isDuplicatedNickname by viewModel.isDuplicatedNickname.collectAsState()
     val selectedImageIndex by viewModel.selectedImageIndex.collectAsState()
+    val isAvailableNickname by viewModel.isAvailableNickname.collectAsState()
 
     Scaffold(
         topBar = {
@@ -112,21 +115,23 @@ fun VolunteerProfileScreen(
                 textFieldLabel = "닉네임",
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
-                onClick = { viewModel.updateNicknameAvailability(it) },
-                onTextChanged = { viewModel.updateNickname(it) },
+                onClick = {
+                    viewModel.updateNicknameAvailability(it)
+                },
+                onTextChanged = {
+                    viewModel.updateNickname(it)
+                    viewModel.isAvailableNickname()
+                },
                 padding = 5,
-                isError = when (isAvailableNickname) {
-                    false -> true
-                    else -> false
-                }
+                isError = (isDuplicatedNickname ?: false) || (isAvailableNickname ?: false)
             )
             Text(
-                text = isAvailableNickname?.let {
-                    if (it) { "사용할 수 있는 닉네임 입니다." } else { "이미 사용중인 닉네임 입니다." }
+                text = isDuplicatedNickname?.let {
+                    if (it) { "이미 사용중인 닉네임 입니다." } else { "사용할 수 있는 닉네임 입니다." }
                 } ?: run { "" },
-                color = when (isAvailableNickname) {
-                    false -> Red1
-                    else -> PetOrange
+                color = when (isDuplicatedNickname) {
+                    false -> PetOrange
+                    else -> Red1
                 },
                 fontSize = 11.sp,
                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
@@ -138,8 +143,17 @@ fun VolunteerProfileScreen(
                 Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
-                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(UserType.NORMAL_VOLUNTEER) }
+                color = if (selectedImageIndex != -1 && isDuplicatedNickname == true) { PetOrange } else { Orange_40 },
+                onClick = {
+                    if (selectedImageIndex != -1 && isDuplicatedNickname == true) {
+                        signUpViewModel.apply {
+                            this.updateNickname(viewModel.nickname)
+                            this.updateProfileImageId(viewModel.selectedImageIndex.value)
+                            this.postNormalVolunteerSignUp()
+                        }
+                        onNavigateToCompleteSignUp(UserType.NORMAL_VOLUNTEER)
+                    }
+                }
             )
             Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }

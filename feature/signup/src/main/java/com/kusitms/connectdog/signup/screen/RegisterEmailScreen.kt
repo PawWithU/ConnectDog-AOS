@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.signup.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +34,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.RegisterEmailViewModel
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -39,13 +42,16 @@ fun RegisterEmailScreen(
     onBackClick: () -> Unit,
     userType: UserType,
     onNavigateToRegisterPassword: (UserType) -> Unit,
+    signUpViewModel: SignUpViewModel,
     viewModel: RegisterEmailViewModel = hiltViewModel(),
     imeHeight: Int
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
     val isValidEmail by viewModel.isValidEmail.collectAsState()
     val isEmailVerified by viewModel.isEmailVerified.collectAsState()
+    val isEmailDuplicated by viewModel.isEmailDuplicated.collectAsState()
 
     Scaffold(
         topBar = {
@@ -84,12 +90,20 @@ fun RegisterEmailScreen(
                 textFieldLabel = "이메일",
                 placeholder = "이메일 입력",
                 buttonLabel = "인증 요청",
-                isError = isValidEmail ?: false,
+                isError = (isValidEmail ?: false) || (isEmailDuplicated ?: false),
                 onTextChanged = {
                     viewModel.updateEmail(it)
                     viewModel.updateEmailValidity()
                 },
-                onClick = { viewModel.postEmail() },
+                onClick = {
+                    if (isValidEmail == true) {
+                        Toast.makeText(context, "유효한 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+                    } else if (isEmailDuplicated == true) {
+                        Toast.makeText(context, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.postEmail()
+                    }
+                },
                 padding = 5
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -102,14 +116,25 @@ fun RegisterEmailScreen(
                 buttonLabel = "인증 확인",
                 keyboardType = KeyboardType.Number,
                 onTextChanged = { viewModel.updateCertificationNumber(it) },
-                onClick = { viewModel.checkCertificationNumber() },
+                onClick = {
+                    if (it.isNotEmpty()) {
+                        viewModel.checkCertificationNumber()
+                    } else {
+                        Toast.makeText(context, "인증번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 padding = 5
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
                 color = if (isEmailVerified) { PetOrange } else { Orange_40 },
-                onClick = { if (isEmailVerified) onNavigateToRegisterPassword(userType) },
+                onClick = {
+                    if (isEmailVerified) {
+                        signUpViewModel.updateEmail(viewModel.email)
+                        onNavigateToRegisterPassword(userType)
+                    }
+                },
                 modifier =
                 Modifier
                     .fillMaxWidth()
@@ -124,6 +149,6 @@ fun RegisterEmailScreen(
 @Composable
 private fun test() {
     ConnectDogTheme {
-        RegisterEmailScreen(onBackClick = {}, userType = UserType.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {}, imeHeight = 10)
+        RegisterEmailScreen(onBackClick = {}, userType = UserType.NORMAL_VOLUNTEER, onNavigateToRegisterPassword = {}, hiltViewModel(), imeHeight = 10)
     }
 }

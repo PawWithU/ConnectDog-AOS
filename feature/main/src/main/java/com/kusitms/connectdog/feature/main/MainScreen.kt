@@ -35,6 +35,7 @@ import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
 import com.kusitms.connectdog.signup.signUpGraph
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 import kotlinx.collections.immutable.toPersistentList
 
@@ -46,8 +47,9 @@ internal fun MainScreen(
     verifyCode: (String, (Boolean) -> Unit) -> Unit,
     imeHeight: Int
 ) {
-    val viewModel: VolunteerProfileViewModel = hiltViewModel()
+    val profileViewModel: VolunteerProfileViewModel = hiltViewModel()
     val applyViewModel: ApplyViewModel = hiltViewModel()
+    val signUpViewModel: SignUpViewModel = hiltViewModel()
 
     Scaffold(
         content = {
@@ -79,7 +81,8 @@ internal fun MainScreen(
                         navigateToVolunteer = { navigator.navigateHome() },
                         navigateToIntermediator = { navigator.navigateManageAccount() },
                         imeHeight = imeHeight,
-                        viewModel = viewModel
+                        signUpViewModel = signUpViewModel,
+                        profileViewModel = profileViewModel
                     )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -106,10 +109,9 @@ internal fun MainScreen(
                     )
                     mypageNavGraph(
                         padding = it,
-                        onClick = {},
                         onLogoutClick = { navigator.onLogoutClick() },
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onEditProfileClick = { navigator.navigateEditProfile() },
+                        onEditProfileClick = { nickname, index -> navigator.navigateEditProfile(nickname, index) },
                         onManageAccountClick = { navigator.navigateManageAccount() },
                         onNotificationClick = { navigator.navigateNotification() },
                         onSettingClick = { navigator.navigateSetting() },
