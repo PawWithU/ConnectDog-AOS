@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.signup.screen
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -110,7 +109,7 @@ fun RegisterEmailScreen(
             ConnectDogNormalButton(
                 content = "다음",
                 color = if (isEmailVerified) { PetOrange } else { Orange_40 },
-                onClick = { if(isEmailVerified) onNavigateToRegisterPassword(userType) },
+                onClick = { if (isEmailVerified) onNavigateToRegisterPassword(userType) },
                 modifier =
                 Modifier
                     .fillMaxWidth()
