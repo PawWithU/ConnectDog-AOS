@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.signup.screen.volunteer
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,6 +37,7 @@ import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.signup.R
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -45,6 +47,7 @@ fun VolunteerProfileScreen(
     onNavigateToSelectProfileImage: () -> Unit,
     onNavigateToCompleteSignUp: (UserType) -> Unit,
     imeHeight: Int,
+    signUpViewModel: SignUpViewModel,
     viewModel: VolunteerProfileViewModel
 ) {
     val focusManager = LocalFocusManager.current
@@ -112,7 +115,10 @@ fun VolunteerProfileScreen(
                 textFieldLabel = "닉네임",
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
-                onClick = { viewModel.updateNicknameAvailability(it) },
+                onClick = {
+                    viewModel.isAvailableNickname()
+                    viewModel.updateNicknameAvailability(it)
+                },
                 onTextChanged = { viewModel.updateNickname(it) },
                 padding = 5,
                 isError = when (isAvailableNickname) {
@@ -139,7 +145,16 @@ fun VolunteerProfileScreen(
                     .fillMaxWidth()
                     .height(56.dp),
                 color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
-                onClick = { if (selectedImageIndex != -1 && isAvailableNickname == true) onNavigateToCompleteSignUp(UserType.NORMAL_VOLUNTEER) }
+                onClick = {
+                    if (selectedImageIndex != -1 && isAvailableNickname == true) {
+                        signUpViewModel.apply {
+                            this.updateNickname(viewModel.nickname)
+                            this.updateProfileImageId(viewModel.selectedImageIndex.value)
+                            this.postNormalVolunteerSignUp()
+                        }
+                        onNavigateToCompleteSignUp(UserType.NORMAL_VOLUNTEER)
+                    }
+                }
             )
             Spacer(modifier = Modifier.height((imeHeight + 32).dp))
         }
