@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.DeleteAccountResponse
 import com.kusitms.connectdog.core.data.api.model.IsDuplicateNicknameResponse
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
@@ -20,7 +21,9 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
+import com.kusitms.connectdog.core.data.api.model.volunteer.NormalVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.SocialVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -62,11 +65,20 @@ internal interface ApiService {
     /**
      * 회원가입
      */
-
     @POST("/volunteers/sign-up/email")
     suspend fun postEmail(
         @Body emailCertificationBody: EmailCertificationBody
     ): EmailCertificationResponseItem
+
+    @POST("/volunteers/sign-up")
+    suspend fun postNormalVolunteerSignUp(
+        @Body normalVolunteerSignUpBody: NormalVolunteerSignUpBody
+    ): Unit
+
+    @POST("/volunteers/sign-up/social")
+    suspend fun postSocialVolunteerSignUp(
+        @Body socialVolunteerSignUpBody: SocialVolunteerSignUpBody
+    )
 
     /**
      * 봉사관리
@@ -141,6 +153,9 @@ internal interface ApiService {
 
     @GET("/volunteers/my/bookmarks")
     suspend fun getBookmarkData(): List<BookmarkResponseItem>
+
+    @DELETE("/volunteers/my/delete")
+    suspend fun deleteAccount(): DeleteAccountResponse
 
     /**
      * 이동봉사자 > 공고 상세조회
