@@ -36,6 +36,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Orange_40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.RegisterPasswordViewModel
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -45,6 +46,7 @@ fun RegisterPasswordScreen(
     onNavigateToIntermediatorProfile: () -> Unit,
     userType: UserType,
     imeHeight: Int,
+    signUpViewModel: SignUpViewModel,
     viewModel: RegisterPasswordViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -127,6 +129,7 @@ fun RegisterPasswordScreen(
                 },
                 onClick = {
                     if (isValidPassword == false && isValidConfirmPassword == false) {
+                        signUpViewModel.updatePassword(viewModel.password)
                         when (userType) {
                             UserType.INTERMEDIATOR -> onNavigateToIntermediatorProfile()
                             else -> onNavigateToVolunteerProfile()
@@ -143,6 +146,6 @@ fun RegisterPasswordScreen(
 @Composable
 private fun Preview() {
     ConnectDogTheme {
-        RegisterPasswordScreen({}, {}, {}, UserType.INTERMEDIATOR, 10)
+        RegisterPasswordScreen({}, {}, {}, UserType.INTERMEDIATOR, 10, hiltViewModel())
     }
 }
