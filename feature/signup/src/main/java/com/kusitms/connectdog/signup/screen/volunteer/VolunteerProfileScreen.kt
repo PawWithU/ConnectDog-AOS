@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.signup.screen.volunteer
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -52,8 +51,9 @@ fun VolunteerProfileScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-    val isAvailableNickname by viewModel.isAvailableNickname.collectAsState()
+    val isDuplicatedNickname by viewModel.isDuplicatedNickname.collectAsState()
     val selectedImageIndex by viewModel.selectedImageIndex.collectAsState()
+    val isAvailableNickname by viewModel.isAvailableNickname.collectAsState()
 
     Scaffold(
         topBar = {
@@ -116,23 +116,22 @@ fun VolunteerProfileScreen(
                 placeholder = "닉네임 입력",
                 buttonLabel = "중복 확인",
                 onClick = {
-                    viewModel.isAvailableNickname()
                     viewModel.updateNicknameAvailability(it)
                 },
-                onTextChanged = { viewModel.updateNickname(it) },
+                onTextChanged = {
+                    viewModel.updateNickname(it)
+                    viewModel.isAvailableNickname()
+                },
                 padding = 5,
-                isError = when (isAvailableNickname) {
-                    false -> true
-                    else -> false
-                }
+                isError = (isDuplicatedNickname ?: false) || (isAvailableNickname ?: false)
             )
             Text(
-                text = isAvailableNickname?.let {
-                    if (it) { "사용할 수 있는 닉네임 입니다." } else { "이미 사용중인 닉네임 입니다." }
+                text = isDuplicatedNickname?.let {
+                    if (it) { "이미 사용중인 닉네임 입니다." } else { "사용할 수 있는 닉네임 입니다." }
                 } ?: run { "" },
-                color = when (isAvailableNickname) {
-                    false -> Red1
-                    else -> PetOrange
+                color = when (isDuplicatedNickname) {
+                    false -> PetOrange
+                    else -> Red1
                 },
                 fontSize = 11.sp,
                 modifier = Modifier.padding(top = 4.dp, start = 8.dp)
@@ -144,9 +143,9 @@ fun VolunteerProfileScreen(
                 Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = if (selectedImageIndex != -1 && isAvailableNickname == true) { PetOrange } else { Orange_40 },
+                color = if (selectedImageIndex != -1 && isDuplicatedNickname == true) { PetOrange } else { Orange_40 },
                 onClick = {
-                    if (selectedImageIndex != -1 && isAvailableNickname == true) {
+                    if (selectedImageIndex != -1 && isDuplicatedNickname == true) {
                         signUpViewModel.apply {
                             this.updateNickname(viewModel.nickname)
                             this.updateProfileImageId(viewModel.selectedImageIndex.value)
