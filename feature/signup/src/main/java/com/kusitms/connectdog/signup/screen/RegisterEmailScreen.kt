@@ -29,6 +29,8 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWit
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Orange_40
+import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.viewmodel.RegisterEmailViewModel
 
@@ -44,6 +46,7 @@ fun RegisterEmailScreen(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     val isValidEmail by viewModel.isValidEmail.collectAsState()
+    val isEmailVerified by viewModel.isEmailVerified.collectAsState()
 
     Scaffold(
         topBar = {
@@ -87,6 +90,7 @@ fun RegisterEmailScreen(
                     viewModel.updateEmail(it)
                     viewModel.updateEmailValidity()
                 },
+                onClick = { viewModel.postEmail() },
                 padding = 5
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -99,12 +103,14 @@ fun RegisterEmailScreen(
                 buttonLabel = "인증 확인",
                 keyboardType = KeyboardType.Number,
                 onTextChanged = { viewModel.updateCertificationNumber(it) },
+                onClick = { viewModel.checkCertificationNumber() },
                 padding = 5
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogNormalButton(
                 content = "다음",
-                onClick = { onNavigateToRegisterPassword(userType) },
+                color = if (isEmailVerified) { PetOrange } else { Orange_40 },
+                onClick = { if(isEmailVerified) onNavigateToRegisterPassword(userType) },
                 modifier =
                 Modifier
                     .fillMaxWidth()
