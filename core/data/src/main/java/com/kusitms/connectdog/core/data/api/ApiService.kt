@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.AdditionalAuthBody
 import com.kusitms.connectdog.core.data.api.model.DeleteAccountResponse
 import com.kusitms.connectdog.core.data.api.model.IsDuplicateNicknameResponse
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
@@ -174,6 +175,14 @@ internal interface ApiService {
     suspend fun deleteBookmark(
         @Path("postId") postId: Long
     )
+
+    @POST("/volunteers/additional-auth")
+    suspend fun postAdditionalAuth(
+        @Body additionalAuthBody: AdditionalAuthBody
+    )
+
+    @GET("/volunteers/applications/my-info")
+    suspend fun getAdditionalAuth(): AdditionalAuthBody
 
     /**
      * 이동봉사자 > 공고 상세조회 > 중개자 프로필 조회
