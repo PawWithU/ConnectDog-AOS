@@ -29,12 +29,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.AppMode
-import com.kusitms.connectdog.feature.home.ApplyViewModel
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
+import com.kusitms.connectdog.feature.mypage.viewmodel.EditProfileViewModel
 import com.kusitms.connectdog.signup.signUpGraph
+import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 import kotlinx.collections.immutable.toPersistentList
 
@@ -46,8 +47,9 @@ internal fun MainScreen(
     verifyCode: (String, (Boolean) -> Unit) -> Unit,
     imeHeight: Int
 ) {
-    val viewModel: VolunteerProfileViewModel = hiltViewModel()
-    val applyViewModel: ApplyViewModel = hiltViewModel()
+    val profileViewModel: VolunteerProfileViewModel = hiltViewModel()
+    val signUpViewModel: SignUpViewModel = hiltViewModel()
+    val editProfileViewModel: EditProfileViewModel = hiltViewModel()
 
     Scaffold(
         content = {
@@ -79,7 +81,8 @@ internal fun MainScreen(
                         navigateToVolunteer = { navigator.navigateHome() },
                         navigateToIntermediator = { navigator.navigateManageAccount() },
                         imeHeight = imeHeight,
-                        viewModel = viewModel
+                        signUpViewModel = signUpViewModel,
+                        profileViewModel = profileViewModel
                     )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -97,8 +100,7 @@ internal fun MainScreen(
                         onShowErrorSnackBar = {},
                         onSendMessage = { sendVerificationCode(it) },
                         onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
-                        imeHeight = imeHeight,
-                        applyViewModel = applyViewModel
+                        imeHeight = imeHeight
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -106,7 +108,6 @@ internal fun MainScreen(
                     )
                     mypageNavGraph(
                         padding = it,
-                        onClick = {},
                         onLogoutClick = { navigator.onLogoutClick() },
                         onBackClick = navigator::popBackStackIfNotHome,
                         onEditProfileClick = { navigator.navigateEditProfile() },
@@ -115,6 +116,11 @@ internal fun MainScreen(
                         onSettingClick = { navigator.navigateSetting() },
                         onBadgeClick = { navigator.navigateBadge() },
                         onBookmarkClick = { navigator.navigateBookmark() },
+                        onEditProfileImageClick = { navigator.navigateEditProfileImage() },
+                        editProfileViewModel = editProfileViewModel,
+                        onNavigateToCertification = { navigator.navigateCertification(it) },
+                        onNavigateToDetail = { navigator.navigateHomeDetail(it) },
+                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorInformation() },
                         onShowErrorSnackbar = {}
                     )
                 }

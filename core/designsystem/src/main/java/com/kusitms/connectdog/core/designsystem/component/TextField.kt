@@ -1,7 +1,6 @@
 package com.kusitms.connectdog.core.designsystem.component
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.R
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,11 +41,12 @@ fun ConnectDogTextField(
     label: String,
     enabled: Boolean = true,
     placeholder: String,
+    borderColor: Color = Gray5,
     @StringRes supportingText: Int? = null,
     imeAction: ImeAction = ImeAction.Next,
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false,
-    @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = androidx.compose.ui.R.string.default_error_message,
+    @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = R.string.default_error_message,
     height: Int = 65
 ) {
     val visualTransformation =
@@ -99,7 +101,7 @@ fun ConnectDogTextField(
         },
         colors =
         OutlinedTextFieldDefaults.colors(
-            unfocusedBorderColor = Gray5,
+            unfocusedBorderColor = borderColor,
             errorBorderColor = MaterialTheme.colorScheme.error
         )
 //        textStyle = LocalTextStyle.current.copy(
@@ -166,6 +168,7 @@ fun ConnectDogTextFieldWithButton(
     textFieldLabel: String,
     placeholder: String,
     buttonLabel: String,
+    borderColor: Color = Gray5,
     keyboardType: KeyboardType = KeyboardType.Text,
     padding: Int,
     onClick: (String) -> Unit = {},
@@ -177,9 +180,8 @@ fun ConnectDogTextFieldWithButton(
             label = textFieldLabel,
             placeholder = placeholder,
             keyboardType = keyboardType,
-            onTextChanged = {
-                onTextChanged(it)
-            },
+            onTextChanged = { onTextChanged(it) },
+            borderColor = borderColor,
             isError = isError
         )
 
@@ -192,7 +194,6 @@ fun ConnectDogTextFieldWithButton(
                 .padding(top = 6.dp, end = 16.dp)
                 .align(Alignment.CenterEnd),
             onClick = {
-                Log.d("testts", text)
                 onClick(text)
             }
         )

@@ -17,15 +17,6 @@ import javax.inject.Inject
 class ApplyViewModel @Inject constructor(
     private val applyRepository: ApplyRepository
 ) : ViewModel() {
-    private val _isCertified: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isCertified: StateFlow<Boolean> = _isCertified
-
-    private val _isSendNumber: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isSendNumber: StateFlow<Boolean> = _isSendNumber
-
-    private val _isChecked = MutableStateFlow(true)
-    val isChecked: StateFlow<Boolean> = _isChecked
-
     private val _name: MutableState<String> = mutableStateOf("")
     val name: String
         get() = if (_isChecked.value) { _name.value } else { "" }
@@ -34,9 +25,8 @@ class ApplyViewModel @Inject constructor(
     val phoneNumber: String
         get() = if (_isChecked.value) { _phoneNumber.value } else { "" }
 
-    private val _certificationNumber: MutableState<String> = mutableStateOf("")
-    val certificationNumber: String
-        get() = _certificationNumber.value
+    private val _isChecked = MutableStateFlow(true)
+    val isChecked: StateFlow<Boolean> = _isChecked
 
     private val _transportation: MutableState<String> = mutableStateOf("")
     val transportation: String
@@ -46,17 +36,9 @@ class ApplyViewModel @Inject constructor(
     val content: String
         get() = _content.value
 
-    fun updateName(name: String) {
-        _name.value = name
-    }
-
-    fun updatePhoneNumber(phoneNumber: String) {
-        _phoneNumber.value = phoneNumber
-    }
-
-    fun updateCertificationNumber(certificationNumber: String) {
-        _certificationNumber.value = certificationNumber
-    }
+    private val _isNextEnabled: MutableState<Boolean> = mutableStateOf(false)
+    val isNextEnabled: Boolean
+        get() = _isNextEnabled.value
 
     fun updateTransportation(transportation: String) {
         _transportation.value = transportation
@@ -66,16 +48,16 @@ class ApplyViewModel @Inject constructor(
         _content.value = content
     }
 
-    fun updateIsCertified(isCertified: Boolean) {
-        _isCertified.value = isCertified
-    }
-
-    fun updateIsSendNumber(value: Boolean) {
-        _isSendNumber.value = value
-    }
-
     fun updateIsChecked() {
         _isChecked.value = !_isChecked.value
+    }
+
+    fun updateName(name: String) {
+        _name.value = name
+    }
+
+    fun updatePhoneNumber(phoneNumber: String) {
+        _phoneNumber.value = phoneNumber
     }
 
     fun postApplyVolunteer(postId: Long, applyBody: ApplyBody) {
@@ -83,6 +65,18 @@ class ApplyViewModel @Inject constructor(
             try {
                 val response = applyRepository.postApplyVolunteer(postId, applyBody)
                 Log.d("testtts", response.toString())
+            } catch (e: Exception) {
+                Log.d("testttserror", e.message.toString())
+            }
+        }
+    }
+
+    fun getAdditionalAuth() {
+        viewModelScope.launch {
+            try {
+                val response = applyRepository.getAdditionalAuth()
+                _name.value = response.name
+                _phoneNumber.value = response.phone
             } catch (e: Exception) {
                 Log.d("testttserror", e.message.toString())
             }

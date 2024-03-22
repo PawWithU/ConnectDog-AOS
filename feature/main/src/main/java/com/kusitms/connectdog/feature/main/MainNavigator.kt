@@ -30,6 +30,7 @@ import com.kusitms.connectdog.feature.management.navigation.navigateManagement
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBadge
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBookmark
 import com.kusitms.connectdog.feature.mypage.navigation.navigateEditProfile
+import com.kusitms.connectdog.feature.mypage.navigation.navigateEditProfileImage
 import com.kusitms.connectdog.feature.mypage.navigation.navigateManageAccount
 import com.kusitms.connectdog.feature.mypage.navigation.navigateMypage
 import com.kusitms.connectdog.feature.mypage.navigation.navigateNotification
@@ -114,6 +115,7 @@ internal class MainNavigator(
     fun navigateSetting() = navController.navigateSetting()
     fun navigateBadge() = navController.navigateBadge()
     fun navigateBookmark() = navController.navigateBookmark()
+    fun navigateEditProfileImage() = navController.navigateEditProfileImage()
 
     fun popBackStackIfNotHome() {
         if (!isSameCurrentDestination(HomeRoute.route)) {

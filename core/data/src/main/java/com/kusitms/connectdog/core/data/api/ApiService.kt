@@ -1,5 +1,7 @@
 package com.kusitms.connectdog.core.data.api
 
+import com.kusitms.connectdog.core.data.api.model.AdditionalAuthBody
+import com.kusitms.connectdog.core.data.api.model.DeleteAccountResponse
 import com.kusitms.connectdog.core.data.api.model.IsDuplicateNicknameResponse
 import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
@@ -17,13 +19,18 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.ApplicationWaitingRe
 import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationBody
+import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
+import com.kusitms.connectdog.core.data.api.model.volunteer.NormalVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
+import com.kusitms.connectdog.core.data.api.model.volunteer.SocialVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -56,6 +63,24 @@ internal interface ApiService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): List<ReviewResponseItem>
+
+    /**
+     * 회원가입
+     */
+    @POST("/volunteers/sign-up/email")
+    suspend fun postEmail(
+        @Body emailCertificationBody: EmailCertificationBody
+    ): EmailCertificationResponseItem
+
+    @POST("/volunteers/sign-up")
+    suspend fun postNormalVolunteerSignUp(
+        @Body normalVolunteerSignUpBody: NormalVolunteerSignUpBody
+    ): Unit
+
+    @POST("/volunteers/sign-up/social")
+    suspend fun postSocialVolunteerSignUp(
+        @Body socialVolunteerSignUpBody: SocialVolunteerSignUpBody
+    )
 
     /**
      * 봉사관리
@@ -131,6 +156,14 @@ internal interface ApiService {
     @GET("/volunteers/my/bookmarks")
     suspend fun getBookmarkData(): List<BookmarkResponseItem>
 
+    @DELETE("/volunteers/my/delete")
+    suspend fun deleteAccount(): DeleteAccountResponse
+
+    @PATCH("/volunteers/my/profile")
+    suspend fun updateUserInfo(
+        @Body userInfo: UserInfoResponse
+    )
+
     /**
      * 이동봉사자 > 공고 상세조회
      */
@@ -148,6 +181,14 @@ internal interface ApiService {
     suspend fun deleteBookmark(
         @Path("postId") postId: Long
     )
+
+    @POST("/volunteers/additional-auth")
+    suspend fun postAdditionalAuth(
+        @Body additionalAuthBody: AdditionalAuthBody
+    )
+
+    @GET("/volunteers/applications/my-info")
+    suspend fun getAdditionalAuth(): AdditionalAuthBody
 
     /**
      * 이동봉사자 > 공고 상세조회 > 중개자 프로필 조회

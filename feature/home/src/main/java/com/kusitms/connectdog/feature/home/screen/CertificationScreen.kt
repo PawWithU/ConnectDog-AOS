@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
@@ -31,7 +32,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Orange40
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.feature.home.ApplyViewModel
+import com.kusitms.connectdog.feature.home.CertificationViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -42,7 +43,7 @@ fun CertificationScreen(
     onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
     postId: Long,
     imeHeight: Int,
-    viewModel: ApplyViewModel
+    viewModel: CertificationViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -72,7 +73,7 @@ private fun Content(
     onApplyClick: (Long) -> Unit,
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
-    viewModel: ApplyViewModel
+    viewModel: CertificationViewModel
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -137,18 +138,18 @@ private fun Content(
             onClick = {
                 Log.d("send", isSendNumber.toString())
                 viewModel.updateIsCertified(true)
-                if (!isSendNumber) {
-                    Toast.makeText(context, "먼저 인증번호를 전송해주세요", Toast.LENGTH_SHORT).show()
-                } else {
-                    if (viewModel.certificationNumber.isEmpty()) {
-                        Toast.makeText(context, "인증 번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-                    } else {
-                        onVerifyCodeClick(it) {
-                            viewModel.updateIsCertified(it)
-                            Log.d("casz", isCertified.toString())
-                        }
-                    }
-                }
+//                if (!isSendNumber) {
+//                    Toast.makeText(context, "먼저 인증번호를 전송해주세요", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    if (viewModel.certificationNumber.isEmpty()) {
+//                        Toast.makeText(context, "인증 번호를 입력해주세요", Toast.LENGTH_SHORT).show()
+//                    } else {
+//                        onVerifyCodeClick(it) {
+//                            viewModel.updateIsCertified(it)
+//                            Log.d("casz", isCertified.toString())
+//                        }
+//                    }
+//                }
             }
         )
         Spacer(modifier = Modifier.weight(1f))
@@ -158,7 +159,12 @@ private fun Content(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            onClick = { if (viewModel.name.isNotEmpty() && isCertified) onApplyClick(postId) }
+            onClick = {
+                if (viewModel.name.isNotEmpty() && isCertified) {
+                    viewModel.postAdditionalAuth()
+                    onApplyClick(postId)
+                }
+            }
         )
         Spacer(modifier = Modifier.height((imeHeight + 32).dp))
     }
