@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.mypage.screen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,6 +28,7 @@ import com.kusitms.connectdog.feature.mypage.viewmodel.MyPageViewModel
 @Composable
 fun BookmarkScreen(
     onBackClick: () -> Unit,
+    onDetailClick: (Long) -> Unit,
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val bookmarkItem by viewModel.bookmark.observeAsState(null)
@@ -40,26 +42,34 @@ fun BookmarkScreen(
             )
         }
     ) {
-        bookmarkItem?.let { Content(it) }
+        bookmarkItem?.let { Content(it, onDetailClick) }
     }
 }
 
 @Composable
-private fun Content(item: List<BookmarkResponseItem>) {
+private fun Content(
+    item: List<BookmarkResponseItem>,
+    onDetailClick: (Long) -> Unit
+) {
     LazyColumn(
         modifier = Modifier.padding(top = 48.dp),
         verticalArrangement = Arrangement.Top
     ) {
         items(item) {
-            BookmarkContent(item = it)
+            BookmarkContent(item = it, onDetailClick = onDetailClick)
         }
     }
 }
 
 @Composable
-private fun BookmarkContent(item: BookmarkResponseItem) {
+private fun BookmarkContent(
+    item: BookmarkResponseItem,
+    onDetailClick: (Long) -> Unit
+) {
     ListForUserItem(
-        modifier = Modifier.padding(20.dp),
+        modifier = Modifier.padding(20.dp).clickable(
+            onClick = { onDetailClick(item.postId) }
+        ),
         imageUrl = item.mainImage,
         location = "${item.departureLoc} → ${item.arrivalLoc}",
         date = "${item.startDate} - ${item.endDate}",
@@ -73,6 +83,6 @@ private fun BookmarkContent(item: BookmarkResponseItem) {
 @Composable
 private fun Test() {
     ConnectDogTheme {
-        BookmarkScreen(onBackClick = {})
+        BookmarkScreen(onBackClick = {}, {})
     }
 }
