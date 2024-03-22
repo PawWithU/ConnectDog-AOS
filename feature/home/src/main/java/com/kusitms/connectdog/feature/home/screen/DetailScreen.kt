@@ -60,7 +60,7 @@ private const val TAG = "DetailScreen"
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-internal fun DetailScreen(
+fun DetailScreen(
     onBackClick: () -> Unit,
     onCertificationClick: (Long) -> Unit,
     onIntermediatorProfileClick: (Long) -> Unit,
