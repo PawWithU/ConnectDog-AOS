@@ -118,6 +118,9 @@ internal fun MainScreen(
                         onBookmarkClick = { navigator.navigateBookmark() },
                         onEditProfileImageClick = { navigator.navigateEditProfileImage() },
                         editProfileViewModel = editProfileViewModel,
+                        onNavigateToCertification = { navigator.navigateCertification(it) },
+                        onNavigateToDetail = { navigator.navigateHomeDetail(it) },
+                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorInformation() },
                         onShowErrorSnackbar = {}
                     )
                 }
