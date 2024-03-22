@@ -21,10 +21,6 @@ private const val TAG = "MyPageViewModel"
 class MyPageViewModel @Inject constructor(
     private val myPageRepository: MyPageRepository
 ) : ViewModel() {
-    init {
-        fetchUserInfo()
-    }
-
     private val _myInfo = MutableLiveData<MyInfoResponseItem?>()
     val myInfo: LiveData<MyInfoResponseItem?> = _myInfo
 
@@ -43,23 +39,36 @@ class MyPageViewModel @Inject constructor(
     private val _badgeItem = MutableLiveData<BadgeItem>()
     val badgeItem: LiveData<BadgeItem> = _badgeItem
 
-    private fun fetchUserInfo() {
+    fun fetchUserInfo() {
         viewModelScope.launch {
             try {
                 val myInfoResponse = myPageRepository.getMyInfo()
                 val userInfoResponse = myPageRepository.getUserInfo()
-                val badgeResponse = myPageRepository.getBadge()
-                val bookmarkResponse = myPageRepository.getBookmarkData()
 
                 _myInfo.postValue(myInfoResponse)
                 _userInfo.postValue(userInfoResponse)
-                _badge.postValue(badgeResponse)
-                _bookmark.postValue(bookmarkResponse)
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+            }
+        }
+    }
 
-                Log.d(TAG, badgeResponse.toString())
-                Log.d(TAG, myInfoResponse.toString())
-                Log.d(TAG, userInfoResponse.toString())
-                Log.d(TAG, bookmarkResponse.toString())
+    fun fetchBookmark() {
+        viewModelScope.launch {
+            try {
+                val response = myPageRepository.getBadge()
+                _badge.postValue(response)
+            } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
+            }
+        }
+    }
+
+    fun fetchBadge() {
+        viewModelScope.launch {
+            try {
+                val response = myPageRepository.getBookmarkData()
+                _bookmark.postValue(response)
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
             }
