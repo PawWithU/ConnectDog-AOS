@@ -21,6 +21,10 @@ private const val TAG = "MyPageViewModel"
 class MyPageViewModel @Inject constructor(
     private val myPageRepository: MyPageRepository
 ) : ViewModel() {
+    init {
+        fetchUserInfo()
+    }
+
     private val _myInfo = MutableLiveData<MyInfoResponseItem?>()
     val myInfo: LiveData<MyInfoResponseItem?> = _myInfo
 
@@ -39,7 +43,7 @@ class MyPageViewModel @Inject constructor(
     private val _badgeItem = MutableLiveData<BadgeItem>()
     val badgeItem: LiveData<BadgeItem> = _badgeItem
 
-    init {
+    private fun fetchUserInfo() {
         viewModelScope.launch {
             try {
                 val myInfoResponse = myPageRepository.getMyInfo()

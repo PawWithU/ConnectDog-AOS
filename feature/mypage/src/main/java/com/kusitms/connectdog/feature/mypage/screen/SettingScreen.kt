@@ -127,6 +127,15 @@ private fun Content(
                 onLogoutClick()
             }
         )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "회원탈퇴",
+            fontSize = 16.sp,
+            color = Gray2,
+            modifier = Modifier.clickable {
+                viewModel.deleteAccount()
+            }
+        )
     }
 }
 

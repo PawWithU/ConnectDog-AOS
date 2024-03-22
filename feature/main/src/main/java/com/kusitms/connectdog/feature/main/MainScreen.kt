@@ -29,11 +29,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.AppMode
-import com.kusitms.connectdog.feature.home.ApplyViewModel
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
+import com.kusitms.connectdog.feature.mypage.viewmodel.EditProfileViewModel
 import com.kusitms.connectdog.signup.signUpGraph
 import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
@@ -48,8 +48,8 @@ internal fun MainScreen(
     imeHeight: Int
 ) {
     val profileViewModel: VolunteerProfileViewModel = hiltViewModel()
-    val applyViewModel: ApplyViewModel = hiltViewModel()
     val signUpViewModel: SignUpViewModel = hiltViewModel()
+    val editProfileViewModel: EditProfileViewModel = hiltViewModel()
 
     Scaffold(
         content = {
@@ -100,8 +100,7 @@ internal fun MainScreen(
                         onShowErrorSnackBar = {},
                         onSendMessage = { sendVerificationCode(it) },
                         onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
-                        imeHeight = imeHeight,
-                        applyViewModel = applyViewModel
+                        imeHeight = imeHeight
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -111,12 +110,14 @@ internal fun MainScreen(
                         padding = it,
                         onLogoutClick = { navigator.onLogoutClick() },
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onEditProfileClick = { nickname, index -> navigator.navigateEditProfile(nickname, index) },
+                        onEditProfileClick = { navigator.navigateEditProfile() },
                         onManageAccountClick = { navigator.navigateManageAccount() },
                         onNotificationClick = { navigator.navigateNotification() },
                         onSettingClick = { navigator.navigateSetting() },
                         onBadgeClick = { navigator.navigateBadge() },
                         onBookmarkClick = { navigator.navigateBookmark() },
+                        onEditProfileImageClick = { navigator.navigateEditProfileImage() },
+                        editProfileViewModel = editProfileViewModel,
                         onShowErrorSnackbar = {}
                     )
                 }
