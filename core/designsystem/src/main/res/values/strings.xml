@@ -16,6 +16,7 @@
     <string name="end_recruit">모집마감</string>
     <string name="login">로그인</string>
     <string name="volunteer_signup">이동봉사자 회원가입</string>
+    <string name="select_image">이미지 선택</string>
     <string name="intermediator_signup">이동봉사 중개 회원가입</string>
     <string name="apply_volunter">이동봉사 신청하기</string>
     <string name="management">봉사관리</string>
