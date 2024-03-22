@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -96,12 +97,17 @@ private fun MypageScreen(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onBadgeClick: () -> Unit,
-    onBookmarkClick: () -> Unit
+    onBookmarkClick: () -> Unit,
+    viewModel: MyPageViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.fetchUserInfo()
+    }
+
     Column {
         TopBar(onSettingClick, onNotificationClick)
         Spacer(modifier = Modifier.height(20.dp))
-        MyInformation(onEditProfileClick)
+        MyInformation(onEditProfileClick, viewModel)
         Spacer(modifier = Modifier.height(20.dp))
         InformationBox()
         Spacer(modifier = Modifier.height(40.dp))
@@ -116,7 +122,7 @@ private fun MypageScreen(
 @Composable
 private fun MyInformation(
     onEditProfileClick: () -> Unit,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel
 ) {
     val userInfo by viewModel.userInfo.observeAsState(null)
 
