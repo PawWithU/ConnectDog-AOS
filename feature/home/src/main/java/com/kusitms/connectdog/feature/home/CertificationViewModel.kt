@@ -5,7 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
+import com.kusitms.connectdog.core.data.api.model.AdditionalAuthBody
 import com.kusitms.connectdog.core.data.repository.ApplyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ApplyViewModel @Inject constructor(
+class CertificationViewModel @Inject constructor(
     private val applyRepository: ApplyRepository
 ) : ViewModel() {
     private val _isCertified: MutableStateFlow<Boolean> = MutableStateFlow(false)
@@ -23,28 +23,17 @@ class ApplyViewModel @Inject constructor(
     private val _isSendNumber: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isSendNumber: StateFlow<Boolean> = _isSendNumber
 
-    private val _isChecked = MutableStateFlow(true)
-    val isChecked: StateFlow<Boolean> = _isChecked
-
     private val _name: MutableState<String> = mutableStateOf("")
     val name: String
-        get() = if (_isChecked.value) { _name.value } else { "" }
+        get() = _name.value
 
     private val _phoneNumber: MutableState<String> = mutableStateOf("")
     val phoneNumber: String
-        get() = if (_isChecked.value) { _phoneNumber.value } else { "" }
+        get() = _phoneNumber.value
 
     private val _certificationNumber: MutableState<String> = mutableStateOf("")
     val certificationNumber: String
         get() = _certificationNumber.value
-
-    private val _transportation: MutableState<String> = mutableStateOf("")
-    val transportation: String
-        get() = _transportation.value
-
-    private val _content: MutableState<String> = mutableStateOf("")
-    val content: String
-        get() = _content.value
 
     fun updateName(name: String) {
         _name.value = name
@@ -58,14 +47,6 @@ class ApplyViewModel @Inject constructor(
         _certificationNumber.value = certificationNumber
     }
 
-    fun updateTransportation(transportation: String) {
-        _transportation.value = transportation
-    }
-
-    fun updateContent(content: String) {
-        _content.value = content
-    }
-
     fun updateIsCertified(isCertified: Boolean) {
         _isCertified.value = isCertified
     }
@@ -74,14 +55,11 @@ class ApplyViewModel @Inject constructor(
         _isSendNumber.value = value
     }
 
-    fun updateIsChecked() {
-        _isChecked.value = !_isChecked.value
-    }
-
-    fun postApplyVolunteer(postId: Long, applyBody: ApplyBody) {
+    fun postAdditionalAuth() {
+        val body = AdditionalAuthBody(name = _name.value, phone = _phoneNumber.value)
         viewModelScope.launch {
             try {
-                val response = applyRepository.postApplyVolunteer(postId, applyBody)
+                val response = applyRepository.postAdditionalAuth(body)
                 Log.d("testtts", response.toString())
             } catch (e: Exception) {
                 Log.d("testttserror", e.message.toString())
