@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -47,10 +46,7 @@ import com.kusitms.connectdog.feature.mypage.viewmodel.MyPageViewModel
 
 @Composable
 internal fun MypageRoute(
-    padding: PaddingValues,
-    onClick: () -> Unit,
     onEditProfileClick: () -> Unit,
-    onManageAccountClick: () -> Unit,
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onBadgeClick: () -> Unit,
@@ -58,11 +54,8 @@ internal fun MypageRoute(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit
 ) {
     MypageScreen(
-        padding = padding,
-        onClick = onClick,
         onEditProfileClick = onEditProfileClick,
         onSettingClick = onSettingClick,
-        onManageAccountClick = onManageAccountClick,
         onNotificationClick = onNotificationClick,
         onBadgeClick = onBadgeClick,
         onBookmarkClick = onBookmarkClick
@@ -99,10 +92,7 @@ private fun TopBar(
 
 @Composable
 private fun MypageScreen(
-    padding: PaddingValues,
-    onClick: () -> Unit,
     onEditProfileClick: () -> Unit,
-    onManageAccountClick: () -> Unit,
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onBadgeClick: () -> Unit,
@@ -125,7 +115,7 @@ private fun MypageScreen(
 
 @Composable
 private fun MyInformation(
-    onClick: () -> Unit,
+    onEditProfileClick: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel()
 ) {
     val userInfo by viewModel.userInfo.observeAsState(null)
@@ -150,15 +140,15 @@ private fun MyInformation(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
+            Spacer(modifier = Modifier.weight(1f))
+            ConnectDogOutlinedButton(
+                width = 80,
+                height = 26,
+                text = "프로필 수정",
+                padding = 5,
+                onClick = { onEditProfileClick() }
+            )
         }
-        Spacer(modifier = Modifier.weight(1f))
-        ConnectDogOutlinedButton(
-            width = 80,
-            height = 26,
-            text = "프로필 수정",
-            padding = 5,
-            onClick = onClick
-        )
     }
 }
 
@@ -232,7 +222,7 @@ private fun Information(
 
 @Preview
 @Composable
-private fun test() {
+private fun Test() {
     ConnectDogTheme {
 //        MypageScreen()
     }
