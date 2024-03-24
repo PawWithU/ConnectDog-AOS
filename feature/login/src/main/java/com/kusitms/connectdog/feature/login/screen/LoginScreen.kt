@@ -18,10 +18,13 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -30,6 +33,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -38,8 +42,11 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.KAKAO
 import com.kusitms.connectdog.core.designsystem.theme.NAVER
+import com.kusitms.connectdog.core.util.SocialType
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.R
+import com.kusitms.connectdog.feature.login.viewmodel.LoginViewModel
+import com.kusitms.connectdog.feature.login.viewmodel.Provider
 import kotlinx.coroutines.launch
 
 val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
@@ -47,18 +54,21 @@ val pages = listOf("이동봉사자 회원", "이동봉사자 중개 회원")
 @Composable
 internal fun LoginRoute(
     onNavigateToNormalLogin: (UserType) -> Unit,
-    onNavigateToSignup: (UserType) -> Unit
+    onNavigateToSignup: (UserType) -> Unit,
+    onNavigateToVolunteerHome: () -> Unit
 ) {
     LoginScreen(
         onNavigateToNormalLogin = onNavigateToNormalLogin,
-        onNavigateToSignup = onNavigateToSignup
+        onNavigateToSignup = onNavigateToSignup,
+        onNavigateToVolunteerHome = onNavigateToVolunteerHome
     )
 }
 
 @Composable
 fun LoginScreen(
     onNavigateToNormalLogin: (UserType) -> Unit,
-    onNavigateToSignup: (UserType) -> Unit
+    onNavigateToSignup: (UserType) -> Unit,
+    onNavigateToVolunteerHome: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -76,7 +86,8 @@ fun LoginScreen(
         )
         SelectLoginType(
             onNavigateToNormalLogin = onNavigateToNormalLogin,
-            onNavigateToSignup = onNavigateToSignup
+            onNavigateToSignup = onNavigateToSignup,
+            onNavigateToVolunteerHome = onNavigateToVolunteerHome
         )
     }
 }
@@ -85,7 +96,8 @@ fun LoginScreen(
 @Composable
 fun SelectLoginType(
     onNavigateToNormalLogin: (UserType) -> Unit,
-    onNavigateToSignup: (UserType) -> Unit
+    onNavigateToSignup: (UserType) -> Unit,
+    onNavigateToVolunteerHome: () -> Unit
 ) {
     Surface {
         Column() {
@@ -122,8 +134,16 @@ fun SelectLoginType(
                 state = pagerState
             ) {
                 when (it) {
-                    0 -> Volunteer(onNavigateToNormalLogin, onNavigateToSignup)
-                    1 -> Intermediator(onNavigateToNormalLogin, onNavigateToSignup)
+                    0 -> Volunteer(
+                        onNavigateToNormalLogin,
+                        onNavigateToSignup,
+                        onNavigateToVolunteerHome
+                    )
+
+                    1 -> Intermediator(
+                        onNavigateToNormalLogin,
+                        onNavigateToSignup
+                    )
                 }
             }
         }
@@ -133,8 +153,13 @@ fun SelectLoginType(
 @Composable
 fun Volunteer(
     onNavigateToNormalLogin: (UserType) -> Unit,
-    onNavigateToSignup: (UserType) -> Unit
+    onNavigateToSignup: (UserType) -> Unit,
+    onNavigateToVolunteerHome: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
+    val socialType by viewModel.socialType.collectAsState()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -145,7 +170,7 @@ fun Volunteer(
         ConnectDogIconBottomButton(
             iconId = R.drawable.ic_kakao,
             contentDescription = "kakao login",
-            onClick = { },
+            onClick = { viewModel.initSocialLogin(Provider.KAKAO, context) },
             content = stringResource(id = com.kusitms.connectdog.feature.login.R.string.kakao_login),
             modifier = Modifier
                 .fillMaxWidth()
@@ -161,7 +186,7 @@ fun Volunteer(
             color = NAVER,
             iconId = R.drawable.ic_naver,
             contentDescription = "naver login",
-            onClick = { },
+            onClick = { viewModel.initSocialLogin(Provider.NAVER, context) },
             content = stringResource(id = R.string.naver_login)
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -180,6 +205,13 @@ fun Volunteer(
         )
         Spacer(modifier = Modifier.height(16.dp))
         NormalLogin(onNavigateToNormalLogin, UserType.NORMAL_VOLUNTEER)
+    }
+
+    socialType?.let {
+        when (it) {
+            SocialType.VOLUNTEER -> onNavigateToVolunteerHome()
+            SocialType.GUEST -> onNavigateToSignup(UserType.SOCIAL_VOLUNTEER)
+        }
     }
 }
 
