@@ -51,7 +51,7 @@ import com.kusitms.connectdog.signup.viewmodel.TermsViewModel
 @Composable
 internal fun SignUpRoute(
     onBackClick: () -> Unit,
-    navigateToVolunteerProfile: () -> Unit,
+    navigateToVolunteerProfile: (UserType) -> Unit,
     navigateToIntermediatorInformation: () -> Unit,
     navigateToRegisterEmail: (UserType) -> Unit,
     userType: UserType
@@ -69,7 +69,7 @@ internal fun SignUpRoute(
 fun SignUpScreen(
     userType: UserType,
     onBackClick: () -> Unit,
-    navigateToVolunteerProfile: () -> Unit,
+    navigateToVolunteerProfile: (UserType) -> Unit,
     navigateToRegisterEmail: (UserType) -> Unit,
     navigateToIntermediatorProfile: () -> Unit,
     viewModel: TermsViewModel = hiltViewModel()
@@ -148,7 +148,7 @@ fun SignUpScreen(
                 if (allChecked) {
                     when (userType) {
                         UserType.NORMAL_VOLUNTEER -> navigateToRegisterEmail(userType)
-                        UserType.SOCIAL_VOLUNTEER -> navigateToVolunteerProfile()
+                        UserType.SOCIAL_VOLUNTEER -> navigateToVolunteerProfile(userType)
                         UserType.INTERMEDIATOR -> navigateToIntermediatorProfile()
                     }
                 } else {

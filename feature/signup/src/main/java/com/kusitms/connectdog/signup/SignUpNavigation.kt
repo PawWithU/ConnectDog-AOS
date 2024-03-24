@@ -25,8 +25,8 @@ fun NavController.navigateToIntermediatorProfile() {
     navigate(SignUpRoute.intermediator_profile)
 }
 
-fun NavController.navigateToVolunteerProfile() {
-    navigate(SignUpRoute.volunteer_profile)
+fun NavController.navigateToVolunteerProfile(userType: UserType) {
+    navigate("${SignUpRoute.volunteer_profile}/$userType")
 }
 
 fun NavController.navigateRegisterEmail(userType: UserType) {
@@ -51,7 +51,7 @@ fun NavController.navigateIntermediatorInformation() {
 
 fun NavGraphBuilder.signUpGraph(
     onBackClick: () -> Unit,
-    navigateToVolunteerProfile: () -> Unit,
+    navigateToVolunteerProfile: (UserType) -> Unit,
     navigateToIntermediatorProfile: () -> Unit,
     navigateToIntermediatorInformation: () -> Unit,
     navigateToRegisterEmail: (UserType) -> Unit,
@@ -110,14 +110,18 @@ fun NavGraphBuilder.signUpGraph(
         )
     }
 
-    composable(route = SignUpRoute.volunteer_profile) {
+    composable(
+        route = "${SignUpRoute.volunteer_profile}/{type}",
+        arguments = userTypeArgument
+    ) {
         VolunteerProfileScreen(
             onBackClick = onBackClick,
             onNavigateToSelectProfileImage = navigateToSelectProfileImage,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
             imeHeight = imeHeight,
             signUpViewModel = signUpViewModel,
-            viewModel = profileViewModel
+            viewModel = profileViewModel,
+            userType = it.arguments!!.getSerializable("type") as UserType
         )
     }
 
@@ -137,9 +141,7 @@ fun NavGraphBuilder.signUpGraph(
         )
     }
 
-    composable(
-        route = SignUpRoute.profile_image
-    ) {
+    composable(route = SignUpRoute.profile_image) {
         SelectProfileImageScreen(
             onBackClick = onBackClick,
             viewModel = profileViewModel

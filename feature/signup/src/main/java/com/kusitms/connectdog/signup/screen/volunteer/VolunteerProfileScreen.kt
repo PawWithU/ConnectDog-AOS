@@ -45,6 +45,7 @@ fun VolunteerProfileScreen(
     onBackClick: () -> Unit,
     onNavigateToSelectProfileImage: () -> Unit,
     onNavigateToCompleteSignUp: (UserType) -> Unit,
+    userType: UserType,
     imeHeight: Int,
     signUpViewModel: SignUpViewModel,
     viewModel: VolunteerProfileViewModel
@@ -149,9 +150,13 @@ fun VolunteerProfileScreen(
                         signUpViewModel.apply {
                             this.updateNickname(viewModel.nickname)
                             this.updateProfileImageId(viewModel.selectedImageIndex.value)
-                            this.postNormalVolunteerSignUp()
+                            when (userType) {
+                                UserType.SOCIAL_VOLUNTEER -> this.postSocialVolunteerSignUp()
+                                UserType.NORMAL_VOLUNTEER -> this.postNormalVolunteerSignUp()
+                                UserType.INTERMEDIATOR -> {}
+                            }
                         }
-                        onNavigateToCompleteSignUp(UserType.NORMAL_VOLUNTEER)
+                        onNavigateToCompleteSignUp(userType)
                     }
                 }
             )
