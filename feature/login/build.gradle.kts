@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.activity.compose)
 
-    // compose
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
@@ -76,10 +75,8 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
 
-//     social login
     implementation(libs.kakao.oauth)
     implementation(libs.naver.oauth)
 
-    // test
     implementation(libs.androidx.junit.ktx)
 }
