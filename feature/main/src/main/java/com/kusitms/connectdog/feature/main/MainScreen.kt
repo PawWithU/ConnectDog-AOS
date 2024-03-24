@@ -71,7 +71,7 @@ internal fun MainScreen(
                     )
                     signUpGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
-                        navigateToVolunteerProfile = { navigator.navigateVolunteerProfile() },
+                        navigateToVolunteerProfile = { navigator.navigateVolunteerProfile(it) },
                         navigateToIntermediatorInformation = { navigator.navigateIntermediatorInformation() },
                         navigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
                         navigateToRegisterEmail = { navigator.navigateRegisterEmail(it) },
@@ -95,7 +95,11 @@ internal fun MainScreen(
                         onNavigateToCertification = { navigator.navigateCertification(it) },
                         onNavigateToApply = { navigator.navigateApply(it) },
                         onNavigateToComplete = { navigator.navigateComplete() },
-                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile(it) },
+                        onNavigateToIntermediatorProfile = {
+                            navigator.navigateIntermediatorProfile(
+                                it
+                            )
+                        },
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {},
                         onSendMessage = { sendVerificationCode(it) },
