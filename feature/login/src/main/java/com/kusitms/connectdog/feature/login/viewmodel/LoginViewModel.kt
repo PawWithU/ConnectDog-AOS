@@ -71,6 +71,7 @@ class LoginViewModel @Inject constructor(
             try {
                 val response = loginRepository.postLoginData(body)
                 dataStoreRepository.saveAccessToken(response.accessToken)
+                dataStoreRepository.saveRefreshToken(response.refreshToken)
                 dataStoreRepository.saveAppMode(AppMode.VOLUNTEER)
                 _isLoginSuccessful.value = true
                 Log.d(TAG, isLoginSuccessful.toString())
@@ -88,6 +89,7 @@ class LoginViewModel @Inject constructor(
             try {
                 val response = loginRepository.postIntermediatorLoginData(body)
                 dataStoreRepository.saveAccessToken(response.accessToken)
+                dataStoreRepository.saveRefreshToken(response.refreshToken)
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
             }
@@ -110,6 +112,7 @@ class LoginViewModel @Inject constructor(
                 body?.let {
                     val response = loginRepository.postSocialLoginData(it)
                     dataStoreRepository.saveAccessToken(response.accessToken)
+                    dataStoreRepository.saveRefreshToken(response.refreshToken)
                     when (response.roleName) {
                         "GUEST" -> _socialType.value = SocialType.GUEST
                         "VOLUNTEER" -> {
