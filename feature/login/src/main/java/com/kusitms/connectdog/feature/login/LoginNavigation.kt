@@ -30,7 +30,8 @@ fun NavGraphBuilder.loginNavGraph(
     composable(route = LoginRoute.route) {
         LoginRoute(
             onNavigateToNormalLogin,
-            onNavigateToSignup
+            onNavigateToSignup,
+            onNavigateToVolunteer
         )
     }
 
