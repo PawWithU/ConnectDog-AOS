@@ -40,7 +40,7 @@ fun NormalLoginScreen(
     userType: UserType,
     onBackClick: () -> Unit,
     onNavigateToVolunteerHome: () -> Unit,
-    onNavigateToIntermediatorHome: () -> Unit = {},
+    onNavigateToIntermediatorHome: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
