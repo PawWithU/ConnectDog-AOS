@@ -82,7 +82,7 @@ internal interface ApiService {
         @Body normalVolunteerSignUpBody: NormalVolunteerSignUpBody
     )
 
-    @POST("/volunteers/sign-up/social")
+    @PATCH("/volunteers/sign-up/social")
     suspend fun postSocialVolunteerSignUp(
         @Body socialVolunteerSignUpBody: SocialVolunteerSignUpBody
     )
