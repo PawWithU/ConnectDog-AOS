@@ -89,7 +89,7 @@ internal class MainNavigator(
     fun onLogoutClick() = navController.onLogoutClick()
 
     // signup navigator
-    fun navigateVolunteerProfile() = navController.navigateToVolunteerProfile()
+    fun navigateVolunteerProfile(userType: UserType) = navController.navigateToVolunteerProfile(userType)
     fun navigateIntermediatorProfile() = navController.navigateToIntermediatorProfile()
     fun navigateRegisterEmail(userType: UserType) = navController.navigateRegisterEmail(userType)
     fun navigateRegisterPassword(userType: UserType) = navController.navigateRegisterPassword(userType)
