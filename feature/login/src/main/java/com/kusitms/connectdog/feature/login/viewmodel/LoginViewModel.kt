@@ -88,8 +88,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = loginRepository.postIntermediatorLoginData(body)
+                _isLoginSuccessful.value = true
                 dataStoreRepository.saveAccessToken(response.accessToken)
                 dataStoreRepository.saveRefreshToken(response.refreshToken)
+                dataStoreRepository.saveAppMode(AppMode.INTERMEDIATOR)
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())
             }

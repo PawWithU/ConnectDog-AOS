@@ -23,6 +23,8 @@ import com.kusitms.connectdog.feature.home.navigation.navigateIntermediatorProfi
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
+import com.kusitms.connectdog.feature.intermediator.navigation.IntermediatorRoute
+import com.kusitms.connectdog.feature.intermediator.navigation.navigateIntermediatorHome
 import com.kusitms.connectdog.feature.login.LoginRoute
 import com.kusitms.connectdog.feature.login.navigateNormalLogin
 import com.kusitms.connectdog.feature.login.onLogoutClick
@@ -49,13 +51,11 @@ internal class MainNavigator(
     mode: AppMode
 ) {
     private val currentDestination: NavDestination?
-        @Composable get() =
-            navController
-                .currentBackStackEntryAsState().value?.destination
+        @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
     val startDestination = when (mode) {
         AppMode.VOLUNTEER -> MainTab.HOME.route
-        AppMode.INTERMEDIATOR -> MainTab.HOME.route
+        AppMode.INTERMEDIATOR -> IntermediatorRoute.route
         AppMode.LOGIN -> LoginRoute.route
     }
 
@@ -117,6 +117,9 @@ internal class MainNavigator(
     fun navigateBookmark() = navController.navigateBookmark()
     fun navigateEditProfileImage() = navController.navigateEditProfileImage()
 
+    // intermediator
+    fun navigateIntermediatorHome() = navController.navigateIntermediatorHome()
+
     fun popBackStackIfNotHome() {
         if (!isSameCurrentDestination(HomeRoute.route)) {
             navController.popBackStack()
@@ -134,7 +137,10 @@ internal class MainNavigator(
 }
 
 @Composable
-internal fun rememberMainNavigator(navController: NavHostController = rememberNavController(), mode: AppMode): MainNavigator =
+internal fun rememberMainNavigator(
+    navController: NavHostController = rememberNavController(),
+    mode: AppMode
+): MainNavigator =
     remember(navController) {
         MainNavigator(navController, mode)
     }

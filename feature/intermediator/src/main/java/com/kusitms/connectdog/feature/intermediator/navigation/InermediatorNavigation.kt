@@ -2,10 +2,14 @@ package com.kusitms.connectdog.feature.intermediator.navigation
 
 import android.util.Log
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.kusitms.connectdog.feature.intermediator.screen.InterManagementRoute
+import com.kusitms.connectdog.feature.intermediator.screen.IntermediatorHomeScreen
 
-fun NavController.navigateIntermediatorHome(navOptions: NavOptions) {
-    navigate(IntermediatorRoute.route, navOptions)
+fun NavController.navigateIntermediatorHome() {
+    navigate(IntermediatorRoute.route)
 }
 
 fun NavController.navigateInterManagement(tabIndex: Int) {
@@ -14,8 +18,30 @@ fun NavController.navigateInterManagement(tabIndex: Int) {
     navigate(route)
 }
 
+fun NavGraphBuilder.intermediatorNavGraph(
+    onBackClick: () -> Unit
+) {
+    composable(route = IntermediatorRoute.route) {
+        IntermediatorHomeScreen(
+            onNotificationClick = { },
+            onSettingClick = { },
+            onDataClick = { }
+//                    index -> navigator.navigateInterManagement(index)
+        )
+    }
+
+    composable(
+        "${IntermediatorRoute.management}?tabIndex={tabIndex}",
+        arguments = listOf(navArgument("tabIndex") { defaultValue = 0 })
+    ) {
+        InterManagementRoute(
+            onBackClick = onBackClick,
+            tabIndex = it.arguments?.getInt("tabIndex") ?: 0
+        )
+    }
+}
+
 object IntermediatorRoute {
-    const val route = "intermediator"
-    const val home = "home"
+    const val route = "inter_home"
     const val management = "management"
 }

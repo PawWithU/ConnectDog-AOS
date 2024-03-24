@@ -30,6 +30,7 @@ import androidx.navigation.compose.NavHost
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.AppMode
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
+import com.kusitms.connectdog.feature.intermediator.navigation.intermediatorNavGraph
 import com.kusitms.connectdog.feature.login.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
@@ -67,6 +68,7 @@ internal fun MainScreen(
                         onBackClick = { navigator.popBackStackIfNotHome() },
                         onNavigateToNormalLogin = { navigator.navigateNormalLogin(it) },
                         onNavigateToVolunteer = { navigator.navigateHome() },
+                        onNavigateToIntermediatorHome = { navigator.navigateIntermediatorHome() },
                         onNavigateToSignup = { navigator.navigateSignup(it) }
                     )
                     signUpGraph(
@@ -126,6 +128,9 @@ internal fun MainScreen(
                         onNavigateToDetail = { navigator.navigateHomeDetail(it) },
                         onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorInformation() },
                         onShowErrorSnackbar = {}
+                    )
+                    intermediatorNavGraph(
+                        onBackClick = navigator::popBackStackIfNotHome
                     )
                 }
             }
