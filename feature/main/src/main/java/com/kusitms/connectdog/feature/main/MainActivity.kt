@@ -92,10 +92,7 @@ class MainActivity : ComponentActivity() {
             TimeUnit.SECONDS,
             this,
             object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-//                    signInWithPhoneAuthCredential(credential)
-                }
-
+                override fun onVerificationCompleted(credential: PhoneAuthCredential) {}
                 override fun onVerificationFailed(e: FirebaseException) {
                     Log.d("testtt", e.toString())
                 }
