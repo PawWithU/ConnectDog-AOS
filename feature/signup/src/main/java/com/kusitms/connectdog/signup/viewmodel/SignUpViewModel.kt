@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.api.model.volunteer.NormalVolunteerSignUpBody
+import com.kusitms.connectdog.core.data.api.model.volunteer.SocialVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.repository.SignUpRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -45,15 +46,28 @@ class SignUpViewModel @Inject constructor(
 
     fun postNormalVolunteerSignUp() {
         val body = NormalVolunteerSignUpBody(
-            email = email.value!!,
-            nickname = nickname.value!!,
-            password = password.value!!,
-            profileImageNum = profileImageId.value!!
+            email = _email.value!!,
+            nickname = _nickname.value!!,
+            password = _password.value!!,
+            profileImageNum = _profileImageId.value!!
         )
-
         viewModelScope.launch {
             val response = signupRepository.postNormalVolunteerSignUp(body)
             Log.d("tesaq", response.toString())
+        }
+    }
+
+    fun postSocialVolunteerSignUp() {
+        val body = SocialVolunteerSignUpBody(
+            nickname = _nickname.value!!,
+            profileImageNum = _profileImageId.value!!
+        )
+        viewModelScope.launch {
+            try {
+                val response = signupRepository.postSocialVolunteerSignUp(body)
+            } catch (e: Exception) {
+                Log.d("tesqz", e.message.toString())
+            }
         }
     }
 }
