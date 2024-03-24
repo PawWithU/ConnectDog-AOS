@@ -11,3 +11,8 @@ enum class UserType {
     NORMAL_VOLUNTEER,
     INTERMEDIATOR
 }
+
+enum class SocialType {
+    GUEST,
+    VOLUNTEER
+}
