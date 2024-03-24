@@ -6,6 +6,7 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationBo
 import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.NormalVolunteerSignUpBody
+import com.kusitms.connectdog.core.data.api.model.volunteer.SocialVolunteerSignUpBody
 import javax.inject.Inject
 
 internal class SignUpRepositoryImpl @Inject constructor(
@@ -21,5 +22,9 @@ internal class SignUpRepositoryImpl @Inject constructor(
 
     override suspend fun postNormalVolunteerSignUp(signUp: NormalVolunteerSignUpBody) {
         return api.postNormalVolunteerSignUp(signUp)
+    }
+
+    override suspend fun postSocialVolunteerSignUp(signUp: SocialVolunteerSignUpBody) {
+        return api.postSocialVolunteerSignUp(signUp)
     }
 }
