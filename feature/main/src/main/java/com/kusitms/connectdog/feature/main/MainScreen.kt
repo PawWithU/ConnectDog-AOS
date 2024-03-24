@@ -130,7 +130,8 @@ internal fun MainScreen(
                         onShowErrorSnackbar = {}
                     )
                     intermediatorNavGraph(
-                        onBackClick = navigator::popBackStackIfNotHome
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        onSettingClick = { navigator.navigateSetting() }
                     )
                 }
             }
