@@ -42,7 +42,7 @@ import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 @Composable
 fun RegisterPasswordScreen(
     onBackClick: () -> Unit,
-    onNavigateToVolunteerProfile: () -> Unit,
+    onNavigateToVolunteerProfile: (UserType) -> Unit,
     onNavigateToIntermediatorProfile: () -> Unit,
     userType: UserType,
     imeHeight: Int,
@@ -132,7 +132,7 @@ fun RegisterPasswordScreen(
                         signUpViewModel.updatePassword(viewModel.password)
                         when (userType) {
                             UserType.INTERMEDIATOR -> onNavigateToIntermediatorProfile()
-                            else -> onNavigateToVolunteerProfile()
+                            else -> onNavigateToVolunteerProfile(userType)
                         }
                     }
                 }
