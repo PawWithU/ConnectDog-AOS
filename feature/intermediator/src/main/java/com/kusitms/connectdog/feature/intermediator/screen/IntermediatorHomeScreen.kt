@@ -36,8 +36,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,14 +47,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIntermediatorTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.theme.Brown5
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Typography
-import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
+import com.kusitms.connectdog.feature.intermediator.InterHomeViewModel
 import com.kusitms.connectdog.feature.intermediator.R
 
 val imageList = listOf(
@@ -65,14 +63,14 @@ val imageList = listOf(
     R.drawable.ic_complete
 )
 
-val titleList = listOf(
+internal val titleList = listOf(
     R.string.recruit,
     R.string.waiting,
     R.string.progress,
     R.string.complete
 )
 
-data class CardItem(
+internal data class CardItem(
     @DrawableRes val image: Int,
     @StringRes val title: Int,
     val value: Int
@@ -84,11 +82,8 @@ fun IntermediatorHomeScreen(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onDataClick: (Int) -> Unit,
-    viewModel: InterManagementViewModel = hiltViewModel()
+    viewModel: InterHomeViewModel = hiltViewModel()
 ) {
-    viewModel.getIntermediatorInfo()
-    val profile by viewModel.profile.observeAsState(null)
-
     Scaffold(
         topBar = {
             ConnectDogIntermediatorTopAppBar(
@@ -97,53 +92,57 @@ fun IntermediatorHomeScreen(
             )
         }
     ) {
-        profile?.let { it1 ->
-            Content(
-                profile = it1
-            ) {
-                onDataClick(it)
-            }
-        }
+        Content(
+            viewModel = viewModel,
+            onClick = onDataClick
+        )
     }
 }
 
 @Composable
 private fun Content(
-    profile: IntermediatorProfileInfoResponseItem,
+    viewModel: InterHomeViewModel,
     onClick: (Int) -> Unit
 ) {
-    val cnt = listOf(profile.recruitingCount, profile.waitingCount, profile.progressingCount, profile.completedCount)
-    val list = List(4) {
-        CardItem(
-            image = imageList[it],
-            title = titleList[it],
-            cnt[it].toInt()
-        )
+    val recruitingCount = viewModel.recruitingCount.collectAsState()
+    val waitingCount = viewModel.waitingCount.collectAsState()
+    val progressingCount = viewModel.progressingCount.collectAsState()
+    val completedCount = viewModel.completedCount.collectAsState()
+    val cnt = listOf(recruitingCount.value, waitingCount.value, progressingCount.value, completedCount.value)
+    val list = cnt.mapIndexedNotNull { index, value ->
+        value?.let {
+            CardItem(
+                image = imageList[index],
+                title = titleList[index],
+                value = value
+            )
+        }
     }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(48.dp))
-        Information(profile)
+        Information(viewModel)
         ManageBoard(list) { onClick(it) }
     }
 }
 
 @Composable
-private fun Information(profile: IntermediatorProfileInfoResponseItem) {
+private fun Information(viewModel: InterHomeViewModel) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.primary)
             .heightIn(min = 0.dp, max = 185.dp)
     ) {
-        ProfileCard(profile)
+        ProfileCard(viewModel)
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 private fun ProfileCard(
-    profile: IntermediatorProfileInfoResponseItem
+    viewModel: InterHomeViewModel,
 ) {
     Box(
         modifier = Modifier
@@ -157,20 +156,20 @@ private fun ProfileCard(
         ) {
             Column {
                 NetworkImage(
-                    imageUrl = profile.profileImage,
+                    imageUrl = viewModel.profileImage.value,
                     modifier = Modifier.size(80.dp),
                     placeholder = painterResource(id = R.drawable.ic_default_intermediator)
                 )
                 Spacer(modifier = Modifier.height(18.dp))
                 Text(
-                    text = profile.intermediaryName,
+                    text = viewModel.intermediaryName.value,
                     style = MaterialTheme.typography.titleSmall,
                     color = Color.White,
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = profile.intro,
+                    text = viewModel.intro.value,
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
