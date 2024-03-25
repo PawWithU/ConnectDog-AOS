@@ -131,7 +131,9 @@ internal fun MainScreen(
                     )
                     intermediatorNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onSettingClick = { navigator.navigateSetting() }
+                        onSettingClick = { navigator.navigateSetting() },
+                        onNotificationClick = { navigator.navigateNotification() },
+                        onManagementClick = { navigator.navigateInterManagement(it) }
                     )
                 }
             }
