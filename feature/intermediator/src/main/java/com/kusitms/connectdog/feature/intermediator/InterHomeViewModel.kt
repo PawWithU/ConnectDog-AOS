@@ -1,23 +1,19 @@
 package com.kusitms.connectdog.feature.intermediator
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
 class InterHomeViewModel @Inject constructor(
     private val managementRepository: InterManagementRepository
-): ViewModel() {
+) : ViewModel() {
     private val _profileImage = MutableStateFlow<String>("")
     val profileImage: StateFlow<String>
         get() = _profileImage
