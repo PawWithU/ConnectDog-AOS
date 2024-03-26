@@ -18,14 +18,6 @@ import javax.inject.Inject
 class InterHomeViewModel @Inject constructor(
     private val managementRepository: InterManagementRepository
 ): ViewModel() {
-//    private val _profile = MutableStateFlow<IntermediatorProfileInfoResponseItem?>(null)
-//    val profile: StateFlow<IntermediatorProfileInfoResponseItem?>
-//        get() = _profile
-
-    init {
-        fetchIntermediatorInfo()
-    }
-
     private val _profileImage = MutableStateFlow<String>("")
     val profileImage: StateFlow<String>
         get() = _profileImage
@@ -54,7 +46,7 @@ class InterHomeViewModel @Inject constructor(
     val intermediaryName: StateFlow<String>
         get() = _intermediaryName
 
-    private fun fetchIntermediatorInfo() {
+    fun fetchIntermediatorInfo() {
         viewModelScope.launch {
             try {
                 val response = managementRepository.getIntermediatorProfileInfo()
