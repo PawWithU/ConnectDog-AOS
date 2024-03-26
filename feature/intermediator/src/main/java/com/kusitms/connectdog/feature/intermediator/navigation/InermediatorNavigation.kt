@@ -45,5 +45,5 @@ fun NavGraphBuilder.intermediatorNavGraph(
 
 object IntermediatorRoute {
     const val route = "inter_home"
-    const val management = "management"
+    const val management = "inter_management"
 }
