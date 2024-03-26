@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.intermediator.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -36,10 +37,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +55,7 @@ import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.theme.Brown5
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Typography
 import com.kusitms.connectdog.feature.intermediator.InterHomeViewModel
 import com.kusitms.connectdog.feature.intermediator.R
@@ -84,6 +88,9 @@ fun IntermediatorHomeScreen(
     onDataClick: (Int) -> Unit,
     viewModel: InterHomeViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.fetchIntermediatorInfo()
+    }
     Scaffold(
         topBar = {
             ConnectDogIntermediatorTopAppBar(
@@ -122,20 +129,8 @@ private fun Content(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(48.dp))
-        Information(viewModel)
-        ManageBoard(list) { onClick(it) }
-    }
-}
-
-@Composable
-private fun Information(viewModel: InterHomeViewModel) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
-            .heightIn(min = 0.dp, max = 185.dp)
-    ) {
         ProfileCard(viewModel)
+        ManageBoard(list) { onClick(it) }
     }
 }
 
@@ -147,6 +142,7 @@ private fun ProfileCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .height(180.dp)
             .background(MaterialTheme.colorScheme.primary)
     ) {
         Row(
@@ -170,16 +166,14 @@ private fun ProfileCard(
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = viewModel.intro.value,
-                    fontSize = 10.sp,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
                     modifier = Modifier.widthIn(min = 0.dp, max = 220.dp),
                     lineHeight = 12.sp
                 )
             }
-
             Spacer(modifier = Modifier.weight(1f))
-
             Column(
                 modifier = Modifier
                     .fillMaxHeight(),
@@ -206,12 +200,21 @@ private fun ManageBoard(
             .background(Brown5)
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            "전체 12건",
-            modifier = Modifier.padding(start = 20.dp),
-            style = MaterialTheme.typography.titleLarge,
-            fontSize = 18.sp
-        )
+        Row {
+            Text(
+                "전체",
+                modifier = Modifier.padding(start = 20.dp),
+                style = MaterialTheme.typography.titleLarge,
+                fontSize = 18.sp
+            )
+            Text(
+                text = "${list.sumOf { it.value }}건",
+                modifier = Modifier.padding(start = 5.dp),
+                style = MaterialTheme.typography.titleLarge,
+                color = PetOrange,
+                fontSize = 18.sp
+            )
+        }
         Spacer(modifier = Modifier.height(20.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -241,8 +244,9 @@ private fun ManageBoard(
 
 @Composable
 private fun ApplyButton(onClick: () -> Unit) {
+    val context = LocalContext.current
     Button(
-        onClick = onClick,
+        onClick = { Toast.makeText(context, "아직 준비중인 기능입니다.", Toast.LENGTH_SHORT).show() },
         contentPadding = PaddingValues(vertical = 15.dp),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
