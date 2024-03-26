@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.home.screen
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +43,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -168,7 +170,6 @@ private fun StatisticBanner(modifier: Modifier) {
     Column(horizontalAlignment = Alignment.End, modifier = modifier) {
         Row(
             modifier = Modifier
-                .clickable { }
                 .padding(end = 10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -261,6 +262,7 @@ private fun StatisticInfoItem(
 
 @Composable
 private fun BannerGuideline() {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -276,7 +278,7 @@ private fun BannerGuideline() {
             color = MaterialTheme.colorScheme.background
         )
         Button(
-            onClick = {},
+            onClick = { Toast.makeText(context, "아직 준비중인 기능입니다.", Toast.LENGTH_SHORT).show() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.background,
                 contentColor = MaterialTheme.colorScheme.primary

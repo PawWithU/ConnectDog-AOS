@@ -20,14 +20,15 @@ fun NavController.navigateInterManagement(tabIndex: Int) {
 
 fun NavGraphBuilder.intermediatorNavGraph(
     onBackClick: () -> Unit,
-    onSettingClick: () -> Unit
+    onSettingClick: () -> Unit,
+    onNotificationClick: () -> Unit,
+    onManagementClick: (Int) -> Unit
 ) {
     composable(route = IntermediatorRoute.route) {
         IntermediatorHomeScreen(
-            onNotificationClick = { },
+            onNotificationClick = onNotificationClick,
             onSettingClick = onSettingClick,
-            onDataClick = { }
-//                    index -> navigator.navigateInterManagement(index)
+            onDataClick = onManagementClick
         )
     }
 
@@ -44,5 +45,5 @@ fun NavGraphBuilder.intermediatorNavGraph(
 
 object IntermediatorRoute {
     const val route = "inter_home"
-    const val management = "management"
+    const val management = "inter_management"
 }

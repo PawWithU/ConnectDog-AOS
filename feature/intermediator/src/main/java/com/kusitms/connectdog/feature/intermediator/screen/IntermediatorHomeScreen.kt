@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.intermediator.screen
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,11 +36,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,14 +49,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIntermediatorTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.theme.Brown5
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.designsystem.theme.Typography
-import com.kusitms.connectdog.feature.intermediator.InterManagementViewModel
+import com.kusitms.connectdog.feature.intermediator.InterHomeViewModel
 import com.kusitms.connectdog.feature.intermediator.R
 
 val imageList = listOf(
@@ -65,14 +66,14 @@ val imageList = listOf(
     R.drawable.ic_complete
 )
 
-val titleList = listOf(
+internal val titleList = listOf(
     R.string.recruit,
     R.string.waiting,
     R.string.progress,
     R.string.complete
 )
 
-data class CardItem(
+internal data class CardItem(
     @DrawableRes val image: Int,
     @StringRes val title: Int,
     val value: Int
@@ -84,11 +85,11 @@ fun IntermediatorHomeScreen(
     onNotificationClick: () -> Unit,
     onSettingClick: () -> Unit,
     onDataClick: (Int) -> Unit,
-    viewModel: InterManagementViewModel = hiltViewModel()
+    viewModel: InterHomeViewModel = hiltViewModel()
 ) {
-    viewModel.getIntermediatorInfo()
-    val profile by viewModel.profile.observeAsState(null)
-
+    LaunchedEffect(Unit) {
+        viewModel.fetchIntermediatorInfo()
+    }
     Scaffold(
         topBar = {
             ConnectDogIntermediatorTopAppBar(
@@ -97,57 +98,50 @@ fun IntermediatorHomeScreen(
             )
         }
     ) {
-        profile?.let { it1 ->
-            Content(
-                profile = it1
-            ) {
-                onDataClick(it)
-            }
-        }
+        Content(
+            viewModel = viewModel,
+            onClick = onDataClick
+        )
     }
 }
 
 @Composable
 private fun Content(
-    profile: IntermediatorProfileInfoResponseItem,
+    viewModel: InterHomeViewModel,
     onClick: (Int) -> Unit
 ) {
-    val cnt = listOf(profile.recruitingCount, profile.waitingCount, profile.progressingCount, profile.completedCount)
-    val list = List(4) {
-        CardItem(
-            image = imageList[it],
-            title = titleList[it],
-            cnt[it].toInt()
-        )
+    val recruitingCount = viewModel.recruitingCount.collectAsState()
+    val waitingCount = viewModel.waitingCount.collectAsState()
+    val progressingCount = viewModel.progressingCount.collectAsState()
+    val completedCount = viewModel.completedCount.collectAsState()
+    val cnt = listOf(recruitingCount.value, waitingCount.value, progressingCount.value, completedCount.value)
+    val list = cnt.mapIndexedNotNull { index, value ->
+        value?.let {
+            CardItem(
+                image = imageList[index],
+                title = titleList[index],
+                value = value
+            )
+        }
     }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(48.dp))
-        Information(profile)
+        ProfileCard(viewModel)
         ManageBoard(list) { onClick(it) }
     }
 }
 
-@Composable
-private fun Information(profile: IntermediatorProfileInfoResponseItem) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
-            .heightIn(min = 0.dp, max = 185.dp)
-    ) {
-        ProfileCard(profile)
-    }
-}
-
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 private fun ProfileCard(
-    profile: IntermediatorProfileInfoResponseItem
+    viewModel: InterHomeViewModel
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .height(180.dp)
             .background(MaterialTheme.colorScheme.primary)
     ) {
         Row(
@@ -157,30 +151,28 @@ private fun ProfileCard(
         ) {
             Column {
                 NetworkImage(
-                    imageUrl = profile.profileImage,
+                    imageUrl = viewModel.profileImage.value,
                     modifier = Modifier.size(80.dp),
                     placeholder = painterResource(id = R.drawable.ic_default_intermediator)
                 )
                 Spacer(modifier = Modifier.height(18.dp))
                 Text(
-                    text = profile.intermediaryName,
+                    text = viewModel.intermediaryName.value,
                     style = MaterialTheme.typography.titleSmall,
                     color = Color.White,
                     fontSize = 20.sp
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = profile.intro,
-                    fontSize = 10.sp,
+                    text = viewModel.intro.value,
+                    fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color.White,
                     modifier = Modifier.widthIn(min = 0.dp, max = 220.dp),
                     lineHeight = 12.sp
                 )
             }
-
             Spacer(modifier = Modifier.weight(1f))
-
             Column(
                 modifier = Modifier
                     .fillMaxHeight(),
@@ -207,12 +199,21 @@ private fun ManageBoard(
             .background(Brown5)
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            "전체 12건",
-            modifier = Modifier.padding(start = 20.dp),
-            style = MaterialTheme.typography.titleLarge,
-            fontSize = 18.sp
-        )
+        Row {
+            Text(
+                "전체",
+                modifier = Modifier.padding(start = 20.dp),
+                style = MaterialTheme.typography.titleLarge,
+                fontSize = 18.sp
+            )
+            Text(
+                text = "${list.sumOf { it.value }}건",
+                modifier = Modifier.padding(start = 5.dp),
+                style = MaterialTheme.typography.titleLarge,
+                color = PetOrange,
+                fontSize = 18.sp
+            )
+        }
         Spacer(modifier = Modifier.height(20.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
@@ -242,8 +243,9 @@ private fun ManageBoard(
 
 @Composable
 private fun ApplyButton(onClick: () -> Unit) {
+    val context = LocalContext.current
     Button(
-        onClick = onClick,
+        onClick = { Toast.makeText(context, "아직 준비중인 기능입니다.", Toast.LENGTH_SHORT).show() },
         contentPadding = PaddingValues(vertical = 15.dp),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier

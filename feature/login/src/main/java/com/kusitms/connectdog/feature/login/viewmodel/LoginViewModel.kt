@@ -93,6 +93,7 @@ class LoginViewModel @Inject constructor(
                 dataStoreRepository.saveRefreshToken(response.refreshToken)
                 dataStoreRepository.saveAppMode(AppMode.INTERMEDIATOR)
             } catch (e: Exception) {
+                _isLoginSuccessful.value = false
                 Log.d(TAG, e.message.toString())
             }
         }

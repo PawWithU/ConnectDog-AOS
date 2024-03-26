@@ -98,9 +98,7 @@ internal fun MainScreen(
                         onNavigateToApply = { navigator.navigateApply(it) },
                         onNavigateToComplete = { navigator.navigateComplete() },
                         onNavigateToIntermediatorProfile = {
-                            navigator.navigateIntermediatorProfile(
-                                it
-                            )
+                            navigator.navigateIntermediatorProfile(it)
                         },
                         onNavigateToNotification = { navigator.navigateNotification() },
                         onShowErrorSnackBar = {},
@@ -126,12 +124,14 @@ internal fun MainScreen(
                         editProfileViewModel = editProfileViewModel,
                         onNavigateToCertification = { navigator.navigateCertification(it) },
                         onNavigateToDetail = { navigator.navigateHomeDetail(it) },
-                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorInformation() },
+                        onNavigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile(it) },
                         onShowErrorSnackbar = {}
                     )
                     intermediatorNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onSettingClick = { navigator.navigateSetting() }
+                        onSettingClick = { navigator.navigateSetting() },
+                        onNotificationClick = { navigator.navigateNotification() },
+                        onManagementClick = { navigator.navigateInterManagement(it) }
                     )
                 }
             }
