@@ -21,6 +21,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -75,11 +77,9 @@ fun DetailScreen(
 
     Scaffold(
         topBar = {
-            ConnectDogTopAppBar(
-                titleRes = null,
-                navigationType = TopAppBarNavigationType.BACK,
-                navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+            DetailTopAppBar(
+                onBackClick = onBackClick,
+                onShareClick = {}
             )
         },
         bottomBar = {
@@ -112,6 +112,27 @@ fun DetailScreen(
             }
         }
     }
+}
+
+@Composable
+private fun DetailTopAppBar(
+    onBackClick: () -> Unit,
+    onShareClick: () -> Unit
+) {
+    ConnectDogTopAppBar(
+        titleRes = null,
+        navigationType = TopAppBarNavigationType.BACK,
+        navigationIconContentDescription = "Navigation icon home",
+        onNavigationClick = onBackClick,
+        actionButtons = {
+            IconButton(onClick = onShareClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_share),
+                    contentDescription = "Navigate to Search"
+                )
+            }
+        }
+    )
 }
 
 @Composable

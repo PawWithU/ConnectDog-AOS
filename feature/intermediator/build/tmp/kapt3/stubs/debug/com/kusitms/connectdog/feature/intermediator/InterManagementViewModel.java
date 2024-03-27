@@ -4,7 +4,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem;
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository;
 import com.kusitms.connectdog.core.model.DataUiState;
 import com.kusitms.connectdog.core.model.InterApplication;
