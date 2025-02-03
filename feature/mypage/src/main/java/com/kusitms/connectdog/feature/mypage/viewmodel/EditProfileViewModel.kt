@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import com.kusitms.connectdog.core.data.repository.MyPageRepository
+import com.kusitms.connectdog.core.model.signup.Nickname
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,7 +43,7 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun updateNicknameAvailability() {
-        val body = IsDuplicateNicknameBody(nickname = _nickname.value)
+        val body = Nickname(nickname = _nickname.value)
         viewModelScope.launch {
             try {
                 val response = myPageRepository.postNickname(body)

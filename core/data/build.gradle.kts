@@ -1,4 +1,5 @@
 import com.kusitms.connectdog.Configuration
+import org.jetbrains.kotlin.konan.properties.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -15,6 +16,14 @@ android {
 
     defaultConfig {
         minSdk = Configuration.minSdk
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) { localPropertiesFile.inputStream().use { localProperties.load(it) } }
+
+        val baseUrl: String = localProperties.getProperty("BASE_URL") ?: ""
+
+        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -36,14 +45,20 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
+    implementation(projects.domain)
     implementation(project(":core:model"))
     implementation(project(":core:util"))
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
+
+    implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.kotlin.serialization)

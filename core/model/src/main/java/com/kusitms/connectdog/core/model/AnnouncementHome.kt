@@ -7,4 +7,15 @@ data class AnnouncementHome(
     val postId: Int,
     val dogName: String,
     val pickUpTime: String
-)
+) {
+    companion object {
+        fun loading() = AnnouncementHome(
+            imageUrl = "",
+            location = "이동봉사 위치",
+            date = "YY.mm.dd(요일)",
+            postId = -1,
+            dogName = "",
+            pickUpTime = ""
+        )
+    }
+}

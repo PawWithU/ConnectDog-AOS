@@ -1,18 +1,9 @@
 package com.kusitms.connectdog.core.data.api
 
 import com.kusitms.connectdog.core.data.api.model.AdditionalAuthBody
-import com.kusitms.connectdog.core.data.api.model.AuthDto
-import com.kusitms.connectdog.core.data.api.model.EmailDto
 import com.kusitms.connectdog.core.data.api.model.FcmTokenRequestBody
-import com.kusitms.connectdog.core.data.api.model.IsDuplicateNicknameResponse
-import com.kusitms.connectdog.core.data.api.model.IsDuplicatePhoneNumberBody
-import com.kusitms.connectdog.core.data.api.model.IsDuplicatePhoneNumberResponse
-import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
 import com.kusitms.connectdog.core.data.api.model.MyInfoResponseItem
-import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
-import com.kusitms.connectdog.core.data.api.model.PhoneDto
 import com.kusitms.connectdog.core.data.api.model.Response
-import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
 import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorInfoResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.AnnouncementHomeResponseItem
@@ -24,18 +15,25 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.BadgeResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BasicInformationResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.BookmarkResponseItem
-import com.kusitms.connectdog.core.data.api.model.volunteer.EmailAuthDto
-import com.kusitms.connectdog.core.data.api.model.volunteer.EmailCertificationBody
-import com.kusitms.connectdog.core.data.api.model.volunteer.IsDuplicateNicknameBody
-import com.kusitms.connectdog.core.data.api.model.volunteer.NormalVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
 import com.kusitms.connectdog.core.data.api.model.volunteer.PasswordCheckResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.PasswordDto
 import com.kusitms.connectdog.core.data.api.model.volunteer.ReviewDetailResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.ReviewDetailWithId
-import com.kusitms.connectdog.core.data.api.model.volunteer.SocialVolunteerSignUpBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.UserInfoResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.VolunteerAccountInfo
+import com.kusitms.connectdog.core.model.auth.AuthCodeWithAccessToken
+import com.kusitms.connectdog.core.model.auth.Email
+import com.kusitms.connectdog.core.model.auth.EmailAuthCode
+import com.kusitms.connectdog.core.model.auth.Phone
+import com.kusitms.connectdog.core.model.auth.PhoneNumberDuplication
+import com.kusitms.connectdog.core.model.login.LoginResult
+import com.kusitms.connectdog.core.model.login.NormalLogin
+import com.kusitms.connectdog.core.model.login.SocialLogin
+import com.kusitms.connectdog.core.model.signup.IsDuplicated
+import com.kusitms.connectdog.core.model.signup.Nickname
+import com.kusitms.connectdog.core.model.signup.NormalVolunteerDetail
+import com.kusitms.connectdog.core.model.signup.SocialVolunteerDetail
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -83,28 +81,28 @@ internal interface ApiService {
      */
     @POST("/volunteers/nickname/isDuplicated")
     suspend fun postNickname(
-        @Body nickname: IsDuplicateNicknameBody
-    ): IsDuplicateNicknameResponse
+        @Body body: Nickname
+    ): IsDuplicated
 
     @POST("/volunteers/sign-up/email")
-    suspend fun postEmail(
-        @Body emailCertificationBody: EmailCertificationBody
-    ): AuthDto
+    suspend fun getEmailAuthCode(
+        @Body body: Email
+    ): EmailAuthCode
 
     @POST("/volunteers/sign-up")
     suspend fun postNormalVolunteerSignUp(
-        @Body normalVolunteerSignUpBody: NormalVolunteerSignUpBody
+        @Body body: NormalVolunteerDetail
     )
 
     @PATCH("/volunteers/sign-up/social")
     suspend fun postSocialVolunteerSignUp(
-        @Body socialVolunteerSignUpBody: SocialVolunteerSignUpBody
+        @Body socialVolunteerSignUpBody: SocialVolunteerDetail
     )
 
     @POST("/volunteers/phone/isDuplicated")
-    suspend fun getIsDuplicatePhoneNumber(
-        @Body isDuplicatePhoneNumberBody: IsDuplicatePhoneNumberBody
-    ): IsDuplicatePhoneNumberResponse
+    suspend fun getPhoneNumberDuplication(
+        @Body body: Phone
+    ): PhoneNumberDuplication
 
     /**
      * 봉사관리
@@ -147,25 +145,19 @@ internal interface ApiService {
      */
     @Headers("Content-Type: application/json")
     @POST("/volunteers/login")
-    suspend fun postLoginData(
-        @Body loginBody: NormalLoginBody
-    ): LoginResponseItem
-
-    @Headers("Content-Type: application/json")
-    @POST("/intermediaries/login")
-    suspend fun postIntermediatorLoginData(
-        @Body loginBody: NormalLoginBody
-    ): LoginResponseItem
+    suspend fun normalLogin(
+        @Body loginBody: NormalLogin
+    ): LoginResult
 
     @POST("/volunteers/login/social")
     suspend fun postSocialLoginData(
-        @Body socialLoginBody: SocialLoginBody
-    ): LoginResponseItem
+        @Body socialLoginBody: SocialLogin
+    ): LoginResult
 
     @POST("/volunteers/search/send-email")
     suspend fun volunteerPasswordSearchAuth(
-        @Body body: EmailDto
-    ): EmailAuthDto
+        @Body body: Email
+    ): AuthCodeWithAccessToken
 
     /**s
      * 이동봉사자 > 마이페이지
@@ -284,7 +276,7 @@ internal interface ApiService {
     suspend fun getVolunteerAccountInfo(): VolunteerAccountInfo
 
     @POST("/volunteers/search/email")
-    suspend fun volunteerEmailSearch(
-        @Body body: PhoneDto
-    ): EmailDto
+    suspend fun searchVolunteerEmail(
+        @Body body: Phone
+    ): Email
 }

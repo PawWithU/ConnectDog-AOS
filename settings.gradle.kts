@@ -17,16 +17,21 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "ConnectDog"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 include(":app")
+
+include(":domain")
+
 include(":core:data")
 include(":core:model")
 include(":core:designsystem")
+include(":core:util")
+
+include(":feature:intermediator")
+include(":feature:signup")
 include(":feature:main")
 include(":feature:home")
 include(":feature:login")
 include(":feature:management")
 include(":feature:mypage")
-include(":core:util")
-include(":feature:intermediator")
-include(":feature:signup")
-include(":domain")

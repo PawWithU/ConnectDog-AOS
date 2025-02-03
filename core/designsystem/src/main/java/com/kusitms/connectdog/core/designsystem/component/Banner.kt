@@ -2,6 +2,7 @@ package com.kusitms.connectdog.core.designsystem.component
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,6 +26,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.theme.Gray5
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 
 @Composable
@@ -34,8 +37,11 @@ fun BannerGuideline(
 
     Row(
         modifier = Modifier
+            .padding(horizontal = 20.dp)
+            .padding(vertical = 12.dp)
             .fillMaxWidth()
             .defaultMinSize(minHeight = 84.dp)
+            .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.primary)
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,

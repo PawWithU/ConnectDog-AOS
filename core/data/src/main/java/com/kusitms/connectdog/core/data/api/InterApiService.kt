@@ -1,13 +1,8 @@
 package com.kusitms.connectdog.core.data.api
 
-import com.kusitms.connectdog.core.data.api.model.EmailDto
 import com.kusitms.connectdog.core.data.api.model.FcmTokenRequestBody
-import com.kusitms.connectdog.core.data.api.model.IsDuplicatePhoneNumberBody
-import com.kusitms.connectdog.core.data.api.model.IsDuplicatePhoneNumberResponse
-import com.kusitms.connectdog.core.data.api.model.PhoneDto
 import com.kusitms.connectdog.core.data.api.model.Response
 import com.kusitms.connectdog.core.data.api.model.VolunteerResponse
-import com.kusitms.connectdog.core.data.api.model.intermediator.DuplicateDto
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterAnnouncementDetailResponse
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationCompletedResponseItem
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterApplicationInProgressResponseItem
@@ -17,16 +12,23 @@ import com.kusitms.connectdog.core.data.api.model.intermediator.InterProfileFind
 import com.kusitms.connectdog.core.data.api.model.intermediator.InterProfileInfoResponse
 import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorAccountInfo
 import com.kusitms.connectdog.core.data.api.model.intermediator.IntermediatorProfileInfoResponseItem
-import com.kusitms.connectdog.core.data.api.model.intermediator.NameDto
-import com.kusitms.connectdog.core.data.api.model.volunteer.EmailAuthDto
 import com.kusitms.connectdog.core.data.api.model.volunteer.PasswordCheckResponse
 import com.kusitms.connectdog.core.data.api.model.volunteer.PasswordDto
 import com.kusitms.connectdog.core.data.api.model.volunteer.ReviewDetailResponse
+import com.kusitms.connectdog.core.model.auth.AuthCodeWithAccessToken
+import com.kusitms.connectdog.core.model.auth.Email
+import com.kusitms.connectdog.core.model.auth.Phone
+import com.kusitms.connectdog.core.model.auth.PhoneNumberDuplication
+import com.kusitms.connectdog.core.model.login.LoginResult
+import com.kusitms.connectdog.core.model.login.NormalLogin
+import com.kusitms.connectdog.core.model.signup.IsDuplicated
+import com.kusitms.connectdog.core.model.signup.Name
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -35,6 +37,15 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface InterApiService {
+
+    /**
+     * 로그인
+     */
+    @Headers("Content-Type: application/json")
+    @POST("/intermediaries/login")
+    suspend fun normalLogin(
+        @Body body: NormalLogin
+    ): LoginResult
 
     /**
      * 회원가입
@@ -47,14 +58,14 @@ internal interface InterApiService {
     )
 
     @POST("/intermediaries/phone/isDuplicated")
-    suspend fun getIsDuplicatePhoneNumber(
-        @Body body: IsDuplicatePhoneNumberBody
-    ): IsDuplicatePhoneNumberResponse
+    suspend fun getPhoneNumberDuplication(
+        @Body body: Phone
+    ): PhoneNumberDuplication
 
     @POST("/intermediaries/name/isDuplicated")
     suspend fun checkIsDuplicateName(
-        @Body body: NameDto
-    ): DuplicateDto
+        @Body body: Name
+    ): IsDuplicated
 
     @POST("/intermediaries/password/check")
     suspend fun checkInterPassword(
@@ -158,9 +169,9 @@ internal interface InterApiService {
     suspend fun patchNotification()
 
     @POST("/intermediaries/search/send-email")
-    suspend fun interPasswordSearchAuth(
-        @Body body: EmailDto
-    ): EmailAuthDto
+    suspend fun emailAuthForPasswordReset(
+        @Body body: Email
+    ): AuthCodeWithAccessToken
 
     @Multipart
     @POST("/intermediaries/posts")
@@ -176,7 +187,7 @@ internal interface InterApiService {
     suspend fun interWithdraw()
 
     @POST("/intermediaries/search/email")
-    suspend fun interEmailSearch(
-        @Body body: PhoneDto
-    ): EmailDto
+    suspend fun searchIntermediatorEmail(
+        @Body body: Phone
+    ): Email
 }

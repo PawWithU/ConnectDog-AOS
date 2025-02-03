@@ -1,4 +1,5 @@
 import com.kusitms.connectdog.Configuration
+import org.jetbrains.kotlin.konan.properties.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
@@ -24,6 +25,13 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) { localPropertiesFile.inputStream().use { localProperties.load(it) } }
+
+        val kakaoAppKey: String = localProperties.getProperty("kakao_app_key") ?: ""
+        manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
     }
 
     buildTypes {
@@ -43,7 +51,9 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"

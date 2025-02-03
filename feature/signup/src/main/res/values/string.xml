@@ -3,12 +3,40 @@
     <string name="volunteer_signup">이동봉사자 회원가입</string>
     <string name="intermediator_signup">이동봉사 모집자 회원가입</string>
 
+    <!---->
+    <string name="next">다음</string>
+
     <!--휴대폰 인증-->
+    <string name="name">이름</string>
+    <string name="input_name">이름 입력</string>
     <string name="certification_title">휴대폰 번호 인증을\n진행해 주세요</string>
     <string name="phone_number">휴대폰 번호</string>
+    <string name="phone_number_requirement">\'-\'빼고 입력</string>
+    <string name="auth_code">인증번호</string>
+    <string name="auth_code_requirement">숫자 6자리</string>
+    <string name="input_auth_code">인증번호 입력</string>
+    <string name="auth_code_incorrect">인증번호가 일치하지 않습니다.</string>
+    <string name="resend_title">인증번호가 오지 않는다면?</string>
+    <string name="resend">재발송</string>
+
 
     <string name="introduce">한 줄 소개</string>
     <string name="introduce_placeholder">한 줄 소개 입력</string>
     <string name="intermediator_name">모집자명</string>
     <string name="intermediator_name_input">모집자명 입력</string>
+
+    <!--이메일 인증-->
+    <string name="email">이메일</string>
+    <string name="input_email">이메일 입력</string>
+    <string name="email_auth_title">로그인에 사용할\n이메일 입력해주라</string>
+
+    <!--비밀번호-->
+    <string name="register_password_title">로그인에 사용할\n비밀번호를 입력해주세요</string>
+    <string name="password">비밀번호</string>
+    <string name="input_passwrod">비밀번호 입력</string>
+    <string name="confirm_password">비밀번호 확인</string>
+    <string name="password_requirement">영문+숫자 10자 이상 또는 영문+숫자+특수기호 8자 이상</string>
+
+    <string name="select_profile_image_title">프로필 이미지를\n선택해주세요</string>
+    <string name="select">선택</string>
 </resources>

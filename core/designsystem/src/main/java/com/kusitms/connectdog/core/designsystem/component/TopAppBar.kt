@@ -100,9 +100,11 @@ fun ConnectDogTopAppBar(
             }
         }
 
-        Row(modifier = Modifier.align(Alignment.CenterEnd)) {
-            actionButtons()
-        }
+        Row(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            content = { actionButtons() }
+        )
+
         if (titleRes != null) {
             Text(
                 text = stringResource(id = titleRes),

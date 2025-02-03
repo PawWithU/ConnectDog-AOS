@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+import com.kusitms.connectdog.Configuration
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
@@ -9,10 +12,20 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.feature.login"
-    compileSdk = 33
+    compileSdk = Configuration.minSdk
 
     defaultConfig {
-        minSdk = 30
+        minSdk = Configuration.minSdk
+
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) { localPropertiesFile.inputStream().use { localProperties.load(it) } }
+
+        val naverClientId: String = localProperties.getProperty("NAVER_CLIENT_ID") ?: ""
+        val naverClientSecret: String = localProperties.getProperty("NAVER_CLIENT_SECRET") ?: ""
+
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"$naverClientId\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"$naverClientSecret\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -37,6 +50,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -44,13 +58,13 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:util"))
+    implementation(projects.domain)
+    implementation(projects.core.model)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.util)
+    implementation(projects.core.data)
 
     implementation(libs.androidx.core.splashscreen)
-    implementation(project(mapOf("path" to ":core:data")))
-
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)
 
@@ -81,6 +95,4 @@ dependencies {
 
     implementation(libs.kakao.oauth)
     implementation(libs.naver.oauth)
-
-    implementation(libs.androidx.junit.ktx)
 }

@@ -3,12 +3,13 @@ package com.kusitms.connectdog.feature.mypage.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository
-import com.kusitms.connectdog.core.data.repository.LoginRepository
 import com.kusitms.connectdog.core.data.repository.MyPageRepository
-import com.kusitms.connectdog.core.util.AppMode
 import com.kusitms.connectdog.core.util.UserType
+import com.kusitms.connectdog.domain.usecase.login.AppMode
+import com.kusitms.connectdog.domain.usecase.login.DeleteAccessTokenUseCase
+import com.kusitms.connectdog.domain.usecase.login.LogoutUseCase
+import com.kusitms.connectdog.domain.usecase.login.UpdateAppModeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -19,33 +20,30 @@ private const val TAG = "MyPageViewModel"
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository,
     private val myPageRepository: MyPageRepository,
-    private val loginRepository: LoginRepository,
-    private val interRepository: InterManagementRepository
+    private val interRepository: InterManagementRepository,
+    private val updateAppModeUseCase: UpdateAppModeUseCase,
+    private val deleteAccessTokenUseCase: DeleteAccessTokenUseCase,
+    private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
     private val _isAbleWithdraw = MutableSharedFlow<Boolean?>()
     val isAbleWithdraw: SharedFlow<Boolean?>
         get() = _isAbleWithdraw
 
     fun initLogout() = viewModelScope.launch {
-        try {
-            dataStoreRepository.saveAppMode(AppMode.LOGIN)
-            loginRepository.logout()
-            dataStoreRepository.deleteAccessToken()
-        } catch (e: Exception) {
-            Log.d(TAG, e.message.toString())
-        }
+        updateAppModeUseCase(AppMode.LOGIN)
+        deleteAccessTokenUseCase()
+        logoutUseCase()
     }
 
     fun deleteAccount(userType: UserType) = viewModelScope.launch {
         try {
-            dataStoreRepository.saveAppMode(AppMode.LOGIN)
+            updateAppModeUseCase(AppMode.LOGIN)
             when (userType) {
                 UserType.INTERMEDIATOR -> myPageRepository.interWithdraw()
                 else -> myPageRepository.volunteerWithdraw()
             }
-            dataStoreRepository.deleteAccessToken()
+            deleteAccessTokenUseCase()
         } catch (e: Exception) {
             Log.d(TAG, e.message.toString())
         }

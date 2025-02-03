@@ -1,34 +1,40 @@
 package com.kusitms.connectdog.feature.login.screen
 
 import android.annotation.SuppressLint
-import android.widget.Toast
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.theme.Gray60
+import com.kusitms.connectdog.core.designsystem.theme.Gray80
+import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.R
-import com.kusitms.connectdog.feature.login.viewmodel.SearchViewModel
+import com.kusitms.connectdog.feature.login.state.EmailSearchSideEffect
+import com.kusitms.connectdog.feature.login.viewmodel.EmailSearchViewModel
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -39,7 +45,7 @@ fun EmailSearchScreen(
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
     userType: UserType,
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: EmailSearchViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -68,15 +74,15 @@ private fun Content(
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
     userType: UserType,
-    viewModel: SearchViewModel
+    viewModel: EmailSearchViewModel
 ) {
-    val context = LocalContext.current
-    val isSendNumber by remember { viewModel.isSendNumber }.collectAsState()
-    val isCertified by remember { viewModel.isCertified }.collectAsState()
+    val uiState by viewModel.collectAsState()
 
-    LaunchedEffect(key1 = viewModel) {
-        viewModel.findEmail.collect {
-            it?.let { navigateToCompleteScreen(it) }
+    viewModel.collectSideEffect { sideEffect ->
+        when(sideEffect) {
+            is EmailSearchSideEffect.NavigateToEmailSearchResult -> {
+                uiState.email?.let { navigateToCompleteScreen(it) }
+            }
         }
     }
 
@@ -87,68 +93,66 @@ private fun Content(
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
-            text = "휴대폰 번호 인증을\n진행해주세요",
+            text = stringResource(id = R.string.email_auth_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             lineHeight = 25.sp
         )
         Spacer(modifier = Modifier.height(40.dp))
-        ConnectDogTextFieldWithButton(
-            text = viewModel.phoneNumber,
-            width = 62,
-            height = 27,
-            textFieldLabel = "휴대폰 번호",
+        ConnectDogTextField(
+            text = uiState.phoneNumber,
+            label = stringResource(id = R.string.phone_number),
             keyboardType = KeyboardType.Number,
             placeholder = "- 빼고 입력",
-            buttonLabel = "인증 요청",
-            onTextChanged = { if (it.length <= 11) viewModel.updatePhoneNumber(it) },
-            onClick = {
-                if (viewModel.phoneNumber.isEmpty()) {
-                    Toast.makeText(context, "휴대폰 번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-                } else if (viewModel.phoneNumber.length == 11) {
-                    onSendMessageClick(viewModel.phoneNumber)
-                    Toast.makeText(context, "인증번호를 전송하였습니다.", Toast.LENGTH_SHORT).show()
-                    viewModel.updateIsSendNumber(true)
-                } else {
-                    Toast.makeText(context, "올바른 휴대폰 번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-                }
-            },
-            padding = 5
+            onTextChanged = viewModel::onPhoneNumberChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        ConnectDogTextFieldWithButton(
-            text = viewModel.certificationNumber,
-            width = 62,
-            height = 27,
-            textFieldLabel = "인증번호",
-            keyboardType = KeyboardType.Number,
-            placeholder = "인증번호 6자리",
-            buttonLabel = "인증 확인",
-            onTextChanged = { if (it.length <= 6) viewModel.updateCertificationNumber(it) },
-            onClick = {
-                if (!isSendNumber) {
-                    Toast.makeText(context, "먼저 인증번호를 전송해주세요", Toast.LENGTH_SHORT).show()
-                } else {
-                    if (viewModel.certificationNumber.isEmpty()) {
-                        Toast.makeText(context, "인증 번호를 입력해주세요", Toast.LENGTH_SHORT).show()
-                    } else if (viewModel.certificationNumber.length == 6) {
-                        onVerifyCodeClick(it) { viewModel.updateIsCertified(it) }
-                    } else {
-                        Toast.makeText(context, "인증 번호는 6자리로 입력해주세요", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            },
-            padding = 5
-        )
+        if(uiState.isSendAuthCode) {
+            ConnectDogTextField(
+                text = uiState.authCode,
+                label = "인증번호",
+                keyboardType = KeyboardType.Number,
+                placeholder = "인증번호 6자리",
+                onTextChanged = viewModel::onAuthCodeChanged,
+                isError = (uiState.isAuthCodeError == true)
+            )
+            if(uiState.isAuthCodeError == true) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "올바른 인증번호를 입력해주세요",
+                    fontSize = 10.sp,
+                    color = Red1
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "인증번호가 오지 않는다면?",
+                    color = Gray60,
+                    fontSize = 12.sp
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    modifier = Modifier.clickable { },
+                    text = "재발송",
+                    fontSize = 12.sp,
+                    color = Gray80,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+        }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(
-            content = "다음",
-            enabled = isCertified,
-            onClick = { viewModel.test(userType = userType, context = context) },
-            modifier =
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(56.dp),
+            content = uiState.bottomButtonText,
+            enabled = uiState.enableNext,
+            onClick = { viewModel.onNextClick(userType, onSendMessageClick, onVerifyCodeClick) },
         )
         Spacer(modifier = Modifier.height((imeHeight + 32).dp))
     }
