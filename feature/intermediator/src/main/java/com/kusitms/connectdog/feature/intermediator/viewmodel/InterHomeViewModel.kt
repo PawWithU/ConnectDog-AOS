@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.api.model.FcmTokenRequestBody
-import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.data.repository.InterManagementRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,12 +14,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InterHomeViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository,
+//    private val dataStoreRepository: DataStoreRepository,
     private val repository: InterManagementRepository
 ) : ViewModel() {
-    init {
-        postFcmToken()
-    }
+//    init {
+//        postFcmToken()
+//    }
     private val _profileImage = MutableStateFlow<String>("")
     val profileImage: StateFlow<String>
         get() = _profileImage
@@ -67,11 +66,11 @@ class InterHomeViewModel @Inject constructor(
     }
 
     private fun postFcmToken() = viewModelScope.launch {
-        val token = dataStoreRepository.fcmTokenFlow.first()
-        try {
-            token?.let { repository.postFcmToken(FcmTokenRequestBody(it)) }
-        } catch (e: Exception) {
-            Log.d("fcm post", e.message.toString())
-        }
+//        val token = dataStoreRepository.fcmTokenFlow.first()
+//        try {
+//            token?.let { repository.postFcmToken(FcmTokenRequestBody(it)) }
+//        } catch (e: Exception) {
+//            Log.d("fcm post", e.message.toString())
+//        }
     }
 }

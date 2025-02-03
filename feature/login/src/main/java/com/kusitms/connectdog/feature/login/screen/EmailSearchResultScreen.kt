@@ -28,7 +28,7 @@ import com.kusitms.connectdog.feature.login.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-internal fun EmailSearchResultScreen(
+fun EmailSearchResultScreen(
     onBackClick: () -> Unit,
     email: String,
     navigateToLoginRoute: () -> Unit

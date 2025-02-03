@@ -37,7 +37,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
     }
@@ -47,7 +46,7 @@ android {
 }
 
 dependencies {
-
+    implementation(projects.domain)
     // Navigation을 위해 모든 feature 의존성 추가 필요
     implementation(project(":feature:login"))
     implementation(project(":feature:signup"))
@@ -90,9 +89,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     implementation(libs.kotlinx.collection.imuutable)
-
-    // test
-    implementation(libs.androidx.junit.ktx)
+    implementation(libs.orbit.core)
+    implementation(libs.orbit.compose)
+    implementation(libs.orbit.viewmodel)
 }
 
 kapt {

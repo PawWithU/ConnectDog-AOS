@@ -4,70 +4,59 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kusitms.connectdog.core.designsystem.R
+import com.kusitms.connectdog.core.designsystem.R as DR
+import com.kusitms.connectdog.core.designsystem.component.ActionRow
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogErrorCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.util.UserType
+import com.kusitms.connectdog.feature.login.R
+import com.kusitms.connectdog.feature.login.state.LoginSideEffect
 import com.kusitms.connectdog.feature.login.viewmodel.LoginViewModel
-
-private const val TAG = "EmailLoginScreen"
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 internal fun NormalLoginScreen(
-    userType: UserType,
     onBackClick: () -> Unit,
     onNavigateToSignUp: (UserType) -> Unit,
     onNavigateToVolunteerHome: () -> Unit,
-    onNavigateToIntermediatorHome: () -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
     onNavigateToPasswordSearch: (UserType) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
-    val isLoginSuccessful by viewModel.isLoginSuccessful.collectAsState()
 
-    LaunchedEffect(key1 = viewModel) {
-        viewModel.isLoginSuccessful.collect {
-            if (it == true) {
-                when (userType) {
-                    UserType.INTERMEDIATOR -> onNavigateToIntermediatorHome()
-                    else -> onNavigateToVolunteerHome()
-                }
-            }
+    viewModel.collectSideEffect {
+        when (it) {
+            is LoginSideEffect.NavigateToHome -> onNavigateToVolunteerHome()
+            is LoginSideEffect.NavigateToSignUp -> null
         }
     }
 
@@ -80,11 +69,7 @@ internal fun NormalLoginScreen(
             ),
         topBar = {
             ConnectDogTopAppBar(
-                titleRes = when (userType) {
-                    UserType.SOCIAL_VOLUNTEER -> R.string.volunteer_login
-                    UserType.NORMAL_VOLUNTEER -> R.string.volunteer_login
-                    UserType.INTERMEDIATOR -> R.string.intermediator_login
-                },
+                titleRes = DR.string.volunteer_login,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick
@@ -96,8 +81,6 @@ internal fun NormalLoginScreen(
             onNavigateToSignUp = onNavigateToSignUp,
             onNavigateToEmailSearch = onNavigateToEmailSearch,
             onNavigateToPasswordSearch = onNavigateToPasswordSearch,
-            userType = userType,
-            isLoginSuccessful = isLoginSuccessful
         )
     }
 }
@@ -108,9 +91,9 @@ private fun Content(
     onNavigateToSignUp: (UserType) -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
     onNavigateToPasswordSearch: (UserType) -> Unit,
-    userType: UserType,
-    isLoginSuccessful: Boolean?
 ) {
+    val uiState by viewModel.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -122,54 +105,57 @@ private fun Content(
                 .padding(horizontal = 20.dp)
         ) {
             ConnectDogTextField(
-                text = viewModel.email,
-                label = "이메일",
-                placeholder = "이메일 입력",
+                text = uiState.email,
+                label = stringResource(id = R.string.email),
+                placeholder = stringResource(id = R.string.email),
                 keyboardType = KeyboardType.Text,
-                onTextChanged = { viewModel.updateEmail(it) },
-                isError = isLoginSuccessful?.let { !it } ?: run { false }
+                onTextChanged = viewModel::onEmailChanged,
+                isError = uiState.isLoginSuccessful?.let { !it } ?: run { false }
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogTextField(
-                text = viewModel.password,
-                label = "비밀번호",
-                placeholder = "비밀번호 입력",
+                text = uiState.password,
+                label = stringResource(id = R.string.password),
+                placeholder = stringResource(id = R.string.input_password),
                 keyboardType = KeyboardType.Password,
-                onTextChanged = { viewModel.updatePassword(it) },
-                isError = isLoginSuccessful?.let { !it } ?: run { false }
+                onTextChanged = viewModel::onPasswordChanged,
+                isError = uiState.isLoginSuccessful?.let { !it } ?: run { false }
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogNormalButton(
-                content = "로그인",
+                content = stringResource(id = R.string.login),
                 color = MaterialTheme.colorScheme.primary,
-                onClick = { viewModel.initVolunteerLogin() },
+                onClick = viewModel::initVolunteerLogin,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
             )
             Spacer(modifier = Modifier.height(30.dp))
-            AccountFind(
-                onNavigateToSignup = onNavigateToSignUp,
-                onNavigateToEmailSearch = onNavigateToEmailSearch,
-                onNavigateToPasswordSearch = onNavigateToPasswordSearch,
-                userType = userType
+            ActionRow(
+                stringResource(id = R.string.email_signup) to { onNavigateToSignUp(UserType.NORMAL_VOLUNTEER) },
+                stringResource(id = R.string.email_search) to { onNavigateToEmailSearch(UserType.NORMAL_VOLUNTEER) },
+                stringResource(id = R.string.password_search) to {
+                    onNavigateToPasswordSearch(
+                        UserType.NORMAL_VOLUNTEER
+                    )
+                }
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (isLoginSuccessful?.let { !it } ?: run { false }) {
+            if (uiState.isLoginSuccessful?.let { !it } ?: run { false }) {
                 ConnectDogErrorCard(
                     modifier = Modifier
                         .zIndex(1f)
                         .align(Alignment.TopCenter)
                         .padding(horizontal = 20.dp),
-                    errorMessage = R.string.login_error
+                    errorMessage = DR.string.login_error
                 )
             }
             Image(
-                painter = painterResource(id = R.drawable.ic_main_large),
+                painter = painterResource(id = DR.drawable.ic_main_large),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -177,51 +163,5 @@ private fun Content(
                     .aspectRatio(1f)
             )
         }
-    }
-}
-
-@Composable
-fun AccountFind(
-    onNavigateToSignup: (UserType) -> Unit,
-    onNavigateToEmailSearch: (UserType) -> Unit,
-    onNavigateToPasswordSearch: (UserType) -> Unit,
-    userType: UserType
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            modifier = Modifier.clickable { onNavigateToSignup(userType) },
-            text = "이메일로 회원가입",
-            fontSize = 12.sp,
-            color = Gray2
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = "|",
-            fontSize = 12.sp,
-            color = Gray2
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            modifier = Modifier.clickable { onNavigateToEmailSearch(UserType.NORMAL_VOLUNTEER) },
-            text = "이메일 찾기",
-            fontSize = 12.sp,
-            color = Gray2
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            text = "|",
-            fontSize = 12.sp,
-            color = Gray2
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(
-            modifier = Modifier.clickable { onNavigateToPasswordSearch(UserType.NORMAL_VOLUNTEER) },
-            text = "비밀번호 찾기",
-            fontSize = 12.sp,
-            color = Gray2
-        )
     }
 }

@@ -45,11 +45,17 @@ android {
 
 dependencies {
 
-    implementation(project(":core:designsystem"))
-    implementation(project(":core:util"))
+    implementation(projects.domain)
+    implementation(projects.core.designsystem)
+    implementation(projects.core.util)
+    implementation(projects.core.data)
+    implementation(projects.core.model)
 
     implementation(libs.androidx.core.splashscreen)
-    implementation(project(mapOf("path" to ":core:data")))
+
+    implementation(libs.orbit.core)
+    implementation(libs.orbit.compose)
+    implementation(libs.orbit.viewmodel)
 
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.android)

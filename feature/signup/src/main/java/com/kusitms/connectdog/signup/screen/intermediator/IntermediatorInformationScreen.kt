@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -35,7 +36,7 @@ import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 @Composable
 fun IntermediatorInformationScreen(
     onBackClick: () -> Unit,
-    onNavigateToCompleteSignUp: (UserType) -> Unit,
+    onNavigateToCompleteSignUp: () -> Unit,
     imeHeight: Int,
     viewModel: IntermediatorInformationViewModel = hiltViewModel(),
     signUpViewModel: SignUpViewModel
@@ -91,10 +92,10 @@ fun IntermediatorInformationScreen(
             ConnectDogNormalButton(
                 content = "다음",
                 onClick = {
-                    onNavigateToCompleteSignUp(UserType.INTERMEDIATOR)
-                    signUpViewModel.updateUrl(viewModel.url)
-                    signUpViewModel.updateContact(viewModel.contact)
-                    signUpViewModel.postIntermediatorSignUp(context)
+                    onNavigateToCompleteSignUp()
+//                    signUpViewModel.updateUrl(viewModel.url)
+//                    signUpViewModel.updateContact(viewModel.contact)
+//                    signUpViewModel.postIntermediatorSignUp(context)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

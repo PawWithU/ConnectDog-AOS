@@ -43,8 +43,6 @@
     <string name="home_moved_description">이동했어요!</string>
     <string name="home_navigate_search">지금 필요한 이동봉사 공고</string>
     <string name="home_navigate_review">생생한 이동봉사 후기</string>
-    <string name="search_bar_title_1">딱 맞는 이동봉사를 찾아보세요!\n</string>
-    <string name="search_bar_title_2">출발지·도착지·일정</string>
     <!-- review -->
     <string name="review_top_app_bar_title">이동봉사 후기</string>
     <!--apply-->

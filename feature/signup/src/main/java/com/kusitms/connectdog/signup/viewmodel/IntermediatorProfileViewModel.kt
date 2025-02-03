@@ -50,8 +50,8 @@ class IntermediatorProfileViewModel @Inject constructor(
             name = _name.value
         )
         try {
-            val response = signUpRepository.isDuplicateInterNickName(body)
-            _isDuplicateName.value = response.isDuplicated
+//            val response = signUpRepository.isDuplicateInterNickName(body)
+//            _isDuplicateName.value = response.isDuplicated
         } catch (e: Exception) {
         }
     }

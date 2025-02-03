@@ -31,20 +31,14 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
-import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.domain.usecase.login.AppMode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import org.orbitmvi.orbit.compose.collectAsState
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var dataStore: DataStoreRepository
     private lateinit var auth: FirebaseAuth
     private lateinit var verificationId: String
     private var imeHeight by mutableIntStateOf(0)
@@ -60,11 +54,10 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         imeListener()
 
-        lifecycleScope.launch {
-            val appMode = withContext(Dispatchers.IO) {
-                dataStore.appModeFlow.first()
-            }
-            setContent {
+
+        setContent {
+            val uiState by viewModel.collectAsState()
+            uiState.appMode?.let { appMode ->
                 val navigator: MainNavigator = rememberMainNavigator(mode = appMode)
                 ConnectDogTheme {
                     MainScreen(
@@ -137,7 +130,6 @@ class MainActivity : ComponentActivity() {
 
                     val updatedHeight =
                         if (imeHeight - sysBarInsets.bottom < 0) 0 else imeHeight - sysBarInsets.bottom
-                    Log.d("saqa", updatedHeight.toString())
                     return insets
                 }
             }

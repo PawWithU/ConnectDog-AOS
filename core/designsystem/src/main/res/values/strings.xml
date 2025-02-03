@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="kakao_app_key">227799f94d3661c7d84b79daba3b0eaa</string>
-    
     <string name="home">홈</string>
     <string name="date">일정</string>
     <string name="organization">모집자명</string>
@@ -55,4 +53,8 @@
     <string name="complete_check_dialog_title">봉사 건을 완료 처리 하시겠습니까?</string>
     <string name="complete_check_dialog_description">봉사가 모두 종료되었나요?\n완료 처리 시 봉사자에게도\n완료 푸시 알림이 전송됩니다.</string>
     <string name="complete">완료</string>
+
+    <!--홈 검색-->
+    <string name="search_bar_title">딱 맞는 이동봉사를 찾아보세요!\n</string>
+    <string name="search_bar_subtitle">출발지·도착지·일정</string>
 </resources>

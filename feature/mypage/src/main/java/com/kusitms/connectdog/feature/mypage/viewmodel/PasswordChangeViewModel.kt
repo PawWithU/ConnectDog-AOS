@@ -4,9 +4,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.data.repository.SignUpRepository
 import com.kusitms.connectdog.core.util.UserType
+import com.kusitms.connectdog.domain.usecase.login.DeleteAccessTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PasswordChangeViewModel @Inject constructor(
     private val repository: SignUpRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val deleteAccessTokenUseCase: DeleteAccessTokenUseCase
 ) : ViewModel() {
     private val _previousPassword: MutableState<String> = mutableStateOf("")
     val previousPassword: String
@@ -71,7 +71,7 @@ class PasswordChangeViewModel @Inject constructor(
                 UserType.INTERMEDIATOR -> repository.changeInterPassword(_newPassword.value)
                 else -> repository.changeVolunteerPassword(_newPassword.value)
             }
-            dataStoreRepository.deleteAccessToken()
+            deleteAccessTokenUseCase()
         } catch (e: Exception) {
         }
     }

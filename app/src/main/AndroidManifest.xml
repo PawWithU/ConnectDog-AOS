@@ -18,7 +18,7 @@
         tools:targetApi="33">
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key" />
+            android:value="${KAKAO_APP_KEY}" />
 
         <service
             android:name=".feature.main.FirebaseMessagingService"
@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:host="oauth"
-                    android:scheme="kakao227799f94d3661c7d84b79daba3b0eaa" />
+                    android:scheme="kakao${KAKAO_APP_KEY}" />
             </intent-filter>
         </activity>
 

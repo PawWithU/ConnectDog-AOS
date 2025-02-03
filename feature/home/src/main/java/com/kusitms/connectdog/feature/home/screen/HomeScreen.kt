@@ -1,13 +1,10 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,47 +20,37 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.BannerGuideline
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogReview
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
 import com.kusitms.connectdog.core.designsystem.component.ReviewType
+import com.kusitms.connectdog.core.designsystem.component.SearchBar
+import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.component.text.TextWithIcon
-import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
-import com.kusitms.connectdog.core.designsystem.theme.Gray5
 import com.kusitms.connectdog.core.model.AnnouncementHome
 import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.feature.home.HomeViewModel
@@ -95,29 +82,24 @@ internal fun HomeRoute(
         viewModel.errorFlow.collectLatest { throwable -> onShowErrorSnackBar(throwable) }
     }
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        TopAppBar(
-            onClickSearch = onNavigateToFilterSearch,
-            onNotificationClick = onNavigateToNotification
-        )
-        HomeScreen(
-            announcementUiState = announcementUiState,
-            reviewUiState = reviewUiState,
-            onNavigateToSearch = onNavigateToSearch,
-            onNavigateToReview = onNavigateToReview,
-            onNavigateToDetail = onNavigateToDetail,
-            onNavigateToGuide = onNavigateToGuide,
-            onNavigateToReviewDetail = onNavigateToReviewDetail
-        )
-    }
+    HomeScreen(
+        announcementUiState = announcementUiState,
+        reviewUiState = reviewUiState,
+        onNavigateToFilterSearch = onNavigateToFilterSearch,
+        onNavigateToSearch = onNavigateToSearch,
+        onNavigateToReview = onNavigateToReview,
+        onNavigateToDetail = onNavigateToDetail,
+        onNavigateToGuide = onNavigateToGuide,
+        onNavigateToReviewDetail = onNavigateToReviewDetail
+    )
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun HomeScreen(
     announcementUiState: AnnouncementUiState,
     reviewUiState: ReviewUiState,
+    onNavigateToFilterSearch: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
@@ -125,195 +107,40 @@ private fun HomeScreen(
     onNavigateToReviewDetail: (Long) -> Unit
 ) {
     val scrollState = rememberScrollState()
-    Column(
-        modifier = Modifier
-            .verticalScroll(scrollState)
-            .fillMaxSize()
-    ) {
-        BannerGuideline(onNavigateToGuide)
-        MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
-        AnnouncementContent(announcementUiState, onClick = onNavigateToDetail)
-        MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
-        ReviewContent(uiState = reviewUiState, onClick = onNavigateToReviewDetail)
-        Spacer(modifier = Modifier.height(90.dp))
-    }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopAppBar(
-    onClickSearch: () -> Unit,
-    onNotificationClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        SearchBar(
-            onClick = onClickSearch,
-            modifier = Modifier.weight(1f)
-        )
-        Spacer(modifier = Modifier.width(20.dp))
-        CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
-            IconButton(
-                onClick = onNotificationClick,
-                modifier = Modifier.size(24.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Notifications,
-                    contentDescription = "Navigate to Search"
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun SearchBar(
-    onClick: () -> Unit,
-    modifier: Modifier
-) {
-    Box(
-        modifier = modifier
-            .height(50.dp)
-            .border(
-                width = 1.dp,
-                color = Gray5,
-                shape = RoundedCornerShape(90.dp)
-            )
-            .clickable { onClick() },
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Icon(
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .size(24.dp),
-            imageVector = Icons.Filled.Search,
-            tint = Gray3,
-            contentDescription = "Navigate to Search"
-        )
-        Text(
-            modifier = Modifier.padding(start = 52.dp),
-            text = buildAnnotatedString {
-                withStyle(
-                    SpanStyle(
-                        color = Gray1,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append(stringResource(id = R.string.search_bar_title_1))
+    Scaffold(
+        topBar = {
+            ConnectDogTopAppBar(
+                titleRes = null,
+                navigationType = TopAppBarNavigationType.HOME,
+                actionButtons = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Outlined.Notifications,
+                            contentDescription = "Navigate to Search",
+                            modifier = Modifier.clickable {  }
+                        )
+                    }
                 }
-                withStyle(
-                    SpanStyle(
-                        color = Gray3,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append(stringResource(id = R.string.search_bar_title_2))
-                }
-            },
-            lineHeight = 15.sp
-        )
-    }
-}
-
-@Composable
-private fun StatisticBanner(modifier: Modifier) {
-    Column(horizontalAlignment = Alignment.End, modifier = modifier) {
-        Row(
-            modifier = Modifier.padding(end = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_info),
-                contentDescription = "info icon",
-                modifier = Modifier.padding(2.dp),
-                tint = Gray3
-            )
-            Text(
-                text = stringResource(id = R.string.home_counting_guide),
-                style = MaterialTheme.typography.labelMedium,
-                color = Gray3
             )
         }
-        Spacer(modifier = Modifier.size(6.dp))
-        Box(
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = RoundedCornerShape(12.dp)
-                )
+                .verticalScroll(scrollState)
+                .fillMaxSize()
+                .padding(top = 48.dp, bottom = 90.dp)
         ) {
-            Divider(
-                color = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .height(80.dp)
-                    .width(1.dp)
-                    .align(Alignment.Center)
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.Bottom,
-                modifier = Modifier
-                    .height(80.dp)
-                    .fillMaxWidth()
-            ) {
-                StatisticInfoItem(
-                    modifier = Modifier.weight(1f),
-                    number = "105",
-                    descriptionRes = R.string.home_need_move_description,
-                    painter = painterResource(id = R.drawable.img_man_dog)
-                )
-                StatisticInfoItem(
-                    modifier = Modifier.weight(1f),
-                    number = "22",
-                    descriptionRes = R.string.home_moved_description,
-                    painter = painterResource(id = R.drawable.img_woman)
-                )
-            }
+            SearchBar(onClick = onNavigateToFilterSearch)
+            BannerGuideline(onNavigateToGuide)
+            MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
+            AnnouncementContent(announcementUiState, onClick = onNavigateToDetail)
+            MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
+            ReviewContent(uiState = reviewUiState, onClick = onNavigateToReviewDetail)
         }
     }
 }
 
-@Composable
-private fun StatisticInfoItem(
-    modifier: Modifier = Modifier,
-    number: String = "0",
-    descriptionRes: Int,
-    painter: Painter
-) {
-    Row {
-        Column(horizontalAlignment = Alignment.Start) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = number,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = stringResource(id = R.string.home_dog_unit),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(start = 2.dp)
-                )
-            }
-            Text(
-                text = stringResource(id = descriptionRes),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-        Image(painter = painter, contentDescription = "mandog")
-    }
-}
 
 @Composable
 fun MoveContent(
@@ -334,7 +161,7 @@ fun MoveContent(
         )
         IconButton(onClick = { onClick() }) {
             Icon(
-                painter = painterResource(id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_right_arrow),
+                painter = painterResource(id = R.drawable.ic_right_arrow),
                 contentDescription = "move to another screen",
                 modifier = Modifier.size(24.dp),
                 tint = Gray2
@@ -405,9 +232,7 @@ fun AnnouncementLoading(
     modifier: Modifier,
     arrangement: Arrangement.Horizontal
 ) {
-    val list = List(4) {
-        AnnouncementHome("", "이동봉사 위치", "YY.mm.dd(요일)", -1, "", "")
-    }
+    val list = List(4) { AnnouncementHome.loading() }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
             AnnouncementCardContent(announcementHome = it, onClick = {})
@@ -507,24 +332,5 @@ private fun ReviewCardContent(
         modifier = Modifier.clickable { review.reviewId?.let { onClick(it) } }
     ) {
         ConnectDogReview(review = review, modifier = Modifier.width(272.dp), type = ReviewType.HOME)
-    }
-}
-
-@Preview
-@Composable
-private fun HomeScreenPreview() {
-    ConnectDogTheme {
-        Column(modifier = Modifier.background(Color.White)) {
-            TopAppBar(onClickSearch = {}, onNotificationClick = {})
-            HomeScreen(
-                announcementUiState = AnnouncementUiState.Empty,
-                reviewUiState = ReviewUiState.Empty,
-                {},
-                {},
-                {},
-                {},
-                {}
-            )
-        }
     }
 }

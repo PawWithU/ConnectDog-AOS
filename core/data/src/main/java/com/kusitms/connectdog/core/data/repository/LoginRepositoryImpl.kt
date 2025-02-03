@@ -2,59 +2,41 @@ package com.kusitms.connectdog.core.data.repository
 
 import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.api.InterApiService
-import com.kusitms.connectdog.core.data.api.model.EmailDto
-import com.kusitms.connectdog.core.data.api.model.LoginResponseItem
-import com.kusitms.connectdog.core.data.api.model.NormalLoginBody
-import com.kusitms.connectdog.core.data.api.model.PhoneDto
-import com.kusitms.connectdog.core.data.api.model.SocialLoginBody
-import com.kusitms.connectdog.core.data.api.model.volunteer.EmailAuthDto
+import com.kusitms.connectdog.core.model.login.LoginResult
+import com.kusitms.connectdog.core.model.login.NormalLogin
+import com.kusitms.connectdog.core.model.login.SocialLogin
+import com.kusitms.connectdog.domain.repository.LoginRepository
 import javax.inject.Inject
 
 internal class LoginRepositoryImpl @Inject constructor(
-    private val api: ApiService,
-    private val interApi: InterApiService
+    private val volunteerApi: ApiService,
+    private val intermediatorApi: InterApiService
 ) : LoginRepository {
-    override suspend fun postLoginData(
-        loginBody: NormalLoginBody
-    ): LoginResponseItem {
-        return api.postLoginData(
-            loginBody
-        )
+    override suspend fun volunteerNormalLogin(
+        email: String,
+        password: String
+    ): Result<LoginResult> = runCatching {
+        val body = NormalLogin(email, password)
+        return@runCatching volunteerApi.normalLogin(body)
     }
 
-    override suspend fun postSocialLoginData(
-        socialLoginBody: SocialLoginBody
-    ): LoginResponseItem {
-        return api.postSocialLoginData(
-            socialLoginBody
-        )
+    override suspend fun intermediatorNormalLogin(
+        email: String,
+        password: String
+    ): Result<LoginResult> = runCatching {
+        val body = NormalLogin(email, password)
+        return@runCatching intermediatorApi.normalLogin(body)
     }
 
-    override suspend fun postIntermediatorLoginData(loginBody: NormalLoginBody): LoginResponseItem {
-        return api.postIntermediatorLoginData(loginBody)
+    override suspend fun socialLogin(
+        accessToken: String,
+        provider: String
+    ): Result<LoginResult> = runCatching{
+        val body = SocialLogin(accessToken, provider)
+        return@runCatching volunteerApi.postSocialLoginData(body)
     }
 
-    override suspend fun volunteerEmailSearch(phone: String): EmailDto {
-        val body = PhoneDto(phone = phone)
-        return api.volunteerEmailSearch(body)
-    }
-
-    override suspend fun interEmailSearch(phone: String): EmailDto {
-        val body = PhoneDto(phone = phone)
-        return interApi.interEmailSearch(body)
-    }
-
-    override suspend fun volunteerPasswordSearchAuth(email: String): EmailAuthDto {
-        val body = EmailDto(email = email)
-        return api.volunteerPasswordSearchAuth(body)
-    }
-
-    override suspend fun interPasswordSearchAuth(email: String): EmailAuthDto {
-        val body = EmailDto(email = email)
-        return interApi.interPasswordSearchAuth(body)
-    }
-
-    override suspend fun logout() {
-        return api.logout()
+    override suspend fun logout() = runCatching {
+        return@runCatching volunteerApi.logout()
     }
 }

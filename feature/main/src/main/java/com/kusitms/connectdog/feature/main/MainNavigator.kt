@@ -8,8 +8,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.kusitms.connectdog.core.util.AppMode
+import com.kusitms.connectdog.core.util.AccountType
 import com.kusitms.connectdog.core.util.UserType
+import com.kusitms.connectdog.domain.usecase.login.AppMode
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.home.navigation.navigateApply
@@ -32,13 +33,14 @@ import com.kusitms.connectdog.feature.intermediator.navigation.navigateToCreateA
 import com.kusitms.connectdog.feature.intermediator.navigation.navigateToCreateComplete
 import com.kusitms.connectdog.feature.intermediator.navigation.navigateToCreateDog
 import com.kusitms.connectdog.feature.intermediator.navigation.navigateToInterProfileEdit
-import com.kusitms.connectdog.feature.login.LoginRoute
-import com.kusitms.connectdog.feature.login.navigateEmailSearch
-import com.kusitms.connectdog.feature.login.navigateEmailSearchComplete
-import com.kusitms.connectdog.feature.login.navigateNormalLogin
-import com.kusitms.connectdog.feature.login.navigatePasswordSearch
-import com.kusitms.connectdog.feature.login.navigatePasswordSearchAuth
-import com.kusitms.connectdog.feature.login.navigateToLoginRoute
+import com.kusitms.connectdog.feature.login.navigation.LoginRoute
+import com.kusitms.connectdog.feature.login.navigation.navigateEmailSearch
+import com.kusitms.connectdog.feature.login.navigation.navigateEmailSearchComplete
+import com.kusitms.connectdog.feature.login.navigation.navigateNormalLogin
+import com.kusitms.connectdog.feature.login.navigation.navigatePasswordSearch
+import com.kusitms.connectdog.feature.login.navigation.navigatePasswordSearchAuth
+import com.kusitms.connectdog.feature.login.navigation.navigateToLoginRoute
+import com.kusitms.connectdog.feature.login.navigation.navigateToNoAccount
 import com.kusitms.connectdog.feature.management.navigation.navigateCheckReview
 import com.kusitms.connectdog.feature.management.navigation.navigateCreateReview
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
@@ -71,7 +73,7 @@ internal class MainNavigator(
     val startDestination = when (mode) {
         AppMode.VOLUNTEER -> MainTab.HOME.route
         AppMode.INTERMEDIATOR -> IntermediatorRoute.route
-        AppMode.LOGIN -> LoginRoute.route
+        AppMode.LOGIN -> LoginRoute.ROUTE
     }
 
     val currentTab: MainTab?
@@ -106,16 +108,17 @@ internal class MainNavigator(
     fun navigatePasswordSearchAuth(userType: UserType) = navController.navigatePasswordSearchAuth(userType)
     fun onLogoutClick() = navController.navigateToLoginRoute()
     fun navigatePasswordSearch(userType: UserType) = navController.navigatePasswordSearch(userType)
+    fun navigateNoAccount(accountType: AccountType) = navController.navigateToNoAccount(accountType)
 
     // signup navigator
-    fun navigateVolunteerProfile(userType: UserType) = navController.navigateToVolunteerProfile(userType)
+    fun navigateVolunteerProfile() = navController.navigateToVolunteerProfile()
     fun navigateIntermediatorProfile() = navController.navigateToIntermediatorProfile()
-    fun navigateRegisterEmail(userType: UserType) = navController.navigateRegisterEmail(userType)
-    fun navigateRegisterPassword(userType: UserType) = navController.navigateRegisterPassword(userType)
+    fun navigateRegisterEmail() = navController.navigateRegisterEmail()
+    fun navigateRegisterPassword() = navController.navigateRegisterPassword()
     fun navigateSelectProfileImage() = navController.navigateSelectProfileImage()
-    fun navigateCompleteSignUp(userType: UserType) = navController.navigateCompleteSignUp(userType)
+    fun navigateCompleteSignUp() = navController.navigateCompleteSignUp()
     fun navigateIntermediatorInformation() = navController.navigateIntermediatorInformation()
-    fun navigateCertification(userType: UserType) = navController.navigateToCertification(userType)
+    fun navigateCertification() = navController.navigateToCertification()
 
     // volunteer navigator
     fun navigateHome() = navigate(MainTab.HOME)
@@ -176,7 +179,4 @@ internal class MainNavigator(
 internal fun rememberMainNavigator(
     navController: NavHostController = rememberNavController(),
     mode: AppMode
-): MainNavigator =
-    remember(navController) {
-        MainNavigator(navController, mode)
-    }
+): MainNavigator = remember(navController) { MainNavigator(navController, mode) }

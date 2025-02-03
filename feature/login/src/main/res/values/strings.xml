@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+
+    <string name="input_email">이메일 입력</string>
+    <string name="input_password">비밀번호 입력</string>
+
+    <string name="email_signup">이메일로 회원가입</string>
+    <string name="email_login">이메일 로그인</string>\
+
     <string name="naver_login">네이버로 3초 만에 시작하기</string>
     <string name="kakao_login">카카오로 3초 만에 시작하기</string>
     <string name="signup_with_connectdog">코넥독 계정으로 회원가입하기</string>
@@ -10,4 +19,13 @@
     <string name="password_search">비밀번호 찾기</string>
 
     <string name="password_search_title">로그인에 사용할\n비밀번호를 입력해 주세요</string>
+
+    <!--이메일 인증-->
+    <string name="email_auth_title">이메일 인증을\n진행해주세요</string>
+    <string name="phone_number">휴대폰 번호</string>
+
+
+    <!--계정 정보 없음-->
+    <string name="no_account_title">입력하신 번호로 가입한 계정이\n존재하지 않습니다</string>
+    <string name="no_account_subtitle">정보가 일치하는 계정이 존재하지 않습니다.</string>
 </resources>

@@ -1,16 +1,15 @@
 package com.kusitms.connectdog.core.data.di
 
-import android.content.Context
 import android.util.Log
+import com.kusitms.connectdog.core.data.BuildConfig
 import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.api.InterApiService
-import com.kusitms.connectdog.core.data.repository.DataStoreRepository
+import com.kusitms.connectdog.domain.repository.DataStoreRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -31,12 +30,10 @@ private const val TAG = "API Module"
 @Module
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
-    private const val BASE_URL = "https://dev-api.pawwithu.site/"
-
     @Provides
     fun provideNetworkInterceptor(dataStoreRepository: DataStoreRepository): Interceptor = Interceptor { chain ->
         val request = chain.request()
-        val jwt = runBlocking { dataStoreRepository.accessTokenFlow.first().toString() }
+        val jwt = runBlocking { dataStoreRepository.getAccessToken().first().toString() }
 
         Log.d(TAG, "AccessToken: $jwt")
 
@@ -55,12 +52,6 @@ internal object ApiModule {
                 .body(ResponseBody.create(null, e.message ?: ""))
                 .build()
         }
-    }
-
-    @Provides
-    @Singleton
-    fun provideDataStoreRepository(@ApplicationContext context: Context): DataStoreRepository {
-        return DataStoreRepository(context)
     }
 
     @Provides
@@ -93,7 +84,7 @@ internal object ApiModule {
         moshi: Moshi
     ): ApiService {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient).build()
             .create(ApiService::class.java)
@@ -106,7 +97,7 @@ internal object ApiModule {
         moshi: Moshi
     ): InterApiService {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient).build()
             .create(InterApiService::class.java)
@@ -114,8 +105,5 @@ internal object ApiModule {
 
     @Provides
     @Singleton
-    fun provideJson(): Json =
-        Json {
-            ignoreUnknownKeys = true
-        }
+    fun provideJson(): Json = Json { ignoreUnknownKeys = true }
 }

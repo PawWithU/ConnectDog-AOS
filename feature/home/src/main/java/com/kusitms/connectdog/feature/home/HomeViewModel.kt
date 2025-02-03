@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kusitms.connectdog.core.data.api.model.FcmTokenRequestBody
-import com.kusitms.connectdog.core.data.repository.DataStoreRepository
 import com.kusitms.connectdog.core.data.repository.HomeRepository
+import com.kusitms.connectdog.domain.usecase.GetFcmTokenUseCase
 import com.kusitms.connectdog.feature.home.state.AnnouncementUiState
 import com.kusitms.connectdog.feature.home.state.ReviewUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -24,14 +23,12 @@ import javax.inject.Inject
 private val TAG = "HomeViewModel"
 
 @HiltViewModel
-class HomeViewModel
-@Inject
-constructor(
+class HomeViewModel @Inject constructor(
     private val homeRepository: HomeRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val getFcmTokenUseCase: GetFcmTokenUseCase,
 ) : ViewModel() {
     init {
-        postFcmToken()
+//        postFcmToken()
     }
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
@@ -94,11 +91,8 @@ constructor(
         )
 
     private fun postFcmToken() = viewModelScope.launch {
-        val token = dataStoreRepository.fcmTokenFlow.first()
-        try {
-            token?.let { homeRepository.postFcmToken(FcmTokenRequestBody(it)) }
-        } catch (e: Exception) {
-            Log.d("fcm post", e.message.toString())
+        getFcmTokenUseCase().collect {
+            it?.let { homeRepository.postFcmToken(FcmTokenRequestBody(it)) }
         }
     }
 }

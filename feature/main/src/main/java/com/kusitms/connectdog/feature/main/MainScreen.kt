@@ -1,6 +1,8 @@
 package com.kusitms.connectdog.feature.main
 
 import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -12,7 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -31,20 +33,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import com.google.gson.Gson
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.core.util.AppMode
 import com.kusitms.connectdog.core.util.UserType
+import com.kusitms.connectdog.domain.usecase.login.AppMode
 import com.kusitms.connectdog.feature.home.navigation.homeNavGraph
 import com.kusitms.connectdog.feature.intermediator.navigation.intermediatorNavGraph
 import com.kusitms.connectdog.feature.intermediator.viewmodel.CreateApplicationViewModel
-import com.kusitms.connectdog.feature.login.loginNavGraph
+import com.kusitms.connectdog.feature.login.navigation.loginNavGraph
 import com.kusitms.connectdog.feature.management.navigation.managementNavGraph
 import com.kusitms.connectdog.feature.mypage.navigation.mypageNavGraph
 import com.kusitms.connectdog.feature.mypage.viewmodel.EditProfileViewModel
 import com.kusitms.connectdog.signup.navigation.signUpGraph
-import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
-import com.kusitms.connectdog.signup.viewmodel.VolunteerProfileViewModel
 import kotlinx.collections.immutable.toPersistentList
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 internal fun MainScreen(
     mode: AppMode,
@@ -55,18 +56,18 @@ internal fun MainScreen(
     openWebBrowser: (String) -> Unit,
     imeHeight: Int
 ) {
-    val profileViewModel: VolunteerProfileViewModel = hiltViewModel()
-    val signUpViewModel: SignUpViewModel = hiltViewModel()
     val editProfileViewModel: EditProfileViewModel = hiltViewModel()
     val createApplicationViewModel: CreateApplicationViewModel = hiltViewModel()
 
     Scaffold(
         content = {
             Box(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.onPrimary, shape = RectangleShape)
+                    .background(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        shape = RectangleShape
+                    )
             ) {
                 NavHost(
                     navController = navigator.navController,
@@ -86,23 +87,23 @@ internal fun MainScreen(
                         onNavigateToPasswordSearchAuth = navigator::navigatePasswordSearchAuth,
                         onSendMessage = { sendVerificationCode(it) },
                         onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
-                        onNavigateToLoginRoute = navigator::onLogoutClick
+                        onNavigateToLoginRoute = navigator::onLogoutClick,
+                        onNavigateToNoAccount = navigator::navigateNoAccount
                     )
                     signUpGraph(
+                        navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
-                        navigateToVolunteerProfile = { navigator.navigateVolunteerProfile(it) },
-                        navigateToIntermediatorInformation = { navigator.navigateIntermediatorInformation() },
-                        navigateToIntermediatorProfile = { navigator.navigateIntermediatorProfile() },
-                        navigateToRegisterEmail = { navigator.navigateRegisterEmail(it) },
-                        navigateToRegisterPassword = { navigator.navigateRegisterPassword(it) },
+                        navigateToVolunteerProfile = navigator::navigateVolunteerProfile,
+                        navigateToIntermediatorInformation = navigator::navigateIntermediatorInformation,
+                        navigateToIntermediatorProfile = navigator::navigateIntermediatorProfile,
+                        navigateToRegisterEmail = navigator::navigateRegisterEmail,
+                        navigateToRegisterPassword = navigator::navigateRegisterPassword,
                         navigateToSelectProfileImage = { navigator.navigateSelectProfileImage() },
-                        navigateToCompleteSignUp = { navigator.navigateCompleteSignUp(it) },
-                        navigateToVolunteer = { navigator.navigateHome() },
-                        navigateToIntermediator = { navigator.navigateIntermediatorHome() },
+                        navigateToCompleteSignUp = navigator::navigateCompleteSignUp,
+                        navigateToVolunteerHome = navigator::navigateHome,
+                        navigateToIntermediatorHome = navigator::navigateIntermediatorHome,
                         imeHeight = imeHeight,
-                        signUpViewModel = signUpViewModel,
-                        profileViewModel = profileViewModel,
-                        navigateToCertification = { navigator.navigateCertification(it) },
+                        navigateToCertification = navigator::navigateCertification,
                         onSendMessage = { sendVerificationCode(it) },
                         onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
                         navigateToLogin = { navigator.onLogoutClick() },
@@ -190,7 +191,7 @@ internal fun MainScreen(
                 Column(
                     modifier = Modifier.height(68.dp)
                 ) {
-                    Divider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
+                    HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
                     NavigationBar(
                         containerColor = Color.Transparent,
                         modifier = Modifier.background(Color.White)
@@ -226,15 +227,10 @@ private fun NavigationIcon(
     selected: Boolean
 ) {
     Icon(
+        modifier = Modifier.size(24.dp),
         painter = painterResource(id = tab.iconResId),
         contentDescription = tab.contentDescription,
-        tint =
-        if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        },
-        modifier = Modifier.size(24.dp)
+        tint = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
     )
 }
 

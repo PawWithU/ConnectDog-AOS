@@ -12,7 +12,9 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class CertificationViewModel @Inject constructor() : ContainerHost<CertificationUiState, CertificationSideEffect>, ViewModel() {
+class CertificationViewModel @Inject constructor(
+
+) : ContainerHost<CertificationUiState, CertificationSideEffect>, ViewModel() {
     override val container = container<CertificationUiState, CertificationSideEffect>(CertificationUiState.empty())
     private val state: CertificationUiState
         get() = container.stateFlow.value
