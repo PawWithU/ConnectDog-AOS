@@ -8,6 +8,9 @@
     <string name="search_detail">상세</string>
     <string name="search_location">지역</string>
     <string name="search_date">일정</string>
+    <string name="search_bar_title_1">딱 맞는 이동봉사를 찾아보세요!\n</string>
+    <string name="search_bar_title_2">출발지 · 도착지 · 일정</string>
+
     <!-- search filter -->
     <string name="filter_app_bar_title">검색</string>
     <string name="filter_choose">선택</string>

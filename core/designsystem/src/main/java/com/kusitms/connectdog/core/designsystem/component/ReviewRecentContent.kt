@@ -78,8 +78,8 @@ fun ConnectDogCommunityContent(
     type: ReviewType
 ) {
     Column(modifier = modifier.padding(20.dp)) {
-        profile()
-        Spacer(modifier = Modifier.height(20.dp))
+
+
         when (type) {
             ReviewType.HOME -> {
                 NetworkImage(
@@ -95,6 +95,8 @@ fun ConnectDogCommunityContent(
             ReviewType.REVIEW -> {
                 val image = listOf(contentUrl)
                 val list = if (reviewUrl != null) image + reviewUrl else image
+                profile()
+                Spacer(modifier = Modifier.height(20.dp))
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -130,71 +132,6 @@ fun ConnectDogCommunityContent(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.fillMaxWidth()
         )
-    }
-}
-
-// @Composable
-// fun ConnectDogRecent(
-//    modifier: Modifier = Modifier,
-//    recent: Recent,
-//    type: ReviewType
-// ) {
-//    ConnectDogCommunityContent(
-//        modifier = modifier,
-//        profile = {
-//            Text(
-//                text = recent.dogName + stringResource(id = R.string.dog_recent),
-//                style = MaterialTheme.typography.titleSmall,
-//                fontWeight = FontWeight.SemiBold
-//            )
-//        },
-//        informationContent = {
-//            ApplicantContent(
-//                date = recent.date,
-//                location = recent.location,
-//                volunteer = recent.volunteer
-//            )
-//        },
-//        contentUrl = recent.contentUrl,
-//        content = recent.content,
-//        type = type
-//    )
-// }
-
-@Composable
-fun ProfileContent(
-    profileNum: Int,
-    dogName: String,
-    userName: String
-) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = painterResource(id = getProfileImageId(profileNum)),
-            contentDescription = null,
-            modifier = Modifier.size(30.dp)
-        )
-        Spacer(modifier = Modifier.width(width = 12.dp))
-        Column {
-            Text(
-                text = dogName + stringResource(id = R.string.who_connected),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .background(
-                        shape = RoundedCornerShape(4.dp),
-                        color = Orange10
-                    )
-                    .padding(horizontal = 7.dp, vertical = 2.dp)
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = userName + stringResource(id = R.string.who_review),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = Gray2
-            )
-        }
     }
 }
 

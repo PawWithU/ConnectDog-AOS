@@ -37,9 +37,9 @@ fun BannerGuideline(
 
     Row(
         modifier = Modifier
-            .padding(horizontal = 20.dp)
             .padding(vertical = 12.dp)
             .fillMaxWidth()
+            .padding(horizontal = 20.dp)
             .defaultMinSize(minHeight = 84.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(MaterialTheme.colorScheme.primary)

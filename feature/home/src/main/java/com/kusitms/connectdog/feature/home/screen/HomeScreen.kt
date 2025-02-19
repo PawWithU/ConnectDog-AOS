@@ -1,12 +1,12 @@
 package com.kusitms.connectdog.feature.home.screen
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,37 +20,43 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.BannerGuideline
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogReview
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
-import com.kusitms.connectdog.core.designsystem.component.ReviewType
-import com.kusitms.connectdog.core.designsystem.component.SearchBar
+import com.kusitms.connectdog.core.designsystem.component.ReviewHome
+import com.kusitms.connectdog.core.designsystem.component.TitleWithIcon
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.component.text.TextWithIcon
-import com.kusitms.connectdog.core.designsystem.theme.Gray2
+import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
+import com.kusitms.connectdog.core.designsystem.theme.Gray5
+import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.AnnouncementHome
 import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.feature.home.HomeViewModel
@@ -82,91 +88,115 @@ internal fun HomeRoute(
         viewModel.errorFlow.collectLatest { throwable -> onShowErrorSnackBar(throwable) }
     }
 
-    HomeScreen(
-        announcementUiState = announcementUiState,
-        reviewUiState = reviewUiState,
-        onNavigateToFilterSearch = onNavigateToFilterSearch,
-        onNavigateToSearch = onNavigateToSearch,
-        onNavigateToReview = onNavigateToReview,
-        onNavigateToDetail = onNavigateToDetail,
-        onNavigateToGuide = onNavigateToGuide,
-        onNavigateToReviewDetail = onNavigateToReviewDetail
-    )
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        ConnectDogTopAppBar(
+            titleRes = null,
+            navigationType = TopAppBarNavigationType.HOME,
+            navigationIconContentDescription = "HOME",
+            actionButtons = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = "Navigate to Search",
+                        modifier = Modifier.clickable { onNavigateToNotification() }
+                    )
+                }
+            }
+        )
+        HomeScreen(
+            announcementUiState = announcementUiState,
+            reviewUiState = reviewUiState,
+            onNavigateToSearch = onNavigateToSearch,
+            onNavigateToReview = onNavigateToReview,
+            onNavigateToDetail = onNavigateToDetail,
+            onNavigateToGuide = onNavigateToGuide,
+            onNavigateToReviewDetail = onNavigateToReviewDetail,
+            onNavigateToFilterSearch = onNavigateToFilterSearch
+        )
+    }
 }
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun HomeScreen(
     announcementUiState: AnnouncementUiState,
     reviewUiState: ReviewUiState,
-    onNavigateToFilterSearch: () -> Unit,
     onNavigateToSearch: () -> Unit,
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToGuide: () -> Unit,
-    onNavigateToReviewDetail: (Long) -> Unit
+    onNavigateToReviewDetail: (Long) -> Unit,
+    onNavigateToFilterSearch: () -> Unit
 ) {
     val scrollState = rememberScrollState()
-
-    Scaffold(
-        topBar = {
-            ConnectDogTopAppBar(
-                titleRes = null,
-                navigationType = TopAppBarNavigationType.HOME,
-                actionButtons = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            imageVector = Icons.Outlined.Notifications,
-                            contentDescription = "Navigate to Search",
-                            modifier = Modifier.clickable {  }
-                        )
-                    }
-                }
-            )
-        }
+    Column(
+        modifier = Modifier
+            .verticalScroll(scrollState)
+            .fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .fillMaxSize()
-                .padding(top = 48.dp, bottom = 90.dp)
-        ) {
-            SearchBar(onClick = onNavigateToFilterSearch)
-            BannerGuideline(onNavigateToGuide)
-            MoveContent(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
-            AnnouncementContent(announcementUiState, onClick = onNavigateToDetail)
-            MoveContent(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
-            ReviewContent(uiState = reviewUiState, onClick = onNavigateToReviewDetail)
-        }
+        Spacer(modifier = Modifier.height(12.dp))
+        SearchBar(onClick = onNavigateToFilterSearch)
+        Spacer(modifier = Modifier.height(24.dp))
+        BannerGuideline(onNavigateToGuide)
+        TitleWithIcon(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
+        AnnouncementContent(announcementUiState, onClick = onNavigateToDetail)
+        VerticalDivider(modifier = Modifier.height(8.dp).fillMaxWidth(), color = Gray7)
+        TitleWithIcon(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
+        ReviewContent(uiState = reviewUiState, onClick = onNavigateToReviewDetail)
+        Spacer(modifier = Modifier.height(90.dp))
     }
 }
 
-
 @Composable
-fun MoveContent(
+private fun SearchBar(
     onClick: () -> Unit,
-    titleRes: Int
 ) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+    Box(
         modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 20.dp)
+            .height(50.dp)
             .fillMaxWidth()
-    ) {
-        Text(
-            text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp
-        )
-        IconButton(onClick = { onClick() }) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_right_arrow),
-                contentDescription = "move to another screen",
-                modifier = Modifier.size(24.dp),
-                tint = Gray2
+            .padding(horizontal = 20.dp)
+            .border(
+                width = 1.dp,
+                color = Gray5,
+                shape = RoundedCornerShape(90.dp)
             )
-        }
+            .clickable { onClick() },
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Icon(
+            modifier = Modifier
+                .padding(start = 20.dp)
+                .size(24.dp),
+            imageVector = Icons.Filled.Search,
+            tint = Gray3,
+            contentDescription = "Navigate to Search"
+        )
+        Text(
+            modifier = Modifier.padding(start = 52.dp),
+            text = buildAnnotatedString {
+                withStyle(
+                    SpanStyle(
+                        color = Gray1,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                ) {
+                    append(stringResource(id = R.string.search_bar_title_1))
+                }
+                withStyle(
+                    SpanStyle(
+                        color = Gray3,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                ) {
+                    append(stringResource(id = R.string.search_bar_title_2))
+                }
+            },
+            lineHeight = 15.sp
+        )
     }
 }
 
@@ -232,7 +262,9 @@ fun AnnouncementLoading(
     modifier: Modifier,
     arrangement: Arrangement.Horizontal
 ) {
-    val list = List(4) { AnnouncementHome.loading() }
+    val list = List(4) {
+        AnnouncementHome("", "이동봉사 위치", "YY.mm.dd(요일)", -1, "", "")
+    }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
             AnnouncementCardContent(announcementHome = it, onClick = {})
@@ -325,12 +357,27 @@ private fun ReviewCardContent(
     review: Review,
     onClick: (Long) -> Unit
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.surface,
-        shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
-        modifier = Modifier.clickable { review.reviewId?.let { onClick(it) } }
-    ) {
-        ConnectDogReview(review = review, modifier = Modifier.width(272.dp), type = ReviewType.HOME)
+    ReviewHome(
+        onClick = onClick,
+        review = review
+    )
+}
+
+@Preview
+@Composable
+private fun HomeScreenPreview() {
+    ConnectDogTheme {
+        Column(modifier = Modifier.background(Color.White)) {
+            HomeScreen(
+                announcementUiState = AnnouncementUiState.Empty,
+                reviewUiState = ReviewUiState.Empty,
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
+            )
+        }
     }
 }
