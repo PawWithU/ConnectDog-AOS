@@ -7,15 +7,14 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.hilt)
     alias(libs.plugins.ktlint)
-    alias(libs.plugins.google.services)
 }
 
 android {
     namespace = "com.kusitms.connectdog.feature.main"
-    compileSdk = Configuration.compileSdk
+    compileSdk = Configuration.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configuration.minSdk
+        minSdk = Configuration.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

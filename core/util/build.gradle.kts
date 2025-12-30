@@ -8,10 +8,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.core.util"
-    compileSdk = Configuration.compileSdk
+    compileSdk = Configuration.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configuration.minSdk
+        minSdk = Configuration.MIN_SDK
         consumerProguardFiles("consumer-rules.pro")
     }
 

@@ -1,6 +1,7 @@
 package com.kusitms.connectdog.feature.login.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kakao.sdk.auth.model.OAuthToken
@@ -67,6 +68,7 @@ class LoginViewModel @Inject constructor(
                 postSideEffect(LoginSideEffect.NavigateToHome)
             }
         }.onFailure {
+            Log.d("logggin", it.toString())
             intent { reduce { state.copy(isLoginSuccessful = false) } }
         }
     }

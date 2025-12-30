@@ -228,7 +228,7 @@ class SignUpViewModel @Inject constructor(
 
     fun onPasswordRegisterNextButtonClick() = intent {
         when (state.userType) {
-            UserType.INTERMEDIATOR -> Unit
+            UserType.INTERMEDIATOR -> postSideEffect(SignUpSideEffect.NavigateToProfile)
             else -> postSideEffect(SignUpSideEffect.NavigateToProfile)
         }
     }

@@ -11,10 +11,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.feature.mypage"
-    compileSdk = Configuration.compileSdk
+    compileSdk = Configuration.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configuration.minSdk
+        minSdk = Configuration.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -78,6 +78,10 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.orbit.core)
+    implementation(libs.orbit.compose)
+    implementation(libs.orbit.viewmodel)
 }
 
 kapt {

@@ -11,10 +11,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.feature.management"
-    compileSdk = Configuration.compileSdk
+    compileSdk = Configuration.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configuration.minSdk
+        minSdk = Configuration.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

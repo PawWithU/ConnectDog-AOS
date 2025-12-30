@@ -30,6 +30,7 @@ import com.kusitms.connectdog.core.model.auth.PhoneNumberDuplication
 import com.kusitms.connectdog.core.model.login.LoginResult
 import com.kusitms.connectdog.core.model.login.NormalLogin
 import com.kusitms.connectdog.core.model.login.SocialLogin
+import com.kusitms.connectdog.core.model.notification.Notification
 import com.kusitms.connectdog.core.model.signup.IsDuplicated
 import com.kusitms.connectdog.core.model.signup.Nickname
 import com.kusitms.connectdog.core.model.signup.NormalVolunteerDetail
@@ -279,4 +280,10 @@ internal interface ApiService {
     suspend fun searchVolunteerEmail(
         @Body body: Phone
     ): Email
+
+    @GET("/volunteers/notifications/my")
+    suspend fun getNotifications(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): List<Notification>
 }

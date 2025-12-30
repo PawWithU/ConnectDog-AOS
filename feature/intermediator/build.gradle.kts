@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.com.android.library)
@@ -11,10 +9,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.feature.intermediator"
-    compileSdk = com.kusitms.connectdog.Configuration.compileSdk
+    compileSdk = com.kusitms.connectdog.Configuration.COMPILE_SDK
 
     defaultConfig {
-        minSdk = com.kusitms.connectdog.Configuration.minSdk
+        minSdk = com.kusitms.connectdog.Configuration.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

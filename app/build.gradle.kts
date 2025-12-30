@@ -12,13 +12,13 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog"
-    compileSdk = Configuration.compileSdk
+    compileSdk = Configuration.COMPILE_SDK
 
     defaultConfig {
         applicationId = "com.kusitms.connectdog"
-        minSdk = Configuration.minSdk
-        targetSdk = Configuration.targetSdk
-        versionCode = Configuration.versionCode
+        minSdk = Configuration.MIN_SDK
+        targetSdk = Configuration.TARGET_SDK
+        versionCode = Configuration.VERSION_CODE
         versionName = Configuration.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -80,3 +80,5 @@ dependencies {
 kapt {
     correctErrorTypes = true
 }
+
+apply(plugin = "com.google.gms.google-services")

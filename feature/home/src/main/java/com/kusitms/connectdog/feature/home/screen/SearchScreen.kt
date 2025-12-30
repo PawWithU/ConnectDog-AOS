@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,13 +40,16 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.Loading
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
+import com.kusitms.connectdog.core.designsystem.component.text.TextWithIcon
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
+import com.kusitms.connectdog.core.designsystem.theme.Gray10
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.feature.home.R
+import com.kusitms.connectdog.core.designsystem.R as DR
 import com.kusitms.connectdog.feature.home.SearchViewModel
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.state.SearchAnnouncementUiState
@@ -70,13 +74,14 @@ internal fun SearchScreen(
 
     Column {
         TopAppBar { onBackClick() }
-        SearchBar(
-            modifier = Modifier
-                .padding(horizontal = 13.dp, vertical = 6.dp)
-                .fillMaxWidth()
-        ) {
-            onNavigateToFilter(filter)
-        }
+//        SearchBar(
+//            modifier = Modifier
+//                .padding(horizontal = 13.dp, vertical = 6.dp)
+//                .fillMaxWidth()
+//        ) {
+//            onNavigateToFilter(filter)
+//        }
+        SearchFilter()
         if (filter.isNotEmpty()) {
             FilterBar(
                 filter = filter,
@@ -298,6 +303,44 @@ private fun AnnouncementList(
                 onClick = onClick
             )
         }
+    }
+}
+
+@Composable
+private fun SearchFilter() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Location()
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = Gray10
+        )
+    }
+}
+
+@Composable
+private fun Location() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp, horizontal = 20.dp)
+    ) {
+        TextWithIcon(
+            text = "출발지",
+            iconId = DR.drawable.ic_location
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        TextWithIcon(
+            text = "출발지",
+            iconId = DR.drawable.ic_location
+        )
+        Icon(
+            painter = painterResource(id = DR.drawable.ic_more),
+            contentDescription = null
+        )
     }
 }
 

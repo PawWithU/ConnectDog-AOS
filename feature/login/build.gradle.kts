@@ -12,10 +12,10 @@ plugins {
 
 android {
     namespace = "com.kusitms.connectdog.feature.login"
-    compileSdk = Configuration.minSdk
+    compileSdk = Configuration.MIN_SDK
 
     defaultConfig {
-        minSdk = Configuration.minSdk
+        minSdk = Configuration.MIN_SDK
 
         val localProperties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
