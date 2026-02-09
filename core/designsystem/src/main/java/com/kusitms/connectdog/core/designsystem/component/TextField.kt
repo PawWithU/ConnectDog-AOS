@@ -29,9 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,6 +68,19 @@ fun ConnectDogTextField(
             VisualTransformation.None
         }
 
+    var textFieldValue by remember {
+        mutableStateOf(TextFieldValue(text = text))
+    }
+
+    LaunchedEffect(text) {
+        if (textFieldValue.text != text) {
+            textFieldValue = TextFieldValue(
+                text = text,
+                selection = TextRange(text.length)
+            )
+        }
+    }
+
     Box(
         modifier = modifier
             .height(height.dp)
@@ -76,8 +91,12 @@ fun ConnectDogTextField(
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .fillMaxSize(),
-            value = text,
-            onValueChange = { onTextChanged(it) },
+            value = textFieldValue,
+            onValueChange = { newValue ->
+                textFieldValue = newValue
+                onTextChanged(newValue.text)
+            },
+
             label = {
                 Text(
                     text = label,
