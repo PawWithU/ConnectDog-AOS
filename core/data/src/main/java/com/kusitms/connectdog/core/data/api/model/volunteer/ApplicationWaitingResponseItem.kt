@@ -12,7 +12,7 @@ data class ApplicationWaitingResponseItem(
     val mainImage: String,
     val postId: Long,
     val dogName: String,
-    val pickUpTime: String,
+    val pickUpTime: String?,
     val dogSize: String,
     val applicationId: Long
 )

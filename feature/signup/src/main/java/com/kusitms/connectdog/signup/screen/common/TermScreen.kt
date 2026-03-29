@@ -135,7 +135,6 @@ private fun Content(
             checked = uiState.advertisement.isChecked,
             onClick = viewModel::onAdvertisementClick,
             hasDetail = uiState.advertisement.hasDetail,
-            onDetailClick = { openWebBrowser(uiState.advertisement.url!!) }
         )
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(

@@ -9,7 +9,7 @@ import java.io.File
 
 interface ManagementRepository {
     suspend fun getApplicationWaiting(page: Int? = 0, size: Int? = 5): List<Application>
-    suspend fun getApplicationInProgress(page: Int? = 0, size: Int? = 5): List<Application>
+    suspend fun getApplicationInProgress(page: Int? = 0, size: Int? = 5, sort: String = "string"): List<Application>
     suspend fun getApplicationCompleted(page: Int? = 0, size: Int? = 5): List<Application>
     suspend fun getMyApplication(applicationId: Long): Volunteer
     suspend fun deleteMyApplication(applicationId: Long): ConnectDogResult

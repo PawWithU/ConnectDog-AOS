@@ -31,7 +31,7 @@
     <string name = "description">아직 승인대기중이거나\n진행중인 공고가 있어요!\n완료/취소 후 탈퇴해 주세요!</string>
 
     <string name="inquire_title">문의하실 일이 있나요?</string>
-    <string name="inquire_description">코넥독 서비스에 관심 가져주셔서 감사합니다!\n이용 문의 및 피드백을 이메일로 보내주세요!\n\n이메일주소\n connectdog.official.gmail.com</string>
+    <string name="inquire_description">코넥독 서비스에 관심 가져주셔서 감사합니다!\n이용 문의 및 피드백을 이메일로 보내주세요!\n\n이메일주소\n connectdog.official@gmail.com</string>
     <string name="inquire_ok">확인했어요!</string>
 
     <string name="password_change">비밀번호 변경</string>

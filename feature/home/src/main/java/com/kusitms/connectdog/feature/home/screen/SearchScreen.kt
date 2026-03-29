@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -72,15 +73,12 @@ internal fun SearchScreen(
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
     val isByDeadline by viewModel.isDeadlineOrder.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.loadAnnouncementList()
+    }
+
     Column {
         TopAppBar { onBackClick() }
-//        SearchBar(
-//            modifier = Modifier
-//                .padding(horizontal = 13.dp, vertical = 6.dp)
-//                .fillMaxWidth()
-//        ) {
-//            onNavigateToFilter(filter)
-//        }
         SearchFilter()
         if (filter.isNotEmpty()) {
             FilterBar(

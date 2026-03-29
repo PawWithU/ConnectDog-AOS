@@ -48,10 +48,6 @@ fun RegisterEmailScreen(
 ) {
     val uiState by viewModel.collectAsState()
 
-    LaunchedEffect(key1 = Unit) {
-        Log.d("aswwwwaa", uiState.userType.toString())
-    }
-
     viewModel.collectSideEffect {
         when(it) {
             SignUpSideEffect.NavigateToPasswordRegister -> onNavigateToRegisterPassword()
@@ -105,9 +101,17 @@ private fun Content(
             text = uiState.email,
             label = stringResource(id = R.string.email),
             placeholder = stringResource(id = R.string.input_email),
-            isError = uiState.isValidEmail == false,
+            isError = uiState.isValidEmail == false || uiState.isEmailError == true,
             onTextChanged = viewModel::onEmailChanged,
         )
+        if(uiState.isEmailError == true) {
+            Text(
+                modifier = Modifier.padding(top = 4.dp),
+                text = stringResource(id = R.string.duplicated_email),
+                color = Red1,
+                fontSize = 10.sp
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
         if (uiState.isSendEmailAuthCode) {
             ConnectDogTextField(

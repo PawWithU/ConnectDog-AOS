@@ -3,6 +3,7 @@ package com.kusitms.connectdog.core.data.repository
 import com.kusitms.connectdog.core.data.api.ApiService
 import com.kusitms.connectdog.core.data.api.InterApiService
 import com.kusitms.connectdog.core.data.api.model.volunteer.PasswordCheckResponse
+import com.kusitms.connectdog.core.data.api.model.volunteer.PasswordDto
 import com.kusitms.connectdog.core.model.signup.IsDuplicated
 import com.kusitms.connectdog.core.model.signup.Name
 import com.kusitms.connectdog.core.model.signup.Nickname
@@ -112,7 +113,8 @@ internal class SignUpRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkInterPassword(password: String): PasswordCheckResponse {
-        TODO("Not yet implemented")
+        val body = PasswordDto(password)
+        return intermediatorApi.checkInterPassword(body)
     }
 
     override suspend fun changeVolunteerPassword(password: String) {
@@ -120,6 +122,7 @@ internal class SignUpRepositoryImpl @Inject constructor(
     }
 
     override suspend fun changeInterPassword(password: String) {
-        TODO("Not yet implemented")
+        val body = PasswordDto(password)
+        intermediatorApi.changeInterPassword(body)
     }
 }

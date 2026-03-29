@@ -110,6 +110,8 @@ private fun Content(
         viewModel.updatePostId(application.postId)
     }
 
+    val uriList by viewModel.uriList.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -129,7 +131,7 @@ private fun Content(
             modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 32.dp),
             onClick = { isConfirmDialogVisible = true },
             content = stringResource(id = R.string.create_review),
-            enabled = viewModel.review.length >= 20 && viewModel.uriList.value.size in 1..5
+            enabled = viewModel.review.length >= 20 && uriList.size in 1..5
         )
     }
 

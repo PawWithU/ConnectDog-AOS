@@ -2,7 +2,7 @@ package com.kusitms.connectdog.core.data.api.model.volunteer
 
 data class NoticeDetailResponseItem(
     val arrivalLoc: String,
-    val content: String,
+    val content: String?,
     val departureLoc: String,
     val dogName: String,
     val dogSize: String,
@@ -14,7 +14,7 @@ data class NoticeDetailResponseItem(
     val isBookmark: Boolean,
     val isKennel: Boolean,
     val mainImage: String,
-    val pickUpTime: String,
+    val pickUpTime: String?,
     val postId: Int,
     val postStatus: String,
     val specifics: String?,

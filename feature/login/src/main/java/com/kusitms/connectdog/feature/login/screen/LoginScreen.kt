@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -144,11 +143,8 @@ private fun LoginContent(
             modifier = Modifier
                 .height(37.dp)
                 .fillMaxWidth(0.5f)
-                .padding(
-                    start = if (pagerState.currentPage == 0) 0.dp else 33.dp,
-                    end = if (pagerState.currentPage == 0) 33.dp else 0.dp
-                )
-                .align(if (pagerState.currentPage == 0) Alignment.End else Alignment.Start)
+                .padding(end = 33.dp)
+                .align(Alignment.End)
         ) {
             SpeechBubble(
                 text = "이동봉사 공고 신청자를 모집한다면?",

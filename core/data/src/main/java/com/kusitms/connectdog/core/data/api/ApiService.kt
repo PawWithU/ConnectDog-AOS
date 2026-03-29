@@ -111,13 +111,14 @@ internal interface ApiService {
     @GET("/volunteers/applications/waiting")
     suspend fun getApplicationWaiting(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<ApplicationWaitingResponseItem>
 
     @GET("/volunteers/applications/progressing")
     suspend fun getApplicationInProgress(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
+        @Query("sort") sort: String
     ): List<ApplicationInProgressResponseItem>
 
     @GET("/volunteers/applications/completed")

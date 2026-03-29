@@ -6,7 +6,7 @@ data class AnnouncementHome(
     val date: String,
     val postId: Int,
     val dogName: String,
-    val pickUpTime: String
+    val pickUpTime: String?
 ) {
     companion object {
         fun loading() = AnnouncementHome(

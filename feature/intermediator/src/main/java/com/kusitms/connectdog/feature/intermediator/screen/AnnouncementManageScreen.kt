@@ -229,7 +229,7 @@ private fun BasicInfo(
         Spacer(modifier = Modifier.height(6.dp))
         TextWithIcon(iconId = R.drawable.ic_clock, text = detail.startDate, size = 14)
         Spacer(modifier = Modifier.height(8.dp))
-        TextWithIcon(iconId = R.drawable.ic_clock, text = detail.pickUpTime, size = 14)
+        TextWithIcon(iconId = R.drawable.ic_clock, text = detail.pickUpTime ?: "", size = 14)
         Spacer(modifier = Modifier.height(17.dp))
         Row {
             ConnectDogTagWithIcon(
@@ -270,11 +270,11 @@ fun VolunteerInfo(detail: NoticeDetailResponseItem) {
         Spacer(modifier = Modifier.height(8.dp))
         DetailInfo("도착지", "${detail.arrivalLoc}")
         Spacer(modifier = Modifier.height(8.dp))
-        DetailInfo("픽업 일시", detail.pickUpTime)
+        DetailInfo("픽업 일시", detail.pickUpTime ?: "")
         Spacer(modifier = Modifier.height(8.dp))
         Spacer(modifier = Modifier.height(40.dp))
         Text(
-            text = detail.content,
+            text = detail.content ?: "",
             fontSize = 15.sp,
             fontWeight = FontWeight.Normal,
             lineHeight = 22.sp

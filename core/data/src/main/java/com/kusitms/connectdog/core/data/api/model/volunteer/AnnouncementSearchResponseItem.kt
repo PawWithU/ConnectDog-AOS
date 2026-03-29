@@ -12,6 +12,6 @@ data class AnnouncementSearchResponseItem(
     val isKennel: Boolean,
     val mainImage: String,
     val dogSize: String,
-    val pickUpTime: String,
+    val pickUpTime: String?,
     val dogName: String
 )

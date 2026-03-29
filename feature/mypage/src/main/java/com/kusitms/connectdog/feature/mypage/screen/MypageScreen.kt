@@ -44,6 +44,9 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButt
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray5
+import com.kusitms.connectdog.core.designsystem.theme.Gray50
+import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.core.util.getProfileImageId
@@ -243,7 +246,7 @@ private fun InformationBox(
             .padding(horizontal = 20.dp)
             .height(80.dp)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.primary)
+            .background(Gray7)
     ) {
         myInformation?.let {
             Row {
@@ -268,14 +271,14 @@ private fun Information(
     ) {
         Text(
             text = "${count}회",
-            color = Color.White,
+            color = Gray50,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
             text = title,
-            color = Color.White,
+            color = Gray50,
             fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(Alignment.CenterHorizontally)

@@ -146,7 +146,7 @@ private fun Content(
         }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(
-            content = "중복 확인",
+            content = "가입완료",
             onClick = viewModel::onCheckNicknameDuplicationButtonClick,
             enabled = uiState.enableNicknameDuplication
         )

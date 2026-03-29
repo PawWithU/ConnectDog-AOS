@@ -13,6 +13,7 @@ import com.kusitms.connectdog.feature.home.screen.ApplyScreen
 import com.kusitms.connectdog.feature.home.screen.CompleteApplyScreen
 import com.kusitms.connectdog.feature.home.screen.DetailScreen
 import com.kusitms.connectdog.feature.home.screen.FilterSearchRoute
+import com.kusitms.connectdog.feature.home.screen.GuideScreen
 import com.kusitms.connectdog.feature.home.screen.HomeRoute
 import com.kusitms.connectdog.feature.home.screen.IntermediatorProfileScreen
 import com.kusitms.connectdog.feature.home.screen.ReviewScreen
@@ -220,9 +221,9 @@ fun NavGraphBuilder.homeNavGraph(
     }
 
     composable(route = HomeRoute.guide) {
-//        GuideScreen(
-//            onBackClick = onBackClick
-//        )
+        GuideScreen (
+            onBackClick = onBackClick
+        )
     }
 
     composable(route = HomeRoute.notification) {

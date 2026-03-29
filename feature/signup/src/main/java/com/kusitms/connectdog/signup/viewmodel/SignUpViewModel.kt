@@ -202,11 +202,16 @@ class SignUpViewModel @Inject constructor(
                     state.copy(
                         emailAuthCode = it.authCode,
                         isSendEmailAuthCode = true,
-                        enableEmailCertification = false
+                        enableEmailCertification = false,
+                        isEmailError = false
                     )
                 }
             }
             updateEmailCertificationButtonText()
+        }.onFailure {
+            intent {
+                reduce { state.copy(isEmailError = true) }
+            }
         }
     }
 

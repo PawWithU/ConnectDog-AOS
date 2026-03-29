@@ -135,20 +135,19 @@ fun ConnectDogIntermediatorTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
-            .background(MaterialTheme.colorScheme.primary)
     ) {
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = onNotificationClick) {
             Icon(
                 imageVector = Icons.Outlined.Notifications,
-                tint = Color.White,
+                tint = Color.Black,
                 contentDescription = "Navigate to Search"
             )
         }
         IconButton(onClick = { onSettingClick(UserType.INTERMEDIATOR) }) {
             Icon(
                 imageVector = Icons.Outlined.Settings,
-                tint = Color.White,
+                tint = Color.Black,
                 contentDescription = null
             )
         }

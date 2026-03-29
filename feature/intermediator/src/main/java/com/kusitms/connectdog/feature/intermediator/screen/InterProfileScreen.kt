@@ -269,7 +269,7 @@ private fun Finding(
                             isKennel = it.isKennel,
                             dogSize = it.dogSize,
                             date = it.date,
-                            pickUpTime = it.pickUpTime,
+                            pickUpTime = "",
                             onClick = onClick
                         )
                     }

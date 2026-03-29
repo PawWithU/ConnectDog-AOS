@@ -31,6 +31,7 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -62,9 +63,11 @@ import com.kusitms.connectdog.core.designsystem.component.Detail
 import com.kusitms.connectdog.core.designsystem.component.SelectDogSize
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
+import com.kusitms.connectdog.core.designsystem.theme.Gray11
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.designsystem.theme.Gray90
 import com.kusitms.connectdog.core.designsystem.theme.Orange20
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.viewmodel.CreateApplicationViewModel
@@ -119,6 +122,17 @@ private fun Content(
             .verticalScroll(scrollState)
     ) {
         Spacer(modifier = Modifier.height(48.dp))
+        LinearProgressIndicator(
+            progress = { 0.5f },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .height(6.dp)
+                .clip(RoundedCornerShape(50.dp)),
+            color = Gray90,
+            trackColor = Gray11,
+        )
+        Spacer(modifier = Modifier.height(32.dp))
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = stringResource(id = R.string.create_announcement_title),

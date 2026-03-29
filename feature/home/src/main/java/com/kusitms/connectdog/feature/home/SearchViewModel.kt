@@ -102,11 +102,7 @@ class SearchViewModel @Inject constructor(
     /**
      * Network Communication
      */
-    init {
-        loadAnnouncementList()
-    }
-
-    private fun loadAnnouncementList() = viewModelScope.launch {
+    fun loadAnnouncementList() = viewModelScope.launch {
         val orderCondition = if (isDeadlineOrder.value) "마감 임박순" else "최근 등록순"
 
         val announcementList = homeRepository.getAnnouncementListWithFilter(

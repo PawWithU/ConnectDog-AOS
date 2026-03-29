@@ -81,11 +81,7 @@ fun BannerGuideline(
                     color = Color.White
                 )
                 .padding(horizontal = 9.dp, vertical = 5.dp)
-                .clickable {
-                    Toast
-                        .makeText(context, "아직 준비중인 기능입니다.", Toast.LENGTH_SHORT)
-                        .show()
-                },
+                .clickable { onClick() },
             fontSize = 11.sp
         )
     }

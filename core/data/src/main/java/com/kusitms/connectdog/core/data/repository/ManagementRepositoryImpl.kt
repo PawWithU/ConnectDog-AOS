@@ -22,8 +22,8 @@ internal class ManagementRepositoryImpl @Inject constructor(
         return api.getApplicationWaiting(page, size).map { it.toData() }
     }
 
-    override suspend fun getApplicationInProgress(page: Int?, size: Int?): List<Application> {
-        return api.getApplicationInProgress(page, size).map { it.toData() }
+    override suspend fun getApplicationInProgress(page: Int?, size: Int?, sort: String): List<Application> {
+        return api.getApplicationInProgress(page, size, sort).map { it.toData() }
     }
 
     override suspend fun getApplicationCompleted(page: Int?, size: Int?): List<Application> {

@@ -7,7 +7,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
@@ -30,12 +29,7 @@ fun NavController.navigateRegisterEmail() = navigate(SignUpRoute.REGISTER_EMAIL)
 fun NavController.navigateRegisterPassword() = navigate(SignUpRoute.REGISTER_PASSWORD)
 fun NavController.navigateSelectProfileImage() = navigate(SignUpRoute.SELECT_PROFILE_IMAGE)
 fun NavController.navigateIntermediatorInformation() = navigate(SignUpRoute.INTERMEDIATOR_INFORMATION)
-fun NavController.navigateCompleteSignUp() = navigate(
-    route = SignUpRoute.COMPLETE_SIGNUP,
-    navOptions = NavOptions.Builder()
-        .setPopUpTo(SignUpRoute.ROUTE, false)
-        .build()
-)
+fun NavController.navigateCompleteSignUp() = navigate(SignUpRoute.COMPLETE_SIGNUP)
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)

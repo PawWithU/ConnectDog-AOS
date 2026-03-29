@@ -4,6 +4,7 @@ import com.kusitms.connectdog.Configuration
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
 android {

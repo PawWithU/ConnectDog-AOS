@@ -46,7 +46,8 @@
     <string name="create_announcement_subtitle_2">이동봉사가 필요한 날짜는 언제인가요?</string>
     <string name="create_announcement_subtitle_3">봉사자가 출발지에 도착해야하는 시간은 언제인가요?</string>
     <string name="create_announcement_subtitle_4">켄넬이 준비되어 있나요?</string>
-    <string name="create_announcement_subtitle_5">이동봉사에 대한 자세한 설명을 입력해주세요</string>
+    <string name="create_announcement_subtitle_5">(선택) 이동봉사에 대한 자세한 설명을 입력해주세요</string>
+    <string name="create_announcement_subtitle_6">봉사자가 출발지에 도착해야 하는 시간은 언제인가요?</string>
     <string name="calendar_title">일정 선택</string>
 
     <string name="create_announcement_dog_title">동물 정보를 입력해 주세요</string>
@@ -55,4 +56,7 @@
     <string name="create_announcement_dog_subtitle_3">사진 (최대 5장)</string>
     <string name="create_announcement_dog_subtitle_4">이동 동물의 특이사항이 있다면 알려주세요</string>
     <string name="create_announcement_dog_comment">아직 이름이 없다면 예명을 지어주세요!</string>
+
+    <string name="complete_register">공고 등록이 완료되었어요!</string>
+    <string name="complete_register_sub">[봉사 관리]에서 이동봉사 신청자를 확인할 수 있어요!</string>
 </resources>

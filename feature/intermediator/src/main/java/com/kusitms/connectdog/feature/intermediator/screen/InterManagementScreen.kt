@@ -311,9 +311,7 @@ private fun ManagementScreen(
                 tabItems.forEachIndexed { index, title ->
                     Tab(
                         selected = index == selectedTabIndex,
-                        onClick = {
-                            selectedTabIndex = index
-                        },
+                        onClick = { selectedTabIndex = index },
                         text = {
                             Text(
                                 text = title,

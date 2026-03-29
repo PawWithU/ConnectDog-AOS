@@ -72,7 +72,7 @@ fun AnnouncementContent(
     isKennel: Boolean,
     dogSize: String,
     date: String,
-    pickUpTime: String
+    pickUpTime: String?
 ) {
     Column(
         modifier = Modifier.clickable { onClick(postId.toLong()) }
@@ -104,7 +104,7 @@ fun AnnouncementItem(
     isKennel: Boolean,
     dogSize: String,
     date: String,
-    pickUpTime: String,
+    pickUpTime: String?,
     isValid: Boolean = true
 ) {
     ListItem(
@@ -121,9 +121,9 @@ fun AnnouncementItem(
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(12.dp))
-            TextWithIcon(text = date, iconId = R.drawable.ic_clock)
+            TextWithIcon(text = date, iconId = R.drawable.ic_calendar)
             Spacer(modifier = Modifier.height(6.dp))
-            TextWithIcon(text = pickUpTime, iconId = R.drawable.ic_clock)
+            TextWithIcon(text = pickUpTime ?: "", iconId = R.drawable.ic_clock)
             Spacer(modifier = Modifier.height(12.dp))
             Row {
                 ConnectDogTagWithIcon(

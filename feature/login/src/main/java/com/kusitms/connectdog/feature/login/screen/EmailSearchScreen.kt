@@ -93,7 +93,7 @@ private fun Content(
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
-            text = stringResource(id = R.string.email_auth_title),
+            text = stringResource(id = R.string.phone_auth_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             lineHeight = 25.sp

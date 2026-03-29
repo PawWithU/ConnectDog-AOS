@@ -1,4 +1,4 @@
-package com.kusitms.connectdog.feature.home.screen
+ package com.kusitms.connectdog.feature.home.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

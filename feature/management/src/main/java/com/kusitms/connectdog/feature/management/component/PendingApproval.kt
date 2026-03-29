@@ -71,7 +71,7 @@ private fun PendingContent(application: Application, onClick: (Application) -> U
                 isKennel = application.hasKennel,
                 dogSize = application.dogSize!!,
                 date = application.date,
-                pickUpTime = application.pickUpTime!!
+                pickUpTime = application.pickUpTime ?: ""
             )
             OutlinedButton(modifier = Modifier.padding(top = 20.dp)) {
                 onClick(application)

@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,25 +13,20 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,14 +45,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogFilledButton
+import coil.compose.AsyncImage
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIntermediatorTopAppBar
-import com.kusitms.connectdog.core.designsystem.component.NetworkImage
-import com.kusitms.connectdog.core.designsystem.theme.Brown5
+import com.kusitms.connectdog.core.designsystem.theme.Gray100
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
+import com.kusitms.connectdog.core.designsystem.theme.Gray60
+import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.designsystem.theme.Gray90
 import com.kusitms.connectdog.core.designsystem.theme.Typography
-import com.kusitms.connectdog.core.model.IntermediatorManage
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.viewmodel.InterHomeViewModel
@@ -82,7 +80,7 @@ fun InterHomeScreen(
     onManageClick: (Int) -> Unit,
     onProfileClick: () -> Unit,
     onNavigateToCreateAnnouncementScreen: () -> Unit,
-    viewModel: InterHomeViewModel = hiltViewModel()
+    viewModel: InterHomeViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
         viewModel.fetchIntermediatorInfo()
@@ -115,29 +113,22 @@ private fun Content(
     val waitingCount = viewModel.waitingCount.collectAsState()
     val progressingCount = viewModel.progressingCount.collectAsState()
     val completedCount = viewModel.completedCount.collectAsState()
-    val cnt = listOf(
-        recruitingCount.value,
-        waitingCount.value,
-        progressingCount.value,
-        completedCount.value
-    )
-
-    val list = cnt.mapIndexedNotNull { index, value ->
-        IntermediatorManage(
-            image = imageList[index],
-            title = titleList[index],
-            value = value
-        )
-    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(48.dp))
         ProfileCard(viewModel, navigateToProfile)
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(8.dp)
+            .background(Gray7))
         ManageBoard(
-            list = list,
             onClick = onManageClick,
-            onNavigateToCreateAnnouncementScreen = navigateToCreateAnnouncementScreen
+            onNavigateToCreateAnnouncementScreen = navigateToCreateAnnouncementScreen,
+            recruitingCount = recruitingCount.value ?: 0,
+            waitingCount = waitingCount.value ?: 0,
+            progressingCount = progressingCount.value ?: 0,
+            completedCount = completedCount.value ?: 0,
         )
     }
 }
@@ -148,125 +139,114 @@ private fun ProfileCard(
     viewModel: InterHomeViewModel,
     onProfileClick: () -> Unit
 ) {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(178.dp)
-            .clip(RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .padding(20.dp)
     ) {
-        Row(
+        Box(
             modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
-                .align(Alignment.Center)
+                .size(80.dp)
+                .clip(CircleShape)
+                .border(
+                    width = 1.dp,
+                    color = Color.LightGray,
+                    shape = CircleShape
+                )
         ) {
-            Column {
-                NetworkImage(
-                    imageUrl = viewModel.profileImage.value,
-                    modifier = Modifier.size(80.dp),
-                    placeholder = painterResource(id = R.drawable.ic_default_intermediator)
-                )
-                Spacer(modifier = Modifier.height(18.dp))
-                Row(
-                    modifier = Modifier.wrapContentHeight(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = viewModel.intermediaryName.value,
-                        style = MaterialTheme.typography.titleSmall,
-                        color = Color.White,
-                        fontSize = 20.sp
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    ConnectDogFilledButton(
-                        width = 54,
-                        height = 16,
-                        text = "프로필 보기",
-                        padding = 1,
-                        onClick = onProfileClick
-                    )
-                }
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = viewModel.intro.value,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
-                    modifier = Modifier.widthIn(min = 0.dp, max = 220.dp),
-                    lineHeight = 12.sp
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_dog),
-                    contentDescription = null,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-            }
+            AsyncImage(
+                model = viewModel.profileImage.value,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+        Spacer(modifier = Modifier.width(20.dp))
+        Column(
+
+        ) {
+            Text(
+                text = viewModel.intermediaryName.value,
+                style = MaterialTheme.typography.titleSmall,
+                color = Color.Black,
+                fontSize = 16.sp
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            ConnectDogBottomButton(
+                modifier = Modifier.width(120.dp),
+                paddingValues = PaddingValues(vertical = 0.dp),
+                height = 40,
+                radius = 8,
+                fontSize = 12,
+                enabledColor = Gray7,
+                textColor = Gray100,
+                content = "프로필 확인",
+                onClick = onProfileClick
+            )
         }
     }
 }
 
 @Composable
 private fun ManageBoard(
-    list: List<IntermediatorManage>,
     onClick: (Int) -> Unit,
-    onNavigateToCreateAnnouncementScreen: () -> Unit
+    onNavigateToCreateAnnouncementScreen: () -> Unit,
+    recruitingCount: Int,
+    waitingCount: Int,
+    progressingCount: Int,
+    completedCount: Int,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brown5)
+            .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(20.dp))
-        Row {
-            Text(
-                "전체",
-                modifier = Modifier.padding(start = 20.dp),
-                style = MaterialTheme.typography.titleLarge,
-                fontSize = 18.sp
-            )
-            Text(
-                text = if (list.all { it.value != null }) {
-                    list.sumOf { it.value!! }.toString()
-                } else {
-                    ""
-                } + "건",
-                modifier = Modifier.padding(start = 5.dp),
-                style = MaterialTheme.typography.titleLarge,
-                color = PetOrange,
-                fontSize = 18.sp
-            )
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            itemsIndexed(list) { index, item ->
-                ManageCard(
-                    title = item.title,
-                    painter = item.image,
-                    value = if (item.value != null) item.value.toString() else ""
-                ) { onClick(index) }
+            Text(
+                text = "전체 ${recruitingCount+waitingCount+progressingCount+completedCount}건",
+                fontWeight = FontWeight.W700,
+                fontSize = 18.sp
+            )
+            IconButton(onClick = { onClick(0) }) {
+                Icon(
+                    painter = painterResource(id = com.kusitms.connectdog.core.designsystem.R.drawable.ic_right_arrow),
+                    contentDescription = "move to another screen",
+                    modifier = Modifier.size(24.dp),
+                    tint = Gray100
+                )
             }
         }
+        Spacer(modifier = Modifier.height(20.dp))
+        RecruitingCard(
+            cnt = recruitingCount,
+            onClick = onClick
+        )
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
-            modifier = Modifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            modifier = Modifier.fillMaxWidth()
         ) {
-            ApplyButton(onClick = onNavigateToCreateAnnouncementScreen)
+            ApprovalWaitingCard(
+                modifier = Modifier.weight(1f),
+                cnt = waitingCount,
+                onClick = onClick
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            InProgressCard(
+                modifier = Modifier.weight(1f),
+                cnt = progressingCount,
+                onClick = onClick
+            )
         }
+        Spacer(modifier = Modifier.height(8.dp))
+        CompleteCard(cnt = completedCount, onClick = onClick)
+        Spacer(modifier = Modifier.height(24.dp))
+        ApplyButton(onClick = onNavigateToCreateAnnouncementScreen)
     }
 }
 
@@ -276,9 +256,11 @@ private fun ApplyButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.wrapContentSize(),
+        modifier = Modifier
+            .height(48.dp)
+            .width(149.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = Gray90,
             contentColor = Color.White
         ),
         contentPadding = PaddingValues(horizontal = 15.dp)
@@ -292,8 +274,9 @@ private fun ApplyButton(onClick: () -> Unit) {
             text = "공고 등록하기",
             color = Color.White,
             style = Typography.titleSmall,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(vertical = 15.dp)
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(vertical = 10.dp)
         )
     }
 }
@@ -341,6 +324,185 @@ private fun ManageCard(
                     contentDescription = null
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun RecruitingCard(
+    cnt: Int,
+    onClick: (Int) -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Gray7
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(110.dp)
+            .clickable { onClick(0) }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Text(
+                    text = "모집중",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W700,
+                )
+                Text(
+                    text = "${cnt}건",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W500,
+                    color = Gray60
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                modifier = Modifier.align(Alignment.Bottom),
+                painter = painterResource(id = R.drawable.ic_recruit),
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
+fun ApprovalWaitingCard(
+    modifier: Modifier,
+    cnt: Int,
+    onClick: (Int) -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Gray7
+        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(130.dp)
+            .clickable { onClick(1) }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 20.dp, start = 20.dp)
+        ) {
+            Text(
+                text = "승인 대기중",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W700,
+            )
+            Text(
+                text = "${cnt}건",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W500,
+                color = Gray60
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                modifier = Modifier.align(Alignment.End),
+                painter = painterResource(id = R.drawable.ic_waiting),
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
+fun InProgressCard(
+    modifier: Modifier,
+    cnt: Int,
+    onClick: (Int) -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Gray7
+        ),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(130.dp)
+            .clickable { onClick(2) }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 20.dp, start = 20.dp)
+        ) {
+            Text(
+                text = "진행중",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.W700,
+            )
+            Text(
+                text = "${cnt}건",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.W500,
+                color = Gray60
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                modifier = Modifier.align(Alignment.End),
+                painter = painterResource(id = R.drawable.ic_progress),
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
+fun CompleteCard(
+    cnt: Int,
+    onClick: (Int) -> Unit
+) {
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Gray7
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(110.dp)
+            .clickable { onClick(3) }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(
+                modifier = Modifier.align(Alignment.CenterVertically)
+            ) {
+                Text(
+                    text = "봉사 완료",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.W700,
+                )
+                Text(
+                    text = "${cnt}건",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W500,
+                    color = Gray60
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                modifier = Modifier.align(Alignment.Bottom),
+                painter = painterResource(id = R.drawable.ic_complete),
+                contentDescription = null
+            )
+            Image(
+                modifier = Modifier.align(Alignment.Bottom),
+                painter = painterResource(id = R.drawable.ic_complete2),
+                contentDescription = null
+            )
         }
     }
 }

@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,11 +36,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogDialogButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
@@ -47,10 +53,12 @@ import com.kusitms.connectdog.core.designsystem.component.LocationContent
 import com.kusitms.connectdog.core.designsystem.component.SelectKennel
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
+import com.kusitms.connectdog.core.designsystem.theme.Gray11
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.designsystem.theme.Gray90
 import com.kusitms.connectdog.feature.intermediator.R
 import com.kusitms.connectdog.feature.intermediator.component.CalendarBottomSheet
 import com.kusitms.connectdog.feature.intermediator.component.TimeBottomSheet
@@ -137,6 +145,8 @@ private fun Content(
     LaunchedEffect(imeHeight) {
         if (imeHeight != 0) scrollState.animateScrollTo(scrollState.maxValue)
     }
+    val density = LocalDensity.current
+    val imeHeightDp = with(density) { (imeHeight).toDp() }.coerceAtLeast(0.dp)
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -146,8 +156,20 @@ private fun Content(
                 .fillMaxSize()
                 .padding(top = 32.dp, bottom = 120.dp)
                 .verticalScroll(scrollState)
+                .imePadding()
         ) {
             Spacer(modifier = Modifier.height(48.dp))
+            LinearProgressIndicator(
+                progress = { 0.5f },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(50.dp)),
+                color = Gray90,
+                trackColor = Gray11,
+            )
+            Spacer(modifier = Modifier.height(32.dp))
             Text(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 text = stringResource(id = R.string.create_announcement_title),
@@ -174,18 +196,29 @@ private fun Content(
                 isAdjustable = isAdjustableSchedule.value,
                 updateIsAdjustable = viewModel::updateIsAdjustableSchedule
             )
-            Spacer(modifier = Modifier.height(40.dp))
-            if ((startDate.value == endDate.value) && (startDate.value != null && endDate.value != null)) {
-                Time(
-                    onClick = { isTimeSheetOpen = true },
-                    hour = hour.value,
-                    minute = minute.value,
-                    dayTime = dayTime.value,
-                    isAdjustable = isAdjustableTime.value,
-                    updateIsAdjustable = viewModel::updateIsAdjustableTime
-                )
-                Spacer(modifier = Modifier.height(40.dp))
-            }
+            Divider(
+                Modifier
+                    .height(8.dp)
+                    .fillMaxWidth(),
+                color = Gray7
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Time(
+                onClick = { isTimeSheetOpen = true },
+                hour = hour.value,
+                minute = minute.value,
+                dayTime = dayTime.value,
+                isAdjustable = isAdjustableTime.value,
+                updateIsAdjustable = viewModel::updateIsAdjustableTime
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Divider(
+                Modifier
+                    .height(8.dp)
+                    .fillMaxWidth(),
+                color = Gray7
+            )
+            Spacer(modifier = Modifier.height(20.dp))
             Kennel(
                 isKennel = isKennel.value,
                 updateHasKennel = viewModel::updateIsKennel
@@ -211,11 +244,11 @@ private fun Content(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .padding(bottom = imeHeight.dp),
+                    .padding(bottom = imeHeightDp),
                 height = 244,
                 text = viewModel.content,
                 onTextChanged = viewModel::updateSignificant,
-                placeholder = "[이동봉사 목적, 이동 동물의 사연, 이동봉사 시간 및 장소 상세, 이동봉사 추가 안내사항 등]을 작성해주세요."
+                placeholder = "- 이동봉사의 목적\n- 동물의 사연\n- 이동봉사 상세 시간, 장소\n- (해외) 항공편 조건, 추가 안내 사항"
             )
         }
     }
@@ -313,6 +346,7 @@ private fun Schedule(
             isChecked = isAdjustable,
             updateIsChecked = updateIsAdjustable
         )
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 
@@ -420,6 +454,15 @@ private fun BottomBar(
     viewModel: CreateApplicationViewModel,
     navigateToCreateDog: () -> Unit
 ) {
+    val isKennel by viewModel.isKennel.collectAsStateWithLifecycle()
+    val departure by viewModel.departure.collectAsStateWithLifecycle()
+    val destination by viewModel.destination.collectAsStateWithLifecycle()
+    val startDate by viewModel.startDate.collectAsStateWithLifecycle()
+    val endDate by viewModel.endDate.collectAsStateWithLifecycle()
+    val dayTime by viewModel.dayTime.collectAsStateWithLifecycle()
+    val hour by viewModel.hour.collectAsStateWithLifecycle()
+    val minute by viewModel.minute.collectAsStateWithLifecycle()
+
     ConnectDogBottomButton(
         modifier = Modifier.padding(
             top = 24.dp,
@@ -429,12 +472,9 @@ private fun BottomBar(
         ),
         onClick = navigateToCreateDog,
         content = "다음",
-        enabled = viewModel.isKennel.value != null &&
-            viewModel.departure.value != null &&
-            viewModel.destination.value != null &&
-            viewModel.startDate.value != null &&
-            viewModel.endDate.value != null &&
-            (if (viewModel.startDate.value == viewModel.endDate.value) (viewModel.isAdjustableTime.value || (viewModel.dayTime.value != null && viewModel.hour.value != null && viewModel.minute.value != null)) else true) &&
-            viewModel.content != ""
+        enabled = isKennel != null && departure != null && destination != null &&
+            startDate != null &&
+            endDate != null &&
+            dayTime != null && hour != null && minute != null
     )
 }

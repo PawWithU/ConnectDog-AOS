@@ -16,6 +16,7 @@
     <string name="auth_code_requirement">숫자 6자리</string>
     <string name="input_auth_code">인증번호 입력</string>
     <string name="auth_code_incorrect">인증번호가 일치하지 않습니다.</string>
+    <string name="duplicated_email">이미 등록된 이메일입니다.</string>
     <string name="resend_title">인증번호가 오지 않는다면?</string>
     <string name="resend">재발송</string>
 
@@ -28,7 +29,7 @@
     <!--이메일 인증-->
     <string name="email">이메일</string>
     <string name="input_email">이메일 입력</string>
-    <string name="email_auth_title">로그인에 사용할\n이메일 입력해주라</string>
+    <string name="email_auth_title">로그인에 사용할\n이메일 입력해주세요</string>
 
     <!--비밀번호-->
     <string name="register_password_title">로그인에 사용할\n비밀번호를 입력해주세요</string>

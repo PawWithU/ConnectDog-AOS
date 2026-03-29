@@ -78,7 +78,7 @@ fun NavGraphBuilder.intermediatorNavGraph(
             onSettingClick = onSettingClick,
             onManageClick = onManagementClick,
             onProfileClick = onProfileClick,
-            onNavigateToCreateAnnouncementScreen = onNavigateToCreateAnnouncement
+            onNavigateToCreateAnnouncementScreen = onNavigateToCreateAnnouncement,
         )
     }
 

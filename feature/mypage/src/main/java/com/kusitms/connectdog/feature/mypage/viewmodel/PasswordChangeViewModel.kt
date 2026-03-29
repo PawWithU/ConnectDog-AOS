@@ -62,6 +62,7 @@ class PasswordChangeViewModel @Inject constructor(
             }
             _isRightPassword.value = response.isChecked
         } catch (e: Exception) {
+
         }
     }
 

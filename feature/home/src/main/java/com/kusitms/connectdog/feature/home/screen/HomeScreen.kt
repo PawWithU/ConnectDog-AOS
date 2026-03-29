@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -141,7 +142,9 @@ private fun HomeScreen(
         BannerGuideline(onNavigateToGuide)
         TitleWithIcon(onClick = { onNavigateToSearch() }, titleRes = R.string.home_navigate_search)
         AnnouncementContent(announcementUiState, onClick = onNavigateToDetail)
-        VerticalDivider(modifier = Modifier.height(8.dp).fillMaxWidth(), color = Gray7)
+        VerticalDivider(modifier = Modifier
+            .height(8.dp)
+            .fillMaxWidth(), color = Gray7)
         TitleWithIcon(onClick = { onNavigateToReview() }, titleRes = R.string.home_navigate_review)
         ReviewContent(uiState = reviewUiState, onClick = onNavigateToReviewDetail)
         Spacer(modifier = Modifier.height(90.dp))
@@ -205,6 +208,7 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: (Long) ->
     val modifier = Modifier.padding(horizontal = 20.dp)
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
+            Log.d("asdfweds", uiState.announcementHomes.toString())
             AnnouncementListContent(
                 list = uiState.announcementHomes,
                 modifier = modifier,
@@ -213,10 +217,13 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: (Long) ->
             )
         }
 
-        else -> AnnouncementLoading(
-            modifier = modifier,
-            arrangement = Arrangement.spacedBy(12.dp)
-        )
+        else -> {
+            Log.d("asdfweds", uiState.toString())
+            AnnouncementLoading(
+                modifier = modifier,
+                arrangement = Arrangement.spacedBy(12.dp)
+            )
+        }
     }
 }
 
@@ -345,10 +352,10 @@ private fun AnnouncementCardContent(
         Spacer(modifier = Modifier.height(8.dp))
         TextWithIcon(
             text = announcementHome.date.substringBefore(" "),
-            iconId = R.drawable.ic_clock
+            iconId = R.drawable.ic_calendar
         )
         Spacer(modifier = Modifier.height(5.dp))
-        TextWithIcon(text = announcementHome.pickUpTime, iconId = R.drawable.ic_clock)
+        TextWithIcon(text = announcementHome.pickUpTime ?: "", iconId = R.drawable.ic_clock)
     }
 }
 

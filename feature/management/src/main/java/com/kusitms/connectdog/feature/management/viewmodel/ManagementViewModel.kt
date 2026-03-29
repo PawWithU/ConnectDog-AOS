@@ -31,6 +31,7 @@ class ManagementViewModel @Inject constructor(
 
     init {
         refreshWaitingApplications()
+        refreshCompletedApplications()
     }
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
@@ -42,8 +43,8 @@ class ManagementViewModel @Inject constructor(
     val progressUiState: StateFlow<ApplicationUiState> =
         createUiStateFlow { managementRepository.getApplicationInProgress() }
 
-    val completedUiState: StateFlow<ApplicationUiState> =
-        createUiStateFlow { managementRepository.getApplicationCompleted() }
+    private val _completedUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
+    val completedUiState: StateFlow<ApplicationUiState> = _completedUiState.asStateFlow()
 
     private val _volunteer = MutableStateFlow<Volunteer?>(null)
     val volunteer: StateFlow<Volunteer?> get() = _volunteer
@@ -66,6 +67,23 @@ class ManagementViewModel @Inject constructor(
             } catch (e: Exception) {
                 _errorFlow.emit(e)
                 Log.e(TAG, "refreshWaitingApplications: ${e.message}")
+            }
+        }
+    }
+
+    private fun refreshCompletedApplications() {
+        viewModelScope.launch {
+            try {
+                val applications = managementRepository.getApplicationCompleted()
+                Log.d("asdfasdf", applications.toString())
+                _completedUiState.value = if (applications.isNotEmpty()) {
+                    ApplicationUiState.Applications(applications)
+                } else {
+                    ApplicationUiState.Empty
+                }
+            } catch (e: Exception) {
+                _errorFlow.emit(e)
+                Log.e(TAG, "refreshCompletedApplications: ${e.message}")
             }
         }
     }
@@ -127,7 +145,7 @@ class ManagementViewModel @Inject constructor(
             Log.e("InterManagementViewModel", "${it.message}")
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.Eagerly,
             initialValue = ApplicationUiState.Loading
         )
 }

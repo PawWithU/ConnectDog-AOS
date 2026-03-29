@@ -6,7 +6,7 @@ data class Announcement(
     val date: String,
     val postId: Int,
     val dogName: String,
-    val pickUpTime: String,
+    val pickUpTime: String?,
     val dogSize: String,
     val isKennel: Boolean
 )

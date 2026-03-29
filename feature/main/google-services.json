@@ -2,12 +2,12 @@
   "project_info": {
     "project_number": "260494595521",
     "project_id": "connectdog-8ace1",
-    "storage_bucket": "connectdog-8ace1.appspot.com"
+    "storage_bucket": "connectdog-8ace1.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:260494595521:android:ddc97a53f6eb3fae428b40",
+        "mobilesdk_app_id": "1:260494595521:android:43c64ea8b41b8833428b40",
         "android_client_info": {
           "package_name": "com.kusitms.connectdog"
         }

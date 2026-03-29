@@ -68,7 +68,6 @@ class LoginViewModel @Inject constructor(
                 postSideEffect(LoginSideEffect.NavigateToHome)
             }
         }.onFailure {
-            Log.d("logggin", it.toString())
             intent { reduce { state.copy(isLoginSuccessful = false) } }
         }
     }

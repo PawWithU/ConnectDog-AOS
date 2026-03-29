@@ -135,7 +135,7 @@ private fun ApplicationContent(application: Application) {
         isKennel = application.hasKennel,
         dogSize = application.dogSize!!,
         date = application.date,
-        pickUpTime = application.pickUpTime!!
+        pickUpTime = application.pickUpTime ?: ""
     )
 }
 

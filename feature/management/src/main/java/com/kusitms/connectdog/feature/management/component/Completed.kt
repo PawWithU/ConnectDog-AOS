@@ -96,7 +96,7 @@ private fun CompletedContent(
                 isKennel = application.hasKennel,
                 dogSize = application.dogSize!!,
                 date = application.date,
-                pickUpTime = application.pickUpTime!!
+                pickUpTime = application.pickUpTime ?: ""
             )
             Spacer(modifier = Modifier.size(20.dp))
             ReviewButton(
