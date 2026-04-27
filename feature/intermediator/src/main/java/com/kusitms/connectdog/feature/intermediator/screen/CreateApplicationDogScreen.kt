@@ -231,14 +231,27 @@ private fun Size(
 private fun Image(
     viewModel: CreateApplicationViewModel
 ) {
-    val launcher =
-        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) {
-            val currentSize = viewModel.uriList.value.size
-            it.take(5 - currentSize).forEach { uri ->
-                viewModel.updateUriList(uri)
-            }
-        }
     val uriList by viewModel.uriList.collectAsStateWithLifecycle()
+
+    val launcher1 = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) viewModel.updateUriList(uri)
+    }
+    val launcher2 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uris ->
+        val currentSize = viewModel.uriList.value.size
+        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+    }
+    val launcher3 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
+        val currentSize = viewModel.uriList.value.size
+        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+    }
+    val launcher4 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(4)) { uris ->
+        val currentSize = viewModel.uriList.value.size
+        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+    }
+    val launcher5 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+        val currentSize = viewModel.uriList.value.size
+        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+    }
 
     Column(
         modifier = Modifier.padding(horizontal = 20.dp)
@@ -271,11 +284,15 @@ private fun Image(
                         Spacer(modifier = Modifier.width(10.dp))
                     } else {
                         AddPhotoButton {
-                            launcher.launch(
-                                PickVisualMediaRequest(
-                                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
-                                )
-                            )
+                            val remain = 5 - uriList.size
+                            val request = PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                            when (remain) {
+                                1 -> launcher1.launch(request)
+                                2 -> launcher2.launch(request)
+                                3 -> launcher3.launch(request)
+                                4 -> launcher4.launch(request)
+                                5 -> launcher5.launch(request)
+                            }
                         }
                     }
                 }
