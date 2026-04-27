@@ -4,19 +4,25 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,11 +48,12 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
-import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.designsystem.theme.Gray5
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.SearchViewModel
+import com.kusitms.connectdog.feature.home.model.Detail
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.state.SearchAnnouncementUiState
 import java.time.LocalDate
@@ -70,19 +77,10 @@ internal fun SearchScreen(
 
     Column {
         TopAppBar { onBackClick() }
-        SearchBar(
-            modifier = Modifier
-                .padding(horizontal = 13.dp, vertical = 6.dp)
-                .fillMaxWidth()
-        ) {
-            onNavigateToFilter(filter)
-        }
-        if (filter.isNotEmpty()) {
-            FilterBar(
-                filter = filter,
-                onClick = { onNavigateToFilter(filter) }
-            )
-        }
+        FilterHeader(
+            filter = filter,
+            onClick = { onNavigateToFilter(filter) }
+        )
         AnnouncementContent(
             uiState = announcementUiState,
             sortBtn = {
@@ -112,98 +110,171 @@ private fun TopAppBar(
 }
 
 @Composable
-private fun SearchBar(
-    modifier: Modifier = Modifier,
+private fun FilterHeader(
+    filter: Filter,
     onClick: () -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .background(color = Gray7, shape = RoundedCornerShape(6.dp))
-            .padding(horizontal = 12.dp, vertical = 15.dp)
+    val departureText = filter.departure.ifEmpty { stringResource(id = R.string.filter_select_departure) }
+    val arrivalText = filter.arrival.ifEmpty { stringResource(id = R.string.filter_select_destination) }
+    val dateText = if (filter.startDate != null && filter.endDate != null) {
+        dateRangeDisplay(filter.startDate!!, filter.endDate!!)
+    } else {
+        stringResource(id = R.string.filter_schedule)
+    }
+
+    val departureSelected = filter.departure.isNotEmpty()
+    val arrivalSelected = filter.arrival.isNotEmpty()
+    val dateSelected = filter.startDate != null
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .fillMaxWidth()
+            .border(width = 1.dp, color = Gray5, shape = RoundedCornerShape(12.dp))
             .clickable { onClick() }
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_search),
-            contentDescription = "search icon",
-            tint = Gray3
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = stringResource(id = R.string.search_where_to_move),
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 14.sp,
-            color = Gray4
-        )
+        // Location row
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.LocationOn,
+                contentDescription = null,
+                tint = if (departureSelected || arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = departureText,
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                color = if (departureSelected) Gray1 else Gray4,
+                modifier = Modifier.weight(1f)
+            )
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(16.dp)
+                    .background(Gray5)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = arrivalText,
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                color = if (arrivalSelected) Gray1 else Gray4,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_expand_down),
+                contentDescription = null,
+                tint = if (departureSelected || arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+
+        Divider(color = Gray5, thickness = 1.dp)
+
+        // Schedule row
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.CalendarMonth,
+                contentDescription = null,
+                tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
+                modifier = Modifier.size(18.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = dateText,
+                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                color = if (dateSelected) Gray1 else Gray4,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_expand_down),
+                contentDescription = null,
+                tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
+                modifier = Modifier.size(16.dp)
+            )
+        }
+
+        Divider(color = Gray5, thickness = 1.dp)
+
+        // Detail row
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Tune,
+                contentDescription = null,
+                tint = if (filter.detail.isNotEmpty()) MaterialTheme.colorScheme.primary else Gray4,
+                modifier = Modifier.size(18.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .width(1.dp)
+                    .height(16.dp)
+                    .background(Gray5)
+            )
+            DetailChip(
+                label = filter.detail.dogSize?.toDisplayName() ?: stringResource(id = R.string.filter_dog_size),
+                isSelected = filter.detail.dogSize != null
+            )
+            DetailChip(
+                label = when (filter.detail.hasKennel) {
+                    true -> stringResource(id = R.string.filter_kennel_no_need)
+                    false -> stringResource(id = R.string.filter_kennel_need)
+                    null -> stringResource(id = R.string.filter_kennel)
+                },
+                isSelected = filter.detail.hasKennel != null
+            )
+            DetailChip(
+                label = filter.detail.organization?.ifEmpty { null }
+                    ?: stringResource(id = R.string.filter_organization),
+                isSelected = !filter.detail.organization.isNullOrEmpty()
+            )
+        }
     }
 }
 
 @Composable
-private fun FilterBar(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    filter: Filter
-) {
-    Log.d(TAG, "FilterBar: filter = $filter")
-    val dateFilter: String =
-        if (filter.startDate != null && filter.endDate != null) {
-            dateRangeDisplay(filter.startDate!!, filter.endDate!!)
-        } else {
-            stringResource(id = R.string.search_date)
-        }
-
-    val locationFilter: String =
-        if (filter.departure.isNotEmpty() && filter.arrival.isNotEmpty()) {
-            filter.departure + " -> " + filter.arrival
-        } else {
-            stringResource(id = R.string.search_location)
-        }
-
-    val scrollState = rememberScrollState()
-    Row(
-        modifier = modifier
-            .padding(start = 13.dp, end = 13.dp, top = 4.dp, bottom = 6.dp)
-            .fillMaxWidth()
-            .horizontalScroll(scrollState),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        FilterTag(
-            tag = locationFilter,
-            isSelected = filter.departure.isNotEmpty()
-        ) { onClick() }
-        FilterTag(tag = dateFilter, isSelected = filter.startDate != null) { onClick() }
-        FilterTag(
-            tag = stringResource(id = R.string.search_detail),
-            isSelected = filter.detail.isNotEmpty()
-        ) { onClick() }
-    }
-}
-
-@Composable
-private fun FilterTag(
-    tag: String,
-    isSelected: Boolean = false,
-    onClick: () -> Unit
+private fun DetailChip(
+    label: String,
+    isSelected: Boolean
 ) {
     val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray4
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .border(width = 1.dp, color = color, shape = CircleShape)
-            .padding(horizontal = 12.dp, vertical = 4.dp)
-            .clickable { onClick() }
+            .padding(horizontal = 10.dp, vertical = 4.dp)
     ) {
         Text(
-            text = tag,
-            style = MaterialTheme.typography.titleMedium,
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
             fontSize = 12.sp,
             color = color,
             maxLines = 1
         )
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(4.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_expand_down),
-            contentDescription = "필터 확장",
-            tint = color
+            contentDescription = null,
+            tint = color,
+            modifier = Modifier.size(12.dp)
         )
     }
 }
