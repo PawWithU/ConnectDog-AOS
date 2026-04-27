@@ -38,6 +38,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -66,6 +70,7 @@ import java.time.LocalDate
 
 private val TAG = "SearchScreen"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
@@ -74,7 +79,9 @@ internal fun SearchScreen(
     onDetailClick: (Long) -> Unit,
     onNavigateToFilter: (Filter) -> Unit
 ) {
-    viewModel.setFilter(filterArg!!)
+    LaunchedEffect(filterArg) {
+        viewModel.setFilter(filterArg!!)
+    }
     val filter by viewModel.filter.collectAsStateWithLifecycle()
     Log.d(TAG, "filter = $filter")
 
@@ -243,7 +250,7 @@ private fun FilterHeader(
         )
     }
 
-    Divider(thickness = 1.dp, color = Gray10)
+    HorizontalDivider(thickness = 1.dp, color = Gray10)
 
     Row(
         modifier = Modifier
