@@ -17,18 +17,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -57,7 +58,8 @@ import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.feature.home.R
 import com.kusitms.connectdog.feature.home.SearchViewModel
-import com.kusitms.connectdog.feature.home.model.Detail
+import com.kusitms.connectdog.feature.home.component.RegionBottomSheet
+import com.kusitms.connectdog.feature.home.component.RegionType
 import com.kusitms.connectdog.feature.home.model.Filter
 import com.kusitms.connectdog.feature.home.state.SearchAnnouncementUiState
 import java.time.LocalDate
@@ -83,9 +85,12 @@ internal fun SearchScreen(
         TopAppBar { onBackClick() }
         FilterHeader(
             filter = filter,
-            onClick = { onNavigateToFilter(filter) }
+            onClick = { onNavigateToFilter(filter) },
+            onSelectedRegion = { depart, dest ->
+                viewModel.setFilter(depart, dest)
+            }
         )
-        HorizontalDivider(thickness = 8.dp, color = Gray7)
+        Divider(thickness = 8.dp, color = Gray7)
         AnnouncementContent(
             uiState = announcementUiState,
             sortBtn = {
@@ -114,11 +119,19 @@ private fun TopAppBar(
     )
 }
 
+@androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 private fun FilterHeader(
     filter: Filter,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onSelectedRegion: (String, String) -> Unit
 ) {
+    val departureSheetState = rememberModalBottomSheetState()
+    var isDepartureSheetOpen by rememberSaveable { mutableStateOf(false) }
+
+    val destinationSheetState = rememberModalBottomSheetState()
+    var isDestinationSheetOpen by rememberSaveable { mutableStateOf(false) }
+
     val departureText = filter.departure.ifEmpty { stringResource(id = R.string.filter_select_departure) }
     val arrivalText = filter.arrival.ifEmpty { stringResource(id = R.string.filter_select_destination) }
     val dateText = if (filter.startDate != null && filter.endDate != null) {
@@ -148,7 +161,9 @@ private fun FilterHeader(
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 14.sp,
             color = if (departureSelected) Gray1 else Gray4,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .clickable { isDepartureSheetOpen = true }
         )
         Spacer(modifier = Modifier.width(12.dp))
         Icon(
@@ -162,7 +177,9 @@ private fun FilterHeader(
             style = MaterialTheme.typography.bodyMedium,
             fontSize = 14.sp,
             color = if (arrivalSelected) Gray1 else Gray4,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier
+                .weight(1f)
+                .clickable { isDestinationSheetOpen = true }
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_expand_down),
@@ -172,12 +189,35 @@ private fun FilterHeader(
         )
     }
 
-    HorizontalDivider(thickness = 1.dp, color = Gray10)
+    if (isDepartureSheetOpen) {
+        RegionBottomSheet(
+            sheetState = departureSheetState,
+            regionType = RegionType.DEPARTURE,
+            onDismissRequest = { isDepartureSheetOpen = false }
+        ) {
+            isDepartureSheetOpen = false
+            onSelectedRegion(it, filter.arrival)
+        }
+    }
+
+    if (isDestinationSheetOpen) {
+        RegionBottomSheet(
+            sheetState = destinationSheetState,
+            regionType = RegionType.DESTINATION,
+            onDismissRequest = { isDestinationSheetOpen = false }
+        ) {
+            isDestinationSheetOpen = false
+            onSelectedRegion(filter.departure, it)
+        }
+    }
+
+    Divider(thickness = 1.dp, color = Gray10)
 
     // Schedule row
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -203,11 +243,12 @@ private fun FilterHeader(
         )
     }
 
-    HorizontalDivider(thickness = 1.dp, color = Gray10)
+    Divider(thickness = 1.dp, color = Gray10)
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
