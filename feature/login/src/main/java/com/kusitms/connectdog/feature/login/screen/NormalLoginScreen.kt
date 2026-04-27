@@ -16,7 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -41,9 +44,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.imePadding
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -58,6 +59,7 @@ internal fun NormalLoginScreen(
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     var showToast by remember { mutableStateOf(false) }
+    var toastMessage by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect {
@@ -66,6 +68,7 @@ internal fun NormalLoginScreen(
             is LoginSideEffect.NavigateToSignUp -> null
             is LoginSideEffect.ShowErrorToast -> {
                 coroutineScope.launch {
+                    toastMessage = it.message
                     showToast = true
                     delay(2000)
                     showToast = false
@@ -100,9 +103,10 @@ internal fun NormalLoginScreen(
 
             ConnectDogToast(
                 visible = showToast,
-                message = "이메일 혹은 비밀번호가 일치하지 않습니다",
+                message = toastMessage,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
+                    .imePadding()
                     .padding(bottom = 50.dp)
             )
         }

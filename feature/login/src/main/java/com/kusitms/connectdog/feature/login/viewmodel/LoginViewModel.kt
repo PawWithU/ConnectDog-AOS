@@ -55,6 +55,11 @@ class LoginViewModel @Inject constructor(
     fun onPasswordChanged(password: String) = intent { reduce { state.copy(password = password) } }
 
     fun initVolunteerLogin() = viewModelScope.launch {
+        if (state.email.isBlank() || state.password.isBlank()) {
+            intent { postSideEffect(LoginSideEffect.ShowErrorToast("이메일 혹은 비밀번호를 입력해주세요.")) }
+            return@launch
+        }
+
         volunteerLoginUseCase(
             email = state.email,
             password = state.password
@@ -69,12 +74,17 @@ class LoginViewModel @Inject constructor(
         }.onFailure {
             intent { 
                 reduce { state.copy(isLoginSuccessful = false) } 
-                postSideEffect(LoginSideEffect.ShowErrorToast)
+                postSideEffect(LoginSideEffect.ShowErrorToast("이메일 혹은 비밀번호가 일치하지 않습니다"))
             }
         }
     }
 
     fun initIntermediatorLogin() = viewModelScope.launch {
+        if (state.email.isBlank() || state.password.isBlank()) {
+            intent { postSideEffect(LoginSideEffect.ShowErrorToast("이메일 혹은 비밀번호를 입력해주세요.")) }
+            return@launch
+        }
+
         intermediatorLoginUseCase(
             email = state.email,
             password = state.password
@@ -89,7 +99,7 @@ class LoginViewModel @Inject constructor(
         }.onFailure {
             intent {
                 reduce { state.copy(isLoginSuccessful = false) }
-                postSideEffect(LoginSideEffect.ShowErrorToast)
+                postSideEffect(LoginSideEffect.ShowErrorToast("이메일 혹은 비밀번호가 일치하지 않습니다"))
             }
         }
     }

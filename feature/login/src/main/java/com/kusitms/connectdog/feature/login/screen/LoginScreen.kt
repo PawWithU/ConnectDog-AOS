@@ -61,6 +61,7 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import com.kusitms.connectdog.core.designsystem.R.drawable as DR
+import androidx.compose.foundation.layout.imePadding
 
 @Composable
 internal fun LoginRoute(
@@ -95,37 +96,61 @@ fun LoginScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    var showToast by remember { mutableStateOf(false) }
+    var toastMessage by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable(
-                onClick = focusManager::clearFocus,
-                indication = null,
-                interactionSource = interactionSource
-            )
-    ) {
-        Text(
-            modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 32.dp),
-            text = stringResource(id = R.string.introduce),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
-        LoginContent(
-            onNavigateToNormalLogin,
-            onNavigateToSignup,
-            onNavigateToVolunteerHome,
-            onNavigateToIntermediatorHome,
-            onNavigateToEmailSearch,
-            onNavigateToPasswordSearch
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Image(
+    val onShowToast: (String) -> Unit = {
+        coroutineScope.launch {
+            toastMessage = it
+            showToast = true
+            delay(2000)
+            showToast = false
+        }
+    }
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f),
-            painter = painterResource(id = DR.ic_main),
-            contentDescription = null,
+                .fillMaxSize()
+                .clickable(
+                    onClick = focusManager::clearFocus,
+                    indication = null,
+                    interactionSource = interactionSource
+                )
+        ) {
+            Text(
+                modifier = Modifier.padding(start = 20.dp, top = 32.dp, bottom = 32.dp),
+                text = stringResource(id = R.string.introduce),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+            LoginContent(
+                onNavigateToNormalLogin,
+                onNavigateToSignup,
+                onNavigateToVolunteerHome,
+                onNavigateToIntermediatorHome,
+                onNavigateToEmailSearch,
+                onNavigateToPasswordSearch,
+                onShowToast
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Image(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                painter = painterResource(id = DR.ic_main),
+                contentDescription = null,
+            )
+        }
+
+        ConnectDogToast(
+            visible = showToast,
+            message = toastMessage,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .imePadding()
+                .padding(bottom = 50.dp)
         )
     }
 }
@@ -138,7 +163,8 @@ private fun LoginContent(
     onNavigateToVolunteerHome: () -> Unit,
     onNavigateToIntermediatorHome: () -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
-    onNavigateToPasswordSearch: (UserType) -> Unit
+    onNavigateToPasswordSearch: (UserType) -> Unit,
+    onShowToast: (String) -> Unit
 ) {
     val pages = listOf("이동봉사자 회원", "이동봉사 모집자 회원")
     Column {
@@ -201,7 +227,8 @@ private fun LoginContent(
                     onNavigateToIntermediatorHome = onNavigateToIntermediatorHome,
                     onNavigateToSignup = onNavigateToSignup,
                     onNavigateToEmailSearch = onNavigateToEmailSearch,
-                    onNavigateToPasswordSearch = onNavigateToPasswordSearch
+                    onNavigateToPasswordSearch = onNavigateToPasswordSearch,
+                    onShowToast = onShowToast
                 )
             }
         }
@@ -268,72 +295,55 @@ private fun Intermediator(
     onNavigateToSignup: (UserType) -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
     onNavigateToPasswordSearch: (UserType) -> Unit,
+    onShowToast: (String) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
-    var showToast by remember { mutableStateOf(false) }
-    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect {
         when(it) {
             is LoginSideEffect.NavigateToHome -> onNavigateToIntermediatorHome()
             is LoginSideEffect.NavigateToSignUp -> null
-            is LoginSideEffect.ShowErrorToast -> {
-                coroutineScope.launch {
-                    showToast = true
-                    delay(2000)
-                    showToast = false
-                }
-            }
+            is LoginSideEffect.ShowErrorToast -> onShowToast(it.message)
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(top = 25.dp)
-                .padding(horizontal = 20.dp)
-        ) {
-            ConnectDogTextField(
-                text = uiState.email,
-                label = stringResource(id = R.string.email),
-                placeholder = stringResource(id = R.string.input_email),
-                keyboardType = KeyboardType.Text,
-                onTextChanged = viewModel::onEmailChanged,
-                isError = (uiState.isLoginSuccessful == false)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            ConnectDogTextField(
-                text = uiState.password,
-                label = stringResource(id = R.string.password),
-                placeholder = stringResource(id = R.string.input_password),
-                keyboardType = KeyboardType.Password,
-                onTextChanged = viewModel::onPasswordChanged,
-                isError = (uiState.isLoginSuccessful == false)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            ConnectDogNormalButton(
-                modifier = Modifier.fillMaxWidth(),
-                content = stringResource(id = R.string.login),
-                onClick = viewModel::initIntermediatorLogin
-            )
-            Spacer(modifier = Modifier.height(30.dp))
-            ActionRow(
-                stringResource(id = R.string.email_signup) to { onNavigateToSignup(UserType.INTERMEDIATOR) },
-                stringResource(id = R.string.email_search) to { onNavigateToEmailSearch(UserType.INTERMEDIATOR) },
-                stringResource(id = R.string.password_search) to { onNavigateToPasswordSearch(UserType.INTERMEDIATOR) }
-            )
-        }
-
-        ConnectDogToast(
-            visible = showToast,
-            message = "이메일 혹은 비밀번호가 일치하지 않습니다",
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 50.dp)
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(top = 25.dp)
+            .padding(horizontal = 20.dp)
+    ) {
+        ConnectDogTextField(
+            text = uiState.email,
+            label = stringResource(id = R.string.email),
+            placeholder = stringResource(id = R.string.input_email),
+            keyboardType = KeyboardType.Text,
+            onTextChanged = viewModel::onEmailChanged,
+            isError = (uiState.isLoginSuccessful == false)
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        ConnectDogTextField(
+            text = uiState.password,
+            label = stringResource(id = R.string.password),
+            placeholder = stringResource(id = R.string.input_password),
+            keyboardType = KeyboardType.Password,
+            onTextChanged = viewModel::onPasswordChanged,
+            isError = (uiState.isLoginSuccessful == false)
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        ConnectDogNormalButton(
+            modifier = Modifier.fillMaxWidth(),
+            content = stringResource(id = R.string.login),
+            onClick = viewModel::initIntermediatorLogin
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        ActionRow(
+            stringResource(id = R.string.email_signup) to { onNavigateToSignup(UserType.INTERMEDIATOR) },
+            stringResource(id = R.string.email_search) to { onNavigateToEmailSearch(UserType.INTERMEDIATOR) },
+            stringResource(id = R.string.password_search) to { onNavigateToPasswordSearch(UserType.INTERMEDIATOR) }
         )
     }
 }
