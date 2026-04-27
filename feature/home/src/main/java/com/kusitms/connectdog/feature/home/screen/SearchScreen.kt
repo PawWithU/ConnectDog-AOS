@@ -1,6 +1,8 @@
 package com.kusitms.connectdog.feature.home.screen
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,6 +44,7 @@ import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -95,6 +98,9 @@ internal fun SearchScreen(
             onClick = { onNavigateToFilter(filter) },
             onSelectedRegion = { depart, dest ->
                 viewModel.setFilter(depart, dest)
+            },
+            onSelectedSchedule = { start, end ->
+                viewModel.setFilter(start, end)
             }
         )
         Divider(thickness = 8.dp, color = Gray7)
@@ -126,18 +132,23 @@ private fun TopAppBar(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @androidx.compose.material3.ExperimentalMaterial3Api
 @Composable
 private fun FilterHeader(
     filter: Filter,
     onClick: () -> Unit,
-    onSelectedRegion: (String, String) -> Unit
+    onSelectedRegion: (String, String) -> Unit,
+    onSelectedSchedule: (LocalDate, LocalDate) -> Unit
 ) {
     val departureSheetState = rememberModalBottomSheetState()
     var isDepartureSheetOpen by rememberSaveable { mutableStateOf(false) }
 
     val destinationSheetState = rememberModalBottomSheetState()
     var isDestinationSheetOpen by rememberSaveable { mutableStateOf(false) }
+
+    val scheduleSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var isScheduleSheetOpen by rememberSaveable { mutableStateOf(false) }
 
     val departureText = filter.departure.ifEmpty { stringResource(id = R.string.filter_select_departure) }
     val arrivalText = filter.arrival.ifEmpty { stringResource(id = R.string.filter_select_destination) }
@@ -218,13 +229,11 @@ private fun FilterHeader(
         }
     }
 
-    Divider(thickness = 1.dp, color = Gray10)
-
     // Schedule row
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable { isScheduleSheetOpen = true }
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -248,6 +257,46 @@ private fun FilterHeader(
             tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
             modifier = Modifier.size(16.dp)
         )
+    }
+
+    if (isScheduleSheetOpen) {
+        ModalBottomSheet(
+            onDismissRequest = { isScheduleSheetOpen = false },
+            sheetState = scheduleSheetState,
+            containerColor = Color.White
+        ) {
+            var tempStartDate by remember { mutableStateOf(filter.startDate ?: LocalDate.now()) }
+            var tempEndDate by remember { mutableStateOf(filter.endDate ?: LocalDate.now()) }
+
+            Column(modifier = Modifier.padding(20.dp)) {
+                Text(
+                    text = stringResource(id = R.string.filter_schedule),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontSize = 18.sp
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                ConnectDogCalendar(
+                    startDate = tempStartDate,
+                    endDate = tempEndDate
+                ) { start, end ->
+                    tempStartDate = start
+                    tempEndDate = end
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        isScheduleSheetOpen = false
+                        onSelectedSchedule(tempStartDate, tempEndDate)
+                    },
+                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    shape = RoundedCornerShape(6.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(text = stringResource(id = R.string.filter_apply), color = Color.White)
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+        }
     }
 
     HorizontalDivider(thickness = 1.dp, color = Gray10)
