@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,15 +16,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +46,7 @@ import com.kusitms.connectdog.core.designsystem.component.ActionRow
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIconBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogToast
 import com.kusitms.connectdog.core.designsystem.component.SpeechBubble
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.KAKAO
@@ -52,6 +56,7 @@ import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.R
 import com.kusitms.connectdog.feature.login.state.LoginSideEffect
 import com.kusitms.connectdog.feature.login.viewmodel.LoginViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -265,6 +270,15 @@ private fun Intermediator(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.collectAsState()
+    var showToast by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState.isLoginSuccessful) {
+        if (uiState.isLoginSuccessful == false) {
+            showToast = true
+            delay(2000)
+            showToast = false
+        }
+    }
 
     viewModel.collectSideEffect {
         when(it) {
@@ -273,42 +287,52 @@ private fun Intermediator(
         }
     }
 
-    Column(
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxHeight()
-            .padding(top = 25.dp)
-            .padding(horizontal = 20.dp)
-    ) {
-        ConnectDogTextField(
-            text = uiState.email,
-            label = stringResource(id = R.string.email),
-            placeholder = stringResource(id = R.string.input_email),
-            keyboardType = KeyboardType.Text,
-            onTextChanged = viewModel::onEmailChanged,
-            isError = (uiState.isLoginSuccessful == false)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        ConnectDogTextField(
-            text = uiState.password,
-            label = stringResource(id = R.string.password),
-            placeholder = stringResource(id = R.string.input_password),
-            keyboardType = KeyboardType.Password,
-            onTextChanged = viewModel::onPasswordChanged,
-            isError = (uiState.isLoginSuccessful == false)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        ConnectDogNormalButton(
-            modifier = Modifier.fillMaxWidth(),
-            content = stringResource(id = R.string.login),
-            onClick = viewModel::initIntermediatorLogin
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        ActionRow(
-            stringResource(id = R.string.email_signup) to { onNavigateToSignup(UserType.INTERMEDIATOR) },
-            stringResource(id = R.string.email_search) to { onNavigateToEmailSearch(UserType.INTERMEDIATOR) },
-            stringResource(id = R.string.password_search) to { onNavigateToPasswordSearch(UserType.INTERMEDIATOR) }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(top = 25.dp)
+                .padding(horizontal = 20.dp)
+        ) {
+            ConnectDogTextField(
+                text = uiState.email,
+                label = stringResource(id = R.string.email),
+                placeholder = stringResource(id = R.string.input_email),
+                keyboardType = KeyboardType.Text,
+                onTextChanged = viewModel::onEmailChanged,
+                isError = (uiState.isLoginSuccessful == false)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            ConnectDogTextField(
+                text = uiState.password,
+                label = stringResource(id = R.string.password),
+                placeholder = stringResource(id = R.string.input_password),
+                keyboardType = KeyboardType.Password,
+                onTextChanged = viewModel::onPasswordChanged,
+                isError = (uiState.isLoginSuccessful == false)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            ConnectDogNormalButton(
+                modifier = Modifier.fillMaxWidth(),
+                content = stringResource(id = R.string.login),
+                onClick = viewModel::initIntermediatorLogin
+            )
+            Spacer(modifier = Modifier.height(30.dp))
+            ActionRow(
+                stringResource(id = R.string.email_signup) to { onNavigateToSignup(UserType.INTERMEDIATOR) },
+                stringResource(id = R.string.email_search) to { onNavigateToEmailSearch(UserType.INTERMEDIATOR) },
+                stringResource(id = R.string.password_search) to { onNavigateToPasswordSearch(UserType.INTERMEDIATOR) }
+            )
+        }
+
+        ConnectDogToast(
+            visible = showToast,
+            message = "이메일 혹은 비밀번호가 일치하지 않습니다",
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 50.dp)
         )
     }
 }
