@@ -19,10 +19,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.Call
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Tune
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -46,9 +47,12 @@ import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.Loading
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray1
+import com.kusitms.connectdog.core.designsystem.theme.Gray10
+import com.kusitms.connectdog.core.designsystem.theme.Gray20
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
+import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.util.dateFormat
 import com.kusitms.connectdog.feature.home.R
@@ -81,6 +85,7 @@ internal fun SearchScreen(
             filter = filter,
             onClick = { onNavigateToFilter(filter) }
         )
+        HorizontalDivider(thickness = 8.dp, color = Gray7)
         AnnouncementContent(
             uiState = announcementUiState,
             sortBtn = {
@@ -125,128 +130,117 @@ private fun FilterHeader(
     val departureSelected = filter.departure.isNotEmpty()
     val arrivalSelected = filter.arrival.isNotEmpty()
     val dateSelected = filter.startDate != null
-
-    Column(
+    Row(
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth()
-            .border(width = 1.dp, color = Gray5, shape = RoundedCornerShape(12.dp))
-            .clickable { onClick() }
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        // Location row
-        Row(
+        Icon(
+            imageVector = Icons.Outlined.LocationOn,
+            contentDescription = null,
+            tint = if (departureSelected) MaterialTheme.colorScheme.primary else Gray4,
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = departureText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 14.sp,
+            color = if (departureSelected) Gray1 else Gray4,
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Icon(
+            imageVector = Icons.Outlined.LocationOn,
+            contentDescription = null,
+            tint = if (arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
+            modifier = Modifier.size(18.dp)
+        )
+        Text(
+            text = arrivalText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 14.sp,
+            color = if (arrivalSelected) Gray1 else Gray4,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_expand_down),
+            contentDescription = null,
+            tint = if (arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
+            modifier = Modifier.size(16.dp)
+        )
+    }
+
+    HorizontalDivider(thickness = 1.dp, color = Gray10)
+
+    // Schedule row
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Call,
+            contentDescription = null,
+            tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
+            modifier = Modifier.size(18.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = dateText,
+            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 14.sp,
+            color = if (dateSelected) Gray1 else Gray4,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            painter = painterResource(id = R.drawable.ic_expand_down),
+            contentDescription = null,
+            tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
+            modifier = Modifier.size(16.dp)
+        )
+    }
+
+    HorizontalDivider(thickness = 1.dp, color = Gray10)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Settings,
+            contentDescription = null,
+            tint = if (filter.detail.isNotEmpty()) MaterialTheme.colorScheme.primary else Gray4,
+            modifier = Modifier.size(18.dp)
+        )
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.LocationOn,
-                contentDescription = null,
-                tint = if (departureSelected || arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = departureText,
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 14.sp,
-                color = if (departureSelected) Gray1 else Gray4,
-                modifier = Modifier.weight(1f)
-            )
-            Box(
-                modifier = Modifier
-                    .width(1.dp)
-                    .height(16.dp)
-                    .background(Gray5)
-            )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = arrivalText,
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 14.sp,
-                color = if (arrivalSelected) Gray1 else Gray4,
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_expand_down),
-                contentDescription = null,
-                tint = if (departureSelected || arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
-                modifier = Modifier.size(16.dp)
-            )
-        }
-
-        Divider(color = Gray5, thickness = 1.dp)
-
-        // Schedule row
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.CalendarMonth,
-                contentDescription = null,
-                tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = dateText,
-                style = MaterialTheme.typography.bodyMedium,
-                fontSize = 14.sp,
-                color = if (dateSelected) Gray1 else Gray4,
-                modifier = Modifier.weight(1f)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_expand_down),
-                contentDescription = null,
-                tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
-                modifier = Modifier.size(16.dp)
-            )
-        }
-
-        Divider(color = Gray5, thickness = 1.dp)
-
-        // Detail row
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Tune,
-                contentDescription = null,
-                tint = if (filter.detail.isNotEmpty()) MaterialTheme.colorScheme.primary else Gray4,
-                modifier = Modifier.size(18.dp)
-            )
-            Box(
-                modifier = Modifier
-                    .width(1.dp)
-                    .height(16.dp)
-                    .background(Gray5)
-            )
-            DetailChip(
-                label = filter.detail.dogSize?.toDisplayName() ?: stringResource(id = R.string.filter_dog_size),
-                isSelected = filter.detail.dogSize != null
-            )
-            DetailChip(
-                label = when (filter.detail.hasKennel) {
-                    true -> stringResource(id = R.string.filter_kennel_no_need)
-                    false -> stringResource(id = R.string.filter_kennel_need)
-                    null -> stringResource(id = R.string.filter_kennel)
-                },
-                isSelected = filter.detail.hasKennel != null
-            )
-            DetailChip(
-                label = filter.detail.organization?.ifEmpty { null }
-                    ?: stringResource(id = R.string.filter_organization),
-                isSelected = !filter.detail.organization.isNullOrEmpty()
-            )
-        }
+                .width(1.dp)
+                .height(16.dp)
+                .background(Gray5)
+        )
+        DetailChip(
+            label = filter.detail.dogSize?.toDisplayName() ?: stringResource(id = R.string.filter_dog_size),
+            isSelected = filter.detail.dogSize != null
+        )
+        DetailChip(
+            label = when (filter.detail.hasKennel) {
+                true -> stringResource(id = R.string.filter_kennel_no_need)
+                false -> stringResource(id = R.string.filter_kennel_need)
+                null -> stringResource(id = R.string.filter_kennel)
+            },
+            isSelected = filter.detail.hasKennel != null
+        )
+        DetailChip(
+            label = filter.detail.organization?.ifEmpty { null }
+                ?: stringResource(id = R.string.filter_organization),
+            isSelected = !filter.detail.organization.isNullOrEmpty()
+        )
     }
 }
 
@@ -255,12 +249,12 @@ private fun DetailChip(
     label: String,
     isSelected: Boolean
 ) {
-    val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray4
+    val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray20
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .border(width = 1.dp, color = color, shape = CircleShape)
-            .padding(horizontal = 10.dp, vertical = 4.dp)
+            .padding(horizontal = 10.dp, vertical = 6.dp)
     ) {
         Text(
             text = label,
