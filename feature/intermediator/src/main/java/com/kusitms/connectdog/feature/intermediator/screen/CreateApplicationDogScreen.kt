@@ -233,7 +233,8 @@ private fun Image(
 ) {
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) {
-            it.forEach { uri ->
+            val currentSize = viewModel.uriList.value.size
+            it.take(5 - currentSize).forEach { uri ->
                 viewModel.updateUriList(uri)
             }
         }
@@ -259,7 +260,8 @@ private fun Image(
         }
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow {
-            items(uriList.size + 1) { index ->
+            val itemCount = if (uriList.size < 5) uriList.size + 1 else uriList.size
+            items(itemCount) { index ->
                 key(index) {
                     if (index < uriList.size) {
                         Photo(
