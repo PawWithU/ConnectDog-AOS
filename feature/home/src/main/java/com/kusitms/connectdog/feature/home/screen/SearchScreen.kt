@@ -238,7 +238,7 @@ private fun FilterHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = Icons.Outlined.Call,
+            painter = painterResource(id = R.drawable.ic_calendar),
             contentDescription = null,
             tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
             modifier = Modifier.size(18.dp)
@@ -310,7 +310,7 @@ private fun FilterHeader(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Icon(
-            imageVector = Icons.Outlined.Settings,
+            painter = painterResource(id = R.drawable.ic_filter),
             contentDescription = null,
             tint = if (filter.detail.isNotEmpty()) MaterialTheme.colorScheme.primary else Gray4,
             modifier = Modifier.size(18.dp)
