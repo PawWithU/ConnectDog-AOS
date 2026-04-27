@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -106,13 +107,42 @@ fun DetailScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             if (detail != null) {
+                val imageList = detail!!.images.ifEmpty { listOf(detail!!.mainImage) }
+                val imagePagerState = rememberPagerState { imageList.size }
+
                 Spacer(modifier = Modifier.height(48.dp))
-                NetworkImage(
-                    imageUrl = detail!!.mainImage,
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
-                )
+                ) {
+                    HorizontalPager(
+                        state = imagePagerState,
+                        modifier = Modifier.fillMaxSize()
+                    ) { page ->
+                        NetworkImage(
+                            imageUrl = imageList[page],
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopEnd)
+                            .padding(16.dp)
+                            .background(
+                                color = Color.Black.copy(alpha = 0.5f),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+                            .padding(horizontal = 10.dp, vertical = 4.dp)
+                    ) {
+                        Text(
+                            text = "${imagePagerState.currentPage + 1}/${imageList.size}",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                }
                 Content(
                     detail = detail!!,
                     onIntermediatorProfileClick = onIntermediatorProfileClick

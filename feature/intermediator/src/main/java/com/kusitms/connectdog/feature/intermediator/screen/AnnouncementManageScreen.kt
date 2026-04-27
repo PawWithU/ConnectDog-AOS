@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
@@ -98,18 +99,48 @@ fun AnnouncementManageScreen(
         when (data) {
             is AnnouncementManagementUiState.Loading -> Loading()
             is AnnouncementManagementUiState.AnnouncementDetail -> {
+                val detail = (data as AnnouncementManagementUiState.AnnouncementDetail).announcement
+                val imageList = detail.images.ifEmpty { listOf(detail.mainImage) }
+                val imagePagerState = rememberPagerState { imageList.size }
+
                 Column(
                     modifier = Modifier.verticalScroll(scrollState)
                 ) {
                     Spacer(modifier = Modifier.height(48.dp))
-                    NetworkImage(
-                        imageUrl = (data as AnnouncementManagementUiState.AnnouncementDetail).announcement.mainImage,
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(250.dp)
-                    )
+                    ) {
+                        HorizontalPager(
+                            state = imagePagerState,
+                            modifier = Modifier.fillMaxSize()
+                        ) { page ->
+                            NetworkImage(
+                                imageUrl = imageList[page],
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(16.dp)
+                                .background(
+                                    color = Color.Black.copy(alpha = 0.5f),
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(horizontal = 10.dp, vertical = 4.dp)
+                        ) {
+                            Text(
+                                text = "${imagePagerState.currentPage + 1}/${imageList.size}",
+                                color = Color.White,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        }
+                    }
                     Content(
-                        detail = (data as AnnouncementManagementUiState.AnnouncementDetail).announcement,
+                        detail = detail,
                         onIntermediatorProfileClick = onIntermediatorProfileClick
                     )
                 }
