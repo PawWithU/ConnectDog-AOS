@@ -221,6 +221,7 @@ private fun Volunteer(
         when (sideEffect) {
             is LoginSideEffect.NavigateToHome -> onNavigateToVolunteerHome()
             is LoginSideEffect.NavigateToSignUp -> onNavigateToSignup(UserType.SOCIAL_VOLUNTEER)
+            else -> {}
         }
     }
 
@@ -271,19 +272,19 @@ private fun Intermediator(
 ) {
     val uiState by viewModel.collectAsState()
     var showToast by remember { mutableStateOf(false) }
-
-    LaunchedEffect(uiState.isLoginSuccessful) {
-        if (uiState.isLoginSuccessful == false) {
-            showToast = true
-            delay(2000)
-            showToast = false
-        }
-    }
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect {
         when(it) {
             is LoginSideEffect.NavigateToHome -> onNavigateToIntermediatorHome()
             is LoginSideEffect.NavigateToSignUp -> null
+            is LoginSideEffect.ShowErrorToast -> {
+                coroutineScope.launch {
+                    showToast = true
+                    delay(2000)
+                    showToast = false
+                }
+            }
         }
     }
 

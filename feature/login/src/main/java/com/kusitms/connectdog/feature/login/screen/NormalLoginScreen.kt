@@ -28,17 +28,22 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R as DR
 import com.kusitms.connectdog.core.designsystem.component.ActionRow
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogErrorCard
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogToast
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.R
 import com.kusitms.connectdog.feature.login.state.LoginSideEffect
 import com.kusitms.connectdog.feature.login.viewmodel.LoginViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -52,11 +57,20 @@ internal fun NormalLoginScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    var showToast by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     viewModel.collectSideEffect {
         when (it) {
             is LoginSideEffect.NavigateToHome -> onNavigateToVolunteerHome()
             is LoginSideEffect.NavigateToSignUp -> null
+            is LoginSideEffect.ShowErrorToast -> {
+                coroutineScope.launch {
+                    showToast = true
+                    delay(2000)
+                    showToast = false
+                }
+            }
         }
     }
 
@@ -76,12 +90,22 @@ internal fun NormalLoginScreen(
             )
         }
     ) {
-        Content(
-            viewModel = viewModel,
-            onNavigateToSignUp = onNavigateToSignUp,
-            onNavigateToEmailSearch = onNavigateToEmailSearch,
-            onNavigateToPasswordSearch = onNavigateToPasswordSearch,
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            Content(
+                viewModel = viewModel,
+                onNavigateToSignUp = onNavigateToSignUp,
+                onNavigateToEmailSearch = onNavigateToEmailSearch,
+                onNavigateToPasswordSearch = onNavigateToPasswordSearch,
+            )
+
+            ConnectDogToast(
+                visible = showToast,
+                message = "이메일 혹은 비밀번호가 일치하지 않습니다",
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 50.dp)
+            )
+        }
     }
 }
 
@@ -145,15 +169,6 @@ private fun Content(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (uiState.isLoginSuccessful?.let { !it } ?: run { false }) {
-                ConnectDogErrorCard(
-                    modifier = Modifier
-                        .zIndex(1f)
-                        .align(Alignment.TopCenter)
-                        .padding(horizontal = 20.dp),
-                    errorMessage = DR.string.login_error
-                )
-            }
             Image(
                 painter = painterResource(id = DR.drawable.ic_main_large),
                 contentDescription = null,

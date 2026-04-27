@@ -25,4 +25,5 @@ data class LoginUiState(
 sealed class LoginSideEffect {
     object NavigateToHome: LoginSideEffect()
     data class NavigateToSignUp(val userType: UserType): LoginSideEffect()
+    object ShowErrorToast: LoginSideEffect()
 }

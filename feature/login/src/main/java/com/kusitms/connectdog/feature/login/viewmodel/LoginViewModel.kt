@@ -67,7 +67,10 @@ class LoginViewModel @Inject constructor(
                 postSideEffect(LoginSideEffect.NavigateToHome)
             }
         }.onFailure {
-            intent { reduce { state.copy(isLoginSuccessful = false) } }
+            intent { 
+                reduce { state.copy(isLoginSuccessful = false) } 
+                postSideEffect(LoginSideEffect.ShowErrorToast)
+            }
         }
     }
 
@@ -84,7 +87,10 @@ class LoginViewModel @Inject constructor(
             updateRefreshTokenUseCase(it.refreshToken)
             updateAppModeUseCase(AppMode.INTERMEDIATOR)
         }.onFailure {
-            intent { reduce { state.copy(isLoginSuccessful = false) } }
+            intent {
+                reduce { state.copy(isLoginSuccessful = false) }
+                postSideEffect(LoginSideEffect.ShowErrorToast)
+            }
         }
     }
 
