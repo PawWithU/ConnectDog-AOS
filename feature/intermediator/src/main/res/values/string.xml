@@ -53,6 +53,9 @@
     <string name="create_announcement_dog_subtitle_1">동물 이름을 알려주세요.</string>
     <string name="create_announcement_dog_subtitle_2">동물 크기를 알려주세요.</string>
     <string name="create_announcement_dog_subtitle_3">사진 (최대 5장)</string>
-    <string name="create_announcement_dog_subtitle_4">이동 동물의 특이사항이 있다면 알려주세요</string>
+    <string name="create_announcement_dog_subtitle_4">이동 동물의 특이사항이 있다면 알려주세요 (선택)</string>
     <string name="create_announcement_dog_comment">아직 이름이 없다면 예명을 지어주세요!</string>
+
+    <string name="create_announcement_complete_title">공고 등록이 완료되었어요!</string>
+    <string name="create_announcement_complete_sub">[봉사 관리]에서 이동봉사 신청자를 확인할 수 있어요!</string>
 </resources>

@@ -313,7 +313,7 @@ private fun AnnouncementCardContent(
         Spacer(modifier = Modifier.height(8.dp))
         TextWithIcon(
             text = announcementHome.date.substringBefore(" "),
-            iconId = R.drawable.ic_clock
+            iconId = R.drawable.ic_calendar
         )
         Spacer(modifier = Modifier.height(5.dp))
         TextWithIcon(text = announcementHome.pickUpTime, iconId = R.drawable.ic_clock)

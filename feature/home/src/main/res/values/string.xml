@@ -19,7 +19,8 @@
     <string name="filter_select_destination">도착지</string>
     <string name="filter_destination">도착</string>
     <string name="filter_skip">건너뛰기</string>
-    <string name="filter_apply">적용</string>
+    <string name="filter_apply01">적용</string>
+    <string name="filter_apply02">적용하기</string>
     <string name="filter_dog_size">동물 크기</string>
     <string name="filter_kennel">켄넬 제공</string>
     <string name="filter_organization">모집자</string>

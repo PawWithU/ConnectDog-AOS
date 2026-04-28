@@ -548,7 +548,7 @@ private fun DialogBottomButton(
             modifier = Modifier.size(width = 104.dp, height = 37.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.filter_apply),
+                text = stringResource(id = R.string.filter_apply01),
                 style = MaterialTheme.typography.titleSmall,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onPrimary

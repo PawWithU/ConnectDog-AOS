@@ -19,8 +19,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Call
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,15 +41,19 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementContent
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogCalendar
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.Empty
 import com.kusitms.connectdog.core.designsystem.component.Loading
@@ -228,6 +232,7 @@ private fun FilterHeader(
             onSelectedRegion(filter.departure, it)
         }
     }
+    HorizontalDivider(thickness = 1.dp, color = Gray10)
 
     // Schedule row
     Row(
@@ -292,7 +297,12 @@ private fun FilterHeader(
                     shape = RoundedCornerShape(6.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text(text = stringResource(id = R.string.filter_apply), color = Color.White)
+                    Text(
+                        text = stringResource(id = R.string.filter_apply02),
+                        color = Color.White,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.W600
+                    )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
             }
