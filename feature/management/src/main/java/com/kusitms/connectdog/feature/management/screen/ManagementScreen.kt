@@ -65,7 +65,6 @@ internal fun ManagementRoute(
 
     val volunteer by viewModel.volunteer.collectAsStateWithLifecycle()
     val selectedApplication by viewModel.selectedApplication.collectAsStateWithLifecycle()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
@@ -88,8 +87,7 @@ internal fun ManagementRoute(
             onNavigationClick = onBackClick
         )
         ManagementScreen(
-            isRefreshing = isRefreshing,
-            onRefresh = viewModel::refreshCurrentTab,
+            onRefresh = viewModel::refreshTabSuspend,
             onTabSelected = viewModel::refreshByTabIndex,
             firstContent = {
                 PendingApproval(
@@ -133,8 +131,7 @@ internal fun ManagementRoute(
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun ManagementScreen(
-    isRefreshing: Boolean,
-    onRefresh: (Int) -> Unit,
+    onRefresh: suspend (Int) -> Unit,
     onTabSelected: (Int) -> Unit,
     firstContent: @Composable () -> Unit,
     secondContent: @Composable () -> Unit,
@@ -182,16 +179,10 @@ private fun ManagementScreen(
 
             val pullToRefreshState = rememberPullToRefreshState()
 
-            // pull-to-refresh 트리거
+            // pull-to-refresh: suspend 함수가 완료되면 endRefresh() 호출
             if (pullToRefreshState.isRefreshing) {
                 LaunchedEffect(Unit) {
                     onRefresh(pagerState.currentPage)
-                }
-            }
-
-            // isRefreshing이 false가 되면 인디케이터 종료
-            LaunchedEffect(isRefreshing) {
-                if (!isRefreshing) {
                     pullToRefreshState.endRefresh()
                 }
             }

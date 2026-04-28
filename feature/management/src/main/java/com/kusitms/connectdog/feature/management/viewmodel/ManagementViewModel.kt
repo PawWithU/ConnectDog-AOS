@@ -48,9 +48,6 @@ class ManagementViewModel @Inject constructor(
     private val _deleteDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
     val deleteDataUiState = _deleteDataState.asStateFlow()
 
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean> = _isRefreshing
-
     fun refreshAllApplications() {
         refreshWaitingApplications()
         refreshProgressApplications()
@@ -65,27 +62,32 @@ class ManagementViewModel @Inject constructor(
         }
     }
 
-    fun refreshCurrentTab(tabIndex: Int) {
-        viewModelScope.launch {
-            _isRefreshing.value = true
-            try {
-                when (tabIndex) {
-                    0 -> {
-                        _waitingUiState.value = ApplicationUiState.Loading
-                        refreshWaitingApplications()
-                    }
-                    1 -> {
-                        _progressUiState.value = ApplicationUiState.Loading
-                        refreshProgressApplications()
-                    }
-                    2 -> {
-                        _completedUiState.value = ApplicationUiState.Loading
-                        refreshCompletedApplications()
-                    }
+    /** Pull-to-refresh용: 완료될 때까지 suspend */
+    suspend fun refreshTabSuspend(tabIndex: Int) {
+        try {
+            when (tabIndex) {
+                0 -> {
+                    val applications = managementRepository.getApplicationWaiting()
+                    _waitingUiState.value = if (applications.isNotEmpty()) {
+                        ApplicationUiState.Applications(applications)
+                    } else ApplicationUiState.Empty
                 }
-            } finally {
-                _isRefreshing.value = false
+                1 -> {
+                    val applications = managementRepository.getApplicationInProgress()
+                    _progressUiState.value = if (applications.isNotEmpty()) {
+                        ApplicationUiState.Applications(applications)
+                    } else ApplicationUiState.Empty
+                }
+                2 -> {
+                    val applications = managementRepository.getApplicationCompleted()
+                    _completedUiState.value = if (applications.isNotEmpty()) {
+                        ApplicationUiState.Applications(applications)
+                    } else ApplicationUiState.Empty
+                }
             }
+        } catch (e: Exception) {
+            _errorFlow.emit(e)
+            Log.e(TAG, "refreshTabSuspend: ${e.message}")
         }
     }
 
@@ -102,8 +104,6 @@ class ManagementViewModel @Inject constructor(
                 _errorFlow.emit(e)
                 _waitingUiState.value = ApplicationUiState.Empty
                 Log.e(TAG, "refreshWaitingApplications: ${e.message}")
-            } finally {
-                _isRefreshing.value = false
             }
         }
     }
@@ -121,8 +121,6 @@ class ManagementViewModel @Inject constructor(
                 _errorFlow.emit(e)
                 _progressUiState.value = ApplicationUiState.Empty
                 Log.e(TAG, "refreshProgressApplications: ${e.message}")
-            } finally {
-                _isRefreshing.value = false
             }
         }
     }
@@ -140,8 +138,6 @@ class ManagementViewModel @Inject constructor(
                 _errorFlow.emit(e)
                 _completedUiState.value = ApplicationUiState.Empty
                 Log.e(TAG, "refreshCompletedApplications: ${e.message}")
-            } finally {
-                _isRefreshing.value = false
             }
         }
     }
