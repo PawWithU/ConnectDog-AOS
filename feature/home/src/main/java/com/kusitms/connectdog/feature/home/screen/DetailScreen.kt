@@ -173,8 +173,8 @@ fun Content(
     LaunchedEffect(selectedTabIndex) {
         pagerState.animateScrollToPage(selectedTabIndex)
     }
-    LaunchedEffect(pagerState.currentPage) {
-        selectedTabIndex = pagerState.currentPage
+    LaunchedEffect(pagerState.settledPage) {
+        selectedTabIndex = pagerState.settledPage
     }
 
     Column(
