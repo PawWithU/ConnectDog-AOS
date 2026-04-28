@@ -53,6 +53,7 @@ internal fun ManagementRoute(
     onNavigateToCreateReview: (Application) -> Unit,
     onNavigateToCheckReview: (Long, UserType) -> Unit,
     onNavigateToHome: (String) -> Unit,
+    onNavigateToDetail: (Long) -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: ManagementViewModel = hiltViewModel()
 ) {
@@ -85,11 +86,15 @@ internal fun ManagementRoute(
         )
         ManagementScreen(
             firstContent = {
-                PendingApproval(pendingUiState) { application ->
-                    viewModel.getVolunteerInfo(application.applicationId!!)
-                    viewModel.updateSelectedApplication(application)
-                    isSheetOpen = true
-                }
+                PendingApproval(
+                    uiState = pendingUiState,
+                    onItemClick = { application ->
+                        viewModel.getVolunteerInfo(application.applicationId!!)
+                        viewModel.updateSelectedApplication(application)
+                        isSheetOpen = true
+                    },
+                    onNavigateToDetail = onNavigateToDetail
+                )
             },
             secondContent = {
                 InProgress(inProgressUiState) { application ->

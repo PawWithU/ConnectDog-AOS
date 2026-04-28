@@ -1,5 +1,6 @@
 package com.kusitms.connectdog.feature.management.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +27,8 @@ import com.kusitms.connectdog.feature.management.state.ApplicationUiState
 @Composable
 fun PendingApproval(
     uiState: ApplicationUiState,
-    onClick: (Application) -> Unit
+    onItemClick: (Application) -> Unit,
+    onNavigateToDetail: (Long) -> Unit
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
@@ -37,7 +39,11 @@ fun PendingApproval(
                     .padding(bottom = 80.dp)
             ) {
                 items(uiState.applications) {
-                    PendingContent(application = it, onClick = onClick)
+                    PendingContent(
+                        application = it,
+                        onClick = onItemClick,
+                        onNavigateToDetail = onNavigateToDetail
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(80.dp))
@@ -52,7 +58,11 @@ fun PendingApproval(
 }
 
 @Composable
-private fun PendingContent(application: Application, onClick: (Application) -> Unit) {
+private fun PendingContent(
+    application: Application,
+    onClick: (Application) -> Unit,
+    onNavigateToDetail: (Long) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,6 +70,7 @@ private fun PendingContent(application: Application, onClick: (Application) -> U
     ) {
         Column(
             modifier = Modifier
+                .clickable { onNavigateToDetail(application.postId) }
                 .padding(20.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top

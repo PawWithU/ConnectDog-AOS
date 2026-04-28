@@ -137,6 +137,7 @@ internal fun MainScreen(
                         onNavigateToCheckReview = navigator::navigateCheckReview,
                         onNavigateToInterProfile = navigator::navigateIntermediatorProfile,
                         onNavigateToHome = navigator::navigateToHomeClearBackStack,
+                        onNavigateToDetail = navigator::navigateHomeDetail,
                         onNavigateToCreateReview = {
                             val jsonData = Uri.encode(Gson().toJson(it))
                             navigator.navigateCreateReview(jsonData)
