@@ -7,19 +7,13 @@ import com.kusitms.connectdog.core.data.repository.ManagementRepository
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.model.DataUiState
 import com.kusitms.connectdog.core.model.Volunteer
-import com.kusitms.connectdog.feature.management.state.ApplicationConfirmUiState
 import com.kusitms.connectdog.feature.management.state.ApplicationUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +24,7 @@ class ManagementViewModel @Inject constructor(
     private val TAG = "ManagementViewModel"
 
     init {
-        refreshWaitingApplications()
+        refreshAllApplications()
     }
 
     private val _errorFlow = MutableSharedFlow<Throwable>()
@@ -39,11 +33,11 @@ class ManagementViewModel @Inject constructor(
     private val _waitingUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
     val waitingUiState: StateFlow<ApplicationUiState> = _waitingUiState
 
-    val progressUiState: StateFlow<ApplicationUiState> =
-        createUiStateFlow { managementRepository.getApplicationInProgress() }
+    private val _progressUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
+    val progressUiState: StateFlow<ApplicationUiState> = _progressUiState
 
-    val completedUiState: StateFlow<ApplicationUiState> =
-        createUiStateFlow { managementRepository.getApplicationCompleted() }
+    private val _completedUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
+    val completedUiState: StateFlow<ApplicationUiState> = _completedUiState
 
     private val _volunteer = MutableStateFlow<Volunteer?>(null)
     val volunteer: StateFlow<Volunteer?> get() = _volunteer
@@ -53,6 +47,47 @@ class ManagementViewModel @Inject constructor(
 
     private val _deleteDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
     val deleteDataUiState = _deleteDataState.asStateFlow()
+
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
+    fun refreshAllApplications() {
+        refreshWaitingApplications()
+        refreshProgressApplications()
+        refreshCompletedApplications()
+    }
+
+    fun refreshByTabIndex(tabIndex: Int) {
+        when (tabIndex) {
+            0 -> refreshWaitingApplications()
+            1 -> refreshProgressApplications()
+            2 -> refreshCompletedApplications()
+        }
+    }
+
+    fun refreshCurrentTab(tabIndex: Int) {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            try {
+                when (tabIndex) {
+                    0 -> {
+                        _waitingUiState.value = ApplicationUiState.Loading
+                        refreshWaitingApplications()
+                    }
+                    1 -> {
+                        _progressUiState.value = ApplicationUiState.Loading
+                        refreshProgressApplications()
+                    }
+                    2 -> {
+                        _completedUiState.value = ApplicationUiState.Loading
+                        refreshCompletedApplications()
+                    }
+                }
+            } finally {
+                _isRefreshing.value = false
+            }
+        }
+    }
 
     fun refreshWaitingApplications() {
         viewModelScope.launch {
@@ -65,7 +100,48 @@ class ManagementViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _errorFlow.emit(e)
+                _waitingUiState.value = ApplicationUiState.Empty
                 Log.e(TAG, "refreshWaitingApplications: ${e.message}")
+            } finally {
+                _isRefreshing.value = false
+            }
+        }
+    }
+
+    fun refreshProgressApplications() {
+        viewModelScope.launch {
+            try {
+                val applications = managementRepository.getApplicationInProgress()
+                _progressUiState.value = if (applications.isNotEmpty()) {
+                    ApplicationUiState.Applications(applications)
+                } else {
+                    ApplicationUiState.Empty
+                }
+            } catch (e: Exception) {
+                _errorFlow.emit(e)
+                _progressUiState.value = ApplicationUiState.Empty
+                Log.e(TAG, "refreshProgressApplications: ${e.message}")
+            } finally {
+                _isRefreshing.value = false
+            }
+        }
+    }
+
+    fun refreshCompletedApplications() {
+        viewModelScope.launch {
+            try {
+                val applications = managementRepository.getApplicationCompleted()
+                _completedUiState.value = if (applications.isNotEmpty()) {
+                    ApplicationUiState.Applications(applications)
+                } else {
+                    ApplicationUiState.Empty
+                }
+            } catch (e: Exception) {
+                _errorFlow.emit(e)
+                _completedUiState.value = ApplicationUiState.Empty
+                Log.e(TAG, "refreshCompletedApplications: ${e.message}")
+            } finally {
+                _isRefreshing.value = false
             }
         }
     }
@@ -95,40 +171,4 @@ class ManagementViewModel @Inject constructor(
             }
         }
     }
-
-    private fun createUiStateFlow(
-        selectedApplication: () -> Application,
-        getVolunteer: suspend (Long) -> Volunteer
-    ): StateFlow<ApplicationConfirmUiState> =
-        flow<ApplicationConfirmUiState> {
-            val application = selectedApplication()
-            val volunteer = getVolunteer(application.applicationId!!)
-            emit(ApplicationConfirmUiState.ApplicationConfirm(application, volunteer))
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e("InterManagementViewModel", "${it.message}")
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ApplicationConfirmUiState.Loading
-        )
-
-    private fun createUiStateFlow(getApplication: suspend () -> List<Application>): StateFlow<ApplicationUiState> =
-        flow {
-            emit(getApplication())
-        }.map {
-            if (it.isNotEmpty()) {
-                ApplicationUiState.Applications(it)
-            } else {
-                ApplicationUiState.Empty
-            }
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e("InterManagementViewModel", "${it.message}")
-            emit(ApplicationUiState.Empty)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Lazily,
-            initialValue = ApplicationUiState.Loading
-        )
 }

@@ -12,6 +12,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +35,6 @@ import com.google.accompanist.pager.rememberPagerState
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.component.UiState
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.util.UserType
@@ -63,6 +65,7 @@ internal fun ManagementRoute(
 
     val volunteer by viewModel.volunteer.collectAsStateWithLifecycle()
     val selectedApplication by viewModel.selectedApplication.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
@@ -85,6 +88,9 @@ internal fun ManagementRoute(
             onNavigationClick = onBackClick
         )
         ManagementScreen(
+            isRefreshing = isRefreshing,
+            onRefresh = viewModel::refreshCurrentTab,
+            onTabSelected = viewModel::refreshByTabIndex,
             firstContent = {
                 PendingApproval(
                     uiState = pendingUiState,
@@ -124,9 +130,12 @@ internal fun ManagementRoute(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun ManagementScreen(
+    isRefreshing: Boolean,
+    onRefresh: (Int) -> Unit,
+    onTabSelected: (Int) -> Unit,
     firstContent: @Composable () -> Unit,
     secondContent: @Composable () -> Unit,
     thirdContent: @Composable () -> Unit
@@ -144,9 +153,13 @@ private fun ManagementScreen(
         ) {
             val pagerState = rememberPagerState()
             val coroutineScope = rememberCoroutineScope()
-            TabRow(
-                selectedTabIndex = pagerState.currentPage
-            ) {
+
+            // 탭 변경 시 데이터 새로 고침
+            LaunchedEffect(pagerState.currentPage) {
+                onTabSelected(pagerState.currentPage)
+            }
+
+            TabRow(selectedTabIndex = pagerState.currentPage) {
                 tabItems.forEachIndexed { index, title ->
                     Tab(
                         selected = pagerState.currentPage == index,
@@ -166,17 +179,45 @@ private fun ManagementScreen(
                     )
                 }
             }
-            HorizontalPager(
-                state = pagerState,
-                count = tabItems.size,
-                modifier = Modifier.fillMaxSize(),
-                verticalAlignment = Alignment.Top
-            ) { index ->
-                when (index) {
-                    0 -> firstContent()
-                    1 -> secondContent()
-                    2 -> thirdContent()
+
+            val pullToRefreshState = rememberPullToRefreshState()
+
+            // pull-to-refresh 트리거
+            if (pullToRefreshState.isRefreshing) {
+                LaunchedEffect(Unit) {
+                    onRefresh(pagerState.currentPage)
                 }
+            }
+
+            // isRefreshing이 false가 되면 인디케이터 종료
+            LaunchedEffect(isRefreshing) {
+                if (!isRefreshing) {
+                    pullToRefreshState.endRefresh()
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(pullToRefreshState.nestedScrollConnection)
+            ) {
+                HorizontalPager(
+                    state = pagerState,
+                    count = tabItems.size,
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.Top
+                ) { index ->
+                    when (index) {
+                        0 -> firstContent()
+                        1 -> secondContent()
+                        2 -> thirdContent()
+                    }
+                }
+                PullToRefreshContainer(
+                    state = pullToRefreshState,
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
             }
         }
     }
