@@ -125,9 +125,10 @@ class ManagementViewModel @Inject constructor(
         }.catch {
             _errorFlow.emit(it)
             Log.e("InterManagementViewModel", "${it.message}")
+            emit(ApplicationUiState.Empty)
         }.stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
+            started = SharingStarted.Lazily,
             initialValue = ApplicationUiState.Loading
         )
 }

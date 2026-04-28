@@ -14,7 +14,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -66,12 +66,14 @@ internal fun ManagementRoute(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var isSheetOpen by rememberSaveable { mutableStateOf(false) }
 
-    val deleteDataState by viewModel.deleteDataUiState.collectAsState()
+    val deleteDataState by viewModel.deleteDataUiState.collectAsStateWithLifecycle()
 
     BackHandler { onNavigateToHome(com.kusitms.connectdog.feature.management.navigation.ManagementRoute.route) }
 
-    UiState(dataUiState = deleteDataState) {
-        viewModel.refreshWaitingApplications()
+    LaunchedEffect(deleteDataState) {
+        if (deleteDataState is com.kusitms.connectdog.core.model.DataUiState.Success) {
+            viewModel.refreshWaitingApplications()
+        }
     }
 
     Column {
