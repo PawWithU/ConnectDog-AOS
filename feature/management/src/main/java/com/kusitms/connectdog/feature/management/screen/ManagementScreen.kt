@@ -204,11 +204,6 @@ private fun ManagementScreen(
                         2 -> thirdContent()
                     }
                 }
-                PullToRefreshContainer(
-                    state = pullToRefreshState,
-                    modifier = Modifier.align(Alignment.TopCenter),
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
             }
         }
     }
@@ -221,7 +216,7 @@ internal fun OutlinedButton(
 ) {
     ConnectDogSecondaryButton(
         modifier = modifier,
-        contentRes = R.string.check_my_appliance
+        contentRes = R.string.check_my_appliance_button
     ) { onClick() }
 }
 

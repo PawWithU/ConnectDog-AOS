@@ -5,6 +5,7 @@
     <string name="inProgress">진행중</string>
     <string name="completed">봉사완료</string>
     <string name="check_my_appliance">내 신청 내역 확인</string>
+    <string name="check_my_appliance_button">내 신청 확인하기</string>
     <string name="create_review">후기 등록</string>
     <string name="check_review">후기 확인</string>
     <string name="check_recent">근황 확인</string>

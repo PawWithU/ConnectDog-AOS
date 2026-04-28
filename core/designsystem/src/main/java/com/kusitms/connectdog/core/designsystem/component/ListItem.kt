@@ -121,7 +121,7 @@ fun AnnouncementItem(
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(12.dp))
-            TextWithIcon(text = date, iconId = R.drawable.ic_clock)
+            TextWithIcon(text = date, iconId = R.drawable.ic_calendar)
             Spacer(modifier = Modifier.height(6.dp))
             TextWithIcon(text = pickUpTime, iconId = R.drawable.ic_clock)
             Spacer(modifier = Modifier.height(12.dp))
