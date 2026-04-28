@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -121,7 +122,8 @@ fun CreateApplicationDogScreen(
         Content(
             viewModel = viewModel,
             imeHeight = imeHeight,
-            onNavigateToCreateComplete = onNavigateToCreateComplete
+            onNavigateToCreateComplete = onNavigateToCreateComplete,
+            onPreviousClick = { showBackDialog = true }
         )
     }
 }
@@ -130,10 +132,13 @@ fun CreateApplicationDogScreen(
 private fun Content(
     viewModel: CreateApplicationViewModel,
     imeHeight: Int,
-    onNavigateToCreateComplete: () -> Unit
+    onNavigateToCreateComplete: () -> Unit,
+    onPreviousClick: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
+    val dogSize by viewModel.dogSize.collectAsStateWithLifecycle()
+    val uriList by viewModel.uriList.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -155,7 +160,7 @@ private fun Content(
         )
         Spacer(modifier = Modifier.height(40.dp))
         Size(
-            dogSize = viewModel.dogSize.value,
+            dogSize = dogSize,
             updateDogSize = viewModel::updateDogSize
         )
         Spacer(modifier = Modifier.height(32.dp))
@@ -166,21 +171,34 @@ private fun Content(
         Divider(thickness = 8.dp, color = Gray7)
         Spacer(modifier = Modifier.height(32.dp))
         Significant(viewModel = viewModel, imeHeight = imeHeight, scrollState = scrollState)
-        ConnectDogBottomButton(
+        Row(
             modifier = Modifier
                 .background(color = Color.White)
-                .padding(horizontal = 20.dp, vertical = 24.dp),
-            onClick = {
-                viewModel.createApplication(context)
-                viewModel.clear()
-                onNavigateToCreateComplete()
-            },
-            content = "등록 완료",
-            enabled = viewModel.name != "" &&
-                viewModel.dogSize.value != null &&
-                viewModel.specifics != "" &&
-                viewModel.uriList.value.size in 1..5
-        )
+                .padding(horizontal = 20.dp, vertical = 24.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            ConnectDogBottomButton(
+                modifier = Modifier.width(90.dp),
+                enabledColor = MaterialTheme.colorScheme.surface,
+                textColor = MaterialTheme.colorScheme.onSurface,
+                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                onClick = { onPreviousClick() },
+                content = stringResource(id = R.string.previous)
+            )
+            ConnectDogBottomButton(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    viewModel.createApplication(context)
+                    viewModel.clear()
+                    onNavigateToCreateComplete()
+                },
+                content = "등록 완료",
+                enabled = viewModel.name != "" &&
+                    dogSize != null &&
+                    uriList.size in 1..5
+            )
+        }
         Spacer(modifier = Modifier.height(imeHeight.dp))
     }
 }
@@ -402,19 +420,28 @@ private fun Significant(
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
-        Text(
-            text = stringResource(id = R.string.create_announcement_dog_subtitle_4),
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            color = Gray1
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = stringResource(id = R.string.create_announcement_dog_subtitle_4),
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
+                color = Gray1
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "(선택)",
+                fontSize = 12.sp,
+                color = Gray3
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextField(
             text = viewModel.specifics,
             onTextChanged = viewModel::updateSpecifics,
             label = "",
-            placeholder = "",
-            height = 244
+            placeholder = "- 이동 동물 성향, 건강 상태, 주의사항 등",
+            height = 244,
+            showCharCount = true
         )
     }
 }

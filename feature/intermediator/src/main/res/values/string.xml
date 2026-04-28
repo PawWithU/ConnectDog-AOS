@@ -64,4 +64,5 @@
     <string name="dialog_cancel_description">지금 돌아가면\n작성 중인 내용이 사라져요.</string>
     <string name="dialog_cancel_ok">네, 취소할게요</string>
     <string name="dialog_cancel_back">계속 작성할래요</string>
+    <string name="previous">이전</string>
 </resources>
