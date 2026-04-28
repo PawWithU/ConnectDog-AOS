@@ -34,10 +34,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -79,6 +83,25 @@ fun CreateApplicationDogScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    var showBackDialog by remember { mutableStateOf(false) }
+
+    BackHandler {
+        showBackDialog = true
+    }
+
+    if (showBackDialog) {
+        ConnectDogAlertDialog(
+            onDismissRequest = { showBackDialog = false },
+            titleRes = R.string.dialog_cancel_title,
+            descriptionRes = R.string.dialog_cancel_description,
+            okText = R.string.dialog_cancel_ok,
+            cancelText = R.string.dialog_cancel_back,
+            onClickOk = {
+                showBackDialog = false
+                onBackClick()
+            }
+        )
+    }
 
     Scaffold(
         modifier = Modifier
@@ -91,7 +114,7 @@ fun CreateApplicationDogScreen(
             ConnectDogTopAppBar(
                 titleRes = R.string.create_announcement,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = onBackClick
+                onNavigationClick = { showBackDialog = true }
             )
         }
     ) {

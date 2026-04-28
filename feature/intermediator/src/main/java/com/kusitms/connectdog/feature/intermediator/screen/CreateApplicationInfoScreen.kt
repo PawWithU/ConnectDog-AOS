@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogDialogButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
@@ -67,10 +68,25 @@ fun CreateApplicationInfoScreen(
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
+    var showBackDialog by remember { mutableStateOf(false) }
 
     BackHandler {
-        onBackClick()
-        viewModel.clear()
+        showBackDialog = true
+    }
+
+    if (showBackDialog) {
+        ConnectDogAlertDialog(
+            onDismissRequest = { showBackDialog = false },
+            titleRes = R.string.dialog_cancel_title,
+            descriptionRes = R.string.dialog_cancel_description,
+            okText = R.string.dialog_cancel_ok,
+            cancelText = R.string.dialog_cancel_back,
+            onClickOk = {
+                showBackDialog = false
+                viewModel.clear()
+                onBackClick()
+            }
+        )
     }
 
     Scaffold(
@@ -84,10 +100,7 @@ fun CreateApplicationInfoScreen(
             ConnectDogTopAppBar(
                 titleRes = R.string.create_announcement,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = {
-                    viewModel.clear()
-                    onBackClick()
-                }
+                onNavigationClick = { showBackDialog = true }
             )
         },
         bottomBar = {

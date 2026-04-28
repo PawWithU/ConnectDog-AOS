@@ -58,4 +58,10 @@
 
     <string name="create_announcement_complete_title">공고 등록이 완료되었어요!</string>
     <string name="create_announcement_complete_sub">[봉사 관리]에서 이동봉사 신청자를 확인할 수 있어요!</string>
+
+    <!--뒤로 가기 확인 다이얼로그-->
+    <string name="dialog_cancel_title">공고 등록을 취소하시겠습니까?</string>
+    <string name="dialog_cancel_description">지금 돌아가면\n작성 중인 내용이 사라져요.</string>
+    <string name="dialog_cancel_ok">네, 취소할게요</string>
+    <string name="dialog_cancel_back">계속 작성할래요</string>
 </resources>
