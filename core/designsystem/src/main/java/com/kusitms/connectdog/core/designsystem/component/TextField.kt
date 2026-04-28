@@ -3,6 +3,7 @@ package com.kusitms.connectdog.core.designsystem.component
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -57,6 +59,7 @@ fun ConnectDogTextField(
     isError: Boolean = false,
     @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = R.string.default_error_message,
     height: Int = 65,
+    showCharCount: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val visualTransformation =
@@ -66,48 +69,57 @@ fun ConnectDogTextField(
             VisualTransformation.None
         }
 
-    Box(
-        modifier = modifier
-            .height(height.dp)
-            .fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            visualTransformation = visualTransformation,
+    Column(modifier = modifier.fillMaxWidth()) {
+        Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .fillMaxSize(),
-            value = text,
-            onValueChange = { onTextChanged(it) },
-            label = {
-                Text(
-                    text = label,
-                    color = Gray3
+                .height(height.dp)
+                .fillMaxWidth()
+        ) {
+            OutlinedTextField(
+                visualTransformation = visualTransformation,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .fillMaxSize(),
+                value = text,
+                onValueChange = { onTextChanged(it) },
+                label = {
+                    Text(
+                        text = label,
+                        color = Gray3
+                    )
+                },
+                placeholder = {
+                    Text(
+                        text = placeholder,
+                        color = Gray4
+                    )
+                },
+                keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                singleLine = (height == 65),
+                shape = RoundedCornerShape(12.dp),
+                isError = isError,
+                enabled = enabled,
+                colors =
+                OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = borderColor,
+                    errorBorderColor = MaterialTheme.colorScheme.error
                 )
-            },
-            placeholder = {
-                Text(
-                    text = placeholder,
-                    color = Gray4
-                )
-            },
-            keyboardOptions =
-            KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction
-            ),
-            singleLine = (height == 65),
-            shape = RoundedCornerShape(12.dp),
-            isError = isError,
-            enabled = enabled,
-            colors =
-            OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = borderColor,
-                errorBorderColor = MaterialTheme.colorScheme.error
             )
-//        textStyle = LocalTextStyle.current.copy(
-//            baselineShift = BaselineShift(if(height == 65) 0f else 2.5f)
-//        )
-        )
+        }
+        if (showCharCount) {
+            Text(
+                text = "${text.length} / 200",
+                color = Gray4,
+                fontSize = 12.sp,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 4.dp, end = 4.dp)
+            )
+        }
     }
 }
 
@@ -124,6 +136,7 @@ fun ConnectDogTextField(
     isError: Boolean = false,
     @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = R.string.default_error_message,
     height: Int = 65,
+    showCharCount: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val visualTransformation =
@@ -133,42 +146,51 @@ fun ConnectDogTextField(
             VisualTransformation.None
         }
 
-    Box(
-        modifier = modifier
-            .height(height.dp)
-            .fillMaxWidth()
-    ) {
-        OutlinedTextField(
-            visualTransformation = visualTransformation,
+    Column(modifier = modifier.fillMaxWidth()) {
+        Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .fillMaxSize(),
-            value = text,
-            onValueChange = { onTextChanged(it) },
-            placeholder = {
-                Text(
-                    text = placeholder,
-                    color = Gray4
+                .height(height.dp)
+                .fillMaxWidth()
+        ) {
+            OutlinedTextField(
+                visualTransformation = visualTransformation,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .fillMaxSize(),
+                value = text,
+                onValueChange = { onTextChanged(it) },
+                placeholder = {
+                    Text(
+                        text = placeholder,
+                        color = Gray4
+                    )
+                },
+                keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                singleLine = (height == 65),
+                shape = RoundedCornerShape(12.dp),
+                isError = isError,
+                enabled = enabled,
+                colors =
+                OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = borderColor,
+                    errorBorderColor = MaterialTheme.colorScheme.error
                 )
-            },
-            keyboardOptions =
-            KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction
-            ),
-            singleLine = (height == 65),
-            shape = RoundedCornerShape(12.dp),
-            isError = isError,
-            enabled = enabled,
-            colors =
-            OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = borderColor,
-                errorBorderColor = MaterialTheme.colorScheme.error
             )
-//        textStyle = LocalTextStyle.current.copy(
-//            baselineShift = BaselineShift(if(height == 65) 0f else 2.5f)
-//        )
-        )
+        }
+        if (showCharCount) {
+            Text(
+                text = "${text.length} / 200",
+                color = Gray4,
+                fontSize = 12.sp,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 4.dp, end = 4.dp)
+            )
+        }
     }
 }
 
