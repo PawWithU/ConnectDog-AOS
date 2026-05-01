@@ -40,7 +40,8 @@ data class SignUpUiState(
     val isDuplicatedNickname: Boolean?,
     val isDuplicatedEmail: Boolean,
     val englishAndNumberRegex: Regex,
-    val englishNumberSpecialRegex: Regex
+    val englishNumberSpecialRegex: Regex,
+    val isEmailLoading: Boolean
 ) {
     companion object {
         fun empty() = SignUpUiState(
@@ -77,9 +78,10 @@ data class SignUpUiState(
             isAvailableNickName = false,
             isDuplicatedNickname = null,
             isDuplicatedEmail = false,
-            isDuplicatedPhoneNumber = false,
+            isDuplicatedEmail = false,
             englishAndNumberRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,}$"),
-            englishNumberSpecialRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#\$%^&+=!])[A-Za-z\\d@#\$%^&+=!]{8,}$")
+            englishNumberSpecialRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#\$%^&+=!])[A-Za-z\\d@#\$%^&+=!]{8,}$"),
+            isEmailLoading = false
         )
     }
 }

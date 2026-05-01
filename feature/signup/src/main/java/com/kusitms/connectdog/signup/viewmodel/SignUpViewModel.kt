@@ -194,6 +194,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun getEmailAuthCode() = viewModelScope.launch {
+        intent { reduce { state.copy(isEmailLoading = true, enableEmailCertification = false) } }
         getEmailAuthCodeUseCase(
             email = state.email
         ).onSuccess {
@@ -202,11 +203,14 @@ class SignUpViewModel @Inject constructor(
                     state.copy(
                         emailAuthCode = it.authCode,
                         isSendEmailAuthCode = true,
-                        enableEmailCertification = false
+                        enableEmailCertification = false,
+                        isEmailLoading = false
                     )
                 }
             }
             updateEmailCertificationButtonText()
+        }.onFailure {
+            intent { reduce { state.copy(isEmailLoading = false, enableEmailCertification = true) } }
         }
     }
 
