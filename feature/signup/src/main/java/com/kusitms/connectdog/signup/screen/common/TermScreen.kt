@@ -96,10 +96,11 @@ private fun Content(
     ) {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
-            text = "코넥독 서비스 이용약관에\n동의해주세요",
+            text = stringResource(id = R.string.terms_title),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 20.dp)
+            modifier = Modifier.padding(start = 20.dp),
+            lineHeight = 30.sp
         )
         Spacer(modifier = Modifier.height(40.dp))
         CheckBox(

@@ -61,6 +61,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.feature.intermediator.state.AnnouncementManagementUiState
 import com.kusitms.connectdog.feature.intermediator.viewmodel.AnnouncementManagementViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AnnouncementManageScreen(
@@ -258,7 +259,7 @@ private fun BasicInfo(
             color = Gray3
         )
         Spacer(modifier = Modifier.height(6.dp))
-        TextWithIcon(iconId = R.drawable.ic_clock, text = detail.startDate, size = 14)
+        TextWithIcon(iconId = R.drawable.ic_calendar, text = detail.startDate, size = 14)
         Spacer(modifier = Modifier.height(8.dp))
         TextWithIcon(iconId = R.drawable.ic_clock, text = detail.pickUpTime, size = 14)
         Spacer(modifier = Modifier.height(17.dp))

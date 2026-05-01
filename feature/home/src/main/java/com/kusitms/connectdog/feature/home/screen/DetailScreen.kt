@@ -60,6 +60,7 @@ import com.kusitms.connectdog.feature.home.R
 
 private const val TAG = "DetailScreen"
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DetailScreen(
@@ -246,7 +247,7 @@ private fun BasicInfo(
             color = Gray3
         )
         Spacer(modifier = Modifier.height(6.dp))
-        TextWithIcon(iconId = R.drawable.ic_clock, text = detail.startDate, size = 14)
+        TextWithIcon(iconId = R.drawable.ic_calendar, text = detail.startDate, size = 14)
         Spacer(modifier = Modifier.height(8.dp))
         TextWithIcon(iconId = R.drawable.ic_clock, text = detail.pickUpTime, size = 14)
         Spacer(modifier = Modifier.height(17.dp))
@@ -339,7 +340,7 @@ fun IntermediatorInfo(
             .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp)
     ) {
         Text(
-            text = "이동봉사 중개",
+            text = "모집자 정보",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )

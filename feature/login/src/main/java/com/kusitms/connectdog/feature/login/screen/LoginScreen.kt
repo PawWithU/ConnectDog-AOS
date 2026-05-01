@@ -61,6 +61,8 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import com.kusitms.connectdog.core.designsystem.R.drawable as DR
+
+@Composable
 internal fun LoginRoute(
     finish: () -> Unit,
     onNavigateToNormalLogin: (UserType) -> Unit,
@@ -181,7 +183,7 @@ private fun LoginContent(
                 .align(if (pagerState.currentPage == 0) Alignment.End else Alignment.Start)
         ) {
             SpeechBubble(
-                text = "이동봉사 공고 신청자를 모집한다면?",
+                text = "이동봉사 공고 올리고 싶다면?",
                 fontSize = 10,
                 fontColor = PetOrange,
                 fontWeight = FontWeight.SemiBold

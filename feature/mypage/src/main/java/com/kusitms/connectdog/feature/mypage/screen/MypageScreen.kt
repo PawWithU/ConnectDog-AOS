@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +32,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,6 +44,9 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButt
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray50
+import com.kusitms.connectdog.core.designsystem.theme.Gray7
+import com.kusitms.connectdog.core.designsystem.theme.Gray80
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.core.util.getProfileImageId
@@ -125,7 +128,7 @@ private fun MypageScreen(
         MyInformation(onEditProfileClick, viewModel)
         Spacer(modifier = Modifier.height(20.dp))
         InformationBox()
-        Spacer(modifier = Modifier.height(40.dp))
+        HorizontalDivider(modifier = Modifier.height(8.dp).background(Gray7).padding(vertical = 20.dp))
         BannerGuideline()
         Spacer(modifier = Modifier.height(20.dp))
         Text(
@@ -169,22 +172,24 @@ private fun MyInformation(
                     id = getProfileImageId(it.profileImageNum)
                 ),
                 contentDescription = null,
-                modifier = Modifier.size(50.dp)
+                modifier = Modifier.size(80.dp)
             )
-            Spacer(modifier = Modifier.width(12.dp))
-            Text(
-                text = it.nickname,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(modifier = Modifier.weight(1f))
-            ConnectDogOutlinedButton(
-                width = 80,
-                height = 26,
-                text = "프로필 수정",
-                padding = 5,
-                onClick = { onEditProfileClick(userInfo!!.profileImageNum, userInfo!!.nickname) }
-            )
+            Spacer(modifier = Modifier.width(20.dp))
+            Column {
+                Text(
+                    text = it.nickname,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                ConnectDogOutlinedButton(
+                    width = 80,
+                    height = 26,
+                    text = "프로필 수정",
+                    padding = 5,
+                    onClick = { onEditProfileClick(userInfo!!.profileImageNum, userInfo!!.nickname) }
+                )
+            }
         }
     }
 }
@@ -243,7 +248,7 @@ private fun InformationBox(
             .padding(horizontal = 20.dp)
             .height(80.dp)
             .clip(shape)
-            .background(MaterialTheme.colorScheme.primary)
+            .background(Gray7)
     ) {
         myInformation?.let {
             Row {
@@ -268,14 +273,14 @@ private fun Information(
     ) {
         Text(
             text = "${count}회",
-            color = Color.White,
+            color = Gray50,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
             text = title,
-            color = Color.White,
+            color = Gray50,
             fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.align(Alignment.CenterHorizontally)

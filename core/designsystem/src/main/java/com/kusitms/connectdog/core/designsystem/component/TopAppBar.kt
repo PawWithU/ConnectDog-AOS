@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
+import com.kusitms.connectdog.core.designsystem.theme.Gray100
 import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.core.util.UserType
 
@@ -135,20 +136,19 @@ fun ConnectDogIntermediatorTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
-            .background(MaterialTheme.colorScheme.primary)
     ) {
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = onNotificationClick) {
             Icon(
                 imageVector = Icons.Outlined.Notifications,
-                tint = Color.White,
+                tint = Gray100,
                 contentDescription = "Navigate to Search"
             )
         }
         IconButton(onClick = { onSettingClick(UserType.INTERMEDIATOR) }) {
             Icon(
                 imageVector = Icons.Outlined.Settings,
-                tint = Color.White,
+                tint = Gray100,
                 contentDescription = null
             )
         }

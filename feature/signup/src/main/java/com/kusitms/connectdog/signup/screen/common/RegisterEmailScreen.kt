@@ -104,7 +104,8 @@ private fun Content(
             Text(
                 text = stringResource(id = R.string.email_auth_title),
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                lineHeight = 30.sp
             )
             Spacer(modifier = Modifier.height(40.dp))
             ConnectDogTextField(

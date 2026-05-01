@@ -14,14 +14,14 @@
     <string name="signup_with_connectdog">코넥독 계정으로 회원가입하기</string>
     <string name="login">로그인</string>
     <string name="or">또는</string>
-    <string name="introduce">코넥독과 함께\n유기견에게 새 삶의 기회를 연결해주세요!</string>
+    <string name="introduce">코넥독에서\n유기동물의 새 삶을 연결해 주세요!</string>
     <string name="email_search">이메일 찾기</string>
     <string name="password_search">비밀번호 찾기</string>
 
     <string name="password_search_title">로그인에 사용할\n비밀번호를 입력해 주세요</string>
 
     <!--이메일 인증-->
-    <string name="email_auth_title">이메일 인증을\n진행해주세요</string>
+    <string name="email_auth_title">로그인에 사용할\n이메일을 입력해 주세요</string>
     <string name="phone_number">휴대폰 번호</string>
 
 

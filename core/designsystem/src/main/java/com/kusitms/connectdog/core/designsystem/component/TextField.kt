@@ -20,20 +20,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,6 +72,19 @@ fun ConnectDogTextField(
         }
 
     Column(modifier = modifier.fillMaxWidth()) {
+        var textFieldValue by remember {
+            mutableStateOf(TextFieldValue(text = text))
+        }
+
+        LaunchedEffect(text) {
+            if (textFieldValue.text != text) {
+                textFieldValue = TextFieldValue(
+                    text = text,
+                    selection = TextRange(text.length)
+                )
+            }
+        }
+
         Box(
             modifier = Modifier
                 .height(height.dp)
@@ -80,8 +95,11 @@ fun ConnectDogTextField(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .fillMaxSize(),
-                value = text,
-                onValueChange = { onTextChanged(it) },
+                value = textFieldValue,
+                onValueChange = { newValue ->
+                    textFieldValue = newValue
+                    onTextChanged(newValue.text)
+                },
                 label = {
                     Text(
                         text = label,
@@ -94,8 +112,7 @@ fun ConnectDogTextField(
                         color = Gray4
                     )
                 },
-                keyboardOptions =
-                KeyboardOptions(
+                keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
                     imeAction = imeAction
                 ),
@@ -103,8 +120,7 @@ fun ConnectDogTextField(
                 shape = RoundedCornerShape(12.dp),
                 isError = isError,
                 enabled = enabled,
-                colors =
-                OutlinedTextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = borderColor,
                     errorBorderColor = MaterialTheme.colorScheme.error
                 )
@@ -283,6 +299,7 @@ fun ConnectDogTextFieldWithButton(
     }
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun ConnectDogTextFieldWithTimer(
     initialMinute: Int = 5,
@@ -295,8 +312,8 @@ fun ConnectDogTextFieldWithTimer(
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false
 ) {
-    var minute by remember { mutableStateOf(initialMinute) }
-    var second by remember { mutableStateOf(initialSecond) }
+    var minute by remember { mutableIntStateOf(initialMinute) }
+    var second by remember { mutableIntStateOf(initialSecond) }
 
     LaunchedEffect(key1 = minute, key2 = second) {
         if (minute > 0 || second > 0) {

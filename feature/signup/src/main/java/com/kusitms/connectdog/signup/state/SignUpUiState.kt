@@ -78,10 +78,10 @@ data class SignUpUiState(
             isAvailableNickName = false,
             isDuplicatedNickname = null,
             isDuplicatedEmail = false,
-            isDuplicatedEmail = false,
             englishAndNumberRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,}$"),
             englishNumberSpecialRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#\$%^&+=!])[A-Za-z\\d@#\$%^&+=!]{8,}$"),
-            isEmailLoading = false
+            isEmailLoading = false,
+            isDuplicatedPhoneNumber = false
         )
     }
 }

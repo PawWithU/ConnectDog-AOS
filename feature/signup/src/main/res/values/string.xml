@@ -6,10 +6,16 @@
     <!---->
     <string name="next">다음</string>
 
+    <!--약관-->
+    <string name="terms_title">코넥독 서비스 이용약관에\n동의해주세요</string>
+    <string name="agree_all">모두 동의</string>
+    <string name="agree_use">[필수] 이용약관 동의</string>
+    
+
     <!--휴대폰 인증-->
     <string name="name">이름</string>
     <string name="input_name">이름 입력</string>
-    <string name="certification_title">휴대폰 번호 인증을\n진행해 주세요</string>
+    <string name="certification_title">이름과 휴대폰 번호를\n입력해주세요</string>
     <string name="phone_number">휴대폰 번호</string>
     <string name="phone_number_requirement">\'-\'빼고 입력</string>
     <string name="auth_code">인증번호</string>
