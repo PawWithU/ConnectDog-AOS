@@ -10,7 +10,7 @@
     <string name="terms_title">코넥독 서비스 이용약관에\n동의해주세요</string>
     <string name="agree_all">모두 동의</string>
     <string name="agree_use">[필수] 이용약관 동의</string>
-    
+
 
     <!--휴대폰 인증-->
     <string name="name">이름</string>
@@ -45,4 +45,7 @@
 
     <string name="select_profile_image_title">프로필 이미지를\n선택해주세요</string>
     <string name="select">선택</string>
+
+    <string name="duplicate_check">중복 확인</string>
+    <string name="complete_signup">가입 완료</string>
 </resources>

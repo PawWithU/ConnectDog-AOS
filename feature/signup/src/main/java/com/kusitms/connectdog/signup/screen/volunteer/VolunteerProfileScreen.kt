@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -100,9 +102,10 @@ private fun Content(
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
-            text = "프로필 정보를\n입력해주세요",
+            text = "안녕하세요 이동봉사자님!\n닉네임을 입력해 주세요",
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            lineHeight = 20.sp
         )
         Spacer(modifier = Modifier.height(40.dp))
         Row(
@@ -129,13 +132,21 @@ private fun Content(
             )
         }
         Spacer(modifier = Modifier.height(40.dp))
-        ConnectDogTextField(
-            text = uiState.nickname,
-            label = "닉네임",
-            placeholder = "닉네임 입력",
-            onTextChanged = viewModel::onNickNameChanged,
-            isError = uiState.isDuplicatedNickname == true
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            ConnectDogTextField(
+                text = uiState.nickname,
+                label = "닉네임",
+                placeholder = "닉네임 입력",
+                onTextChanged = viewModel::onNickNameChanged,
+                isError = uiState.isDuplicatedNickname == true
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            ConnectDogBottomButton(
+                modifier = Modifier.width(82.dp),
+                content = stringResource(id = R.string.duplicate_check),
+                onClick = {}
+            )
+        }
         if(uiState.isDuplicatedNickname == true) {
             Text(
                 modifier = Modifier.padding(top = 4.dp, start = 8.dp),
@@ -146,7 +157,7 @@ private fun Content(
         }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(
-            content = "중복 확인",
+            content = stringResource(id = R.string.complete_signup),
             onClick = viewModel::onCheckNicknameDuplicationButtonClick,
             enabled = uiState.enableNicknameDuplication
         )

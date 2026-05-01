@@ -136,7 +136,8 @@ private fun Content(
             label = stringResource(id = R.string.phone_number),
             placeholder = stringResource(id = R.string.phone_number_requirement),
             keyboardType = KeyboardType.Number,
-            isError = uiState.isValidPhoneNumber == false
+            isError = uiState.isValidPhoneNumber == false,
+            maxLength = 11
         )
         if (uiState.isValidPhoneNumber == false) {
             Spacer(modifier = Modifier.height(4.dp))
