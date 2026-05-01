@@ -115,6 +115,15 @@ private fun Content(
                 isError = uiState.isValidEmail == false,
                 onTextChanged = viewModel::onEmailChanged,
             )
+            if (uiState.isValidEmail == false) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "올바른 이메일 형식이 아닙니다.",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Red1
+                )
+            }
             Spacer(modifier = Modifier.height(12.dp))
             if (uiState.isSendEmailAuthCode) {
                 ConnectDogTextField(

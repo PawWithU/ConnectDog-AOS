@@ -77,7 +77,7 @@ class SignUpViewModel @Inject constructor(
     private fun checkValidPhoneNumber() = intent {
         val phone = state.phoneNumber
         val isValid = if (phone.isEmpty()) null
-        else Regex("^01[016789]\\d{7,8}$").matches(phone)
+        else Regex("^01[016789]\\d{8}$").matches(phone)
         reduce { state.copy(isValidPhoneNumber = isValid) }
     }
 
