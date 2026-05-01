@@ -62,13 +62,23 @@ class SignUpViewModel @Inject constructor(
 
     /*이름, 휴대폰 번호 인증*/
     fun onNameChanged(name: String) = intent {
-        reduce { state.copy(name = name) }
+        // 한글(완성형+자모)과 공백만 허용
+        val filtered = name.filter { it in '가'..'힣' || it in 'ㄱ'..'ㅎ' || it in 'ㅏ'..'ㅣ' || it == ' ' }
+        reduce { state.copy(name = filtered) }
         enableSendPhoneAuthCodeButton()
     }
 
     fun onPhoneNumberChanged(phoneNumber: String) = intent {
         if (phoneNumber.length <= 11) reduce { state.copy(phoneNumber = phoneNumber) }
+        checkValidPhoneNumber()
         enableSendPhoneAuthCodeButton()
+    }
+
+    private fun checkValidPhoneNumber() = intent {
+        val phone = state.phoneNumber
+        val isValid = if (phone.isEmpty()) null
+        else Regex("^01[016789]\\d{7,8}$").matches(phone)
+        reduce { state.copy(isValidPhoneNumber = isValid) }
     }
 
     fun onPhoneAuthCodeChanged(authCode: String) {
@@ -124,7 +134,7 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun enableSendPhoneAuthCodeButton() = intent {
-        if (!state.isSendPhoneAuthCode && state.phoneNumber.length == 11 && state.name.isNotEmpty()) {
+        if (!state.isSendPhoneAuthCode && state.phoneNumber.length == 11 && state.name.isNotEmpty() && state.isValidPhoneNumber == true) {
             reduce { state.copy(enablePhoneCertification = true) }
         } else if (state.isSendPhoneAuthCode && state.phoneAuthCode.length == 6) {
             reduce { state.copy(enablePhoneCertification = true) }

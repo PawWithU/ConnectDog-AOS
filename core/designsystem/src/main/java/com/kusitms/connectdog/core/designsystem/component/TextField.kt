@@ -62,6 +62,7 @@ fun ConnectDogTextField(
     @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = R.string.default_error_message,
     height: Int = 65,
     showCharCount: Boolean = false,
+    maxLength: Int = Int.MAX_VALUE,
     modifier: Modifier = Modifier
 ) {
     val visualTransformation =
@@ -97,8 +98,10 @@ fun ConnectDogTextField(
                     .fillMaxSize(),
                 value = textFieldValue,
                 onValueChange = { newValue ->
-                    textFieldValue = newValue
-                    onTextChanged(newValue.text)
+                    if (newValue.text.length <= maxLength) {
+                        textFieldValue = newValue
+                        onTextChanged(newValue.text)
+                    }
                 },
                 label = {
                     Text(
@@ -310,7 +313,8 @@ fun ConnectDogTextFieldWithTimer(
     placeholder: String,
     borderColor: Color = Gray5,
     keyboardType: KeyboardType = KeyboardType.Text,
-    isError: Boolean = false
+    isError: Boolean = false,
+    maxLength: Int = Int.MAX_VALUE
 ) {
     var minute by remember { mutableIntStateOf(initialMinute) }
     var second by remember { mutableIntStateOf(initialSecond) }
@@ -337,9 +341,10 @@ fun ConnectDogTextFieldWithTimer(
             label = textFieldLabel,
             placeholder = placeholder,
             keyboardType = keyboardType,
-            onTextChanged = { onTextChanged(it) },
+            onTextChanged = { if (it.length <= maxLength) onTextChanged(it) },
             borderColor = borderColor,
-            isError = isError
+            isError = isError,
+            maxLength = maxLength
         )
         Text(
             text = String.format("%02d:%02d", minute, second),

@@ -135,8 +135,18 @@ private fun Content(
             onTextChanged = viewModel::onPhoneNumberChanged,
             label = stringResource(id = R.string.phone_number),
             placeholder = stringResource(id = R.string.phone_number_requirement),
-            keyboardType = KeyboardType.Number
+            keyboardType = KeyboardType.Number,
+            isError = uiState.isValidPhoneNumber == false
         )
+        if (uiState.isValidPhoneNumber == false) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "잘못된 휴대폰 번호 형식입니다.",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Normal,
+                color = Red1
+            )
+        }
         if (uiState.isSendPhoneAuthCode) {
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogTextFieldWithTimer(
@@ -145,7 +155,8 @@ private fun Content(
                 placeholder = stringResource(id = R.string.auth_code_requirement),
                 keyboardType = KeyboardType.Number,
                 onTextChanged = viewModel::onPhoneAuthCodeChanged,
-                isError = (uiState.isPhoneNumberCertified == false)
+                isError = (uiState.isPhoneNumberCertified == false),
+                maxLength = 6
             )
             if(uiState.isPhoneNumberCertified == false) {
                 Text(
