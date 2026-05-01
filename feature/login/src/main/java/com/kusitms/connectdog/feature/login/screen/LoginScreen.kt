@@ -61,9 +61,6 @@ import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 import com.kusitms.connectdog.core.designsystem.R.drawable as DR
-import androidx.compose.foundation.layout.imePadding
-
-@Composable
 internal fun LoginRoute(
     finish: () -> Unit,
     onNavigateToNormalLogin: (UserType) -> Unit,
@@ -71,7 +68,8 @@ internal fun LoginRoute(
     onNavigateToVolunteerHome: () -> Unit,
     onNavigateToIntermediatorHome: () -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
-    onNavigateToPasswordSearch: (UserType) -> Unit
+    onNavigateToPasswordSearch: (UserType) -> Unit,
+    imeHeight: Int = 0
 ) {
     BackHandler { finish() }
     LoginScreen(
@@ -80,7 +78,8 @@ internal fun LoginRoute(
         onNavigateToVolunteerHome = onNavigateToVolunteerHome,
         onNavigateToIntermediatorHome = onNavigateToIntermediatorHome,
         onNavigateToEmailSearch = onNavigateToEmailSearch,
-        onNavigateToPasswordSearch = onNavigateToPasswordSearch
+        onNavigateToPasswordSearch = onNavigateToPasswordSearch,
+        imeHeight = imeHeight
     )
 }
 
@@ -92,7 +91,8 @@ fun LoginScreen(
     onNavigateToVolunteerHome: () -> Unit,
     onNavigateToIntermediatorHome: () -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
-    onNavigateToPasswordSearch: (UserType) -> Unit
+    onNavigateToPasswordSearch: (UserType) -> Unit,
+    imeHeight: Int = 0
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -149,8 +149,7 @@ fun LoginScreen(
             message = toastMessage,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .imePadding()
-                .padding(bottom = 50.dp)
+                .padding(bottom = (if (imeHeight > 0) imeHeight + 16 else 50).dp)
         )
     }
 }

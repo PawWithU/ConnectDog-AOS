@@ -54,6 +54,7 @@ internal fun NormalLoginScreen(
     onNavigateToVolunteerHome: () -> Unit,
     onNavigateToEmailSearch: (UserType) -> Unit,
     onNavigateToPasswordSearch: (UserType) -> Unit,
+    imeHeight: Int = 0,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val focusManager = LocalFocusManager.current
@@ -106,8 +107,7 @@ internal fun NormalLoginScreen(
                 message = toastMessage,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .imePadding()
-                    .padding(bottom = 50.dp)
+                    .padding(bottom = (if (imeHeight > 0) imeHeight + 16 else 50).dp)
             )
         }
     }

@@ -72,7 +72,8 @@ fun NavGraphBuilder.loginNavGraph(
             onNavigateToVolunteer,
             onNavigateToIntermediatorHome,
             onNavigateToEmailSearch,
-            onNavigateToPasswordSearchAuth
+            onNavigateToPasswordSearchAuth,
+            imeHeight = imeHeight
         )
     }
 
@@ -89,7 +90,8 @@ fun NavGraphBuilder.loginNavGraph(
             onNavigateToSignUp = onNavigateToSignup,
             onNavigateToVolunteerHome = onNavigateToVolunteer,
             onNavigateToEmailSearch = onNavigateToEmailSearch,
-            onNavigateToPasswordSearch = onNavigateToPasswordSearchAuth
+            onNavigateToPasswordSearch = onNavigateToPasswordSearchAuth,
+            imeHeight = imeHeight
         )
     }
 
