@@ -7,7 +7,7 @@
     <string name="input_password">비밀번호 입력</string>
 
     <string name="email_signup">이메일로 회원가입</string>
-    <string name="email_login">이메일 로그인</string>\
+    <string name="email_login">이메일 로그인</string>
 
     <string name="naver_login">네이버로 3초 만에 시작하기</string>
     <string name="kakao_login">카카오로 3초 만에 시작하기</string>
