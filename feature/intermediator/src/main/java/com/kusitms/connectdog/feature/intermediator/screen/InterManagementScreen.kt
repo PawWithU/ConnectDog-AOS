@@ -302,8 +302,8 @@ private fun ManagementScreen(
         LaunchedEffect(selectedTabIndex) {
             pagerState.animateScrollToPage(selectedTabIndex)
         }
-        LaunchedEffect(pagerState.currentPage) {
-            selectedTabIndex = pagerState.currentPage
+        LaunchedEffect(pagerState.targetPage) {
+            selectedTabIndex = pagerState.targetPage
         }
 
         Column(modifier = Modifier.fillMaxSize()) {
