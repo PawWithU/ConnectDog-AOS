@@ -129,6 +129,16 @@ private fun Content(
             isError = uiState.isValidConfirmPassword == false,
             onTextChanged = viewModel::onConfirmPasswordChanged
         )
+        if (uiState.isValidConfirmPassword == false) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "비밀번호가 일치하지 않습니다.",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Normal,
+                color = Red1,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(id = R.string.password_requirement),
