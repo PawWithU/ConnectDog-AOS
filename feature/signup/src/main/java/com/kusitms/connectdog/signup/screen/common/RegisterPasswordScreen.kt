@@ -30,6 +30,7 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
+import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.feature.signup.R
 import com.kusitms.connectdog.signup.state.SignUpSideEffect
 import com.kusitms.connectdog.signup.state.SignUpUiState
@@ -97,7 +98,8 @@ private fun Content(
         Text(
             text = stringResource(id = R.string.register_password_title),
             fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            lineHeight = 30.sp
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextField(
@@ -108,6 +110,16 @@ private fun Content(
             isError = (uiState.isValidPassword == false),
             onTextChanged = viewModel::onPasswordChanged
         )
+        if (uiState.isValidPassword == false) {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "비밀번호는 8자 이상 입력해주세요.",
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Normal,
+                color = Red1,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextField(
             text = uiState.confirmPassword,

@@ -253,9 +253,9 @@ class SignUpViewModel @Inject constructor(
 
     private fun checkPasswordValidity() = intent {
         reduce {
-            state.copy(
-                isValidPassword = state.englishAndNumberRegex.matches(state.password)
-                        || state.englishNumberSpecialRegex.matches(state.password)
+            state.copy(isValidPassword = state.password.length >= 8 &&
+                (state.englishAndNumberRegex.matches(state.password) ||
+                state.englishNumberSpecialRegex.matches(state.password))
             )
         }
     }
