@@ -25,14 +25,17 @@ import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 data class Detail(
     val dogSize: DogSize? = null,
     val hasKennel: Boolean? = null,
-    val organization: String? = null
+    val organization: String? = null,
 ) {
     fun isNotEmpty(): Boolean {
         return dogSize != null || hasKennel != null || organization != null
     }
 
     enum class DogSize {
-        BIG, MIDDLE, SMALL;
+        BIG,
+        MIDDLE,
+        SMALL,
+        ;
 
         fun toDisplayName(): String {
             return when (this) {
@@ -47,7 +50,7 @@ data class Detail(
 @Composable
 fun SelectDogSize(
     selected: Detail.DogSize?,
-    onSelectedDogSize: (Detail.DogSize) -> Unit
+    onSelectedDogSize: (Detail.DogSize) -> Unit,
 ) {
     val selectedState = remember { mutableStateOf(selected) }
 
@@ -60,7 +63,7 @@ fun SelectDogSize(
                 selectedState.value = Detail.DogSize.BIG
             },
             imageRes = R.drawable.img_big_dog,
-            textRes = R.string.filter_big_dog
+            textRes = R.string.filter_big_dog,
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
@@ -70,7 +73,7 @@ fun SelectDogSize(
                 selectedState.value = Detail.DogSize.MIDDLE
             },
             imageRes = R.drawable.img_middle_dog,
-            textRes = R.string.filter_middle_dog
+            textRes = R.string.filter_middle_dog,
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
@@ -80,7 +83,7 @@ fun SelectDogSize(
                 selectedState.value = Detail.DogSize.SMALL
             },
             imageRes = R.drawable.img_small_dog,
-            textRes = R.string.filter_small_dog
+            textRes = R.string.filter_small_dog,
         )
     }
 }
@@ -91,29 +94,31 @@ private fun DogSizeButton(
     isSelected: Boolean,
     onSelected: () -> Unit,
     imageRes: Int,
-    @StringRes textRes: Int
+    @StringRes textRes: Int,
 ) {
     ConnectDogCardButton(
         modifier = modifier.defaultMinSize(minHeight = 102.dp, minWidth = 102.dp),
         isSelected = isSelected,
-        onSelected = { onSelected() }
+        onSelected = { onSelected() },
     ) {
         Box {
             Image(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 4.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 4.dp),
                 painter = painterResource(id = imageRes),
-                contentDescription = stringResource(id = textRes)
+                contentDescription = stringResource(id = textRes),
             )
             Text(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 10.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 10.dp),
                 text = stringResource(id = textRes),
                 style = MaterialTheme.typography.titleSmall,
                 fontSize = 12.sp,
-                color = if (isSelected) PetOrange else MaterialTheme.colorScheme.onSurface
+                color = if (isSelected) PetOrange else MaterialTheme.colorScheme.onSurface,
             )
         }
     }

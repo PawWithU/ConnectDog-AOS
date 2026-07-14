@@ -11,5 +11,5 @@ data class AnnouncementHomeResponseItem(
     val postId: Int,
     val startDate: String,
     val dogName: String,
-    val pickUpTime: String
+    val pickUpTime: String,
 )

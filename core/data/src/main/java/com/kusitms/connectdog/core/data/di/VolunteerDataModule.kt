@@ -27,12 +27,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 internal class VolunteerDataModule {
-
     @Provides
     @Singleton
     fun provideLoginRepository(
         apiService: ApiService,
-        intermediatorApi: InterApiService
+        intermediatorApi: InterApiService,
     ): LoginRepository {
         return LoginRepositoryImpl(apiService, intermediatorApi)
     }
@@ -41,7 +40,7 @@ internal class VolunteerDataModule {
     @Singleton
     fun provideAuthRepository(
         apiService: ApiService,
-        intermediatorApi: InterApiService
+        intermediatorApi: InterApiService,
     ): AuthRepository {
         return AuthRepositoryImpl(apiService, intermediatorApi)
     }
@@ -50,7 +49,7 @@ internal class VolunteerDataModule {
     @Singleton
     fun provideSignUpRepository(
         volunteerApi: ApiService,
-        intermediatorApi: InterApiService
+        intermediatorApi: InterApiService,
     ): SignUpRepository {
         return SignUpRepositoryImpl(volunteerApi, intermediatorApi)
     }
@@ -59,7 +58,7 @@ internal class VolunteerDataModule {
     @Singleton
     fun provideTestRepository(
         volunteerApi: ApiService,
-        intermediatorApi: InterApiService
+        intermediatorApi: InterApiService,
     ): com.kusitms.connectdog.core.data.repository.SignUpRepository {
         return SignUpRepositoryImpl(volunteerApi, intermediatorApi)
     }
@@ -80,7 +79,7 @@ internal class VolunteerDataModule {
     @Singleton
     fun provideMyPageRepository(
         apiService: ApiService,
-        intermediatorApi: InterApiService
+        intermediatorApi: InterApiService,
     ): MyPageRepository {
         return MyPageRepositoryImpl(apiService, intermediatorApi)
     }

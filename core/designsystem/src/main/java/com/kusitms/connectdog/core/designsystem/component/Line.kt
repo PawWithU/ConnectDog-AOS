@@ -13,19 +13,20 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HorizontalLine(
     height: Int,
-    color: Color
+    color: Color,
 ) {
     Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height.dp)
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(height.dp)
+                .padding(horizontal = 20.dp),
     ) {
         drawLine(
             color = color,
             start = Offset(0f, 0f),
             end = Offset(size.width, 0f),
-            strokeWidth = 1f
+            strokeWidth = 1f,
         )
     }
 }

@@ -24,15 +24,16 @@ import com.kusitms.connectdog.feature.management.state.ApplicationUiState
 @Composable
 fun InProgress(
     uiState: ApplicationUiState,
-    onClick: (Application) -> Unit
+    onClick: (Application) -> Unit,
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
             LazyColumn(
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 80.dp)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 80.dp),
             ) {
                 items(uiState.applications) {
                     InProgressContent(application = it, onClick = onClick)
@@ -49,17 +50,22 @@ fun InProgress(
 }
 
 @Composable
-private fun InProgressContent(application: Application, onClick: (Application) -> Unit) {
+private fun InProgressContent(
+    application: Application,
+    onClick: (Application) -> Unit,
+) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
     ) {
         Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+            modifier =
+                Modifier
+                    .padding(20.dp)
+                    .fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
         ) {
             AnnouncementItem(
                 imageUrl = application.imageUrl,
@@ -68,7 +74,7 @@ private fun InProgressContent(application: Application, onClick: (Application) -
                 isKennel = application.hasKennel,
                 dogSize = application.dogSize!!,
                 date = application.date,
-                pickUpTime = application.pickUpTime!!
+                pickUpTime = application.pickUpTime!!,
             )
             OutlinedButton(modifier = Modifier.padding(top = 20.dp)) {
                 onClick(application)

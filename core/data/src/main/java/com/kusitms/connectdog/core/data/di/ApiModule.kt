@@ -31,35 +31,37 @@ private const val TAG = "API Module"
 @InstallIn(SingletonComponent::class)
 internal object ApiModule {
     @Provides
-    fun provideNetworkInterceptor(dataStoreRepository: DataStoreRepository): Interceptor = Interceptor { chain ->
-        val request = chain.request()
-        val jwt = runBlocking { dataStoreRepository.getAccessToken().first().toString() }
+    fun provideNetworkInterceptor(dataStoreRepository: DataStoreRepository): Interceptor =
+        Interceptor { chain ->
+            val request = chain.request()
+            val jwt = runBlocking { dataStoreRepository.getAccessToken().first().toString() }
 
-        Log.d(TAG, "AccessToken: $jwt")
+            Log.d(TAG, "AccessToken: $jwt")
 
-        try {
-            chain.proceed(
-                request.newBuilder()
-                    .addHeader("Authorization", "Bearer $jwt")
+            try {
+                chain.proceed(
+                    request.newBuilder()
+                        .addHeader("Authorization", "Bearer $jwt")
+                        .build(),
+                )
+            } catch (e: Exception) {
+                Response.Builder()
+                    .request(request)
+                    .protocol(Protocol.HTTP_2)
+                    .code(1001)
+                    .message(e.message ?: "")
+                    .body(ResponseBody.create(null, e.message ?: ""))
                     .build()
-            )
-        } catch (e: Exception) {
-            Response.Builder()
-                .request(request)
-                .protocol(Protocol.HTTP_2)
-                .code(1001)
-                .message(e.message ?: "")
-                .body(ResponseBody.create(null, e.message ?: ""))
-                .build()
+            }
         }
-    }
 
     @Provides
     @Singleton
     fun provideOkhttpClient(interceptor: Interceptor): OkHttpClient {
-        val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+        val httpLoggingInterceptor =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
         return OkHttpClient.Builder()
             .addInterceptor(interceptor)
             .addNetworkInterceptor(httpLoggingInterceptor)
@@ -81,7 +83,7 @@ internal object ApiModule {
     @Singleton
     fun provideApiService(
         okHttpClient: OkHttpClient,
-        moshi: Moshi
+        moshi: Moshi,
     ): ApiService {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
@@ -94,7 +96,7 @@ internal object ApiModule {
     @Singleton
     fun provideIntermediatorApiService(
         okHttpClient: OkHttpClient,
-        moshi: Moshi
+        moshi: Moshi,
     ): InterApiService {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)

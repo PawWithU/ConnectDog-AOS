@@ -41,39 +41,41 @@ fun ConnectDogTopAppBar(
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     actionButtons: @Composable () -> Unit = {},
-    onNavigationClick: () -> Unit = {}
+    onNavigationClick: () -> Unit = {},
 ) {
     val icon: @Composable (Modifier, imageRes: Int) -> Unit =
         { modifier, imageRes ->
             IconButton(onClick = onNavigationClick, modifier = modifier.size(48.dp)) {
                 Icon(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(vertical = 12.dp, horizontal = 12.dp),
+                    modifier =
+                        modifier
+                            .fillMaxSize()
+                            .padding(vertical = 12.dp, horizontal = 12.dp),
                     painter = painterResource(id = imageRes),
-                    contentDescription = navigationIconContentDescription
+                    contentDescription = navigationIconContentDescription,
                 )
             }
         }
 
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = containerColor)
-            .then(modifier)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(color = containerColor)
+                .then(modifier),
     ) {
         when (navigationType) {
             TopAppBarNavigationType.BACK -> {
                 icon(
                     Modifier.align(Alignment.CenterStart),
-                    R.drawable.ic_left
+                    R.drawable.ic_left,
                 )
             }
 
             TopAppBarNavigationType.CLOSE -> {
                 icon(
                     Modifier.align(Alignment.CenterStart),
-                    R.drawable.ic_x
+                    R.drawable.ic_x,
                 )
             }
 
@@ -81,9 +83,10 @@ fun ConnectDogTopAppBar(
                 Text(
                     text = stringResource(id = R.string.home),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                    modifier =
+                        Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
                 )
             }
 
@@ -94,34 +97,37 @@ fun ConnectDogTopAppBar(
                 Text(
                     text = stringResource(id = R.string.management),
                     style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                    modifier =
+                        Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(horizontal = 20.dp, vertical = 10.dp),
                 )
             }
         }
 
         Row(
             modifier = Modifier.align(Alignment.CenterEnd),
-            content = { actionButtons() }
+            content = { actionButtons() },
         )
 
         if (titleRes != null) {
             Text(
                 text = stringResource(id = titleRes),
                 color = contentColor,
-                style = if (navigationType == TopAppBarNavigationType.MYPAGE) {
-                    MaterialTheme.typography.titleLarge
-                } else {
-                    MaterialTheme.typography.titleMedium
-                },
-                modifier = if (navigationType == TopAppBarNavigationType.MYPAGE) {
-                    Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 24.dp)
-                } else {
-                    Modifier.align(Alignment.Center)
-                }
+                style =
+                    if (navigationType == TopAppBarNavigationType.MYPAGE) {
+                        MaterialTheme.typography.titleLarge
+                    } else {
+                        MaterialTheme.typography.titleMedium
+                    },
+                modifier =
+                    if (navigationType == TopAppBarNavigationType.MYPAGE) {
+                        Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = 24.dp)
+                    } else {
+                        Modifier.align(Alignment.Center)
+                    },
             )
         }
     }
@@ -130,26 +136,27 @@ fun ConnectDogTopAppBar(
 @Composable
 fun ConnectDogIntermediatorTopAppBar(
     onNotificationClick: () -> Unit,
-    onSettingClick: (UserType) -> Unit
+    onSettingClick: (UserType) -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(48.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(48.dp),
     ) {
         Spacer(modifier = Modifier.weight(1f))
         IconButton(onClick = onNotificationClick) {
             Icon(
                 imageVector = Icons.Outlined.Notifications,
                 tint = Gray100,
-                contentDescription = "Navigate to Search"
+                contentDescription = "Navigate to Search",
             )
         }
         IconButton(onClick = { onSettingClick(UserType.INTERMEDIATOR) }) {
             Icon(
                 imageVector = Icons.Outlined.Settings,
                 tint = Gray100,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     }
@@ -158,7 +165,7 @@ fun ConnectDogIntermediatorTopAppBar(
 @Composable
 fun ConnectDogDetailTopAppBar(
     onBackClick: () -> Unit,
-    onShareClick: () -> Unit
+    onShareClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = null,
@@ -169,10 +176,10 @@ fun ConnectDogDetailTopAppBar(
             IconButton(onClick = onShareClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_share),
-                    contentDescription = "Navigate to Search"
+                    contentDescription = "Navigate to Search",
                 )
             }
-        }
+        },
     )
 }
 
@@ -181,7 +188,7 @@ fun ConnectDogDetailTopAppBar(
     onBackClick: () -> Unit,
     onShareClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onEditClick: () -> Unit
+    onEditClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = null,
@@ -192,23 +199,23 @@ fun ConnectDogDetailTopAppBar(
             IconButton(onClick = onShareClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_share),
-                    contentDescription = "Navigate to Search"
+                    contentDescription = "Navigate to Search",
                 )
             }
             IconButton(onClick = onEditClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
-                    contentDescription = "Navigate to Search"
+                    contentDescription = "Navigate to Search",
                 )
             }
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_delete),
                     contentDescription = "Navigate to Search",
-                    tint = Red1
+                    tint = Red1,
                 )
             }
-        }
+        },
     )
 }
 
@@ -217,14 +224,15 @@ private fun HomeIcon(
     modifier: Modifier = Modifier,
     imageRes: Int,
     tintColor: Color = MaterialTheme.colorScheme.primary,
-    iconContentDescription: String
+    iconContentDescription: String,
 ) {
     Icon(
-        modifier = modifier
-            .padding(start = 16.dp),
+        modifier =
+            modifier
+                .padding(start = 16.dp),
         painter = painterResource(id = imageRes),
         tint = tintColor,
-        contentDescription = iconContentDescription
+        contentDescription = iconContentDescription,
     )
 }
 
@@ -237,7 +245,7 @@ private fun ConnectDogTopAppBarPreviewBack() {
         ConnectDogTopAppBar(
             titleRes = R.string.login,
             navigationType = TopAppBarNavigationType.BACK,
-            navigationIconContentDescription = "Navigation icon"
+            navigationIconContentDescription = "Navigation icon",
         )
     }
 }
@@ -254,16 +262,16 @@ private fun ConnectDogTopAppBarPreviewHome() {
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Filled.Search,
-                        contentDescription = "Navigate to Search"
+                        contentDescription = "Navigate to Search",
                     )
                 }
                 IconButton(onClick = {}) {
                     Icon(
                         imageVector = Icons.Outlined.Notifications,
-                        contentDescription = "Navigate to Search"
+                        contentDescription = "Navigate to Search",
                     )
                 }
-            }
+            },
         )
     }
 }

@@ -44,45 +44,47 @@ import com.kusitms.connectdog.core.designsystem.theme.Red2
 fun ConnectDogCard(
     modifier: Modifier = Modifier,
     borderColor: Color = MaterialTheme.colorScheme.outline,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 6.dp),
         border = BorderStroke(width = 1.dp, color = borderColor),
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),
 //        shadowElevation = 2.dp,
-        content = content
+        content = content,
     )
 }
 
 @Composable
 fun ConnectDogInformationCard(
     title: String,
-    content: String
+    content: String,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .background(Gray7)
-            .padding(all = 10.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(4.dp))
+                .background(Gray7)
+                .padding(all = 10.dp),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
                 text = title,
                 fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = content,
                 fontSize = 14.sp,
-                color = Gray3
+                color = Gray3,
             )
         }
     }
@@ -94,13 +96,14 @@ fun ConnectDogExpandableCard(
     isExpanded: Boolean = false,
     onClick: () -> Unit,
     defaultContent: @Composable () -> Unit,
-    expandedContent: @Composable () -> Unit
+    expandedContent: @Composable () -> Unit,
 ) {
     ConnectDogCard(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .clickable { onClick() }
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .clickable { onClick() },
     ) {
         if (isExpanded) {
             expandedContent()
@@ -115,48 +118,48 @@ fun ConnectDogCardButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     onSelected: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Surface(
         modifier = modifier.clickable { onSelected() },
         border = BorderStroke(width = 1.dp, color = if (isSelected) PetOrange else Gray5),
         color = if (!isSelected) MaterialTheme.colorScheme.surface else Orange10,
         shape = RoundedCornerShape(12.dp),
-        content = content
+        content = content,
     )
 }
 
 @Composable
 fun ConnectDogErrorCard(
     modifier: Modifier = Modifier,
-    @StringRes errorMessage: Int
+    @StringRes errorMessage: Int,
 ) {
     Card(
         colors =
-        CardDefaults.cardColors(
-            containerColor = Red2
-        ),
+            CardDefaults.cardColors(
+                containerColor = Red2,
+            ),
         modifier =
-        modifier
-            .fillMaxWidth()
-            .height(40.dp)
+            modifier
+                .fillMaxWidth()
+                .height(40.dp),
     ) {
         Row(
             modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(start = 13.dp),
-            verticalAlignment = Alignment.CenterVertically
+                Modifier
+                    .fillMaxSize()
+                    .padding(start = 13.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_error),
-                contentDescription = "ErrorIcon"
+                contentDescription = "ErrorIcon",
             )
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = stringResource(id = errorMessage),
                 color = Red1,
-                fontSize = 13.sp
+                fontSize = 13.sp,
             )
         }
     }

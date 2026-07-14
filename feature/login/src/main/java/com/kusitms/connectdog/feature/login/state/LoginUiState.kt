@@ -9,21 +9,24 @@ data class LoginUiState(
     val password: String,
     val isLoginSuccessful: Boolean?,
     val socialType: SocialType?,
-    val socialToken: String
+    val socialToken: String,
 ) {
     companion object {
-        fun empty() = LoginUiState(
-            email = emptyString(),
-            password = emptyString(),
-            isLoginSuccessful = null,
-            socialType = null,
-            socialToken = emptyString()
-        )
+        fun empty() =
+            LoginUiState(
+                email = emptyString(),
+                password = emptyString(),
+                isLoginSuccessful = null,
+                socialType = null,
+                socialToken = emptyString(),
+            )
     }
 }
 
 sealed class LoginSideEffect {
-    object NavigateToHome: LoginSideEffect()
-    data class NavigateToSignUp(val userType: UserType): LoginSideEffect()
-    data class ShowErrorToast(val message: String): LoginSideEffect()
+    object NavigateToHome : LoginSideEffect()
+
+    data class NavigateToSignUp(val userType: UserType) : LoginSideEffect()
+
+    data class ShowErrorToast(val message: String) : LoginSideEffect()
 }

@@ -18,7 +18,7 @@ import com.kusitms.connectdog.core.designsystem.R
 @Composable
 fun SelectKennel(
     hasKennel: Boolean?,
-    selectedKennel: (Boolean) -> Unit
+    selectedKennel: (Boolean) -> Unit,
 ) {
     val selectedState = remember { mutableStateOf(hasKennel) }
 
@@ -30,7 +30,7 @@ fun SelectKennel(
                 selectedKennel(true)
                 selectedState.value = true
             },
-            textRes = R.string.filter_kennel_no_need
+            textRes = R.string.filter_kennel_no_need,
         )
         KennelButton(
             modifier = Modifier.weight(1f),
@@ -39,7 +39,7 @@ fun SelectKennel(
                 selectedKennel(false)
                 selectedState.value = false
             },
-            textRes = R.string.filter_kennel_need
+            textRes = R.string.filter_kennel_need,
         )
     }
 }
@@ -49,18 +49,18 @@ private fun KennelButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     onSelected: () -> Unit,
-    @StringRes textRes: Int
+    @StringRes textRes: Int,
 ) {
     ConnectDogOutlinedButton(
         modifier = modifier,
         isSelected = isSelected,
-        onClick = { onSelected() }
+        onClick = { onSelected() },
     ) {
         Text(
             text = stringResource(id = textRes),
             style = MaterialTheme.typography.titleSmall,
             fontSize = 12.sp,
-            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
         )
     }
 }

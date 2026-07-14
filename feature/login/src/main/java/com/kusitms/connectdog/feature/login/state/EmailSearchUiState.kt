@@ -9,21 +9,22 @@ data class EmailSearchUiState(
     val email: String?,
     val enableNext: Boolean,
     val bottomButtonText: String,
-    val isAuthCodeError: Boolean?
+    val isAuthCodeError: Boolean?,
 ) {
     companion object {
-        fun empty() = EmailSearchUiState(
-            phoneNumber = emptyString(),
-            authCode = emptyString(),
-            isSendAuthCode = false,
-            email = null,
-            enableNext = false,
-            bottomButtonText = "인증 요청",
-            isAuthCodeError = null
-        )
+        fun empty() =
+            EmailSearchUiState(
+                phoneNumber = emptyString(),
+                authCode = emptyString(),
+                isSendAuthCode = false,
+                email = null,
+                enableNext = false,
+                bottomButtonText = "인증 요청",
+                isAuthCodeError = null,
+            )
     }
 }
 
 sealed class EmailSearchSideEffect {
-    object NavigateToEmailSearchResult: EmailSearchSideEffect()
+    object NavigateToEmailSearchResult : EmailSearchSideEffect()
 }

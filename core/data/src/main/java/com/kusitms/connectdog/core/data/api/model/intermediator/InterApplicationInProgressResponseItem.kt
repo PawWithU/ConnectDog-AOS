@@ -14,5 +14,5 @@ data class InterApplicationInProgressResponseItem(
     val startDate: String,
     val isKennel: Boolean,
     val dogSize: String,
-    val pickUpTime: String
+    val pickUpTime: String,
 )

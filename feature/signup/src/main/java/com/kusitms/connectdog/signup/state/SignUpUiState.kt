@@ -42,58 +42,65 @@ data class SignUpUiState(
     val englishAndNumberRegex: Regex,
     val englishNumberSpecialRegex: Regex,
     val isEmailLoading: Boolean,
-    val isValidPhoneNumber: Boolean?
+    val isValidPhoneNumber: Boolean?,
 ) {
     companion object {
-        fun empty() = SignUpUiState(
-            userType = UserType.INTERMEDIATOR,
-            email = emptyString(),
-            password = emptyString(),
-            confirmPassword = emptyString(),
-            isValidPassword = null,
-            isValidConfirmPassword = null,
-            nickname = emptyString(),
-            nicknameRegex = "^[ㄱ-ㅎ]+$".toRegex(),
-            nickNameErrorMessage = emptyString(),
-            profileImageId = 0,
-            phoneNumber = emptyString(),
-            phoneAuthCode = emptyString(),
-            isSendPhoneAuthCode = false,
-            contact = emptyString(),
-            intro = emptyString(),
-            url = emptyString(),
-            name = emptyString(),
-            intermediatorProfileImage = null,
-            phoneCertificationButtonText = "인증 요청",
-            emailCertificationButtonText = "인증 요청",
-            enablePhoneCertification = false,
-            enableEmailCertification = false,
-            enablePasswordRegister = false,
-            enableNicknameDuplication = false,
-            isPhoneNumberCertified = null,
-            isSendEmailAuthCode = false,
-            inputEmailAuthCode = emptyString(),
-            emailAuthCode = emptyString(),
-            isEmailAuthCodeError = null,
-            isValidEmail = null,
-            isAvailableNickName = false,
-            isDuplicatedNickname = null,
-            isDuplicatedEmail = false,
-            englishAndNumberRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,}$"),
-            englishNumberSpecialRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#\$%^&+=!])[A-Za-z\\d@#\$%^&+=!]{8,}$"),
-            isEmailLoading = false,
-            isDuplicatedPhoneNumber = false,
-            isValidPhoneNumber = null
-        )
+        fun empty() =
+            SignUpUiState(
+                userType = UserType.INTERMEDIATOR,
+                email = emptyString(),
+                password = emptyString(),
+                confirmPassword = emptyString(),
+                isValidPassword = null,
+                isValidConfirmPassword = null,
+                nickname = emptyString(),
+                nicknameRegex = "^[ㄱ-ㅎ]+$".toRegex(),
+                nickNameErrorMessage = emptyString(),
+                profileImageId = 0,
+                phoneNumber = emptyString(),
+                phoneAuthCode = emptyString(),
+                isSendPhoneAuthCode = false,
+                contact = emptyString(),
+                intro = emptyString(),
+                url = emptyString(),
+                name = emptyString(),
+                intermediatorProfileImage = null,
+                phoneCertificationButtonText = "인증 요청",
+                emailCertificationButtonText = "인증 요청",
+                enablePhoneCertification = false,
+                enableEmailCertification = false,
+                enablePasswordRegister = false,
+                enableNicknameDuplication = false,
+                isPhoneNumberCertified = null,
+                isSendEmailAuthCode = false,
+                inputEmailAuthCode = emptyString(),
+                emailAuthCode = emptyString(),
+                isEmailAuthCodeError = null,
+                isValidEmail = null,
+                isAvailableNickName = false,
+                isDuplicatedNickname = null,
+                isDuplicatedEmail = false,
+                englishAndNumberRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{10,}$"),
+                englishNumberSpecialRegex = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@#\$%^&+=!])[A-Za-z\\d@#\$%^&+=!]{8,}$"),
+                isEmailLoading = false,
+                isDuplicatedPhoneNumber = false,
+                isValidPhoneNumber = null,
+            )
     }
 }
 
 sealed class SignUpSideEffect {
     object NavigateToProfile : SignUpSideEffect()
-    object NavigateToEmailRegister: SignUpSideEffect()
-    object NavigateToPasswordRegister: SignUpSideEffect()
-    object NavigateToSignUpComplete: SignUpSideEffect()
-    object NavigateToVolunteerHome: SignUpSideEffect()
-    object NavigateToIntermediatorHome: SignUpSideEffect()
-    object NavigateTo: SignUpSideEffect()
+
+    object NavigateToEmailRegister : SignUpSideEffect()
+
+    object NavigateToPasswordRegister : SignUpSideEffect()
+
+    object NavigateToSignUpComplete : SignUpSideEffect()
+
+    object NavigateToVolunteerHome : SignUpSideEffect()
+
+    object NavigateToIntermediatorHome : SignUpSideEffect()
+
+    object NavigateTo : SignUpSideEffect()
 }

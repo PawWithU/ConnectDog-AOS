@@ -5,8 +5,9 @@ import com.kusitms.connectdog.core.model.Volunteer
 
 sealed interface VolunteerBottomSheetUiState {
     object Loading : VolunteerBottomSheetUiState
+
     data class VolunteerInfo(
         val application: InterApplication,
-        val volunteer: Volunteer
+        val volunteer: Volunteer,
     ) : VolunteerBottomSheetUiState
 }

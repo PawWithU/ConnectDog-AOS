@@ -14,5 +14,5 @@ data class InterApplicationRecruitingResponseItem(
     val endDate: String,
     val mainImage: String,
     val postStatus: String,
-    val startDate: String
+    val startDate: String,
 )

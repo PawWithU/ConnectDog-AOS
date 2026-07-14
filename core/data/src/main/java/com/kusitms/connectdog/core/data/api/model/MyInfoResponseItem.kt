@@ -6,5 +6,5 @@ data class MyInfoResponseItem(
     val waitingCount: Int,
     val completedCount: Int,
     val progressingCount: Int,
-    val reviewCount: Int
+    val reviewCount: Int,
 )

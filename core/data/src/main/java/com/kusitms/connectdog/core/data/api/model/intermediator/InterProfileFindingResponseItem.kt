@@ -11,5 +11,5 @@ data class InterProfileFindingResponseItem(
     val dogName: String,
     val pickUpTime: String,
     val dogSize: String,
-    val postStatus: String
+    val postStatus: String,
 )

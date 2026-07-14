@@ -34,7 +34,7 @@ internal fun VolunteerBottomSheet(
     interApplication: InterApplication,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    viewModel: InterManagementViewModel
+    viewModel: InterManagementViewModel,
 ) {
     val data by viewModel.getVolunteerUiState.collectAsStateWithLifecycle()
 
@@ -49,27 +49,28 @@ internal fun VolunteerBottomSheet(
                 application = (data as VolunteerBottomSheetUiState.VolunteerInfo).application,
                 volunteer = (data as VolunteerBottomSheetUiState.VolunteerInfo).volunteer,
                 sheetState = sheetState,
-                onDismissRequest = onDismissRequest
+                onDismissRequest = onDismissRequest,
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 52.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 52.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     ConnectDogBottomButton(
                         onClick = { isRejectDialogVisible = true },
                         content = stringResource(id = R.string.reject),
                         textColor = Gray1,
                         enabledColor = Gray6,
-                        modifier = Modifier.weight(0.5f)
+                        modifier = Modifier.weight(0.5f),
                     )
                     ConnectDogBottomButton(
                         onClick = { isConfirmDialogVisible = true },
                         content = stringResource(id = R.string.confirm),
                         textColor = MaterialTheme.colorScheme.onPrimary,
                         enabledColor = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.weight(0.5f)
+                        modifier = Modifier.weight(0.5f),
                     )
                 }
             }
@@ -97,21 +98,21 @@ private fun Content(
     volunteer: Volunteer,
     application: InterApplication,
     sheetState: SheetState,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
 }
 
 @Composable
 private fun RejectDialog(
     onDismiss: () -> Unit,
-    onOkClick: () -> Unit
+    onOkClick: () -> Unit,
 ) {
     ConnectDogAlertDialog(
         onDismissRequest = onDismiss,
         titleRes = R.string.question_reject,
         descriptionRes = R.string.question_reject_description,
         okText = R.string.ok_reject,
-        cancelText = R.string.cancel_back
+        cancelText = R.string.cancel_back,
     ) {
         onOkClick()
     }
@@ -120,14 +121,14 @@ private fun RejectDialog(
 @Composable
 private fun ConfirmDialog(
     onDismiss: () -> Unit,
-    onOkClick: () -> Unit
+    onOkClick: () -> Unit,
 ) {
     ConnectDogAlertDialog(
         onDismissRequest = onDismiss,
         titleRes = R.string.question_confirm,
         descriptionRes = R.string.question_confirm_description,
         okText = R.string.ok_confirm,
-        cancelText = R.string.cancel_back
+        cancelText = R.string.cancel_back,
     ) {
         onOkClick()
     }

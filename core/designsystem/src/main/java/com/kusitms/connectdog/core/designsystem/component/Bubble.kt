@@ -23,7 +23,7 @@ fun SpeechBubble(
     text: String,
     fontSize: Int,
     fontColor: Color,
-    fontWeight: FontWeight
+    fontWeight: FontWeight,
 ) {
     Box {
         BubbleShape()
@@ -32,7 +32,7 @@ fun SpeechBubble(
             text = text,
             fontSize = fontSize.sp,
             color = fontColor,
-            fontWeight = fontWeight
+            fontWeight = fontWeight,
         )
     }
 }
@@ -45,48 +45,52 @@ private fun BubbleShape() {
     val strokeWidth = with(density) { 1.dp.toPx() }
 
     Canvas(
-        modifier = Modifier
-            .height(28.dp)
-            .fillMaxSize()
+        modifier =
+            Modifier
+                .height(28.dp)
+                .fillMaxSize(),
     ) {
         val width = size.width
         val height = size.height
 
-        val path = Path().apply {
-            val cornerRadius = 100.dp.toPx()
-            addRoundRect(RoundRect(0f, 0f, width, height, cornerRadius, cornerRadius))
-        }
+        val path =
+            Path().apply {
+                val cornerRadius = 100.dp.toPx()
+                addRoundRect(RoundRect(0f, 0f, width, height, cornerRadius, cornerRadius))
+            }
 
-        val path2 = Path().apply {
-            val tailStartX = (width / 2) - (tailWidth / 2)
-            moveTo(tailStartX + 2f, height)
-            lineTo(tailStartX + tailWidth - 2f, height)
-        }
+        val path2 =
+            Path().apply {
+                val tailStartX = (width / 2) - (tailWidth / 2)
+                moveTo(tailStartX + 2f, height)
+                lineTo(tailStartX + tailWidth - 2f, height)
+            }
 
-        val path3 = Path().apply {
-            val tailStartX = (width / 2) - (tailWidth / 2)
+        val path3 =
+            Path().apply {
+                val tailStartX = (width / 2) - (tailWidth / 2)
 
-            moveTo(tailStartX, height)
-            lineTo(tailStartX + tailWidth / 2, height + tailHeight)
-            lineTo(tailStartX + tailWidth, height)
-        }
+                moveTo(tailStartX, height)
+                lineTo(tailStartX + tailWidth / 2, height + tailHeight)
+                lineTo(tailStartX + tailWidth, height)
+            }
 
         drawPath(
             path = path,
             color = PetOrange,
-            style = Stroke(width = strokeWidth)
+            style = Stroke(width = strokeWidth),
         )
 
         drawPath(
             path = path2,
             color = Color.White,
-            style = Stroke(width = strokeWidth + 2.dp.toPx())
+            style = Stroke(width = strokeWidth + 2.dp.toPx()),
         )
 
         drawPath(
             path = path3,
             color = PetOrange,
-            style = Stroke(width = strokeWidth)
+            style = Stroke(width = strokeWidth),
         )
     }
 }

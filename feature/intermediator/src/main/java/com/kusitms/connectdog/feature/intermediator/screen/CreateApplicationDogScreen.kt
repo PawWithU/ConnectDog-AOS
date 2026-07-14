@@ -2,6 +2,7 @@ package com.kusitms.connectdog.feature.intermediator.screen
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,7 +36,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -56,7 +56,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
@@ -66,7 +65,6 @@ import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.Detail
 import com.kusitms.connectdog.core.designsystem.component.SelectDogSize
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray4
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
@@ -80,7 +78,7 @@ fun CreateApplicationDogScreen(
     imeHeight: Int,
     viewModel: CreateApplicationViewModel,
     onBackClick: () -> Unit,
-    onNavigateToCreateComplete: () -> Unit
+    onNavigateToCreateComplete: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -100,30 +98,31 @@ fun CreateApplicationDogScreen(
             onClickOk = {
                 showBackDialog = false
                 onBackClick()
-            }
+            },
         )
     }
 
     Scaffold(
-        modifier = Modifier
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            ),
+        modifier =
+            Modifier
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.create_announcement,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = { showBackDialog = true }
+                onNavigationClick = { showBackDialog = true },
             )
-        }
+        },
     ) {
         Content(
             viewModel = viewModel,
             imeHeight = imeHeight,
             onNavigateToCreateComplete = onNavigateToCreateComplete,
-            onPreviousClick = { showBackDialog = true }
+            onPreviousClick = { showBackDialog = true },
         )
     }
 }
@@ -133,7 +132,7 @@ private fun Content(
     viewModel: CreateApplicationViewModel,
     imeHeight: Int,
     onNavigateToCreateComplete: () -> Unit,
-    onPreviousClick: () -> Unit
+    onPreviousClick: () -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -141,27 +140,27 @@ private fun Content(
     val uriList by viewModel.uriList.collectAsStateWithLifecycle()
 
     Column(
-        modifier = Modifier
-            .padding(top = 32.dp)
-            .fillMaxSize()
-            .verticalScroll(scrollState)
+        modifier =
+            Modifier
+                .padding(top = 32.dp)
+                .fillMaxSize()
+                .verticalScroll(scrollState),
     ) {
         Spacer(modifier = Modifier.height(48.dp))
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = stringResource(id = R.string.create_announcement_title),
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
+            style = MaterialTheme.typography.headlineSmall,
         )
         Spacer(modifier = Modifier.height(40.dp))
         Name(
             name = viewModel.name,
-            updateName = viewModel::updateName
+            updateName = viewModel::updateName,
         )
         Spacer(modifier = Modifier.height(40.dp))
         Size(
             dogSize = dogSize,
-            updateDogSize = viewModel::updateDogSize
+            updateDogSize = viewModel::updateDogSize,
         )
         Spacer(modifier = Modifier.height(32.dp))
         Divider(thickness = 8.dp, color = Gray7)
@@ -172,11 +171,12 @@ private fun Content(
         Spacer(modifier = Modifier.height(32.dp))
         Significant(viewModel = viewModel, imeHeight = imeHeight, scrollState = scrollState)
         Row(
-            modifier = Modifier
-                .background(color = Color.White)
-                .padding(horizontal = 20.dp, vertical = 24.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            modifier =
+                Modifier
+                    .background(color = Color.White)
+                    .padding(horizontal = 20.dp, vertical = 24.dp)
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ConnectDogBottomButton(
                 modifier = Modifier.width(90.dp),
@@ -184,7 +184,7 @@ private fun Content(
                 textColor = MaterialTheme.colorScheme.onSurface,
                 border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 onClick = { onPreviousClick() },
-                content = stringResource(id = R.string.previous)
+                content = stringResource(id = R.string.previous),
             )
             ConnectDogBottomButton(
                 modifier = Modifier.weight(1f),
@@ -194,9 +194,10 @@ private fun Content(
                     onNavigateToCreateComplete()
                 },
                 content = "등록 완료",
-                enabled = viewModel.name != "" &&
-                    dogSize != null &&
-                    uriList.size in 1..5
+                enabled =
+                    viewModel.name != "" &&
+                        dogSize != null &&
+                        uriList.size in 1..5,
             )
         }
         Spacer(modifier = Modifier.height(imeHeight.dp))
@@ -206,37 +207,38 @@ private fun Content(
 @Composable
 private fun Name(
     name: String,
-    updateName: (String) -> Unit
+    updateName: (String) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = R.string.create_announcement_dog_subtitle_1),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            color = Gray1
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextField(
             text = name,
             onTextChanged = updateName,
             label = "이름",
-            placeholder = "이름 입력"
+            placeholder = "이름 입력",
         )
         Spacer(modifier = Modifier.height(6.dp))
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Orange20, shape = RoundedCornerShape(4.dp))
-                .padding(10.dp),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(color = Orange20, shape = RoundedCornerShape(4.dp))
+                    .padding(10.dp),
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = stringResource(id = R.string.create_announcement_dog_comment),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }
@@ -245,20 +247,20 @@ private fun Name(
 @Composable
 private fun Size(
     dogSize: Detail.DogSize?,
-    updateDogSize: (Detail.DogSize) -> Unit
+    updateDogSize: (Detail.DogSize) -> Unit,
 ) {
     var dogSize = dogSize
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = R.string.create_announcement_dog_subtitle_2),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
-            color = Gray1
         )
         Spacer(modifier = Modifier.height(12.dp))
         SelectDogSize(dogSize) {
@@ -269,47 +271,49 @@ private fun Size(
 }
 
 @Composable
-private fun Image(
-    viewModel: CreateApplicationViewModel
-) {
+private fun Image(viewModel: CreateApplicationViewModel) {
     val uriList by viewModel.uriList.collectAsStateWithLifecycle()
 
-    val launcher1 = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) viewModel.updateUriList(uri)
-    }
-    val launcher2 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uris ->
-        val currentSize = viewModel.uriList.value.size
-        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
-    }
-    val launcher3 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
-        val currentSize = viewModel.uriList.value.size
-        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
-    }
-    val launcher4 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(4)) { uris ->
-        val currentSize = viewModel.uriList.value.size
-        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
-    }
-    val launcher5 = rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
-        val currentSize = viewModel.uriList.value.size
-        uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
-    }
+    val launcher1 =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) viewModel.updateUriList(uri)
+        }
+    val launcher2 =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uris ->
+            val currentSize = viewModel.uriList.value.size
+            uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+        }
+    val launcher3 =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(3)) { uris ->
+            val currentSize = viewModel.uriList.value.size
+            uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+        }
+    val launcher4 =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(4)) { uris ->
+            val currentSize = viewModel.uriList.value.size
+            uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+        }
+    val launcher5 =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+            val currentSize = viewModel.uriList.value.size
+            uris.take(5 - currentSize).forEach { viewModel.updateUriList(it) }
+        }
 
     Column(
-        modifier = Modifier.padding(horizontal = 20.dp)
+        modifier = Modifier.padding(horizontal = 20.dp),
     ) {
         Row {
             Text(
                 text = stringResource(id = R.string.create_announcement_dog_subtitle_3),
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
-                color = Gray1
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = "${uriList.size}/5",
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
-                color = Gray3
+                color = Gray3,
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -320,7 +324,7 @@ private fun Image(
                     if (index < uriList.size) {
                         Photo(
                             uri = uriList[index],
-                            onRemoveClick = { viewModel.removeUriList(uriList[index]) }
+                            onRemoveClick = { viewModel.removeUriList(uriList[index]) },
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                     } else {
@@ -345,36 +349,39 @@ private fun Image(
 @Composable
 private fun Photo(
     uri: Uri,
-    onRemoveClick: () -> Unit
+    onRemoveClick: () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .size(80.dp)
-            .border(
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.outline,
-                width = 1.dp
-            )
+        modifier =
+            Modifier
+                .size(80.dp)
+                .border(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.outline,
+                    width = 1.dp,
+                ),
     ) {
         AsyncImage(
             model = uri,
             contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize()
-                .clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop,
         )
         IconButton(
             onClick = onRemoveClick,
-            modifier = Modifier
-                .size(18.dp)
-                .padding(top = 5.dp, end = 5.dp)
-                .align(Alignment.TopEnd)
+            modifier =
+                Modifier
+                    .size(18.dp)
+                    .padding(top = 5.dp, end = 5.dp)
+                    .align(Alignment.TopEnd),
         ) {
             Icon(
                 imageVector = Icons.Outlined.Close,
                 tint = Color.White,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     }
@@ -384,27 +391,29 @@ private fun Photo(
 private fun AddPhotoButton(onClick: () -> Unit) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.clickable { onClick() }
+        modifier = Modifier.clickable { onClick() },
     ) {
-        val stroke = Stroke(
-            width = 2f,
-            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-        )
+        val stroke =
+            Stroke(
+                width = 2f,
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f),
+            )
         Canvas(Modifier.size(80.dp)) {
             drawRoundRect(
                 color = Gray4,
                 style = stroke,
                 topLeft = Offset(0f, 0f),
-                cornerRadius = CornerRadius(6.dp.toPx(), 6.dp.toPx())
+                cornerRadius = CornerRadius(6.dp.toPx(), 6.dp.toPx()),
             )
         }
         Icon(
             imageVector = Icons.Outlined.Add,
             tint = Gray4,
             contentDescription = null,
-            modifier = Modifier
-                .size(20.dp)
-                .align(Alignment.Center)
+            modifier =
+                Modifier
+                    .size(20.dp)
+                    .align(Alignment.Center),
         )
     }
 }
@@ -413,25 +422,25 @@ private fun AddPhotoButton(onClick: () -> Unit) {
 private fun Significant(
     scrollState: ScrollState,
     imeHeight: Int,
-    viewModel: CreateApplicationViewModel
+    viewModel: CreateApplicationViewModel,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = stringResource(id = R.string.create_announcement_dog_subtitle_4),
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
-                color = Gray1
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "(선택)",
-                fontSize = 12.sp,
-                color = Gray3
+                style = MaterialTheme.typography.labelLarge,
+                color = Gray3,
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -441,7 +450,7 @@ private fun Significant(
             label = "",
             placeholder = "- 이동 동물 성향, 건강 상태, 주의사항 등",
             height = 244,
-            showCharCount = true
+            showCharCount = true,
         )
     }
 }

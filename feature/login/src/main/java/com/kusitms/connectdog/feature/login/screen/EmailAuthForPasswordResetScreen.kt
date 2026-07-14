@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +16,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
@@ -39,22 +38,22 @@ fun EmailAuthForPasswordResetScreen(
     onNavigateToPasswordSearch: (UserType) -> Unit,
     onNavigateToNoAccount: (AccountType) -> Unit,
     imeHeight: Int,
-    userType: UserType
+    userType: UserType,
 ) {
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.password_search,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             imeHeight = imeHeight,
             onNavigateToPasswordSearch = onNavigateToPasswordSearch,
             onNavigateToNoAccount = onNavigateToNoAccount,
-            userType = userType
+            userType = userType,
         )
     }
 }
@@ -65,7 +64,7 @@ private fun Content(
     onNavigateToPasswordSearch: (UserType) -> Unit,
     onNavigateToNoAccount: (AccountType) -> Unit,
     userType: UserType,
-    viewModel: EmailAuthForPasswordResetViewModel = hiltViewModel()
+    viewModel: EmailAuthForPasswordResetViewModel = hiltViewModel(),
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -73,28 +72,27 @@ private fun Content(
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect {
-        when(it) {
+        when (it) {
             EmailAuthForPasswordResetSideEffect.NavigateToFail -> onNavigateToNoAccount(AccountType.PASSWORD)
             EmailAuthForPasswordResetSideEffect.NavigateToPasswordReset -> onNavigateToPasswordSearch(userType)
         }
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 80.dp, bottom = 24.dp)
-            .padding(horizontal = 20.dp)
-            .clickable(
-                onClick = focusManager::clearFocus,
-                indication = null,
-                interactionSource = interactionSource
-            )
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 80.dp, bottom = 24.dp)
+                .padding(horizontal = 20.dp)
+                .clickable(
+                    onClick = focusManager::clearFocus,
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
     ) {
         Text(
             text = "이메일 인증을\n진행해주세요",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            lineHeight = 28.sp
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextField(
@@ -104,22 +102,22 @@ private fun Content(
             onTextChanged = viewModel::onEmailChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        if(uiState.isSendAuthCode) {
+        if (uiState.isSendAuthCode) {
             ConnectDogTextField(
                 text = uiState.inputAuthCode,
                 label = "인증 번호",
                 placeholder = "숫자 6자리",
                 keyboardType = KeyboardType.Text,
                 onTextChanged = viewModel::onInputAuthCodeChanged,
-                isError = uiState.isAuthCodeError
+                isError = uiState.isAuthCodeError,
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(
             onClick = { viewModel.onNextButtonClick(userType) },
             content = uiState.bottomButtonText,
-            enabled = uiState.enableNext
+            enabled = uiState.enableNext,
         )
-        Spacer(modifier = Modifier.height((imeHeight+32).dp))
+        Spacer(modifier = Modifier.height((imeHeight + 32).dp))
     }
 }

@@ -28,21 +28,22 @@ import com.kusitms.connectdog.feature.management.state.ApplicationUiState
 fun PendingApproval(
     uiState: ApplicationUiState,
     onItemClick: (Application) -> Unit,
-    onNavigateToDetail: (Long) -> Unit
+    onNavigateToDetail: (Long) -> Unit,
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
             LazyColumn(
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 80.dp)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 80.dp),
             ) {
                 items(uiState.applications) {
                     PendingContent(
                         application = it,
                         onClick = onItemClick,
-                        onNavigateToDetail = onNavigateToDetail
+                        onNavigateToDetail = onNavigateToDetail,
                     )
                 }
             }
@@ -61,19 +62,21 @@ fun PendingApproval(
 private fun PendingContent(
     application: Application,
     onClick: (Application) -> Unit,
-    onNavigateToDetail: (Long) -> Unit
+    onNavigateToDetail: (Long) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
     ) {
         Column(
-            modifier = Modifier
-                .clickable { onNavigateToDetail(application.postId) }
-                .padding(20.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+            modifier =
+                Modifier
+                    .clickable { onNavigateToDetail(application.postId) }
+                    .padding(20.dp)
+                    .fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
         ) {
             AnnouncementItem(
                 imageUrl = application.imageUrl,
@@ -82,7 +85,7 @@ private fun PendingContent(
                 isKennel = application.hasKennel,
                 dogSize = application.dogSize!!,
                 date = application.date,
-                pickUpTime = application.pickUpTime!!
+                pickUpTime = application.pickUpTime!!,
             )
             OutlinedButton(modifier = Modifier.padding(top = 20.dp)) {
                 onClick(application)

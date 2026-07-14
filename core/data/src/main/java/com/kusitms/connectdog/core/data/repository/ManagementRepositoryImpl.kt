@@ -15,44 +15,61 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-internal class ManagementRepositoryImpl @Inject constructor(
-    private val api: ApiService
-) : ManagementRepository {
-    override suspend fun getApplicationWaiting(page: Int?, size: Int?): List<Application> {
-        return api.getApplicationWaiting(page, size).map { it.toData() }
-    }
-
-    override suspend fun getApplicationInProgress(page: Int?, size: Int?): List<Application> {
-        return api.getApplicationInProgress(page, size).map { it.toData() }
-    }
-
-    override suspend fun getApplicationCompleted(page: Int?, size: Int?): List<Application> {
-        return api.getApplicationCompleted(page, size).map { it.toData() }
-    }
-
-    override suspend fun getMyApplication(applicationId: Long): Volunteer {
-        return api.getMyApplication(applicationId).toData()
-    }
-
-    override suspend fun deleteMyApplication(applicationId: Long): ConnectDogResult {
-        return api.deleteMyApplication(applicationId).toData()
-    }
-
-    override suspend fun getReview(reviewId: Long): ReviewDetailResponse {
-        return api.getReviewDetail(reviewId)
-    }
-
-    override suspend fun postReview(postId: Long, body: ReviewBody, images: List<File>) {
-        val jsonBody = RequestBody.create(
-            "application/json; charset=utf-8".toMediaTypeOrNull(),
-            Gson().toJson(body)
-        )
-
-        val files = images.map { file ->
-            val fileBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-            MultipartBody.Part.createFormData("files", file.name, fileBody)
+internal class ManagementRepositoryImpl
+    @Inject
+    constructor(
+        private val api: ApiService,
+    ) : ManagementRepository {
+        override suspend fun getApplicationWaiting(
+            page: Int?,
+            size: Int?,
+        ): List<Application> {
+            return api.getApplicationWaiting(page, size).map { it.toData() }
         }
 
-        return api.postReview(postId, jsonBody, files)
+        override suspend fun getApplicationInProgress(
+            page: Int?,
+            size: Int?,
+        ): List<Application> {
+            return api.getApplicationInProgress(page, size).map { it.toData() }
+        }
+
+        override suspend fun getApplicationCompleted(
+            page: Int?,
+            size: Int?,
+        ): List<Application> {
+            return api.getApplicationCompleted(page, size).map { it.toData() }
+        }
+
+        override suspend fun getMyApplication(applicationId: Long): Volunteer {
+            return api.getMyApplication(applicationId).toData()
+        }
+
+        override suspend fun deleteMyApplication(applicationId: Long): ConnectDogResult {
+            return api.deleteMyApplication(applicationId).toData()
+        }
+
+        override suspend fun getReview(reviewId: Long): ReviewDetailResponse {
+            return api.getReviewDetail(reviewId)
+        }
+
+        override suspend fun postReview(
+            postId: Long,
+            body: ReviewBody,
+            images: List<File>,
+        ) {
+            val jsonBody =
+                RequestBody.create(
+                    "application/json; charset=utf-8".toMediaTypeOrNull(),
+                    Gson().toJson(body),
+                )
+
+            val files =
+                images.map { file ->
+                    val fileBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                    MultipartBody.Part.createFormData("files", file.name, fileBody)
+                }
+
+            return api.postReview(postId, jsonBody, files)
+        }
     }
-}

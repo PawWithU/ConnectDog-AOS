@@ -13,36 +13,38 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class IntermediatorProfileViewModel @Inject constructor(
-    private val detailRepository: DetailRepository
-) : ViewModel() {
-    private val _intermediator = MutableLiveData<IntermediatorInfoResponseItem>()
-    val intermediator: LiveData<IntermediatorInfoResponseItem> = _intermediator
+class IntermediatorProfileViewModel
+    @Inject
+    constructor(
+        private val detailRepository: DetailRepository,
+    ) : ViewModel() {
+        private val _intermediator = MutableLiveData<IntermediatorInfoResponseItem>()
+        val intermediator: LiveData<IntermediatorInfoResponseItem> = _intermediator
 
-    private val _notice = MutableLiveData<List<BookmarkResponseItem>>()
-    val notice: LiveData<List<BookmarkResponseItem>> = _notice
+        private val _notice = MutableLiveData<List<BookmarkResponseItem>>()
+        val notice: LiveData<List<BookmarkResponseItem>> = _notice
 
-    private val _review = MutableLiveData<List<Review>>()
-    val review: LiveData<List<Review>> = _review
+        private val _review = MutableLiveData<List<Review>>()
+        val review: LiveData<List<Review>> = _review
 
-    fun initIntermediatorProfile(intermediaryId: Long) {
-        viewModelScope.launch {
-            val response = detailRepository.getIntermediatorInfo(intermediaryId)
-            _intermediator.postValue(response)
+        fun initIntermediatorProfile(intermediaryId: Long) {
+            viewModelScope.launch {
+                val response = detailRepository.getIntermediatorInfo(intermediaryId)
+                _intermediator.postValue(response)
+            }
+        }
+
+        fun initIntermediatorNotice(intermediaryId: Long) {
+            viewModelScope.launch {
+                val response = detailRepository.getIntermediatorNotice(intermediaryId)
+                _notice.postValue(response)
+            }
+        }
+
+        fun initIntermediatorReview(intermediaryId: Long) {
+            viewModelScope.launch {
+                val response = detailRepository.getIntermediatorReview(0, 100, intermediaryId)
+                _review.postValue(response)
+            }
         }
     }
-
-    fun initIntermediatorNotice(intermediaryId: Long) {
-        viewModelScope.launch {
-            val response = detailRepository.getIntermediatorNotice(intermediaryId)
-            _notice.postValue(response)
-        }
-    }
-
-    fun initIntermediatorReview(intermediaryId: Long) {
-        viewModelScope.launch {
-            val response = detailRepository.getIntermediatorReview(0, 100, intermediaryId)
-            _review.postValue(response)
-        }
-    }
-}

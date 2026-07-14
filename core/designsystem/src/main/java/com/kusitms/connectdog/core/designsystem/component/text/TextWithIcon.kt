@@ -19,22 +19,22 @@ fun TextWithIcon(
     text: String,
     iconId: Int,
     size: Int = 12,
-    spacer: Int = 6
+    spacer: Int = 6,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = null,
-            tint = Gray2
+            tint = Gray2,
         )
         Spacer(modifier = Modifier.width(spacer.dp))
         Text(
             text = text,
             fontSize = size.sp,
             fontWeight = FontWeight.Medium,
-            color = Gray2
+            color = Gray2,
         )
     }
 }

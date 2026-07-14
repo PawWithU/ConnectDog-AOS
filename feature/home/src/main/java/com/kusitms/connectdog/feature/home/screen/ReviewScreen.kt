@@ -25,7 +25,7 @@ import com.kusitms.connectdog.feature.home.state.ReviewUiState
 fun ReviewScreen(
     onBackClick: () -> Unit,
     onInterProfileClick: (Long) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val reviewUiState by viewModel.reviewUiState.collectAsStateWithLifecycle()
 
@@ -35,27 +35,25 @@ fun ReviewScreen(
         }
         ReviewContent(
             uiState = reviewUiState,
-            onInterProfileClick = onInterProfileClick
+            onInterProfileClick = onInterProfileClick,
         )
     }
 }
 
 @Composable
-private fun TopAppBar(
-    onBackClick: () -> Unit
-) {
+private fun TopAppBar(onBackClick: () -> Unit) {
     ConnectDogTopAppBar(
         titleRes = R.string.review_top_app_bar_title,
         navigationType = TopAppBarNavigationType.BACK,
         navigationIconContentDescription = "Back",
-        onNavigationClick = { onBackClick() }
+        onNavigationClick = { onBackClick() },
     )
 }
 
 @Composable
 private fun ReviewContent(
     onInterProfileClick: (Long) -> Unit,
-    uiState: ReviewUiState
+    uiState: ReviewUiState,
 ) {
     val modifier = Modifier.padding(horizontal = 0.dp)
     when (uiState) {
@@ -63,7 +61,7 @@ private fun ReviewContent(
             ReviewListContent(
                 list = uiState.reviews,
                 modifier = modifier,
-                onInterProfileClick = onInterProfileClick
+                onInterProfileClick = onInterProfileClick,
             )
         }
 
@@ -75,13 +73,13 @@ private fun ReviewContent(
 fun ReviewListContent(
     list: List<Review>,
     onInterProfileClick: (Long) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     LazyColumn(modifier = modifier) {
         items(list.take(30)) {
             ReviewItemContent(
                 review = it,
-                onInterProfileClick = onInterProfileClick
+                onInterProfileClick = onInterProfileClick,
             )
         }
     }
@@ -89,25 +87,26 @@ fun ReviewListContent(
 
 @Composable
 fun ReviewLoading(modifier: Modifier) {
-    val list = List(10) {
-        Review(
-            profileNum = 0,
-            dogName = "멍멍이",
-            userName = "츄",
-            mainImage = "",
-            date = "23.10.19(목)",
-            location = "서울 강남구 -> 서울 도봉구",
-            organization = "단체이름",
-            content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><",
-            contentImages = null
-        )
-    }
+    val list =
+        List(10) {
+            Review(
+                profileNum = 0,
+                dogName = "멍멍이",
+                userName = "츄",
+                mainImage = "",
+                date = "23.10.19(목)",
+                location = "서울 강남구 -> 서울 도봉구",
+                organization = "단체이름",
+                content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><",
+                contentImages = null,
+            )
+        }
 
     LazyColumn(modifier = modifier) {
         items(list) {
             ReviewItemContent(
                 review = it,
-                reviewType = ReviewType.REVIEW
+                reviewType = ReviewType.REVIEW,
             )
         }
     }

@@ -31,7 +31,7 @@ import com.kusitms.connectdog.feature.intermediator.R
 fun InterProfileEditScreen(
     profileImage: String,
     onBackClick: () -> Unit,
-    imeHeight: Int
+    imeHeight: Int,
 ) {
     Scaffold(
         topBar = {
@@ -39,13 +39,13 @@ fun InterProfileEditScreen(
                 titleRes = R.string.inter_profile_edit,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             profileImage = profileImage,
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 }
@@ -53,21 +53,22 @@ fun InterProfileEditScreen(
 @Composable
 private fun Content(
     profileImage: String,
-    imeHeight: Int
+    imeHeight: Int,
 ) {
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(scrollState),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         NetworkImage(
             imageUrl = profileImage,
             modifier = Modifier.size(80.dp),
-            placeholder = painterResource(id = R.drawable.ic_default_intermediator)
+            placeholder = painterResource(id = R.drawable.ic_default_intermediator),
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogOutlinedButton(
@@ -75,15 +76,16 @@ private fun Content(
             height = 26,
             text = "프로필 이미지 변경",
             padding = 10,
-            onClick = { }
+            onClick = { },
         )
         First()
         Divider(thickness = 8.dp, color = Gray7)
         Second()
         Spacer(
-            modifier = Modifier
-                .height((imeHeight + 32).dp)
-                .padding(horizontal = 20.dp)
+            modifier =
+                Modifier
+                    .height((imeHeight + 32).dp)
+                    .padding(horizontal = 20.dp),
         )
     }
 }
@@ -91,9 +93,10 @@ private fun Content(
 @Composable
 private fun First() {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
     ) {
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextField(text = "", onTextChanged = {}, label = "", placeholder = "")
@@ -108,9 +111,10 @@ private fun First() {
 @Composable
 private fun Second() {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
     ) {
         Spacer(modifier = Modifier.height(32.dp))
         Text(text = "문의 받을 연락처를 입력해주세요")

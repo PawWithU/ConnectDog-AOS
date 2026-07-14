@@ -29,11 +29,14 @@ import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 fun BookmarkButton(
     isBookmark: Boolean,
     onSaveClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onDeleteClick: () -> Unit,
 ) {
     var isActive by remember { mutableStateOf(isBookmark) }
     val shape = RoundedCornerShape(12.dp)
-    val (imageResource, setImageResource) = remember { mutableIntStateOf(if (isActive) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark) }
+    val (imageResource, setImageResource) =
+        remember {
+            mutableIntStateOf(if (isActive) R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark)
+        }
     val (borderColor, setBorderColor) = remember { mutableStateOf(if (isActive) PetOrange else Gray5) }
     val imagePainter: Painter = painterResource(id = imageResource)
 
@@ -51,19 +54,20 @@ fun BookmarkButton(
         },
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = shape,
-        modifier = Modifier
-            .width(56.dp)
-            .height(56.dp)
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = shape
-            ),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Gray2)
+        modifier =
+            Modifier
+                .width(56.dp)
+                .height(56.dp)
+                .border(
+                    width = 1.dp,
+                    color = borderColor,
+                    shape = shape,
+                ),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Gray2),
     ) {
         Image(
             painter = imagePainter,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

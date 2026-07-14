@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
@@ -45,16 +45,16 @@ fun EmailSearchScreen(
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
     userType: UserType,
-    viewModel: EmailSearchViewModel = hiltViewModel()
+    viewModel: EmailSearchViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.email_search,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             imeHeight = imeHeight,
@@ -62,7 +62,7 @@ fun EmailSearchScreen(
             onSendMessageClick = onSendMessageClick,
             onVerifyCodeClick = onVerifyCodeClick,
             viewModel = viewModel,
-            userType = userType
+            userType = userType,
         )
     }
 }
@@ -74,12 +74,12 @@ private fun Content(
     onSendMessageClick: (String) -> Unit,
     onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
     userType: UserType,
-    viewModel: EmailSearchViewModel
+    viewModel: EmailSearchViewModel,
 ) {
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect { sideEffect ->
-        when(sideEffect) {
+        when (sideEffect) {
             is EmailSearchSideEffect.NavigateToEmailSearchResult -> {
                 uiState.email?.let { navigateToCompleteScreen(it) }
             }
@@ -87,16 +87,15 @@ private fun Content(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
             text = stringResource(id = R.string.email_auth_title),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            lineHeight = 30.sp
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextField(
@@ -107,49 +106,51 @@ private fun Content(
             onTextChanged = viewModel::onPhoneNumberChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        if(uiState.isSendAuthCode) {
+        if (uiState.isSendAuthCode) {
             ConnectDogTextField(
                 text = uiState.authCode,
                 label = "인증번호",
                 keyboardType = KeyboardType.Number,
                 placeholder = "인증번호 6자리",
                 onTextChanged = viewModel::onAuthCodeChanged,
-                isError = (uiState.isAuthCodeError == true)
+                isError = (uiState.isAuthCodeError == true),
             )
-            if(uiState.isAuthCodeError == true) {
+            if (uiState.isAuthCodeError == true) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "올바른 인증번호를 입력해주세요",
-                    fontSize = 10.sp,
-                    color = Red1
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Red1,
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalArrangement = Arrangement.Center
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp),
+                horizontalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = "인증번호가 오지 않는다면?",
+                    style = MaterialTheme.typography.labelLarge,
                     color = Gray60,
-                    fontSize = 12.sp
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     modifier = Modifier.clickable { },
                     text = "재발송",
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelLarge,
                     color = Gray80,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
             content = uiState.bottomButtonText,
             enabled = uiState.enableNext,
             onClick = { viewModel.onNextClick(userType, onSendMessageClick, onVerifyCodeClick) },

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,10 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithTimer
@@ -39,7 +37,6 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.Gray100
 import com.kusitms.connectdog.core.designsystem.theme.Gray60
 import com.kusitms.connectdog.core.designsystem.theme.Red1
-import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.signup.R
 import com.kusitms.connectdog.signup.state.SignUpSideEffect
 import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
@@ -77,9 +74,9 @@ fun CertificationScreen(
                 titleRes = uiState.userType.topBarTitleRes,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             onSendMessageClick = onSendMessageClick,
@@ -103,23 +100,22 @@ private fun Content(
     val uiState by viewModel.collectAsState()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 32.dp)
-            .padding(horizontal = 20.dp)
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            )
-            .verticalScroll(scrollState)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(vertical = 32.dp)
+                .padding(horizontal = 20.dp)
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                )
+                .verticalScroll(scrollState),
     ) {
         Spacer(modifier = Modifier.height(48.dp))
         Text(
             text = stringResource(id = R.string.certification_title),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            lineHeight = 30.sp
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextField(
@@ -127,7 +123,7 @@ private fun Content(
             label = stringResource(id = R.string.name),
             placeholder = stringResource(id = R.string.input_name),
             keyboardType = KeyboardType.Text,
-            onTextChanged = viewModel::onNameChanged
+            onTextChanged = viewModel::onNameChanged,
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextField(
@@ -137,15 +133,14 @@ private fun Content(
             placeholder = stringResource(id = R.string.phone_number_requirement),
             keyboardType = KeyboardType.Number,
             isError = uiState.isValidPhoneNumber == false,
-            maxLength = 11
+            maxLength = 11,
         )
         if (uiState.isValidPhoneNumber == false) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "잘못된 휴대폰 번호 형식입니다.",
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Normal,
-                color = Red1
+                style = MaterialTheme.typography.labelMedium,
+                color = Red1,
             )
         }
         if (uiState.isSendPhoneAuthCode) {
@@ -157,41 +152,42 @@ private fun Content(
                 keyboardType = KeyboardType.Number,
                 onTextChanged = viewModel::onPhoneAuthCodeChanged,
                 isError = (uiState.isPhoneNumberCertified == false),
-                maxLength = 6
+                maxLength = 6,
             )
-            if(uiState.isPhoneNumberCertified == false) {
+            if (uiState.isPhoneNumberCertified == false) {
                 Text(
                     modifier = Modifier.padding(top = 4.dp),
                     text = stringResource(id = R.string.auth_code_incorrect),
+                    style = MaterialTheme.typography.labelMedium,
                     color = Red1,
-                    fontSize = 10.sp
                 )
             }
             Spacer(modifier = Modifier.height(28.dp))
             Row(
                 modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = stringResource(id = R.string.resend_title),
+                    style = MaterialTheme.typography.labelLarge,
                     color = Gray60,
-                    fontSize = 12.sp
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     modifier = Modifier.clickable { },
                     text = stringResource(id = R.string.resend),
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelLarge,
                     color = Gray100,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
         }
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogNormalButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
             content = uiState.phoneCertificationButtonText,
             enabled = uiState.enablePhoneCertification,
             onClick = {
@@ -199,7 +195,7 @@ private fun Content(
                     onSendMessageClick = onSendMessageClick,
                     onVerifyCodeClick = onVerifyCodeClick,
                 )
-            }
+            },
         )
         Spacer(modifier = Modifier.height((imeHeight).dp))
     }

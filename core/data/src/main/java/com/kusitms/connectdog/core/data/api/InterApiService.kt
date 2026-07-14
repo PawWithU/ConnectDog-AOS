@@ -37,14 +37,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface InterApiService {
-
     /**
      * 로그인
      */
     @Headers("Content-Type: application/json")
     @POST("/intermediaries/login")
     suspend fun normalLogin(
-        @Body body: NormalLogin
+        @Body body: NormalLogin,
     ): LoginResult
 
     /**
@@ -54,27 +53,27 @@ internal interface InterApiService {
     @POST("/intermediaries/sign-up")
     suspend fun intermediatorSignUp(
         @Part("request") json: RequestBody,
-        @Part file: MultipartBody.Part
+        @Part file: MultipartBody.Part,
     )
 
     @POST("/intermediaries/phone/isDuplicated")
     suspend fun getPhoneNumberDuplication(
-        @Body body: Phone
+        @Body body: Phone,
     ): PhoneNumberDuplication
 
     @POST("/intermediaries/name/isDuplicated")
     suspend fun checkIsDuplicateName(
-        @Body body: Name
+        @Body body: Name,
     ): IsDuplicated
 
     @POST("/intermediaries/password/check")
     suspend fun checkInterPassword(
-        @Body body: PasswordDto
+        @Body body: PasswordDto,
     ): PasswordCheckResponse
 
     @PATCH("/intermediaries/password")
     suspend fun changeInterPassword(
-        @Body body: PasswordDto
+        @Body body: PasswordDto,
     )
 
     /**
@@ -86,55 +85,55 @@ internal interface InterApiService {
     @GET("/intermediaries/posts/recruiting")
     suspend fun getApplicationRecruiting(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<InterApplicationRecruitingResponseItem>
 
     @GET("/intermediaries/applications/waiting")
     suspend fun getApplicationWaiting(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<InterApplicationWaitingResponseItem>
 
     @GET("/intermediaries/applications/progressing")
     suspend fun getApplicationProgressing(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<InterApplicationInProgressResponseItem>
 
     @GET("/intermediaries/applications/completed")
     suspend fun getApplicationCompleted(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<InterApplicationCompletedResponseItem>
 
     @GET("/intermediaries/applications/{applicationId}")
     suspend fun getApplicationVolunteer(
-        @Path("applicationId") applicationId: Long
+        @Path("applicationId") applicationId: Long,
     ): VolunteerResponse
 
     @PATCH("/intermediaries/applications/{applicationId}")
     suspend fun patchApplicationVolunteer(
-        @Path("applicationId") applicationId: Long
+        @Path("applicationId") applicationId: Long,
     ): Response
 
     @DELETE("/intermediaries/applications/{applicationId}")
     suspend fun deleteApplicationVolunteer(
-        @Path("applicationId") applicationId: Long
+        @Path("applicationId") applicationId: Long,
     ): Response
 
     @PATCH("/intermediaries/applications/{applicationId}/completed")
     suspend fun patchApplicationCompleted(
-        @Path("applicationId") applicationId: Long
+        @Path("applicationId") applicationId: Long,
     ): Response
 
     @GET("/intermediaries/reviews/{reviewId}")
     suspend fun getReviewDetail(
-        @Path("reviewId") reviewId: Long
+        @Path("reviewId") reviewId: Long,
     ): ReviewDetailResponse
 
     @GET("/intermediaries/posts/{postId}")
     suspend fun getAnnouncementDetail(
-        @Path("postId") postId: Long
+        @Path("postId") postId: Long,
     ): InterAnnouncementDetailResponse
 
     /**
@@ -146,23 +145,23 @@ internal interface InterApiService {
     @GET("/intermediaries/my/reviews")
     suspend fun getIntermediatorReview(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<ReviewDetailResponse>
 
     @GET("/intermediaries/posts/recruiting")
     suspend fun getFindingApplication(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<InterProfileFindingResponseItem>
 
     @DELETE("/intermediaries/posts/{postId}")
     suspend fun deleteAnnouncement(
-        @Path("postId") postId: Long
+        @Path("postId") postId: Long,
     )
 
     @POST("/intermediaries/fcm")
     suspend fun postFcmToken(
-        @Body fcmToken: FcmTokenRequestBody
+        @Body fcmToken: FcmTokenRequestBody,
     )
 
     @PATCH("/intermediaries/notifications/setting")
@@ -170,14 +169,14 @@ internal interface InterApiService {
 
     @POST("/intermediaries/search/send-email")
     suspend fun emailAuthForPasswordReset(
-        @Body body: Email
+        @Body body: Email,
     ): AuthCodeWithAccessToken
 
     @Multipart
     @POST("/intermediaries/posts")
     suspend fun postApplication(
         @Part("request") json: RequestBody,
-        @Part files: List<MultipartBody.Part>
+        @Part files: List<MultipartBody.Part>,
     )
 
     @GET("/intermediaries/setting/my/info")
@@ -188,6 +187,6 @@ internal interface InterApiService {
 
     @POST("/intermediaries/search/email")
     suspend fun searchIntermediatorEmail(
-        @Body body: Phone
+        @Body body: Phone,
     ): Email
 }

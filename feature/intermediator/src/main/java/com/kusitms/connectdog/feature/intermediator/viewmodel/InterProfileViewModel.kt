@@ -23,65 +23,69 @@ import javax.inject.Inject
 private const val TAG = "InterProfileViewModel"
 
 @HiltViewModel
-class InterProfileViewModel @Inject constructor(
-    private val repository: InterProfileRepository
-) : ViewModel() {
-    private val _errorFlow = MutableSharedFlow<Throwable>()
+class InterProfileViewModel
+    @Inject
+    constructor(
+        private val repository: InterProfileRepository,
+    ) : ViewModel() {
+        private val _errorFlow = MutableSharedFlow<Throwable>()
 
-    val interProfileInfoUiState: StateFlow<InterProfileInfoUiState> = createProfileInfoUiStateFlow {
-        repository.getInterProfileInfo()
-    }
-
-    val interProfileReviewUiState: StateFlow<InterProfileReviewUiState> = createUiStateFlow {
-        repository.getInterReview(0, 20)
-    }
-
-    val interProfileFindingUiState: StateFlow<InterProfileFindingUiState> =
-        createFindingUiStateFlow {
-            repository.getInterFinding(0, 20)
-        }
-
-    private fun createProfileInfoUiStateFlow(getData: suspend () -> InterProfileInfoResponse): StateFlow<InterProfileInfoUiState> =
-        flow {
-            emit(getData())
-        }.map {
-            InterProfileInfoUiState.InterProfile(it)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = InterProfileInfoUiState.Loading
-        )
-
-    private fun createFindingUiStateFlow(getData: suspend () -> List<Announcement>): StateFlow<InterProfileFindingUiState> =
-        flow {
-            emit(getData())
-        }.map {
-            if (it.isNotEmpty()) {
-                InterProfileFindingUiState.InterProfileFinding(it)
-            } else {
-                InterProfileFindingUiState.Empty
+        val interProfileInfoUiState: StateFlow<InterProfileInfoUiState> =
+            createProfileInfoUiStateFlow {
+                repository.getInterProfileInfo()
             }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = InterProfileFindingUiState.Loading
-        )
 
-    private fun createUiStateFlow(getApplication: suspend () -> List<Review>): StateFlow<InterProfileReviewUiState> =
-        flow {
-            emit(getApplication())
-        }.map {
-            if (it.isNotEmpty()) {
-                InterProfileReviewUiState.InterProfileReview(it)
-            } else {
-                InterProfileReviewUiState.Empty
+        val interProfileReviewUiState: StateFlow<InterProfileReviewUiState> =
+            createUiStateFlow {
+                repository.getInterReview(0, 20)
             }
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e(TAG, "${it.message}")
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = InterProfileReviewUiState.Loading
-        )
-}
+
+        val interProfileFindingUiState: StateFlow<InterProfileFindingUiState> =
+            createFindingUiStateFlow {
+                repository.getInterFinding(0, 20)
+            }
+
+        private fun createProfileInfoUiStateFlow(getData: suspend () -> InterProfileInfoResponse): StateFlow<InterProfileInfoUiState> =
+            flow {
+                emit(getData())
+            }.map {
+                InterProfileInfoUiState.InterProfile(it)
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = InterProfileInfoUiState.Loading,
+            )
+
+        private fun createFindingUiStateFlow(getData: suspend () -> List<Announcement>): StateFlow<InterProfileFindingUiState> =
+            flow {
+                emit(getData())
+            }.map {
+                if (it.isNotEmpty()) {
+                    InterProfileFindingUiState.InterProfileFinding(it)
+                } else {
+                    InterProfileFindingUiState.Empty
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = InterProfileFindingUiState.Loading,
+            )
+
+        private fun createUiStateFlow(getApplication: suspend () -> List<Review>): StateFlow<InterProfileReviewUiState> =
+            flow {
+                emit(getApplication())
+            }.map {
+                if (it.isNotEmpty()) {
+                    InterProfileReviewUiState.InterProfileReview(it)
+                } else {
+                    InterProfileReviewUiState.Empty
+                }
+            }.catch {
+                _errorFlow.emit(it)
+                Log.e(TAG, "${it.message}")
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = InterProfileReviewUiState.Loading,
+            )
+    }

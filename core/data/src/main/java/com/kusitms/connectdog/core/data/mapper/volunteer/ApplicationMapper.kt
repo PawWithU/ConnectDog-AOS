@@ -16,7 +16,7 @@ internal fun ApplicationWaitingResponseItem.toData(): Application {
         applicationId = applicationId,
         dogName = dogName,
         dogSize = dogSize,
-        pickUpTime = pickUpTime
+        pickUpTime = pickUpTime,
     )
 }
 
@@ -30,7 +30,7 @@ internal fun ApplicationInProgressResponseItem.toData(): Application {
         applicationId = applicationId,
         dogName = dogName,
         dogSize = dogSize,
-        pickUpTime = pickUpTime
+        pickUpTime = pickUpTime,
     )
 }
 
@@ -44,6 +44,6 @@ internal fun ApplicationCompletedResponseItem.toData(): Application {
         reviewId = reviewId,
         dogName = dogName,
         dogSize = dogSize,
-        pickUpTime = pickUpTime
+        pickUpTime = pickUpTime,
     )
 }

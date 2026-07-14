@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.NetworkImage
@@ -47,27 +46,29 @@ import com.kusitms.connectdog.core.designsystem.theme.Orange20
 import com.kusitms.connectdog.feature.mypage.R
 import com.kusitms.connectdog.feature.mypage.viewmodel.MyPageViewModel
 
-private val volunteerDescriptionList = listOf(
-    R.string.first,
-    R.string.second,
-    R.string.third,
-    R.string.fourth,
-    R.string.fifth,
-    R.string.sixth
-)
+private val volunteerDescriptionList =
+    listOf(
+        R.string.first,
+        R.string.second,
+        R.string.third,
+        R.string.fourth,
+        R.string.fifth,
+        R.string.sixth,
+    )
 
-private val reviewDescriptionList = listOf(
-    R.string.review_first,
-    R.string.review_second,
-    R.string.review_third,
-    R.string.review_fourth,
-    R.string.review_fifth,
-    R.string.review_sixth
-)
+private val reviewDescriptionList =
+    listOf(
+        R.string.review_first,
+        R.string.review_second,
+        R.string.review_third,
+        R.string.review_fourth,
+        R.string.review_fifth,
+        R.string.review_sixth,
+    )
 
 data class BadgeItem(
     val imageUrl: String?,
-    @StringRes val description: Int
+    @StringRes val description: Int,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,7 +76,7 @@ data class BadgeItem(
 @Composable
 fun BadgeScreen(
     onBackClick: () -> Unit,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val showBottomSheet by viewModel.showBottomSheet.observeAsState(initial = false)
     val sheetState = rememberModalBottomSheetState()
@@ -90,9 +91,9 @@ fun BadgeScreen(
                 titleRes = R.string.badge,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = null,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content()
 
@@ -101,44 +102,47 @@ fun BadgeScreen(
                 onDismissRequest = {
                     viewModel.updateBottomSheet()
                 },
-                sheetState = sheetState
+                sheetState = sheetState,
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Spacer(modifier = Modifier.height(24.dp))
                     NetworkImage(
                         imageUrl = viewModel.badgeItem.value!!.imageUrl,
                         modifier = Modifier.size(80.dp),
-                        placeholder = painterResource(id = R.drawable.ic_lock)
+                        placeholder = painterResource(id = R.drawable.ic_lock),
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = stringResource(
-                            id = viewModel.badgeItem.value!!.description
-                        ),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontSize = 12.sp,
-                        textAlign = TextAlign.Center
+                        text =
+                            stringResource(
+                                id = viewModel.badgeItem.value!!.description,
+                            ),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                     Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(Orange20)
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp)
-                            .height(40.dp)
+                        modifier =
+                            Modifier
+                                .clip(RoundedCornerShape(6.dp))
+                                .background(Orange20)
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .height(40.dp),
                     ) {
                         Text(
                             text = "이동봉사를 1회 진행했어요",
                             textAlign = TextAlign.Center,
-                            fontSize = 12.sp,
+                            style = MaterialTheme.typography.labelLarge,
                             color = Gray2,
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center),
                         )
                     }
                     Spacer(modifier = Modifier.height(24.dp))
@@ -149,27 +153,28 @@ fun BadgeScreen(
 }
 
 @Composable
-private fun Content(
-    viewModel: MyPageViewModel = hiltViewModel()
-) {
+private fun Content(viewModel: MyPageViewModel = hiltViewModel()) {
     val badgeData by viewModel.badge.observeAsState()
 
-    val volunteerItems = List(6) { cnt ->
-        badgeData?.let {
-            BadgeItem(it[cnt].image, volunteerDescriptionList[cnt])
+    val volunteerItems =
+        List(6) { cnt ->
+            badgeData?.let {
+                BadgeItem(it[cnt].image, volunteerDescriptionList[cnt])
+            }
         }
-    }
 
-    val reviewItems = List(6) { cnt ->
-        badgeData?.let {
-            BadgeItem(it[cnt + 6].image, reviewDescriptionList[cnt])
+    val reviewItems =
+        List(6) { cnt ->
+            badgeData?.let {
+                BadgeItem(it[cnt + 6].image, reviewDescriptionList[cnt])
+            }
         }
-    }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 48.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 48.dp),
     ) {
         Spacer(modifier = Modifier.height(30.dp))
         BadgeGrid(titleRes = R.string.volunteer_title, volunteerItems)
@@ -182,22 +187,23 @@ private fun Content(
 private fun BadgeGrid(
     @StringRes titleRes: Int,
     list: List<BadgeItem?>,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             items(list) {
                 if (it != null) {
@@ -214,25 +220,26 @@ private fun BadgeGrid(
 @Composable
 private fun BadgeContent(
     item: BadgeItem,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.clickable {
-            onClick()
-        },
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier.clickable {
+                onClick()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         NetworkImage(
             imageUrl = item.imageUrl,
             modifier = Modifier.size(80.dp),
-            placeholder = painterResource(id = R.drawable.ic_lock)
+            placeholder = painterResource(id = R.drawable.ic_lock),
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = stringResource(id = item.description),
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }

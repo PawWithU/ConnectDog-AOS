@@ -11,14 +11,24 @@ import com.kusitms.connectdog.core.model.signup.Nickname
 
 interface MyPageRepository {
     suspend fun getMyInfo(): MyInfoResponseItem
+
     suspend fun getUserInfo(): UserInfoResponse
+
     suspend fun getBadge(): List<BadgeResponse>
+
     suspend fun getBookmarkData(): List<BookmarkResponseItem>
+
     suspend fun postNickname(nickname: Nickname): IsDuplicated
+
     suspend fun updateUserInfo(userInfo: UserInfoResponse)
+
     suspend fun updateNotification()
+
     suspend fun getVolunteerAccountInfo(): VolunteerAccountInfo
+
     suspend fun getInterAccountInfo(): IntermediatorAccountInfo
+
     suspend fun volunteerWithdraw()
+
     suspend fun interWithdraw()
 }

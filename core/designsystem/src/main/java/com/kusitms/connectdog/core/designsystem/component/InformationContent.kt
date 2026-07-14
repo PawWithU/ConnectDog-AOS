@@ -11,7 +11,7 @@ fun AnnouncementContent(
     date: String,
     organization: String,
     hasKennel: Boolean,
-    style: TextStyle = MaterialTheme.typography.labelLarge
+    style: TextStyle = MaterialTheme.typography.labelLarge,
 ) {
     Content(
         textStyle = style,
@@ -20,7 +20,7 @@ fun AnnouncementContent(
         titleRes3 = R.string.need_kennel,
         t1Value = date,
         t2Value = organization,
-        t3Value = if (hasKennel) stringResource(id = R.string.has_kennel) else stringResource(id = R.string.has_not_kennel)
+        t3Value = if (hasKennel) stringResource(id = R.string.has_kennel) else stringResource(id = R.string.has_not_kennel),
     )
 }
 
@@ -29,7 +29,7 @@ fun ReviewContent(
     date: String,
     location: String,
     organization: String,
-    style: TextStyle = MaterialTheme.typography.labelLarge
+    style: TextStyle = MaterialTheme.typography.labelLarge,
 ) {
     Content(
         textStyle = style,
@@ -38,7 +38,7 @@ fun ReviewContent(
         titleRes3 = R.string.organization,
         t1Value = date,
         t2Value = location,
-        t3Value = organization
+        t3Value = organization,
     )
 }
 
@@ -47,7 +47,7 @@ fun ApplicantContent(
     date: String,
     location: String,
     volunteer: String,
-    style: TextStyle = MaterialTheme.typography.labelLarge
+    style: TextStyle = MaterialTheme.typography.labelLarge,
 ) {
     Content(
         textStyle = style,
@@ -56,6 +56,6 @@ fun ApplicantContent(
         titleRes3 = R.string.volunteer,
         t1Value = date,
         t2Value = location,
-        t3Value = volunteer
+        t3Value = volunteer,
     )
 }

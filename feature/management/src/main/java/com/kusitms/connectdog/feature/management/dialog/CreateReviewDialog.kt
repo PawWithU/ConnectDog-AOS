@@ -7,14 +7,14 @@ import com.kusitms.connectdog.feature.management.R
 @Composable
 internal fun CreateReviewDialog(
     onConfirmClick: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     ConnectDogAlertDialog(
         onDismissRequest = onDismiss,
         titleRes = R.string.dialog_title,
         descriptionRes = R.string.dialog_description,
         okText = R.string.dialog_confirm,
-        cancelText = R.string.cancel_back
+        cancelText = R.string.cancel_back,
     ) {
         onConfirmClick()
     }

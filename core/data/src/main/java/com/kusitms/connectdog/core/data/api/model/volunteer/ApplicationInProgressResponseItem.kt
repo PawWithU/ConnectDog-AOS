@@ -14,5 +14,5 @@ data class ApplicationInProgressResponseItem(
     val dogName: String,
     val pickUpTime: String,
     val dogSize: String,
-    val applicationId: Long
+    val applicationId: Long,
 )

@@ -65,16 +65,17 @@ import com.kusitms.connectdog.signup.navigation.navigateToVolunteerProfile
 
 internal class MainNavigator(
     val navController: NavHostController,
-    mode: AppMode
+    mode: AppMode,
 ) {
     private val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    val startDestination = when (mode) {
-        AppMode.VOLUNTEER -> MainTab.HOME.route
-        AppMode.INTERMEDIATOR -> IntermediatorRoute.route
-        AppMode.LOGIN -> LoginRoute.ROUTE
-    }
+    val startDestination =
+        when (mode) {
+            AppMode.VOLUNTEER -> MainTab.HOME.route
+            AppMode.INTERMEDIATOR -> IntermediatorRoute.route
+            AppMode.LOGIN -> LoginRoute.ROUTE
+        }
 
     val currentTab: MainTab?
         @Composable get() =
@@ -102,55 +103,102 @@ internal class MainNavigator(
 
     // login navigator
     fun navigateNormalLogin(userType: UserType) = navController.navigateNormalLogin(userType)
+
     fun navigateSignup(userType: UserType) = navController.navigateSignup(userType)
+
     fun navigateEmailSearch(userType: UserType) = navController.navigateEmailSearch(userType)
+
     fun navigateEmailSearchComplete(email: String) = navController.navigateEmailSearchComplete(email)
+
     fun navigatePasswordSearchAuth(userType: UserType) = navController.navigatePasswordSearchAuth(userType)
+
     fun onLogoutClick() = navController.navigateToLoginRoute()
+
     fun navigatePasswordSearch(userType: UserType) = navController.navigatePasswordSearch(userType)
+
     fun navigateNoAccount(accountType: AccountType) = navController.navigateToNoAccount(accountType)
 
     // signup navigator
     fun navigateVolunteerProfile() = navController.navigateToVolunteerProfile()
+
     fun navigateIntermediatorProfile() = navController.navigateToIntermediatorProfile()
+
     fun navigateRegisterEmail() = navController.navigateRegisterEmail()
+
     fun navigateRegisterPassword() = navController.navigateRegisterPassword()
+
     fun navigateSelectProfileImage() = navController.navigateSelectProfileImage()
+
     fun navigateCompleteSignUp() = navController.navigateCompleteSignUp()
+
     fun navigateIntermediatorInformation() = navController.navigateIntermediatorInformation()
+
     fun navigateCertification() = navController.navigateToCertification()
 
     // volunteer navigator
     fun navigateHome() = navigate(MainTab.HOME)
+
     fun navigateHomeSearch() = navController.navigateSearch()
+
     fun navigateHomeSearchWithFilter(filter: Filter) = navController.navigateSearchWithFilter(filter)
+
     fun navigateHomeFilterSearch() = navController.navigateFilterSearch()
+
     fun navigateHomeFilter(filter: Filter) = navController.navigateFilter(filter)
+
     fun navigateHomeReview() = navController.navigateReview()
+
     fun navigateHomeDetail(postId: Long) = navController.navigateDetail(postId)
+
     fun navigateApply(postId: Long) = navController.navigateApply(postId)
+
     fun navigateComplete() = navController.navigateComplete()
+
     fun navigateIntermediatorProfile(intermediaryId: Long) = navController.navigateIntermediatorProfile(intermediaryId)
-    fun navigateEditProfile(profileImageId: Int, nickName: String) = navController.navigateEditProfile(profileImageId, nickName)
+
+    fun navigateEditProfile(
+        profileImageId: Int,
+        nickName: String,
+    ) = navController.navigateEditProfile(profileImageId, nickName)
+
     fun navigateManageAccount(userType: UserType) = navController.navigateManageAccount(userType)
+
     fun navigateNotification() = navController.navigateNotification()
+
     fun navigateSetting(userType: UserType) = navController.navigateSetting(userType)
+
     fun navigateBadge() = navController.navigateBadge()
+
     fun navigateBookmark() = navController.navigateBookmark()
+
     fun navigateEditProfileImage() = navController.navigateEditProfileImage()
+
     fun navigateCreateReview(application: String) = navController.navigateCreateReview(application)
-    fun navigateCheckReview(reviewId: Long, userType: UserType) = navController.navigateCheckReview(reviewId, userType)
+
+    fun navigateCheckReview(
+        reviewId: Long,
+        userType: UserType,
+    ) = navController.navigateCheckReview(reviewId, userType)
+
     fun navigateToGuide() = navController.navigateGuide()
+
     fun navigatePasswordChange(userType: UserType) = navController.navigatePasswordChange(userType)
 
     // intermediator
     fun navigateIntermediatorHome() = navController.navigateInterHome()
+
     fun navigateInterManagement(index: Int) = navController.navigateInterManagement(index)
+
     fun navigateInterProfile() = navController.navigateInterProfile()
+
     fun navigateCreateAnnouncement() = navController.navigateToCreateAnnouncementScreen()
+
     fun navigateToInterProfileEdit(profileImage: String) = navController.navigateToInterProfileEdit(profileImage)
+
     fun navigateToCreateDog() = navController.navigateToCreateDog()
+
     fun navigateToAnnouncementManagement(postId: Long) = navController.navigateToAnnouncementManagement(postId)
+
     fun navigateToCompleteCreate() = navController.navigateToCreateComplete()
 
     fun popBackStackIfNotHome() {
@@ -165,8 +213,7 @@ internal class MainNavigator(
         }
     }
 
-    private fun isSameCurrentDestination(route: String) =
-        navController.currentDestination?.route == route
+    private fun isSameCurrentDestination(route: String) = navController.currentDestination?.route == route
 
     @Composable
     fun shouldShowBottomBar(): Boolean {
@@ -178,5 +225,5 @@ internal class MainNavigator(
 @Composable
 internal fun rememberMainNavigator(
     navController: NavHostController = rememberNavController(),
-    mode: AppMode
+    mode: AppMode,
 ): MainNavigator = remember(navController) { MainNavigator(navController, mode) }

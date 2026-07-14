@@ -10,19 +10,20 @@ data class CertificationUiState(
     val isCertified: Boolean,
     val enableNext: Boolean,
     val bottomButtonText: String,
-    val enableCertification: Boolean
+    val enableCertification: Boolean,
 ) {
     companion object {
-        fun empty() = CertificationUiState(
-            name = emptyString(),
-            phoneNumber = emptyString(),
-            isSendCertificationNumber = false,
-            isCertified = false,
-            enableNext = false,
-            bottomButtonText = "다음",
-            enableCertification = false,
-            certificationNumber = emptyString()
-        )
+        fun empty() =
+            CertificationUiState(
+                name = emptyString(),
+                phoneNumber = emptyString(),
+                isSendCertificationNumber = false,
+                isCertified = false,
+                enableNext = false,
+                bottomButtonText = "다음",
+                enableCertification = false,
+                certificationNumber = emptyString(),
+            )
     }
 }
 

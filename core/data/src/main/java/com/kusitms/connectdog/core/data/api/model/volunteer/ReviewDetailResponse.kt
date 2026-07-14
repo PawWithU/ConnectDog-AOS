@@ -15,5 +15,5 @@ data class ReviewDetailResponse(
     val departureLoc: String,
     val arrivalLoc: String,
     val intermediaryId: Long,
-    val intermediaryName: String
+    val intermediaryName: String,
 )

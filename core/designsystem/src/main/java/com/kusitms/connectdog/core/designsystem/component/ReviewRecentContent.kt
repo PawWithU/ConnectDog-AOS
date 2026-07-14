@@ -33,14 +33,15 @@ import com.kusitms.connectdog.core.model.Review
 import com.kusitms.connectdog.core.util.getProfileImageId
 
 enum class ReviewType {
-    HOME, REVIEW
+    HOME,
+    REVIEW,
 }
 
 @Composable
 fun ConnectDogReview(
     modifier: Modifier = Modifier,
     review: Review,
-    type: ReviewType
+    type: ReviewType,
 ) {
     ConnectDogCommunityContent(
         modifier = modifier,
@@ -48,7 +49,7 @@ fun ConnectDogReview(
             ProfileContent(
                 profileNum = review.profileNum,
                 dogName = review.dogName,
-                userName = review.userName
+                userName = review.userName,
             )
         },
         informationContent = {
@@ -56,14 +57,14 @@ fun ConnectDogReview(
                 ReviewContent(
                     date = review.date,
                     location = review.location,
-                    organization = review.organization
+                    organization = review.organization,
                 )
             }
         },
         contentUrl = review.mainImage,
         reviewUrl = review.contentImages,
         content = review.content,
-        type = type
+        type = type,
     )
 }
 
@@ -75,7 +76,7 @@ fun ConnectDogCommunityContent(
     contentUrl: String,
     reviewUrl: List<String>?,
     content: String,
-    type: ReviewType
+    type: ReviewType,
 ) {
     Column(modifier = modifier.padding(20.dp)) {
         profile()
@@ -85,10 +86,11 @@ fun ConnectDogCommunityContent(
                 NetworkImage(
                     imageUrl = contentUrl,
                     placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
-                    modifier = Modifier
-                        .clip(shape = RoundedCornerShape(12.dp))
-                        .fillMaxWidth()
-                        .height(250.dp)
+                    modifier =
+                        Modifier
+                            .clip(shape = RoundedCornerShape(12.dp))
+                            .fillMaxWidth()
+                            .height(250.dp),
                 )
             }
 
@@ -96,39 +98,42 @@ fun ConnectDogCommunityContent(
                 val image = listOf(contentUrl)
                 val list = if (reviewUrl != null) image + reviewUrl else image
                 LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     items(list.size) {
                         NetworkImage(
                             imageUrl = list[it],
                             placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
-                            modifier = Modifier
-                                .clip(shape = RoundedCornerShape(12.dp))
-                                .size(120.dp)
+                            modifier =
+                                Modifier
+                                    .clip(shape = RoundedCornerShape(12.dp))
+                                    .size(120.dp),
                         )
                     }
                 }
             }
         }
         Spacer(
-            modifier = Modifier.height(
-                when (type) {
-                    ReviewType.HOME -> 12.dp
-                    ReviewType.REVIEW -> 6.dp
-                }
-            )
+            modifier =
+                Modifier.height(
+                    when (type) {
+                        ReviewType.HOME -> 12.dp
+                        ReviewType.REVIEW -> 6.dp
+                    },
+                ),
         )
         informationContent()
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = content,
             style = MaterialTheme.typography.bodyMedium,
-            maxLines = when (type) {
-                ReviewType.HOME -> 2
-                ReviewType.REVIEW -> 100
-            },
+            maxLines =
+                when (type) {
+                    ReviewType.HOME -> 2
+                    ReviewType.REVIEW -> 100
+                },
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
@@ -165,13 +170,13 @@ fun ConnectDogCommunityContent(
 fun ProfileContent(
     profileNum: Int,
     dogName: String,
-    userName: String
+    userName: String,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = getProfileImageId(profileNum)),
             contentDescription = null,
-            modifier = Modifier.size(30.dp)
+            modifier = Modifier.size(30.dp),
         )
         Spacer(modifier = Modifier.width(width = 12.dp))
         Column {
@@ -180,19 +185,20 @@ fun ProfileContent(
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-                    .background(
-                        shape = RoundedCornerShape(4.dp),
-                        color = Orange10
-                    )
-                    .padding(horizontal = 7.dp, vertical = 2.dp)
+                modifier =
+                    Modifier
+                        .background(
+                            shape = RoundedCornerShape(4.dp),
+                            color = Orange10,
+                        )
+                        .padding(horizontal = 7.dp, vertical = 2.dp),
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = userName + stringResource(id = R.string.who_review),
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = Gray2
+                color = Gray2,
             )
         }
     }
@@ -202,17 +208,18 @@ fun ProfileContent(
 @Composable
 private fun ReviewContentPreview() {
     ConnectDogReview(
-        review = Review(
-            profileNum = 0,
-            dogName = "멍멍이",
-            userName = "츄",
-            mainImage = "",
-            date = "23.10.19(목)",
-            location = "서울 강남구 -> 서울 도봉구",
-            organization = "단체이름",
-            content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><",
-            contentImages = null
-        ),
-        type = ReviewType.HOME
+        review =
+            Review(
+                profileNum = 0,
+                dogName = "멍멍이",
+                userName = "츄",
+                mainImage = "",
+                date = "23.10.19(목)",
+                location = "서울 강남구 -> 서울 도봉구",
+                organization = "단체이름",
+                content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><",
+                contentImages = null,
+            ),
+        type = ReviewType.HOME,
     )
 }

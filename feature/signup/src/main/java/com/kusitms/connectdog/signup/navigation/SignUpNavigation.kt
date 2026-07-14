@@ -23,19 +23,29 @@ import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
 
 fun NavController.navigateSignup(userType: UserType) = navigate("${SignUpRoute.ROUTE}/$userType")
+
 fun NavController.navigateToIntermediatorProfile() = navigate(SignUpRoute.INTERMEDIATOR_PROFILE)
+
 fun NavController.navigateToCertification() = navigate(SignUpRoute.CERTIFICATION)
+
 fun NavController.navigateToVolunteerProfile() = navigate(SignUpRoute.VOLUNTEER_PROFILE)
+
 fun NavController.navigateRegisterEmail() = navigate(SignUpRoute.REGISTER_EMAIL)
+
 fun NavController.navigateRegisterPassword() = navigate(SignUpRoute.REGISTER_PASSWORD)
+
 fun NavController.navigateSelectProfileImage() = navigate(SignUpRoute.SELECT_PROFILE_IMAGE)
+
 fun NavController.navigateIntermediatorInformation() = navigate(SignUpRoute.INTERMEDIATOR_INFORMATION)
-fun NavController.navigateCompleteSignUp() = navigate(
-    route = SignUpRoute.COMPLETE_SIGNUP,
-    navOptions = NavOptions.Builder()
-        .setPopUpTo(SignUpRoute.ROUTE, false)
-        .build()
-)
+
+fun NavController.navigateCompleteSignUp() =
+    navigate(
+        route = SignUpRoute.COMPLETE_SIGNUP,
+        navOptions =
+            NavOptions.Builder()
+                .setPopUpTo(SignUpRoute.ROUTE, false)
+                .build(),
+    )
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -62,18 +72,19 @@ fun NavGraphBuilder.signUpGraph(
 
     composable(
         route = signUpRoute,
-        arguments = listOf(
-            navArgument("userType") {
-                type = NavType.EnumType(UserType::class.java)
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("userType") {
+                    type = NavType.EnumType(UserType::class.java)
+                },
+            ),
     ) {
         SignUpRoute(
             onBackClick = navigateToLogin,
             userType = it.arguments?.getSerializable("userType", UserType::class.java) ?: UserType.NORMAL_VOLUNTEER,
             navigateToCertification = navigateToCertification,
             openWebBrowser = openWebBrowser,
-            signUpViewModel = hiltViewModel(it)
+            signUpViewModel = hiltViewModel(it),
         )
     }
 
@@ -85,7 +96,7 @@ fun NavGraphBuilder.signUpGraph(
             onSendMessageClick = onSendMessage,
             onVerifyCodeClick = onVerifyCode,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
@@ -94,7 +105,7 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             onNavigateToRegisterPassword = navigateToRegisterPassword,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
@@ -104,7 +115,7 @@ fun NavGraphBuilder.signUpGraph(
             onNavigateToIntermediatorProfile = navigateToIntermediatorProfile,
             onNavigateToVolunteerProfile = navigateToVolunteerProfile,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
@@ -114,7 +125,7 @@ fun NavGraphBuilder.signUpGraph(
             onNavigateToSelectProfileImage = navigateToSelectProfileImage,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
@@ -123,7 +134,7 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             imeHeight = imeHeight,
             navigateToIntermediatorInfo = navigateToIntermediatorInformation,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
@@ -132,14 +143,14 @@ fun NavGraphBuilder.signUpGraph(
             onBackClick = onBackClick,
             imeHeight = imeHeight,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
-            signUpViewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            signUpViewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
     composable(route = SignUpRoute.SELECT_PROFILE_IMAGE) {
         SelectProfileImageScreen(
             onBackClick = onBackClick,
-            signUpViewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute))
+            signUpViewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
         )
     }
 
@@ -149,7 +160,7 @@ fun NavGraphBuilder.signUpGraph(
         CompleteSignUpScreen(
             viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
             navigateToVolunteerHome = navigateToVolunteerHome,
-            navigateToIntermediatorHome = navigateToIntermediatorHome
+            navigateToIntermediatorHome = navigateToIntermediatorHome,
         )
     }
 }

@@ -14,5 +14,5 @@ data class ReviewResponseItem(
     val mainImage: String,
     val startDate: String,
     val volunteerNickname: String,
-    val profileImageNum: Int
+    val profileImageNum: Int,
 )

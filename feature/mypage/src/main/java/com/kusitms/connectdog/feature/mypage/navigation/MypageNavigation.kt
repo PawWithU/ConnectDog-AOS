@@ -25,7 +25,10 @@ fun NavController.navigateMypage(navOptions: NavOptions) {
     navigate(MypageRoute.route, navOptions)
 }
 
-fun NavController.navigateEditProfile(profileImageId: Int, nickName: String) {
+fun NavController.navigateEditProfile(
+    profileImageId: Int,
+    nickName: String,
+) {
     navigate("${MypageRoute.editProfile}/$profileImageId/$nickName")
 }
 
@@ -74,7 +77,7 @@ fun NavGraphBuilder.mypageNavGraph(
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToApply: (Long) -> Unit,
     onNavigateToHome: (String) -> Unit,
-    onNavigateToPasswordChange: (UserType) -> Unit
+    onNavigateToPasswordChange: (UserType) -> Unit,
 ) {
     composable(route = MypageRoute.route) {
         MypageRoute(
@@ -84,100 +87,102 @@ fun NavGraphBuilder.mypageNavGraph(
             onBadgeClick,
             onBookmarkClick,
             onNavigateToHome,
-            onShowErrorSnackbar
+            onShowErrorSnackbar,
         )
     }
 
     composable(
         route = "${MypageRoute.editProfile}/{profileImageId}/{nickName}",
-        arguments = listOf(
-            navArgument("profileImageId") { type = NavType.IntType },
-            navArgument("nickName") { type = NavType.StringType }
-        )
+        arguments =
+            listOf(
+                navArgument("profileImageId") { type = NavType.IntType },
+                navArgument("nickName") { type = NavType.StringType },
+            ),
     ) {
         EditProfileScreen(
             onBackClick = onBackClick,
             onEditProfileImageClick = onEditProfileImageClick,
             profileImageId = it.arguments!!.getInt("profileImageId"),
             nickName = it.arguments!!.getString("nickName")!!,
-            viewModel = editProfileViewModel
+            viewModel = editProfileViewModel,
         )
     }
 
     composable(
         route = "${MypageRoute.manageAccount}/{userType}",
-        arguments = listOf(navArgument("userType") { type = NavType.EnumType(UserType::class.java) })
+        arguments = listOf(navArgument("userType") { type = NavType.EnumType(UserType::class.java) }),
     ) {
         val userType = it.arguments!!.getSerializable("userType") as UserType
         ManageAccountScreen(
             onBackClick = onBackClick,
             userType = userType,
-            onNavigateToPasswordChange = onNavigateToPasswordChange
+            onNavigateToPasswordChange = onNavigateToPasswordChange,
         )
     }
 
     composable(route = MypageRoute.notification) {
         NotificationScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 
     composable(
         route = "${MypageRoute.setting}/{userType}",
-        arguments = listOf(navArgument("userType") { type = NavType.EnumType(UserType::class.java) })
+        arguments = listOf(navArgument("userType") { type = NavType.EnumType(UserType::class.java) }),
     ) {
         val userType = it.arguments!!.getSerializable("userType") as UserType
         SettingScreen(
             onBackClick = onBackClick,
             onLogoutClick = onLogoutClick,
             onManageAccountClick = onManageAccountClick,
-            userType = userType
+            userType = userType,
         )
     }
 
     composable(route = MypageRoute.badge) {
         BadgeScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 
     composable(route = MypageRoute.bookmark) {
         BookmarkScreen(
             onBackClick = onBackClick,
-            onDetailClick = onNavigateToDetail
+            onDetailClick = onNavigateToDetail,
         )
     }
 
     composable(route = MypageRoute.editProfileImage) {
         SelectProfileImageScreen(
             onBackClick = onBackClick,
-            viewModel = editProfileViewModel
+            viewModel = editProfileViewModel,
         )
     }
 
     composable(
         route = "${HomeRoute.detail}/{postId}",
-        arguments = listOf(
-            navArgument("postId") {
-                type = NavType.LongType
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("postId") {
+                    type = NavType.LongType
+                },
+            ),
     ) {
         DetailScreen(
             onBackClick = onBackClick,
             onApplyClick = { onNavigateToApply(it) },
             onIntermediatorProfileClick = onNavigateToIntermediatorProfile,
-            postId = it.arguments!!.getLong("postId")
+            postId = it.arguments!!.getLong("postId"),
         )
     }
 
     composable(
         route = "${MypageRoute.password_change}/{userType}",
-        arguments = listOf(navArgument("userType") { type = NavType.EnumType(UserType::class.java) })
+        arguments = listOf(navArgument("userType") { type = NavType.EnumType(UserType::class.java) }),
     ) {
         PasswordChangeScreen(
             onBackClick = onBackClick,
-            userType = it.arguments!!.getSerializable("userType") as UserType
+            userType = it.arguments!!.getSerializable("userType") as UserType,
         )
     }
 }

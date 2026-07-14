@@ -46,18 +46,18 @@ fun ListForUserItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
     announcementHome: AnnouncementHome,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     ListItem(
         modifier = modifier,
         imageUrl = imageUrl,
         title = announcementHome.dogName,
-        isValid = isValid
+        isValid = isValid,
     ) {
         AnnouncementContent(
             date = announcementHome.date,
             organization = announcementHome.date,
-            hasKennel = true
+            hasKennel = true,
         )
     }
 }
@@ -72,10 +72,10 @@ fun AnnouncementContent(
     isKennel: Boolean,
     dogSize: String,
     date: String,
-    pickUpTime: String
+    pickUpTime: String,
 ) {
     Column(
-        modifier = Modifier.clickable { onClick(postId.toLong()) }
+        modifier = Modifier.clickable { onClick(postId.toLong()) },
     ) {
         AnnouncementItem(
             modifier = Modifier.padding(20.dp),
@@ -85,12 +85,12 @@ fun AnnouncementContent(
             isKennel = isKennel,
             dogSize = dogSize,
             date = date,
-            pickUpTime = pickUpTime
+            pickUpTime = pickUpTime,
         )
         Divider(
             thickness = 1.dp,
             color = MaterialTheme.colorScheme.outline,
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 20.dp),
         )
     }
 }
@@ -105,20 +105,20 @@ fun AnnouncementItem(
     dogSize: String,
     date: String,
     pickUpTime: String,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     ListItem(
         modifier = modifier,
         imageUrl = imageUrl,
         title = dogName,
-        isValid = isValid
+        isValid = isValid,
     ) {
         Column {
             Text(
                 text = location,
                 fontSize = 12.sp,
                 color = Gray3,
-                fontWeight = FontWeight.Normal
+                fontWeight = FontWeight.Normal,
             )
             Spacer(modifier = Modifier.height(12.dp))
             TextWithIcon(text = date, iconId = R.drawable.ic_calendar)
@@ -130,18 +130,19 @@ fun AnnouncementItem(
                     iconId = R.drawable.ic_dog_size,
                     text = dogSize,
                     contentColor = Gray3,
-                    backgroundColor = Gray7
+                    backgroundColor = Gray7,
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 ConnectDogTagWithIcon(
                     iconId = R.drawable.ic_kennel,
-                    text = if (isKennel) {
-                        stringResource(id = R.string.has_kennel)
-                    } else {
-                        stringResource(id = R.string.has_not_kennel)
-                    },
+                    text =
+                        if (isKennel) {
+                            stringResource(id = R.string.has_kennel)
+                        } else {
+                            stringResource(id = R.string.has_not_kennel)
+                        },
                     contentColor = Gray3,
-                    backgroundColor = Gray7
+                    backgroundColor = Gray7,
                 )
             }
         }
@@ -154,36 +155,37 @@ fun ReviewAnnouncement(
     dogName: String,
     location: String,
     date: String,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+        modifier = Modifier.fillMaxWidth().wrapContentHeight(),
     ) {
         NetworkImage(
             imageUrl = imageUrl,
-            modifier = Modifier
-                .size(50.dp)
-                .clip(shape = RoundedCornerShape(12.dp))
-                .alpha(if (!isValid) 0.4F else 1.0F),
-            placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer)
+            modifier =
+                Modifier
+                    .size(50.dp)
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .alpha(if (!isValid) 0.4F else 1.0F),
+            placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column(
-            modifier = Modifier.wrapContentHeight().align(Alignment.CenterVertically)
+            modifier = Modifier.wrapContentHeight().align(Alignment.CenterVertically),
         ) {
             Row {
                 Text(
                     text = dogName,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Gray1
+                    color = Gray1,
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = location,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
-                    color = Gray3
+                    color = Gray3,
                 )
             }
             Spacer(modifier = Modifier.width(6.dp))
@@ -200,13 +202,13 @@ fun ListForUserItem(
     date: String,
     organization: String,
     hasKennel: Boolean,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     ListItem(modifier = modifier, imageUrl = imageUrl, title = location, isValid = isValid) {
         AnnouncementContent(
             date = date,
             organization = organization,
-            hasKennel = hasKennel
+            hasKennel = hasKennel,
         )
     }
 }
@@ -216,18 +218,18 @@ fun ListForOrganizationItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
     applicant: InterApplication,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     ListItem(
         modifier = modifier,
         imageUrl = imageUrl,
         title = applicant.dogName,
-        isValid = isValid
+        isValid = isValid,
     ) {
         ApplicantContent(
             date = applicant.date,
             location = applicant.location,
-            volunteer = applicant.volunteerName
+            volunteer = applicant.volunteerName,
         )
     }
 }
@@ -240,13 +242,13 @@ fun ListForOrganizationItem(
     date: String,
     location: String,
     volunteerName: String,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     ListItem(modifier = modifier, imageUrl = imageUrl, title = dogName, isValid = isValid) {
         ApplicantContent(
             date = date,
             location = location,
-            volunteer = volunteerName
+            volunteer = volunteerName,
         )
     }
 }
@@ -257,28 +259,31 @@ fun ListItem(
     imageUrl: String,
     title: String,
     isValid: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(Alignment.CenterVertically)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentHeight(Alignment.CenterVertically),
     ) {
         Box {
             NetworkImage(
                 imageUrl = imageUrl,
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(shape = RoundedCornerShape(12.dp))
-                    .alpha(if (!isValid) 0.4F else 1.0F),
-                placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer)
+                modifier =
+                    Modifier
+                        .size(100.dp)
+                        .clip(shape = RoundedCornerShape(12.dp))
+                        .alpha(if (!isValid) 0.4F else 1.0F),
+                placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
             )
             if (!isValid) {
                 DescriptionTag(
                     text = stringResource(id = R.string.end_recruit),
-                    modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(4.dp)
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(4.dp),
                 )
             }
         }
@@ -294,7 +299,7 @@ fun ListItem(
 @Composable
 private fun DescriptionTag(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
@@ -302,22 +307,21 @@ private fun DescriptionTag(
         fontWeight = FontWeight.SemiBold,
         fontSize = 8.sp,
         color = MaterialTheme.colorScheme.onPrimary,
-        modifier = modifier
-            .background(shape = RoundedCornerShape(2.dp), color = Gray2)
-            .padding(horizontal = 6.dp, vertical = 2.dp)
+        modifier =
+            modifier
+                .background(shape = RoundedCornerShape(2.dp), color = Gray2)
+                .padding(horizontal = 6.dp, vertical = 2.dp),
     )
 }
 
 @Composable
-private fun Title(
-    text: String
-) {
+private fun Title(text: String) {
     Text(
         text = text,
         style = MaterialTheme.typography.titleSmall,
         fontSize = 14.sp,
         maxLines = 1,
-        overflow = TextOverflow.Ellipsis
+        overflow = TextOverflow.Ellipsis,
     )
 }
 
@@ -327,12 +331,13 @@ fun ReviewItemContent(
     modifier: Modifier = Modifier,
     reviewType: ReviewType = ReviewType.REVIEW,
     userType: UserType = UserType.NORMAL_VOLUNTEER,
-    onInterProfileClick: (Long) -> Unit = {}
+    onInterProfileClick: (Long) -> Unit = {},
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentSize()
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .wrapContentSize(),
     ) {
         ConnectDogReview(review = review, type = reviewType)
         Divider(
@@ -340,7 +345,7 @@ fun ReviewItemContent(
                 .height(1.dp)
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            color = Gray7
+            color = Gray7,
         )
         Spacer(modifier = Modifier.height(16.dp))
         IntermediatorInfo(userType, review) {
@@ -351,7 +356,7 @@ fun ReviewItemContent(
             Modifier
                 .height(8.dp)
                 .fillMaxWidth(),
-            color = Gray7
+            color = Gray7,
         )
     }
 }
@@ -360,16 +365,17 @@ fun ReviewItemContent(
 private fun IntermediatorInfo(
     userType: UserType,
     review: Review,
-    onInterProfileClick: () -> Unit
+    onInterProfileClick: () -> Unit,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         NetworkImage(
             imageUrl = review.postMainImage,
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(50.dp),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Column {
@@ -378,7 +384,7 @@ private fun IntermediatorInfo(
                     text = review.organization,
                     fontSize = 12.sp,
                     color = Gray1,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 if (userType != UserType.INTERMEDIATOR) {
@@ -387,43 +393,43 @@ private fun IntermediatorInfo(
                         fontSize = 12.sp,
                         color = Gray3,
                         fontWeight = FontWeight.Normal,
-                        modifier = Modifier.clickable { onInterProfileClick() }
+                        modifier = Modifier.clickable { onInterProfileClick() },
                     )
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = review.dogName,
                     fontSize = 14.sp,
                     color = Gray1,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = review.location,
                     fontSize = 12.sp,
                     color = Gray3,
-                    fontWeight = FontWeight.Normal
+                    fontWeight = FontWeight.Normal,
                 )
             }
             Spacer(modifier = Modifier.height(7.dp))
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_clock),
                     contentDescription = null,
-                    tint = Gray2
+                    tint = Gray2,
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = review.date,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Gray2
+                    color = Gray2,
                 )
             }
         }

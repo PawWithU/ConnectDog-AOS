@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -22,7 +21,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsAnimationCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseException
@@ -32,7 +30,6 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.messaging.FirebaseMessaging
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
-import com.kusitms.connectdog.domain.usecase.login.AppMode
 import dagger.hilt.android.AndroidEntryPoint
 import org.orbitmvi.orbit.compose.collectAsState
 import java.util.concurrent.TimeUnit
@@ -54,7 +51,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         imeListener()
 
-
         setContent {
             val uiState by viewModel.collectAsState()
             uiState.appMode?.let { appMode ->
@@ -67,7 +63,7 @@ class MainActivity : ComponentActivity() {
                         sendVerificationCode = { sendVerificationCode("+82${it.substring(1)}") },
                         verifyCode = { code, callback -> verifyCode(code) { callback(it) } },
                         openWebBrowser = { url -> openWebBrowser(url) },
-                        finish = { finishActivity() }
+                        finish = { finishActivity() },
                     )
                 }
             }
@@ -76,7 +72,7 @@ class MainActivity : ComponentActivity() {
 
     private fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential,
-        callback: (Boolean) -> Unit
+        callback: (Boolean) -> Unit,
     ) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
@@ -90,29 +86,36 @@ class MainActivity : ComponentActivity() {
             }
     }
 
-    private fun verifyCode(code: String, callback: (Boolean) -> Unit) {
+    private fun verifyCode(
+        code: String,
+        callback: (Boolean) -> Unit,
+    ) {
         val credential = PhoneAuthProvider.getCredential(verificationId, code)
         signInWithPhoneAuthCredential(credential) { isSuccess -> callback(isSuccess) }
     }
 
     private fun sendVerificationCode(phoneNumber: String) {
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber)
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(this@MainActivity)
-            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {}
-                override fun onVerificationFailed(e: FirebaseException) {}
+        val options =
+            PhoneAuthOptions.newBuilder(auth)
+                .setPhoneNumber(phoneNumber)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(this@MainActivity)
+                .setCallbacks(
+                    object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {}
 
-                override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    Toast.makeText(this@MainActivity, "인증번호를 전송했습니다", Toast.LENGTH_SHORT).show()
-                    this@MainActivity.verificationId = verificationId
-                }
-            })
-            .build()
+                        override fun onVerificationFailed(e: FirebaseException) {}
+
+                        override fun onCodeSent(
+                            verificationId: String,
+                            token: PhoneAuthProvider.ForceResendingToken,
+                        ) {
+                            Toast.makeText(this@MainActivity, "인증번호를 전송했습니다", Toast.LENGTH_SHORT).show()
+                            this@MainActivity.verificationId = verificationId
+                        }
+                    },
+                )
+                .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
@@ -123,7 +126,7 @@ class MainActivity : ComponentActivity() {
             object : WindowInsetsAnimationCompat.Callback(DISPATCH_MODE_STOP) {
                 override fun onProgress(
                     insets: WindowInsetsCompat,
-                    runningAnimations: MutableList<WindowInsetsAnimationCompat>
+                    runningAnimations: MutableList<WindowInsetsAnimationCompat>,
                 ): WindowInsetsCompat {
                     val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
                     val sysBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -132,7 +135,7 @@ class MainActivity : ComponentActivity() {
                         if (imeHeight - sysBarInsets.bottom < 0) 0 else imeHeight - sysBarInsets.bottom
                     return insets
                 }
-            }
+            },
         )
 
         ViewCompat.setOnApplyWindowInsetsListener(window.decorView.rootView) { view, windowInsets ->
@@ -154,28 +157,29 @@ class MainActivity : ComponentActivity() {
                 if (!task.isSuccessful) return@OnCompleteListener
                 val token = task.result
                 viewModel.updateFcmToken(token)
-            }
+            },
         )
     }
 
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-        } else {
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isGranted ->
+            if (isGranted) {
+            } else {
+            }
         }
-    }
 
     private fun askNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     this,
-                    Manifest.permission.POST_NOTIFICATIONS
+                    Manifest.permission.POST_NOTIFICATIONS,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         this,
-                        Manifest.permission.POST_NOTIFICATIONS
+                        Manifest.permission.POST_NOTIFICATIONS,
                     )
                 ) {
                     // 이미 권한을 거절한 경우 권한 설정 화면으로 이동

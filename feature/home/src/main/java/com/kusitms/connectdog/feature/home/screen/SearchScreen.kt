@@ -21,35 +21,34 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementContent
@@ -84,7 +83,7 @@ internal fun SearchScreen(
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
     onDetailClick: (Long) -> Unit,
-    onNavigateToFilter: (Filter) -> Unit
+    onNavigateToFilter: (Filter) -> Unit,
 ) {
     LaunchedEffect(filterArg) {
         viewModel.setFilter(filterArg!!)
@@ -105,34 +104,33 @@ internal fun SearchScreen(
             },
             onSelectedSchedule = { start, end ->
                 viewModel.setFilter(start, end)
-            }
+            },
         )
         Divider(thickness = 8.dp, color = Gray7)
         AnnouncementContent(
             uiState = announcementUiState,
             sortBtn = {
                 SortButton(
-                    modifier = Modifier
-                        .padding(top = 20.dp, start = 20.dp, end = 20.dp)
-                        .fillMaxWidth(),
+                    modifier =
+                        Modifier
+                            .padding(top = 20.dp, start = 20.dp, end = 20.dp)
+                            .fillMaxWidth(),
                     isByDeadline = isByDeadline,
-                    count = it
+                    count = it,
                 ) { viewModel.changeOrderCondition() }
             },
-            onClick = onDetailClick
+            onClick = onDetailClick,
         )
     }
 }
 
 @Composable
-private fun TopAppBar(
-    onBackClick: () -> Unit
-) {
+private fun TopAppBar(onBackClick: () -> Unit) {
     ConnectDogTopAppBar(
         titleRes = R.string.search_app_bar_title,
         navigationType = TopAppBarNavigationType.BACK,
         navigationIconContentDescription = "Back",
-        onNavigationClick = { onBackClick() }
+        onNavigationClick = { onBackClick() },
     )
 }
 
@@ -143,7 +141,7 @@ private fun FilterHeader(
     filter: Filter,
     onClick: () -> Unit,
     onSelectedRegion: (String, String) -> Unit,
-    onSelectedSchedule: (LocalDate, LocalDate) -> Unit
+    onSelectedSchedule: (LocalDate, LocalDate) -> Unit,
 ) {
     val departureSheetState = rememberModalBottomSheetState()
     var isDepartureSheetOpen by rememberSaveable { mutableStateOf(false) }
@@ -156,58 +154,60 @@ private fun FilterHeader(
 
     val departureText = filter.departure.ifEmpty { stringResource(id = R.string.filter_select_departure) }
     val arrivalText = filter.arrival.ifEmpty { stringResource(id = R.string.filter_select_destination) }
-    val dateText = if (filter.startDate != null && filter.endDate != null) {
-        dateRangeDisplay(filter.startDate!!, filter.endDate!!)
-    } else {
-        stringResource(id = R.string.filter_schedule)
-    }
+    val dateText =
+        if (filter.startDate != null && filter.endDate != null) {
+            dateRangeDisplay(filter.startDate!!, filter.endDate!!)
+        } else {
+            stringResource(id = R.string.filter_schedule)
+        }
 
     val departureSelected = filter.departure.isNotEmpty()
     val arrivalSelected = filter.arrival.isNotEmpty()
     val dateSelected = filter.startDate != null
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = Icons.Outlined.LocationOn,
             contentDescription = null,
             tint = if (departureSelected) MaterialTheme.colorScheme.primary else Gray4,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = departureText,
             style = MaterialTheme.typography.bodyMedium,
-            fontSize = 14.sp,
             color = if (departureSelected) Gray1 else Gray4,
-            modifier = Modifier
-                .weight(1f)
-                .clickable { isDepartureSheetOpen = true }
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .clickable { isDepartureSheetOpen = true },
         )
         Spacer(modifier = Modifier.width(12.dp))
         Icon(
             imageVector = Icons.Outlined.LocationOn,
             contentDescription = null,
             tint = if (arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
         Text(
             text = arrivalText,
             style = MaterialTheme.typography.bodyMedium,
-            fontSize = 14.sp,
             color = if (arrivalSelected) Gray1 else Gray4,
-            modifier = Modifier
-                .weight(1f)
-                .clickable { isDestinationSheetOpen = true }
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .clickable { isDestinationSheetOpen = true },
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_expand_down),
             contentDescription = null,
             tint = if (arrivalSelected) MaterialTheme.colorScheme.primary else Gray4,
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(16.dp),
         )
     }
 
@@ -215,7 +215,7 @@ private fun FilterHeader(
         RegionBottomSheet(
             sheetState = departureSheetState,
             regionType = RegionType.DEPARTURE,
-            onDismissRequest = { isDepartureSheetOpen = false }
+            onDismissRequest = { isDepartureSheetOpen = false },
         ) {
             isDepartureSheetOpen = false
             onSelectedRegion(it, filter.arrival)
@@ -226,7 +226,7 @@ private fun FilterHeader(
         RegionBottomSheet(
             sheetState = destinationSheetState,
             regionType = RegionType.DESTINATION,
-            onDismissRequest = { isDestinationSheetOpen = false }
+            onDismissRequest = { isDestinationSheetOpen = false },
         ) {
             isDestinationSheetOpen = false
             onSelectedRegion(filter.departure, it)
@@ -236,31 +236,31 @@ private fun FilterHeader(
 
     // Schedule row
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { isScheduleSheetOpen = true }
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable { isScheduleSheetOpen = true }
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_calendar),
             contentDescription = null,
             tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = dateText,
             style = MaterialTheme.typography.bodyMedium,
-            fontSize = 14.sp,
             color = if (dateSelected) Gray1 else Gray4,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
         Icon(
             painter = painterResource(id = R.drawable.ic_expand_down),
             contentDescription = null,
             tint = if (dateSelected) MaterialTheme.colorScheme.primary else Gray4,
-            modifier = Modifier.size(16.dp)
+            modifier = Modifier.size(16.dp),
         )
     }
 
@@ -268,7 +268,7 @@ private fun FilterHeader(
         ModalBottomSheet(
             onDismissRequest = { isScheduleSheetOpen = false },
             sheetState = scheduleSheetState,
-            containerColor = Color.White
+            containerColor = Color.White,
         ) {
             var tempStartDate by remember { mutableStateOf(filter.startDate ?: LocalDate.now()) }
             var tempEndDate by remember { mutableStateOf(filter.endDate ?: LocalDate.now()) }
@@ -276,13 +276,12 @@ private fun FilterHeader(
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
                     text = stringResource(id = R.string.filter_schedule),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 18.sp
+                    style = MaterialTheme.typography.headlineSmall,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 ConnectDogCalendar(
                     startDate = tempStartDate,
-                    endDate = tempEndDate
+                    endDate = tempEndDate,
                 ) { start, end ->
                     tempStartDate = start
                     tempEndDate = end
@@ -295,13 +294,12 @@ private fun FilterHeader(
                     },
                     modifier = Modifier.fillMaxWidth().height(48.dp),
                     shape = RoundedCornerShape(6.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 ) {
                     Text(
                         text = stringResource(id = R.string.filter_apply02),
+                        style = MaterialTheme.typography.titleSmall,
                         color = Color.White,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W600
                     )
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -312,41 +310,45 @@ private fun FilterHeader(
     HorizontalDivider(thickness = 1.dp, color = Gray10)
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable { onClick() }
+                .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_filter),
             contentDescription = null,
             tint = if (filter.detail.isNotEmpty()) MaterialTheme.colorScheme.primary else Gray4,
-            modifier = Modifier.size(18.dp)
+            modifier = Modifier.size(18.dp),
         )
         Box(
-            modifier = Modifier
-                .width(1.dp)
-                .height(16.dp)
-                .background(Gray5)
+            modifier =
+                Modifier
+                    .width(1.dp)
+                    .height(16.dp)
+                    .background(Gray5),
         )
         DetailChip(
             label = filter.detail.dogSize?.toDisplayName() ?: stringResource(id = R.string.filter_dog_size),
-            isSelected = filter.detail.dogSize != null
+            isSelected = filter.detail.dogSize != null,
         )
         DetailChip(
-            label = when (filter.detail.hasKennel) {
-                true -> stringResource(id = R.string.filter_kennel_no_need)
-                false -> stringResource(id = R.string.filter_kennel_need)
-                null -> stringResource(id = R.string.filter_kennel)
-            },
-            isSelected = filter.detail.hasKennel != null
+            label =
+                when (filter.detail.hasKennel) {
+                    true -> stringResource(id = R.string.filter_kennel_no_need)
+                    false -> stringResource(id = R.string.filter_kennel_need)
+                    null -> stringResource(id = R.string.filter_kennel)
+                },
+            isSelected = filter.detail.hasKennel != null,
         )
         DetailChip(
-            label = filter.detail.organization?.ifEmpty { null }
-                ?: stringResource(id = R.string.filter_organization),
-            isSelected = !filter.detail.organization.isNullOrEmpty()
+            label =
+                filter.detail.organization?.ifEmpty { null }
+                    ?: stringResource(id = R.string.filter_organization),
+            isSelected = !filter.detail.organization.isNullOrEmpty(),
         )
     }
 }
@@ -354,28 +356,28 @@ private fun FilterHeader(
 @Composable
 private fun DetailChip(
     label: String,
-    isSelected: Boolean
+    isSelected: Boolean,
 ) {
     val color = if (isSelected) MaterialTheme.colorScheme.primary else Gray20
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .border(width = 1.dp, color = color, shape = CircleShape)
-            .padding(horizontal = 10.dp, vertical = 6.dp)
+        modifier =
+            Modifier
+                .border(width = 1.dp, color = color, shape = CircleShape)
+                .padding(horizontal = 10.dp, vertical = 6.dp),
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.labelLarge,
             color = color,
-            maxLines = 1
+            maxLines = 1,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
             painter = painterResource(id = R.drawable.ic_expand_down),
             contentDescription = null,
             tint = color,
-            modifier = Modifier.size(12.dp)
+            modifier = Modifier.size(12.dp),
         )
     }
 }
@@ -385,41 +387,43 @@ private fun SortButton(
     modifier: Modifier = Modifier,
     isByDeadline: Boolean = true,
     count: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
-        val annotatedString = buildAnnotatedString {
-            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                append("${count}개")
+        val annotatedString =
+            buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append("${count}개")
+                }
+                append("의 공고")
             }
-            append("의 공고")
-        }
 
         Text(
             text = annotatedString,
+            style = MaterialTheme.typography.bodyMedium,
             color = Gray3,
-            fontSize = 14.sp
         )
         Spacer(modifier = Modifier.weight(1f))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End,
-            modifier = Modifier.clickable { onClick() }
+            modifier = Modifier.clickable { onClick() },
         ) {
             Text(
-                text = if (isByDeadline) {
-                    stringResource(id = R.string.search_sort_end)
-                } else {
-                    stringResource(id = R.string.search_sort_recent)
-                },
+                text =
+                    if (isByDeadline) {
+                        stringResource(id = R.string.search_sort_end)
+                    } else {
+                        stringResource(id = R.string.search_sort_recent)
+                    },
                 style = MaterialTheme.typography.bodyMedium,
-                color = Gray1
+                color = Gray1,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Icon(
                 painter = painterResource(id = R.drawable.ic_sort),
                 contentDescription = "정렬",
-                tint = Gray1
+                tint = Gray1,
             )
         }
     }
@@ -429,7 +433,7 @@ private fun SortButton(
 private fun AnnouncementContent(
     uiState: SearchAnnouncementUiState,
     sortBtn: @Composable (Int) -> Unit,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     when (uiState) {
         is SearchAnnouncementUiState.SearchAnnouncements -> {
@@ -439,7 +443,7 @@ private fun AnnouncementContent(
         is SearchAnnouncementUiState.Empty -> {
             Empty(
                 titleRes = R.string.filter_no_announcement,
-                descriptionRes = R.string.filter_no_announcement_description
+                descriptionRes = R.string.filter_no_announcement_description,
             )
         }
 
@@ -451,7 +455,7 @@ private fun AnnouncementContent(
 private fun AnnouncementList(
     list: List<Announcement>,
     sortBtn: @Composable (Int) -> Unit,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     LazyColumn {
         item {
@@ -467,7 +471,7 @@ private fun AnnouncementList(
                 dogSize = it.dogSize,
                 date = it.date,
                 pickUpTime = it.pickUpTime,
-                onClick = onClick
+                onClick = onClick,
             )
         }
     }
@@ -525,7 +529,10 @@ private fun AnnouncementList(
 /**
  * UI display
  */
-private fun dateRangeDisplay(startDate: LocalDate, endDate: LocalDate): String {
+private fun dateRangeDisplay(
+    startDate: LocalDate,
+    endDate: LocalDate,
+): String {
     val datePattern = "M월 dd일"
     if (startDate == endDate) return startDate.dateFormat(datePattern)
     return startDate.dateFormat(datePattern) + " - " + endDate.dateFormat(datePattern)

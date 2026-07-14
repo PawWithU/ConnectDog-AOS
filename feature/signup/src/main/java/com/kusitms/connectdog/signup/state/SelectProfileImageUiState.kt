@@ -1,12 +1,13 @@
 package com.kusitms.connectdog.signup.state
 
 data class SelectProfileImageUiState(
-    val selectedImageId: Int
+    val selectedImageId: Int,
 ) {
     companion object {
-        fun empty() = SelectProfileImageUiState(
-            selectedImageId = 1
-        )
+        fun empty() =
+            SelectProfileImageUiState(
+                selectedImageId = 1,
+            )
     }
 }
 

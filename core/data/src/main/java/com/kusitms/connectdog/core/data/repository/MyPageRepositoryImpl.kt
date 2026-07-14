@@ -12,51 +12,53 @@ import com.kusitms.connectdog.core.model.signup.IsDuplicated
 import com.kusitms.connectdog.core.model.signup.Nickname
 import javax.inject.Inject
 
-internal class MyPageRepositoryImpl @Inject constructor(
-    private val api: ApiService,
-    private val interApi: InterApiService
-) : MyPageRepository {
-    override suspend fun getMyInfo(): MyInfoResponseItem {
-        return api.getMyInfo()
-    }
+internal class MyPageRepositoryImpl
+    @Inject
+    constructor(
+        private val api: ApiService,
+        private val interApi: InterApiService,
+    ) : MyPageRepository {
+        override suspend fun getMyInfo(): MyInfoResponseItem {
+            return api.getMyInfo()
+        }
 
-    override suspend fun getUserInfo(): UserInfoResponse {
-        return api.getUserInfo()
-    }
+        override suspend fun getUserInfo(): UserInfoResponse {
+            return api.getUserInfo()
+        }
 
-    override suspend fun getBadge(): List<BadgeResponse> {
-        return api.getBadge()
-    }
+        override suspend fun getBadge(): List<BadgeResponse> {
+            return api.getBadge()
+        }
 
-    override suspend fun getBookmarkData(): List<BookmarkResponseItem> {
-        return api.getBookmarkData()
-    }
+        override suspend fun getBookmarkData(): List<BookmarkResponseItem> {
+            return api.getBookmarkData()
+        }
 
-    override suspend fun postNickname(nickname: Nickname): IsDuplicated {
-        return api.postNickname(nickname)
-    }
+        override suspend fun postNickname(nickname: Nickname): IsDuplicated {
+            return api.postNickname(nickname)
+        }
 
-    override suspend fun updateUserInfo(userInfo: UserInfoResponse) {
-        return api.updateUserInfo(userInfo)
-    }
+        override suspend fun updateUserInfo(userInfo: UserInfoResponse) {
+            return api.updateUserInfo(userInfo)
+        }
 
-    override suspend fun updateNotification() {
-        api.patchNotification()
-    }
+        override suspend fun updateNotification() {
+            api.patchNotification()
+        }
 
-    override suspend fun getVolunteerAccountInfo(): VolunteerAccountInfo {
-        return api.getVolunteerAccountInfo()
-    }
+        override suspend fun getVolunteerAccountInfo(): VolunteerAccountInfo {
+            return api.getVolunteerAccountInfo()
+        }
 
-    override suspend fun getInterAccountInfo(): IntermediatorAccountInfo {
-        return interApi.getInterAccountInfo()
-    }
+        override suspend fun getInterAccountInfo(): IntermediatorAccountInfo {
+            return interApi.getInterAccountInfo()
+        }
 
-    override suspend fun volunteerWithdraw() {
-        api.volunteerWithdraw()
-    }
+        override suspend fun volunteerWithdraw() {
+            api.volunteerWithdraw()
+        }
 
-    override suspend fun interWithdraw() {
-        interApi.interWithdraw()
+        override suspend fun interWithdraw() {
+            interApi.interWithdraw()
+        }
     }
-}

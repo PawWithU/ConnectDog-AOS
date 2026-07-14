@@ -24,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogLogOutDialog
@@ -44,7 +43,7 @@ fun SettingScreen(
     onBackClick: () -> Unit,
     onManageAccountClick: (UserType) -> Unit,
     onLogoutClick: () -> Unit,
-    viewModel: SettingViewModel = hiltViewModel()
+    viewModel: SettingViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
@@ -52,15 +51,15 @@ fun SettingScreen(
                 titleRes = R.string.setting,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = null,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             userType = userType,
             onClick = onManageAccountClick,
             onLogoutClick = onLogoutClick,
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 }
@@ -70,7 +69,7 @@ private fun Content(
     userType: UserType,
     onClick: (UserType) -> Unit,
     onLogoutClick: () -> Unit,
-    viewModel: SettingViewModel
+    viewModel: SettingViewModel,
 ) {
     var checked by remember { mutableStateOf(true) }
     var isWithDrawFailDialogVisible by rememberSaveable { mutableStateOf(false) }
@@ -90,33 +89,35 @@ private fun Content(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 68.dp, start = 20.dp, end = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 68.dp, start = 20.dp, end = 20.dp),
     ) {
         Text(
             text = "알림 설정",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(40.dp),
         ) {
             Text(
                 text = "알림 ON/OFF",
+                style = MaterialTheme.typography.bodyLarge,
                 color = Gray2,
-                fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.TopStart)
+                modifier = Modifier.align(Alignment.TopStart),
             )
             Text(
                 text = "이동봉사 신청 승인, 입양 후 근황 업로드 알림",
+                style = MaterialTheme.typography.labelLarge,
                 color = Gray4,
-                fontSize = 12.sp,
                 fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.BottomStart)
+                modifier = Modifier.align(Alignment.BottomStart),
             )
             Switch(
                 modifier = Modifier.align(Alignment.CenterEnd),
@@ -124,50 +125,52 @@ private fun Content(
                 onCheckedChange = {
                     checked = it
                     viewModel.updateNotification()
-                }
+                },
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
         Text(
             text = "사용자 설정",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "계정 정보 관리",
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = Gray2,
-            modifier = Modifier.clickable { onClick(userType) }
+            modifier = Modifier.clickable { onClick(userType) },
         )
         Spacer(modifier = Modifier.height(30.dp))
         Text(
             text = "기타",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "문의하기",
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = Gray2,
-            modifier = Modifier.clickable {
-                isInquireDialogVisible = true
-            }
+            modifier =
+                Modifier.clickable {
+                    isInquireDialogVisible = true
+                },
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "로그아웃",
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = Gray2,
-            modifier = Modifier.clickable { isLogoutDialogVisible = true }
+            modifier = Modifier.clickable { isLogoutDialogVisible = true },
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "회원탈퇴",
-            fontSize = 16.sp,
+            style = MaterialTheme.typography.bodyLarge,
             color = Gray2,
-            modifier = Modifier.clickable {
-                viewModel.updateIsAbleWithdraw(userType)
-            }
+            modifier =
+                Modifier.clickable {
+                    viewModel.updateIsAbleWithdraw(userType)
+                },
         )
     }
 
@@ -184,7 +187,7 @@ private fun Content(
                 isWithDrawDialogVisible = false
                 viewModel.deleteAccount(userType)
                 isWithDrawCompleteDialogVisible = true
-            }
+            },
         )
     }
 
@@ -196,7 +199,7 @@ private fun Content(
             onClickOk = {
                 isWithDrawCompleteDialogVisible = false
                 onLogoutClick()
-            }
+            },
         )
     }
 
@@ -211,7 +214,7 @@ private fun Content(
             descriptionRes = R.string.logout_description,
             okText = R.string.logout_cancel,
             cancelText = R.string.logout_ok,
-            onClickOk = { isLogoutDialogVisible = false }
+            onClickOk = { isLogoutDialogVisible = false },
         )
     }
 
@@ -220,7 +223,7 @@ private fun Content(
             onDismissRequest = { isWithDrawFailDialogVisible = false },
             descriptionRes = R.string.description,
             okText = R.string.ok,
-            onClickOk = { isWithDrawFailDialogVisible = false }
+            onClickOk = { isWithDrawFailDialogVisible = false },
         )
     }
 
@@ -230,7 +233,7 @@ private fun Content(
             titleRes = R.string.inquire_title,
             descriptionRes = R.string.inquire_description,
             okText = R.string.inquire_ok,
-            onClickOk = { isInquireDialogVisible = false }
+            onClickOk = { isInquireDialogVisible = false },
         )
     }
 }

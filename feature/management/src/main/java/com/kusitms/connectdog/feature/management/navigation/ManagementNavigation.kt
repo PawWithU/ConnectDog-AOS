@@ -21,7 +21,10 @@ fun NavController.navigateCreateReview(application: String) {
     navigate("${ManagementRoute.create_review}/$application")
 }
 
-fun NavController.navigateCheckReview(reviewId: Long, userType: UserType) {
+fun NavController.navigateCheckReview(
+    reviewId: Long,
+    userType: UserType,
+) {
     navigate("${ManagementRoute.check_review}/$reviewId/$userType")
 }
 
@@ -32,7 +35,7 @@ fun NavGraphBuilder.managementNavGraph(
     onNavigateToInterProfile: (Long) -> Unit,
     onNavigateToHome: (String) -> Unit,
     onNavigateToDetail: (Long) -> Unit,
-    onShowErrorSnackbar: (throwable: Throwable?) -> Unit
+    onShowErrorSnackbar: (throwable: Throwable?) -> Unit,
 ) {
     composable(route = ManagementRoute.route) {
         ManagementRoute(
@@ -41,30 +44,32 @@ fun NavGraphBuilder.managementNavGraph(
             onNavigateToCheckReview,
             onNavigateToHome,
             onNavigateToDetail,
-            onShowErrorSnackbar
+            onShowErrorSnackbar,
         )
     }
 
     composable(
         route = "${ManagementRoute.create_review}/{application}",
-        arguments = listOf(
-            navArgument("application") { type = NavType.StringType }
-        )
+        arguments =
+            listOf(
+                navArgument("application") { type = NavType.StringType },
+            ),
     ) {
         val applicationJson = it.arguments?.getString("application")
         val application = Gson().fromJson(applicationJson, Application::class.java)
         CreateReviewScreen(
             onBackClick = onBackClick,
-            application = application
+            application = application,
         )
     }
 
     composable(
         route = "${ManagementRoute.check_review}/{reviewId}/{userType}",
-        arguments = listOf(
-            navArgument("reviewId") { type = NavType.LongType },
-            navArgument("userType") { type = NavType.EnumType(UserType::class.java) }
-        )
+        arguments =
+            listOf(
+                navArgument("reviewId") { type = NavType.LongType },
+                navArgument("userType") { type = NavType.EnumType(UserType::class.java) },
+            ),
     ) {
         val postId = it.arguments!!.getLong("reviewId")
         val userType = it.arguments!!.getSerializable("userType") as UserType
@@ -72,7 +77,7 @@ fun NavGraphBuilder.managementNavGraph(
             onBackClick = onBackClick,
             userType = userType,
             reviewId = postId,
-            onInterProfileClick = onNavigateToInterProfile
+            onInterProfileClick = onNavigateToInterProfile,
         )
     }
 }

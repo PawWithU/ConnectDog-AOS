@@ -27,16 +27,16 @@ fun CheckReviewScreen(
     onInterProfileClick: (Long) -> Unit,
     reviewId: Long,
     userType: UserType,
-    viewModel: ReviewViewModel = hiltViewModel()
+    viewModel: ReviewViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.review,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         LaunchedEffect(key1 = Unit) {
             viewModel.updateReviewId(reviewId)
@@ -47,14 +47,15 @@ fun CheckReviewScreen(
             is ReviewUiState.Loading -> Loading()
             is ReviewUiState.Reviews -> {
                 Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 48.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(top = 48.dp),
                 ) {
                     ReviewItemContent(
                         review = (reviewUiState as ReviewUiState.Reviews).review,
                         userType = userType,
-                        onInterProfileClick = onInterProfileClick
+                        onInterProfileClick = onInterProfileClick,
                     )
                 }
             }

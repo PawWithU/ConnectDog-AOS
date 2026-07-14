@@ -32,18 +32,18 @@ fun CalendarBottomSheet(
     end: LocalDate?,
     onDismissClick: () -> Unit,
     onStartDateChanged: (LocalDate) -> Unit,
-    onEndDateChanged: (LocalDate) -> Unit
+    onEndDateChanged: (LocalDate) -> Unit,
 ) {
     ConnectDogBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = onDismissClick
+        onDismissRequest = onDismissClick,
     ) {
         Content(
             start = start,
             end = end,
             onDismissClick = onDismissClick,
             onStartDateChanged = onStartDateChanged,
-            onEndDateChanged = onEndDateChanged
+            onEndDateChanged = onEndDateChanged,
         )
     }
 }
@@ -54,34 +54,40 @@ private fun Content(
     end: LocalDate?,
     onDismissClick: () -> Unit,
     onStartDateChanged: (LocalDate) -> Unit,
-    onEndDateChanged: (LocalDate) -> Unit
+    onEndDateChanged: (LocalDate) -> Unit,
 ) {
     var startDate by remember { mutableStateOf(start ?: LocalDate.now()) }
     var endDate by remember { mutableStateOf(end ?: LocalDate.now()) }
 
     Column(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         ConnectDogTopAppBar(
             titleRes = R.string.calendar_title,
             navigationType = TopAppBarNavigationType.CLOSE,
             navigationIconContentDescription = "close",
-            onNavigationClick = onDismissClick
+            onNavigationClick = onDismissClick,
         )
         Spacer(modifier = Modifier.height(15.dp))
         TextWithIcon(
-            text = if (startDate == endDate) { "$startDate" } else { "$startDate - $endDate" },
+            text =
+                if (startDate == endDate) {
+                    "$startDate"
+                } else {
+                    "$startDate - $endDate"
+                },
             spacer = 12,
             size = 16,
-            iconId = com.kusitms.connectdog.core.designsystem.R.drawable.ic_clock
+            iconId = com.kusitms.connectdog.core.designsystem.R.drawable.ic_clock,
         )
         Spacer(modifier = Modifier.height(15.dp))
         ConnectDogCalendar(
             startDate = startDate,
-            endDate = endDate
+            endDate = endDate,
         ) { start, end ->
             startDate = start
             endDate = end
@@ -93,7 +99,7 @@ private fun Content(
                 onEndDateChanged(endDate)
                 onDismissClick()
             },
-            content = "적용하기"
+            content = "적용하기",
         )
         Spacer(modifier = Modifier.height(32.dp))
     }

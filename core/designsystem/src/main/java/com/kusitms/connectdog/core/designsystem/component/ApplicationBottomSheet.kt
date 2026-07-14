@@ -41,7 +41,7 @@ fun ApplicationBottomSheet(
     volunteer: Volunteer,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    bottomButton: @Composable () -> Unit
+    bottomButton: @Composable () -> Unit,
 ) {
     Content(
         modifier = modifier,
@@ -49,7 +49,7 @@ fun ApplicationBottomSheet(
         volunteer = volunteer,
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        bottomButton = bottomButton
+        bottomButton = bottomButton,
     ) {
         ApplicationContent(application = application)
     }
@@ -64,7 +64,7 @@ fun InterApplicationBottomSheet(
     volunteer: Volunteer,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    bottomButton: @Composable () -> Unit
+    bottomButton: @Composable () -> Unit,
 ) {
     Content(
         modifier = modifier,
@@ -72,7 +72,7 @@ fun InterApplicationBottomSheet(
         volunteer = volunteer,
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        bottomButton = bottomButton
+        bottomButton = bottomButton,
     ) {
         InterApplicationContent(application = application)
     }
@@ -87,24 +87,24 @@ private fun Content(
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     bottomButton: @Composable () -> Unit,
-    informContent: @Composable () -> Unit
+    informContent: @Composable () -> Unit,
 ) {
     ConnectDogBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         Column(
-            modifier = Modifier.wrapContentSize()
+            modifier = Modifier.wrapContentSize(),
         ) {
             BottomSheetTopAppBar(titleRes = titleRes) { onDismissRequest() }
             Column(
-                modifier = Modifier.padding(20.dp)
+                modifier = Modifier.padding(20.dp),
             ) {
                 informContent()
                 Divider(
                     thickness = 1.dp,
                     color = Gray6,
-                    modifier = Modifier.padding(vertical = 20.dp)
+                    modifier = Modifier.padding(vertical = 20.dp),
                 )
                 InformationContent(volunteer = volunteer)
             }
@@ -116,13 +116,13 @@ private fun Content(
 @Composable
 private fun BottomSheetTopAppBar(
     @StringRes titleRes: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = titleRes,
         navigationType = TopAppBarNavigationType.CLOSE,
         navigationIconContentDescription = "close",
-        onNavigationClick = onBackClick
+        onNavigationClick = onBackClick,
     )
 }
 
@@ -135,7 +135,7 @@ private fun ApplicationContent(application: Application) {
         isKennel = application.hasKennel,
         dogSize = application.dogSize!!,
         date = application.date,
-        pickUpTime = application.pickUpTime!!
+        pickUpTime = application.pickUpTime!!,
     )
 }
 
@@ -146,7 +146,7 @@ private fun InterApplicationContent(application: InterApplication) {
         dogName = application.dogName,
         date = application.date,
         location = application.location,
-        volunteerName = application.volunteerName
+        volunteerName = application.volunteerName,
     )
 }
 
@@ -163,13 +163,13 @@ private fun InformationContent(volunteer: Volunteer) {
 @Composable
 private fun Information(
     @StringRes titleRes: Int,
-    inform: String
+    inform: String,
 ) {
     Row {
         Text(
             text = stringResource(id = titleRes),
             style = MaterialTheme.typography.bodyLarge,
-            color = Gray3
+            color = Gray3,
         )
         Spacer(modifier = Modifier.size(12.dp))
         Text(text = inform, style = MaterialTheme.typography.bodyLarge)
@@ -179,17 +179,18 @@ private fun Information(
 @Composable
 private fun CommentContent(comment: String) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Orange20, shape = RoundedCornerShape(4.dp))
-            .padding(10.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(color = Orange20, shape = RoundedCornerShape(4.dp))
+                .padding(10.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stringResource(id = R.string.inquiry),
             style = MaterialTheme.typography.titleSmall,
-            fontSize = 14.sp
+            fontSize = 14.sp,
         )
         Text(text = comment, style = MaterialTheme.typography.bodyMedium)
     }

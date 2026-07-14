@@ -1,0 +1,7 @@
+{
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "ponytail@ponytail": true,
+    "serena@claude-plugins-official": true
+  }
+}

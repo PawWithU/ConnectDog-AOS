@@ -6,5 +6,5 @@ data class InterProfileInfoResponse(
     val intro: String,
     val url: String,
     val contact: String,
-    val guide: String
+    val guide: String,
 )

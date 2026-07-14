@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -28,14 +30,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementContent
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogInformationCard
@@ -65,7 +63,7 @@ internal fun InterProfileScreen(
     onBackClick: () -> Unit,
     onNavigateToInterProfileEdit: (String) -> Unit,
     onNavigateToAnnouncementManagement: (Long) -> Unit,
-    viewModel: InterProfileViewModel = hiltViewModel()
+    viewModel: InterProfileViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
@@ -73,14 +71,14 @@ internal fun InterProfileScreen(
                 titleRes = R.string.inter_profile,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             onNavigateToInterProfileEdit = onNavigateToInterProfileEdit,
             viewModel = viewModel,
-            onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement
+            onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement,
         )
     }
 }
@@ -89,7 +87,7 @@ internal fun InterProfileScreen(
 private fun Content(
     onNavigateToInterProfileEdit: (String) -> Unit,
     onNavigateToAnnouncementManagement: (Long) -> Unit,
-    viewModel: InterProfileViewModel
+    viewModel: InterProfileViewModel,
 ) {
     val reviewUiState by viewModel.interProfileReviewUiState.collectAsStateWithLifecycle()
     val findingUiState by viewModel.interProfileFindingUiState.collectAsStateWithLifecycle()
@@ -99,7 +97,7 @@ private fun Content(
 
     Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         when (infoUiState) {
@@ -119,19 +117,20 @@ private fun Content(
                     content = "프로필 수정",
                     textColor = Gray1,
                     enabledColor = Gray7,
-                    modifier = Modifier
-                        .height(40.dp)
-                        .padding(horizontal = 20.dp),
+                    modifier =
+                        Modifier
+                            .height(40.dp)
+                            .padding(horizontal = 20.dp),
                     fontSize = 12,
                     paddingValues = PaddingValues(vertical = 11.dp),
-                    border = BorderStroke(0.dp, color = Gray7)
+                    border = BorderStroke(0.dp, color = Gray7),
                 )
                 Spacer(modifier = Modifier.height(32.dp))
                 TabLayout(
                     info = infoUiState,
                     finding = findingUiState,
                     review = reviewUiState,
-                    onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement
+                    onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement,
                 )
             }
         }
@@ -142,54 +141,55 @@ private fun Content(
 private fun InterInfo(
     imageUrl: String,
     name: String,
-    intro: String
+    intro: String,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         NetworkImage(imageUrl = imageUrl, modifier = Modifier.size(80.dp))
         Spacer(modifier = Modifier.height(12.dp))
         Spacer(modifier = Modifier.height(12.dp))
-        Text(name, fontSize = 18.sp, color = Gray1, fontWeight = FontWeight.Bold)
+        Text(name, style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             modifier = Modifier.padding(horizontal = 60.dp),
             text = intro,
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.labelLarge,
             color = Gray4,
-            lineHeight = 15.sp
+            lineHeight = 15.sp,
         )
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun TabLayout(
     info: InterProfileInfoUiState,
     finding: InterProfileFindingUiState,
     review: InterProfileReviewUiState,
-    onNavigateToAnnouncementManagement: (Long) -> Unit
+    onNavigateToAnnouncementManagement: (Long) -> Unit,
 ) {
     Surface {
         Column {
-            val pagerState = rememberPagerState()
+            val pagerState = rememberPagerState(pageCount = { pages.size })
             val coroutineScope = rememberCoroutineScope()
             TabRow(
-                selectedTabIndex = pagerState.currentPage
+                selectedTabIndex = pagerState.currentPage,
             ) {
                 pages.forEachIndexed { index, title ->
                     Tab(
                         text = {
                             Text(
                                 text = title,
-                                color = if (pagerState.currentPage == index) {
-                                    MaterialTheme.colorScheme.primary
-                                } else {
-                                    Gray2
-                                }
+                                color =
+                                    if (pagerState.currentPage == index) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        Gray2
+                                    },
                             )
                         },
                         selected = pagerState.currentPage == index,
@@ -197,14 +197,13 @@ private fun TabLayout(
                             coroutineScope.launch {
                                 pagerState.scrollToPage(index)
                             }
-                        }
+                        },
                     )
                 }
             }
 
             HorizontalPager(
-                count = pages.size,
-                state = pagerState
+                state = pagerState,
             ) {
                 when (it) {
                     0 -> IntermediatorInformation(info)
@@ -217,21 +216,19 @@ private fun TabLayout(
 }
 
 @Composable
-private fun IntermediatorInformation(
-    info: InterProfileInfoUiState
-) {
+private fun IntermediatorInformation(info: InterProfileInfoUiState) {
     val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier
-            .padding(all = 24.dp)
-            .fillMaxSize()
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.Top
+        modifier =
+            Modifier
+                .padding(all = 24.dp)
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.Top,
     ) {
         Text(
             text = "중개자 정보",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         when (info) {
@@ -250,10 +247,10 @@ private fun IntermediatorInformation(
 @Composable
 private fun Finding(
     data: InterProfileFindingUiState,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
     ) {
         when (data) {
             is InterProfileFindingUiState.Loading -> Loading()
@@ -270,7 +267,7 @@ private fun Finding(
                             dogSize = it.dogSize,
                             date = it.date,
                             pickUpTime = it.pickUpTime,
-                            onClick = onClick
+                            onClick = onClick,
                         )
                     }
                 }
@@ -282,11 +279,9 @@ private fun Finding(
 }
 
 @Composable
-fun CompleteAndReview(
-    data: InterProfileReviewUiState
-) {
+fun CompleteAndReview(data: InterProfileReviewUiState) {
     Column(
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Top,
     ) {
         when (data) {
             is InterProfileReviewUiState.Loading -> Loading()
@@ -298,7 +293,7 @@ fun CompleteAndReview(
                     items(data.review.take(30)) {
                         ReviewItemContent(
                             review = it,
-                            userType = UserType.INTERMEDIATOR
+                            userType = UserType.INTERMEDIATOR,
                         )
                     }
                 }

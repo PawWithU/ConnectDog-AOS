@@ -4,7 +4,8 @@ import com.kusitms.connectdog.core.data.api.model.intermediator.InterProfileInfo
 
 sealed interface InterProfileInfoUiState {
     object Loading : InterProfileInfoUiState
+
     data class InterProfile(
-        val data: InterProfileInfoResponse
+        val data: InterProfileInfoResponse,
     ) : InterProfileInfoUiState
 }

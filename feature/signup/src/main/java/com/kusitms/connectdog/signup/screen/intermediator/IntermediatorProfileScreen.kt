@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,22 +41,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
-import com.kusitms.connectdog.core.designsystem.theme.Gray1
-import com.kusitms.connectdog.core.designsystem.theme.PetOrange
-import com.kusitms.connectdog.core.designsystem.theme.Red1
 import com.kusitms.connectdog.feature.signup.R
-import com.kusitms.connectdog.signup.viewmodel.IntermediatorProfileViewModel
 import com.kusitms.connectdog.signup.viewmodel.SignUpViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -65,20 +56,20 @@ fun IntermediatorProfileScreen(
     onBackClick: () -> Unit,
     navigateToIntermediatorInfo: () -> Unit,
     imeHeight: Int,
-    viewModel: SignUpViewModel
+    viewModel: SignUpViewModel,
 ) {
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.intermediator_signup,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             viewModel = viewModel,
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 }
@@ -86,7 +77,7 @@ fun IntermediatorProfileScreen(
 @Composable
 private fun Content(
     viewModel: SignUpViewModel,
-    imeHeight: Int
+    imeHeight: Int,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
@@ -94,27 +85,30 @@ private fun Content(
     val scrollState = rememberScrollState()
     val uiState by viewModel.collectAsState()
 
-    fun convertToBitmap(uri: Uri): Bitmap = ImageDecoder
-        .decodeBitmap(
-            ImageDecoder.createSource(context.contentResolver, uri)
-        )
+    fun convertToBitmap(uri: Uri): Bitmap =
+        ImageDecoder
+            .decodeBitmap(
+                ImageDecoder.createSource(context.contentResolver, uri),
+            )
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-    val photoPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { imageUri = it }
-    )
+    val photoPicker =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { imageUri = it },
+        )
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 20.dp)
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            )
-            .verticalScroll(scrollState)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(horizontal = 20.dp)
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                )
+                .verticalScroll(scrollState),
     ) {
         LaunchedEffect(imeHeight) {
             scrollState.animateScrollTo(scrollState.maxValue)
@@ -122,36 +116,38 @@ private fun Content(
         Spacer(modifier = Modifier.height(80.dp))
         Text(
             text = "모집자 프로필에 사용할\n정보를 입력해주세요",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(40.dp))
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
         ) {
             imageUri?.let {
                 Image(
                     bitmap = convertToBitmap(it).asImageBitmap(),
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape),
-                    contentDescription = ""
+                    modifier =
+                        Modifier
+                            .size(100.dp)
+                            .clip(CircleShape),
+                    contentDescription = "",
                 )
 //                viewModel.updateUri(it)
             } ?: run {
                 Image(
                     painter = painterResource(id = com.kusitms.connectdog.core.util.R.drawable.ic_profile_1),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
         ) {
             ConnectDogOutlinedButton(
                 width = 105,
@@ -160,9 +156,9 @@ private fun Content(
                 padding = 5,
                 onClick = {
                     photoPicker.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
-                }
+                },
             )
         }
         Spacer(modifier = Modifier.height(40.dp))
@@ -175,7 +171,7 @@ private fun Content(
             padding = 5,
             onTextChanged = {},
             isError = false,
-            onClick = {  }
+            onClick = { },
         )
         Spacer(modifier = Modifier.height(4.dp))
 //        Text(

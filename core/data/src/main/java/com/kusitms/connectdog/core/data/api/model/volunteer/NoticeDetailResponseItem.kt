@@ -18,7 +18,7 @@ data class NoticeDetailResponseItem(
     val postId: Int,
     val postStatus: String,
     val specifics: String?,
-    val startDate: String
+    val startDate: String,
 ) {
     val pickUpDate = if (startDate == endDate) "$startDate $pickUpTime" else pickUpTime
 }

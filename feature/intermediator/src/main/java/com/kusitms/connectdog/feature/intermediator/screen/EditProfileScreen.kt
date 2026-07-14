@@ -28,9 +28,9 @@ fun EditProfileScreen() {
             ConnectDogTopAppBar(
                 titleRes = R.string.edit_profile,
                 navigationType = TopAppBarNavigationType.BACK,
-                navigationIconContentDescription = null
+                navigationIconContentDescription = null,
             )
-        }
+        },
     ) {
         Content()
     }
@@ -39,10 +39,11 @@ fun EditProfileScreen() {
 @Composable
 private fun Content() {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 80.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 80.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         NetworkImage(imageUrl = "", placeholder = painterResource(id = R.drawable.ic_default_intermediator))
         Spacer(modifier = Modifier.height(12.dp))
@@ -51,7 +52,7 @@ private fun Content() {
             height = 14,
             text = "봉사 3회 진행",
             padding = 5,
-            onClick = { /*TODO*/ }
+            onClick = { /*TODO*/ },
         )
     }
 }

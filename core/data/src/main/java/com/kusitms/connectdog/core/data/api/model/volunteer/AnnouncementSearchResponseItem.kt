@@ -13,5 +13,5 @@ data class AnnouncementSearchResponseItem(
     val mainImage: String,
     val dogSize: String,
     val pickUpTime: String,
-    val dogName: String
+    val dogName: String,
 )

@@ -15,5 +15,5 @@ data class InterApplicationWaitingResponseItem(
     val isKennel: Boolean,
     val pickUpTime: String,
     val dogSize: String,
-    val applicationTime: String
+    val applicationTime: String,
 )

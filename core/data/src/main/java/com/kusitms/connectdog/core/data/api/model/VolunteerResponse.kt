@@ -8,5 +8,5 @@ data class VolunteerResponse(
     val phone: String,
     val createdDate: String,
     val content: String,
-    val id: Long
+    val id: Long,
 )

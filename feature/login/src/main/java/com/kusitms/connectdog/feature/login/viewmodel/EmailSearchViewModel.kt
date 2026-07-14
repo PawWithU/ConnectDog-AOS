@@ -18,74 +18,83 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class EmailSearchViewModel @Inject constructor(
-    private val searchVolunteerEmailUseCase: SearchVolunteerEmailUseCase,
-    private val searchIntermediatorEmailUseCase: SearchIntermediatorEmailUseCase
-): ContainerHost<EmailSearchUiState, EmailSearchSideEffect>, ViewModel() {
-    override val container: Container<EmailSearchUiState, EmailSearchSideEffect> = container(EmailSearchUiState.empty())
-    private val state: EmailSearchUiState
-        get() = container.stateFlow.value
+class EmailSearchViewModel
+    @Inject
+    constructor(
+        private val searchVolunteerEmailUseCase: SearchVolunteerEmailUseCase,
+        private val searchIntermediatorEmailUseCase: SearchIntermediatorEmailUseCase,
+    ) : ContainerHost<EmailSearchUiState, EmailSearchSideEffect>, ViewModel() {
+        override val container: Container<EmailSearchUiState, EmailSearchSideEffect> = container(EmailSearchUiState.empty())
+        private val state: EmailSearchUiState
+            get() = container.stateFlow.value
 
-    fun onPhoneNumberChanged(phoneNumber: String) = intent {
-        if (phoneNumber.length <= 11) reduce { state.copy(phoneNumber = phoneNumber) }
-        enableNextButton()
-    }
+        fun onPhoneNumberChanged(phoneNumber: String) =
+            intent {
+                if (phoneNumber.length <= 11) reduce { state.copy(phoneNumber = phoneNumber) }
+                enableNextButton()
+            }
 
-    fun onAuthCodeChanged(authCode: String) = intent {
-        if (authCode.length <= 6) reduce { state.copy(authCode = authCode) }
-        enableNextButton()
-    }
+        fun onAuthCodeChanged(authCode: String) =
+            intent {
+                if (authCode.length <= 6) reduce { state.copy(authCode = authCode) }
+                enableNextButton()
+            }
 
-    private fun enableNextButton() = intent {
-        if(!state.isSendAuthCode && state.phoneNumber.length == 11) {
-            reduce { state.copy(enableNext = true) }
-        } else if(state.isSendAuthCode && state.authCode.length == 6) {
-            reduce { state.copy(enableNext = true) }
-        } else {
-            reduce { state.copy(enableNext = false) }
-        }
-    }
-
-    fun onNextClick(
-        userType: UserType,
-        onSendMessageClick: (String) -> Unit,
-        onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
-    ) {
-        if(!state.isSendAuthCode) {
-            updateBottomButtonText()
-            onSendMessageClick(state.phoneNumber)
-            disableNextButton()
-            intent { reduce { state.copy(isSendAuthCode = true) } }
-        } else {
-            onVerifyCodeClick(state.authCode) {
-                if(it) intent {
-                    when(userType) {
-                        UserType.INTERMEDIATOR -> searchIntermediatorEmail()
-                        else -> searchVolunteerEmail()
-                    }
-                    postSideEffect(EmailSearchSideEffect.NavigateToEmailSearchResult)
+        private fun enableNextButton() =
+            intent {
+                if (!state.isSendAuthCode && state.phoneNumber.length == 11) {
+                    reduce { state.copy(enableNext = true) }
+                } else if (state.isSendAuthCode && state.authCode.length == 6) {
+                    reduce { state.copy(enableNext = true) }
+                } else {
+                    reduce { state.copy(enableNext = false) }
                 }
-                else intent { reduce { state.copy(isAuthCodeError = true) } }
+            }
+
+        fun onNextClick(
+            userType: UserType,
+            onSendMessageClick: (String) -> Unit,
+            onVerifyCodeClick: (String, (Boolean) -> Unit) -> Unit,
+        ) {
+            if (!state.isSendAuthCode) {
+                updateBottomButtonText()
+                onSendMessageClick(state.phoneNumber)
+                disableNextButton()
+                intent { reduce { state.copy(isSendAuthCode = true) } }
+            } else {
+                onVerifyCodeClick(state.authCode) {
+                    if (it) {
+                        intent {
+                            when (userType) {
+                                UserType.INTERMEDIATOR -> searchIntermediatorEmail()
+                                else -> searchVolunteerEmail()
+                            }
+                            postSideEffect(EmailSearchSideEffect.NavigateToEmailSearchResult)
+                        }
+                    } else {
+                        intent { reduce { state.copy(isAuthCodeError = true) } }
+                    }
+                }
             }
         }
+
+        private fun updateBottomButtonText() = intent { reduce { state.copy(bottomButtonText = "인증 확인") } }
+
+        private fun disableNextButton() = intent { reduce { state.copy(enableNext = false) } }
+
+        private fun searchIntermediatorEmail() =
+            viewModelScope.launch {
+                searchIntermediatorEmailUseCase(state.phoneNumber).onSuccess {
+                    intent { reduce { state.copy(email = it.email) } }
+                }.onFailure {
+                }
+            }
+
+        private fun searchVolunteerEmail() =
+            viewModelScope.launch {
+                searchVolunteerEmailUseCase(state.phoneNumber).onSuccess {
+                    intent { reduce { state.copy(email = it.email) } }
+                }.onFailure {
+                }
+            }
     }
-
-    private fun updateBottomButtonText() = intent { reduce { state.copy(bottomButtonText = "인증 확인" ) } }
-    private fun disableNextButton() = intent { reduce { state.copy(enableNext = false) } }
-
-    private fun searchIntermediatorEmail() = viewModelScope.launch {
-        searchIntermediatorEmailUseCase(state.phoneNumber).onSuccess {
-            intent { reduce { state.copy(email = it.email) } }
-        }.onFailure {
-
-        }
-    }
-
-    private fun searchVolunteerEmail() = viewModelScope.launch {
-        searchVolunteerEmailUseCase(state.phoneNumber).onSuccess {
-            intent { reduce { state.copy(email = it.email) } }
-        }.onFailure {
-
-        }
-    }
-}

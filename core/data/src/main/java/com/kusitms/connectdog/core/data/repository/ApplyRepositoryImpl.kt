@@ -6,22 +6,27 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.ApplyBody
 import com.kusitms.connectdog.core.data.api.model.volunteer.BasicInformationResponse
 import javax.inject.Inject
 
-internal class ApplyRepositoryImpl @Inject constructor(
-    private val api: ApiService
-) : ApplyRepository {
-    override suspend fun postApplyVolunteer(postId: Long, applyBody: ApplyBody) {
-        api.postApplyVolunteer(postId, applyBody)
-    }
+internal class ApplyRepositoryImpl
+    @Inject
+    constructor(
+        private val api: ApiService,
+    ) : ApplyRepository {
+        override suspend fun postApplyVolunteer(
+            postId: Long,
+            applyBody: ApplyBody,
+        ) {
+            api.postApplyVolunteer(postId, applyBody)
+        }
 
-    override suspend fun postAdditionalAuth(additionalAuthBody: AdditionalAuthBody) {
-        api.postAdditionalAuth(additionalAuthBody)
-    }
+        override suspend fun postAdditionalAuth(additionalAuthBody: AdditionalAuthBody) {
+            api.postAdditionalAuth(additionalAuthBody)
+        }
 
-    override suspend fun getAdditionalAuth(): AdditionalAuthBody {
-        return api.getAdditionalAuth()
-    }
+        override suspend fun getAdditionalAuth(): AdditionalAuthBody {
+            return api.getAdditionalAuth()
+        }
 
-    override suspend fun getBasicInformation(): BasicInformationResponse {
-        return api.getBasicInformation()
+        override suspend fun getBasicInformation(): BasicInformationResponse {
+            return api.getBasicInformation()
+        }
     }
-}

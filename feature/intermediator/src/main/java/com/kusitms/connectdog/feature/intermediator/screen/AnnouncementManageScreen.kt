@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -38,8 +39,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponseItem
@@ -68,7 +67,7 @@ fun AnnouncementManageScreen(
     postId: Long,
     onBackClick: () -> Unit,
     onIntermediatorProfileClick: (Long) -> Unit,
-    viewModel: AnnouncementManagementViewModel = hiltViewModel()
+    viewModel: AnnouncementManagementViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
         viewModel.initializePostId(postId)
@@ -90,12 +89,12 @@ fun AnnouncementManageScreen(
                 onDeleteClick = { isDeleteDialogOpen = true },
                 onEditClick = {
                     Toast.makeText(context, "아직 준비중인 기능입니다.", Toast.LENGTH_SHORT).show()
-                }
+                },
             )
         },
         bottomBar = {
             BottomBar("모집중")
-        }
+        },
     ) {
         when (data) {
             is AnnouncementManagementUiState.Loading -> Loading()
@@ -105,44 +104,46 @@ fun AnnouncementManageScreen(
                 val imagePagerState = rememberPagerState { imageList.size }
 
                 Column(
-                    modifier = Modifier.verticalScroll(scrollState)
+                    modifier = Modifier.verticalScroll(scrollState),
                 ) {
                     Spacer(modifier = Modifier.height(48.dp))
                     Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(250.dp)
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(250.dp),
                     ) {
                         HorizontalPager(
                             state = imagePagerState,
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier.fillMaxSize(),
                         ) { page ->
                             NetworkImage(
                                 imageUrl = imageList[page],
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier.fillMaxSize(),
                             )
                         }
                         Box(
-                            modifier = Modifier
-                                .align(Alignment.TopEnd)
-                                .padding(16.dp)
-                                .background(
-                                    color = Color.Black.copy(alpha = 0.5f),
-                                    shape = RoundedCornerShape(12.dp)
-                                )
-                                .padding(horizontal = 10.dp, vertical = 4.dp)
+                            modifier =
+                                Modifier
+                                    .align(Alignment.TopEnd)
+                                    .padding(16.dp)
+                                    .background(
+                                        color = Color.Black.copy(alpha = 0.5f),
+                                        shape = RoundedCornerShape(12.dp),
+                                    )
+                                    .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = "${imagePagerState.currentPage + 1}/${imageList.size}",
+                                style = MaterialTheme.typography.labelLarge,
                                 color = Color.White,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
                             )
                         }
                     }
                     Content(
                         detail = detail,
-                        onIntermediatorProfileClick = onIntermediatorProfileClick
+                        onIntermediatorProfileClick = onIntermediatorProfileClick,
                     )
                 }
             }
@@ -159,7 +160,7 @@ fun AnnouncementManageScreen(
                 viewModel.deleteAnnouncement()
                 isDeleteDialogOpen = false
                 onBackClick()
-            }
+            },
         )
     }
 }
@@ -168,20 +169,22 @@ fun AnnouncementManageScreen(
 @Composable
 private fun Content(
     detail: NoticeDetailResponseItem,
-    onIntermediatorProfileClick: (Long) -> Unit
+    onIntermediatorProfileClick: (Long) -> Unit,
 ) {
-    val tabItems = listOf(
-        "이동봉사 정보",
-        "동물 정보",
-        "모집자 정보"
-    )
+    val tabItems =
+        listOf(
+            "이동봉사 정보",
+            "동물 정보",
+            "모집자 정보",
+        )
 
     var selectedTabIndex by remember {
         mutableIntStateOf(0)
     }
-    val pagerState = rememberPagerState {
-        tabItems.size
-    }
+    val pagerState =
+        rememberPagerState {
+            tabItems.size
+        }
 
     LaunchedEffect(selectedTabIndex) {
         pagerState.animateScrollToPage(selectedTabIndex)
@@ -191,15 +194,16 @@ private fun Content(
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .fillMaxWidth(),
     ) {
         BasicInfo(detail = detail)
         Divider(
             Modifier
                 .height(8.dp)
                 .fillMaxWidth(),
-            color = Gray7
+            color = Gray7,
         )
         TabRow(selectedTabIndex = selectedTabIndex) {
             tabItems.forEachIndexed { index, title ->
@@ -211,19 +215,20 @@ private fun Content(
                     text = {
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.titleSmall,
-                            fontSize = 14.sp,
-                            color = if (index == selectedTabIndex) MaterialTheme.colorScheme.primary else Gray2
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (index == selectedTabIndex) MaterialTheme.colorScheme.primary else Gray2,
                         )
-                    }
+                    },
                 )
             }
         }
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.Top
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
+            verticalAlignment = Alignment.Top,
         ) { index ->
             when (index) {
                 0 -> VolunteerInfo(detail = detail)
@@ -235,19 +240,17 @@ private fun Content(
 }
 
 @Composable
-private fun BasicInfo(
-    detail: NoticeDetailResponseItem
-) {
+private fun BasicInfo(detail: NoticeDetailResponseItem) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(all = 24.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(all = 24.dp),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Text(
                 text = detail.dogName,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                style = MaterialTheme.typography.titleLarge,
             )
             Spacer(modifier = Modifier.weight(1f))
             ConnectDogTag(detail.postStatus)
@@ -255,8 +258,8 @@ private fun BasicInfo(
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = "${detail.departureLoc} → ${detail.arrivalLoc}",
-            fontSize = 12.sp,
-            color = Gray3
+            style = MaterialTheme.typography.labelLarge,
+            color = Gray3,
         )
         Spacer(modifier = Modifier.height(6.dp))
         TextWithIcon(iconId = R.drawable.ic_calendar, text = detail.startDate, size = 14)
@@ -268,18 +271,19 @@ private fun BasicInfo(
                 iconId = R.drawable.ic_dog_size,
                 backgroundColor = Gray7,
                 contentColor = Gray3,
-                text = detail.dogSize
+                text = detail.dogSize,
             )
             Spacer(modifier = Modifier.width(4.dp))
             ConnectDogTagWithIcon(
                 iconId = R.drawable.ic_kennel,
                 backgroundColor = Gray7,
                 contentColor = Gray3,
-                text = if (detail.isKennel) {
-                    stringResource(id = R.string.has_kennel)
-                } else {
-                    stringResource(id = R.string.has_not_kennel)
-                }
+                text =
+                    if (detail.isKennel) {
+                        stringResource(id = R.string.has_kennel)
+                    } else {
+                        stringResource(id = R.string.has_not_kennel)
+                    },
             )
         }
     }
@@ -288,14 +292,14 @@ private fun BasicInfo(
 @Composable
 fun VolunteerInfo(detail: NoticeDetailResponseItem) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp),
     ) {
         Text(
             text = "이동봉사 정보",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(20.dp))
         DetailInfo("출발지", "${detail.departureLoc}")
@@ -307,9 +311,7 @@ fun VolunteerInfo(detail: NoticeDetailResponseItem) {
         Spacer(modifier = Modifier.height(40.dp))
         Text(
             text = detail.content,
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Normal,
-            lineHeight = 22.sp
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }
@@ -317,14 +319,14 @@ fun VolunteerInfo(detail: NoticeDetailResponseItem) {
 @Composable
 fun DogInfo(detail: NoticeDetailResponseItem) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp),
     ) {
         Text(
             text = "강아지 정보",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         DetailInfo("이름", detail.dogName)
@@ -337,68 +339,71 @@ fun DogInfo(detail: NoticeDetailResponseItem) {
         Modifier
             .height(8.dp)
             .fillMaxWidth(),
-        color = Gray7
+        color = Gray7,
     )
 }
 
 @Composable
 fun IntermediatorInfo(
     detail: NoticeDetailResponseItem,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 137.dp),
     ) {
         Text(
             text = "이동봉사 중개",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
+            style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Row(
-            modifier = Modifier
-                .height(40.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .height(40.dp)
+                    .fillMaxWidth(),
         ) {
             NetworkImage(
                 imageUrl = detail.intermediaryProfileImage,
-                modifier = Modifier
-                    .width(40.dp)
-                    .height(40.dp)
-                    .align(Alignment.CenterVertically)
+                modifier =
+                    Modifier
+                        .width(40.dp)
+                        .height(40.dp)
+                        .align(Alignment.CenterVertically),
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
-                modifier = Modifier
-                    .width(158.dp)
-                    .align(Alignment.CenterVertically)
-                    .weight(1f),
+                modifier =
+                    Modifier
+                        .width(158.dp)
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
                 text = detail.intermediaryName,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
             )
             ProfileButton(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(34.dp)
-                    .align(Alignment.CenterVertically),
-                onClick = { onClick(detail.intermediaryId.toLong()) }
+                modifier =
+                    Modifier
+                        .width(100.dp)
+                        .height(34.dp)
+                        .align(Alignment.CenterVertically),
+                onClick = { onClick(detail.intermediaryId.toLong()) },
             )
         }
     }
 }
 
 @Composable
-private fun BottomBar(
-    postStatus: String
-) {
+private fun BottomBar(postStatus: String) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(horizontal = 20.dp, vertical = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(Color.White)
+                .padding(horizontal = 20.dp, vertical = 20.dp),
     ) {
         ConnectDogBottomButton(content = "${postStatus}인 공고입니다", onClick = {}, enabled = false)
     }

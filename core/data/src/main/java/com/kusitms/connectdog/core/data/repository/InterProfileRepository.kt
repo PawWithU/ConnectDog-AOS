@@ -5,7 +5,15 @@ import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.model.Review
 
 interface InterProfileRepository {
-    suspend fun getInterReview(page: Int?, size: Int?): List<Review>
-    suspend fun getInterFinding(page: Int, size: Int?): List<Announcement>
+    suspend fun getInterReview(
+        page: Int?,
+        size: Int?,
+    ): List<Review>
+
+    suspend fun getInterFinding(
+        page: Int,
+        size: Int?,
+    ): List<Announcement>
+
     suspend fun getInterProfileInfo(): InterProfileInfoResponse
 }

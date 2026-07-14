@@ -18,153 +18,167 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ManagementViewModel @Inject constructor(
-    private val managementRepository: ManagementRepository
-) : ViewModel() {
-    private val TAG = "ManagementViewModel"
+class ManagementViewModel
+    @Inject
+    constructor(
+        private val managementRepository: ManagementRepository,
+    ) : ViewModel() {
+        private val TAG = "ManagementViewModel"
 
-    init {
-        refreshAllApplications()
-    }
-
-    private val _errorFlow = MutableSharedFlow<Throwable>()
-    val errorFlow: SharedFlow<Throwable> get() = _errorFlow
-
-    private val _waitingUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
-    val waitingUiState: StateFlow<ApplicationUiState> = _waitingUiState
-
-    private val _progressUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
-    val progressUiState: StateFlow<ApplicationUiState> = _progressUiState
-
-    private val _completedUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
-    val completedUiState: StateFlow<ApplicationUiState> = _completedUiState
-
-    private val _volunteer = MutableStateFlow<Volunteer?>(null)
-    val volunteer: StateFlow<Volunteer?> get() = _volunteer
-
-    private val _selectedApplication = MutableStateFlow<Application?>(null)
-    val selectedApplication: StateFlow<Application?> get() = _selectedApplication
-
-    private val _deleteDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
-    val deleteDataUiState = _deleteDataState.asStateFlow()
-
-    fun refreshAllApplications() {
-        refreshWaitingApplications()
-        refreshProgressApplications()
-        refreshCompletedApplications()
-    }
-
-    fun refreshByTabIndex(tabIndex: Int) {
-        when (tabIndex) {
-            0 -> refreshWaitingApplications()
-            1 -> refreshProgressApplications()
-            2 -> refreshCompletedApplications()
+        init {
+            refreshAllApplications()
         }
-    }
 
-    /** Pull-to-refresh용: 완료될 때까지 suspend */
-    suspend fun refreshTabSuspend(tabIndex: Int) {
-        try {
+        private val _errorFlow = MutableSharedFlow<Throwable>()
+        val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+
+        private val _waitingUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
+        val waitingUiState: StateFlow<ApplicationUiState> = _waitingUiState
+
+        private val _progressUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
+        val progressUiState: StateFlow<ApplicationUiState> = _progressUiState
+
+        private val _completedUiState = MutableStateFlow<ApplicationUiState>(ApplicationUiState.Loading)
+        val completedUiState: StateFlow<ApplicationUiState> = _completedUiState
+
+        private val _volunteer = MutableStateFlow<Volunteer?>(null)
+        val volunteer: StateFlow<Volunteer?> get() = _volunteer
+
+        private val _selectedApplication = MutableStateFlow<Application?>(null)
+        val selectedApplication: StateFlow<Application?> get() = _selectedApplication
+
+        private val _deleteDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
+        val deleteDataUiState = _deleteDataState.asStateFlow()
+
+        fun refreshAllApplications() {
+            refreshWaitingApplications()
+            refreshProgressApplications()
+            refreshCompletedApplications()
+        }
+
+        fun refreshByTabIndex(tabIndex: Int) {
             when (tabIndex) {
-                0 -> {
+                0 -> refreshWaitingApplications()
+                1 -> refreshProgressApplications()
+                2 -> refreshCompletedApplications()
+            }
+        }
+
+        /** Pull-to-refresh용: 완료될 때까지 suspend */
+        suspend fun refreshTabSuspend(tabIndex: Int) {
+            try {
+                when (tabIndex) {
+                    0 -> {
+                        val applications = managementRepository.getApplicationWaiting()
+                        _waitingUiState.value =
+                            if (applications.isNotEmpty()) {
+                                ApplicationUiState.Applications(applications)
+                            } else {
+                                ApplicationUiState.Empty
+                            }
+                    }
+                    1 -> {
+                        val applications = managementRepository.getApplicationInProgress()
+                        _progressUiState.value =
+                            if (applications.isNotEmpty()) {
+                                ApplicationUiState.Applications(applications)
+                            } else {
+                                ApplicationUiState.Empty
+                            }
+                    }
+                    2 -> {
+                        val applications = managementRepository.getApplicationCompleted()
+                        _completedUiState.value =
+                            if (applications.isNotEmpty()) {
+                                ApplicationUiState.Applications(applications)
+                            } else {
+                                ApplicationUiState.Empty
+                            }
+                    }
+                }
+            } catch (e: Exception) {
+                _errorFlow.emit(e)
+                Log.e(TAG, "refreshTabSuspend: ${e.message}")
+            }
+        }
+
+        fun refreshWaitingApplications() {
+            viewModelScope.launch {
+                try {
                     val applications = managementRepository.getApplicationWaiting()
-                    _waitingUiState.value = if (applications.isNotEmpty()) {
-                        ApplicationUiState.Applications(applications)
-                    } else ApplicationUiState.Empty
+                    _waitingUiState.value =
+                        if (applications.isNotEmpty()) {
+                            ApplicationUiState.Applications(applications)
+                        } else {
+                            ApplicationUiState.Empty
+                        }
+                } catch (e: Exception) {
+                    _errorFlow.emit(e)
+                    _waitingUiState.value = ApplicationUiState.Empty
+                    Log.e(TAG, "refreshWaitingApplications: ${e.message}")
                 }
-                1 -> {
+            }
+        }
+
+        fun refreshProgressApplications() {
+            viewModelScope.launch {
+                try {
                     val applications = managementRepository.getApplicationInProgress()
-                    _progressUiState.value = if (applications.isNotEmpty()) {
-                        ApplicationUiState.Applications(applications)
-                    } else ApplicationUiState.Empty
+                    _progressUiState.value =
+                        if (applications.isNotEmpty()) {
+                            ApplicationUiState.Applications(applications)
+                        } else {
+                            ApplicationUiState.Empty
+                        }
+                } catch (e: Exception) {
+                    _errorFlow.emit(e)
+                    _progressUiState.value = ApplicationUiState.Empty
+                    Log.e(TAG, "refreshProgressApplications: ${e.message}")
                 }
-                2 -> {
+            }
+        }
+
+        fun refreshCompletedApplications() {
+            viewModelScope.launch {
+                try {
                     val applications = managementRepository.getApplicationCompleted()
-                    _completedUiState.value = if (applications.isNotEmpty()) {
-                        ApplicationUiState.Applications(applications)
-                    } else ApplicationUiState.Empty
+                    _completedUiState.value =
+                        if (applications.isNotEmpty()) {
+                            ApplicationUiState.Applications(applications)
+                        } else {
+                            ApplicationUiState.Empty
+                        }
+                } catch (e: Exception) {
+                    _errorFlow.emit(e)
+                    _completedUiState.value = ApplicationUiState.Empty
+                    Log.e(TAG, "refreshCompletedApplications: ${e.message}")
                 }
             }
-        } catch (e: Exception) {
-            _errorFlow.emit(e)
-            Log.e(TAG, "refreshTabSuspend: ${e.message}")
         }
-    }
 
-    fun refreshWaitingApplications() {
-        viewModelScope.launch {
-            try {
-                val applications = managementRepository.getApplicationWaiting()
-                _waitingUiState.value = if (applications.isNotEmpty()) {
-                    ApplicationUiState.Applications(applications)
-                } else {
-                    ApplicationUiState.Empty
+        fun updateSelectedApplication(application: Application) {
+            _selectedApplication.value = application
+        }
+
+        fun getVolunteerInfo(applicationId: Long) {
+            viewModelScope.launch {
+                try {
+                    _volunteer.value = managementRepository.getMyApplication(applicationId)
+                } catch (e: Exception) {
+                    Log.e(TAG, "getMyApplication ${e.stackTrace}")
                 }
-            } catch (e: Exception) {
-                _errorFlow.emit(e)
-                _waitingUiState.value = ApplicationUiState.Empty
-                Log.e(TAG, "refreshWaitingApplications: ${e.message}")
             }
         }
-    }
 
-    fun refreshProgressApplications() {
-        viewModelScope.launch {
-            try {
-                val applications = managementRepository.getApplicationInProgress()
-                _progressUiState.value = if (applications.isNotEmpty()) {
-                    ApplicationUiState.Applications(applications)
-                } else {
-                    ApplicationUiState.Empty
+        fun deleteMyApplication(applicationId: Long) {
+            viewModelScope.launch {
+                try {
+                    managementRepository.deleteMyApplication(applicationId).let {
+                        if (it.isSuccess) _deleteDataState.value = DataUiState.Success
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "deleteMyApplication ${e.message}")
                 }
-            } catch (e: Exception) {
-                _errorFlow.emit(e)
-                _progressUiState.value = ApplicationUiState.Empty
-                Log.e(TAG, "refreshProgressApplications: ${e.message}")
             }
         }
     }
-
-    fun refreshCompletedApplications() {
-        viewModelScope.launch {
-            try {
-                val applications = managementRepository.getApplicationCompleted()
-                _completedUiState.value = if (applications.isNotEmpty()) {
-                    ApplicationUiState.Applications(applications)
-                } else {
-                    ApplicationUiState.Empty
-                }
-            } catch (e: Exception) {
-                _errorFlow.emit(e)
-                _completedUiState.value = ApplicationUiState.Empty
-                Log.e(TAG, "refreshCompletedApplications: ${e.message}")
-            }
-        }
-    }
-
-    fun updateSelectedApplication(application: Application) {
-        _selectedApplication.value = application
-    }
-
-    fun getVolunteerInfo(applicationId: Long) {
-        viewModelScope.launch {
-            try {
-                _volunteer.value = managementRepository.getMyApplication(applicationId)
-            } catch (e: Exception) {
-                Log.e(TAG, "getMyApplication ${e.stackTrace}")
-            }
-        }
-    }
-
-    fun deleteMyApplication(applicationId: Long) {
-        viewModelScope.launch {
-            try {
-                managementRepository.deleteMyApplication(applicationId).let {
-                    if (it.isSuccess) _deleteDataState.value = DataUiState.Success
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, "deleteMyApplication ${e.message}")
-            }
-        }
-    }
-}

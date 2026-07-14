@@ -15,22 +15,24 @@ data class EmailAuthForPasswordResetUiState(
     val isAuthCodeError: Boolean,
 ) {
     companion object {
-        fun empty() = EmailAuthForPasswordResetUiState(
-            email = emptyString(),
-            inputAuthCode = emptyString(),
-            authCode = emptyString(),
-            accessToken = emptyString(),
-            isSendAuthCode = false,
-            isValidEmail = false,
-            bottomButtonText = "인증 요청",
-            enableNext = false,
-            isEmailError = false,
-            isAuthCodeError = false,
-        )
+        fun empty() =
+            EmailAuthForPasswordResetUiState(
+                email = emptyString(),
+                inputAuthCode = emptyString(),
+                authCode = emptyString(),
+                accessToken = emptyString(),
+                isSendAuthCode = false,
+                isValidEmail = false,
+                bottomButtonText = "인증 요청",
+                enableNext = false,
+                isEmailError = false,
+                isAuthCodeError = false,
+            )
     }
 }
 
 sealed class EmailAuthForPasswordResetSideEffect {
-    object NavigateToFail: EmailAuthForPasswordResetSideEffect()
-    object NavigateToPasswordReset: EmailAuthForPasswordResetSideEffect()
+    object NavigateToFail : EmailAuthForPasswordResetSideEffect()
+
+    object NavigateToPasswordReset : EmailAuthForPasswordResetSideEffect()
 }

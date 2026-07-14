@@ -4,5 +4,5 @@ data class VolunteerAccountInfo(
     val name: String,
     val phone: String,
     val socialType: String?,
-    val email: String?
+    val email: String?,
 )

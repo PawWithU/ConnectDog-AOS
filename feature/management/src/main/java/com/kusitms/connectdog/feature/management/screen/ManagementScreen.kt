@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -12,26 +14,22 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -57,7 +55,7 @@ internal fun ManagementRoute(
     onNavigateToHome: (String) -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
-    viewModel: ManagementViewModel = hiltViewModel()
+    viewModel: ManagementViewModel = hiltViewModel(),
 ) {
     val pendingUiState by viewModel.waitingUiState.collectAsStateWithLifecycle()
     val inProgressUiState by viewModel.progressUiState.collectAsStateWithLifecycle()
@@ -84,7 +82,7 @@ internal fun ManagementRoute(
             titleRes = null,
             navigationType = TopAppBarNavigationType.MANAGEMENT,
             navigationIconContentDescription = "Navigation icon",
-            onNavigationClick = onBackClick
+            onNavigationClick = onBackClick,
         )
         ManagementScreen(
             onRefresh = viewModel::refreshTabSuspend,
@@ -97,7 +95,7 @@ internal fun ManagementRoute(
                         viewModel.updateSelectedApplication(application)
                         isSheetOpen = true
                     },
-                    onNavigateToDetail = onNavigateToDetail
+                    onNavigateToDetail = onNavigateToDetail,
                 )
             },
             secondContent = {
@@ -111,9 +109,9 @@ internal fun ManagementRoute(
                 Completed(
                     uiState = completedUiState,
                     onCreateReviewClick = onNavigateToCreateReview,
-                    onCheckReviewClick = onNavigateToCheckReview
+                    onCheckReviewClick = onNavigateToCheckReview,
                 )
-            }
+            },
         )
     }
 
@@ -123,32 +121,33 @@ internal fun ManagementRoute(
             application = selectedApplication!!,
             volunteer = volunteer!!,
             onDismissRequest = { isSheetOpen = false },
-            onDeleteClick = viewModel::deleteMyApplication
+            onDeleteClick = viewModel::deleteMyApplication,
         )
     }
 }
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ManagementScreen(
     onRefresh: suspend (Int) -> Unit,
     onTabSelected: (Int) -> Unit,
     firstContent: @Composable () -> Unit,
     secondContent: @Composable () -> Unit,
-    thirdContent: @Composable () -> Unit
+    thirdContent: @Composable () -> Unit,
 ) {
-    val tabItems = listOf(
-        stringResource(id = R.string.pending_approval),
-        stringResource(id = R.string.inProgress),
-        stringResource(id = R.string.completed)
-    )
+    val tabItems =
+        listOf(
+            stringResource(id = R.string.pending_approval),
+            stringResource(id = R.string.inProgress),
+            stringResource(id = R.string.completed),
+        )
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Top,
         ) {
-            val pagerState = rememberPagerState()
+            val pagerState = rememberPagerState(pageCount = { tabItems.size })
             val coroutineScope = rememberCoroutineScope()
 
             // 탭 변경 시 데이터 새로 고침
@@ -168,35 +167,34 @@ private fun ManagementScreen(
                         text = {
                             Text(
                                 text = title,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontSize = 14.sp,
-                                color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.primary else Gray2
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = if (pagerState.currentPage == index) MaterialTheme.colorScheme.primary else Gray2,
                             )
-                        }
+                        },
                     )
                 }
             }
 
-            val pullToRefreshState = rememberPullToRefreshState()
+            var isRefreshing by remember { mutableStateOf(false) }
 
-            // pull-to-refresh: suspend 함수가 완료되면 endRefresh() 호출
-            if (pullToRefreshState.isRefreshing) {
-                LaunchedEffect(Unit) {
+            // pull-to-refresh: suspend 함수가 완료되면 isRefreshing을 false로 되돌림
+            LaunchedEffect(isRefreshing) {
+                if (isRefreshing) {
                     onRefresh(pagerState.currentPage)
-                    pullToRefreshState.endRefresh()
+                    isRefreshing = false
                 }
             }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .nestedScroll(pullToRefreshState.nestedScrollConnection)
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = { isRefreshing = true },
+                modifier = Modifier.fillMaxSize(),
             ) {
                 HorizontalPager(
                     state = pagerState,
-                    count = tabItems.size,
                     modifier = Modifier.fillMaxSize(),
-                    verticalAlignment = Alignment.Top
+                    verticalAlignment = Alignment.Top,
                 ) { index ->
                     when (index) {
                         0 -> firstContent()
@@ -212,11 +210,11 @@ private fun ManagementScreen(
 @Composable
 internal fun OutlinedButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     ConnectDogSecondaryButton(
         modifier = modifier,
-        contentRes = R.string.check_my_appliance_button
+        contentRes = R.string.check_my_appliance_button,
     ) { onClick() }
 }
 

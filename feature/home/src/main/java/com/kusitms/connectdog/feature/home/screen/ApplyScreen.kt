@@ -24,6 +24,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +40,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
@@ -60,7 +60,7 @@ fun ApplyScreen(
     onClick: () -> Unit = {},
     postId: Long,
     imeHeight: Int,
-    viewModel: ApplyViewModel = hiltViewModel()
+    viewModel: ApplyViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
@@ -68,9 +68,9 @@ fun ApplyScreen(
                 titleRes = R.string.apply_volunter,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(viewModel, postId, imeHeight, onClick, onBackClick)
     }
@@ -82,7 +82,7 @@ private fun Content(
     postId: Long,
     imeHeight: Int,
     onClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -90,23 +90,23 @@ private fun Content(
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 80.dp)
-            .verticalScroll(scrollState)
-            .fillMaxHeight()
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            )
+        modifier =
+            Modifier
+                .padding(start = 20.dp, end = 20.dp, top = 80.dp)
+                .verticalScroll(scrollState)
+                .fillMaxHeight()
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
     ) {
         LaunchedEffect(imeHeight) {
             scrollState.animateScrollTo(scrollState.maxValue)
         }
         Text(
             text = "이동봉사 모집자에게\n전달할 정보를 입력해주세요",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(20.dp))
         BasicInformation(isChecked) {
@@ -120,7 +120,7 @@ private fun Content(
             placeholder = "이름 입력",
             keyboardType = KeyboardType.Text,
             onTextChanged = { viewModel.updateName(it) },
-            isError = viewModel.isAvailableName == false
+            isError = viewModel.isAvailableName == false,
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextField(
@@ -129,7 +129,7 @@ private fun Content(
             label = "휴대폰 번호",
             placeholder = "\'-\' 빼고 입력",
             keyboardType = KeyboardType.Number,
-            onTextChanged = { if (it.length <= 11) viewModel.updatePhoneNumber(it) }
+            onTextChanged = { if (it.length <= 11) viewModel.updatePhoneNumber(it) },
         )
         Spacer(modifier = Modifier.height(20.dp))
         NoticeCard()
@@ -138,13 +138,13 @@ private fun Content(
             Modifier
                 .height(8.dp)
                 .fillMaxWidth(),
-            color = Gray7
+            color = Gray7,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = "전달 및 문의사항",
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogTextField(
@@ -153,7 +153,7 @@ private fun Content(
             placeholder = "모집자에게 전달 및 문의 필요한 사항이 있다면\n입력해주세요. ",
             keyboardType = KeyboardType.Text,
             height = 180,
-            onTextChanged = { viewModel.updateContent(it) }
+            onTextChanged = { viewModel.updateContent(it) },
         )
         Spacer(modifier = Modifier.height(20.dp))
         ConnectDogBottomButton(
@@ -163,7 +163,7 @@ private fun Content(
                 viewModel.postApplyVolunteer(postId)
                 onBackClick()
                 onClick()
-            }
+            },
         )
         Spacer(modifier = Modifier.height((imeHeight + 20).dp))
     }
@@ -174,18 +174,20 @@ fun NoticeCard() {
     Card(
         shape = RoundedCornerShape(6.dp),
         colors = CardDefaults.cardColors(containerColor = Orange20),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(40.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(40.dp),
     ) {
         Text(
             text = "이동봉사 모집자 측에서 해당 휴대폰 번호로 연락드릴 예정입니다.",
+            style = MaterialTheme.typography.labelLarge,
             color = Gray2,
-            fontSize = 12.sp,
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
-                .padding(horizontal = 16.dp)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center)
+                    .padding(horizontal = 16.dp),
         )
     }
 }
@@ -194,28 +196,28 @@ fun NoticeCard() {
 @Composable
 private fun BasicInformation(
     isChecked: Boolean,
-    updateIsChecked: () -> Unit
+    updateIsChecked: () -> Unit,
 ) {
     Row(
         modifier = Modifier.padding(horizontal = 0.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
+        horizontalArrangement = Arrangement.Start,
     ) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             Checkbox(
                 checked = isChecked,
-                colors = CheckboxDefaults.colors(
-                    uncheckedColor = Gray5
-                ),
-                onCheckedChange = { updateIsChecked() }
+                colors =
+                    CheckboxDefaults.colors(
+                        uncheckedColor = Gray5,
+                    ),
+                onCheckedChange = { updateIsChecked() },
             )
         }
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = "기본정보 불러오기",
+            style = MaterialTheme.typography.bodyMedium,
             color = Gray2,
-            fontWeight = FontWeight.Normal,
-            fontSize = 14.sp
         )
     }
 }
@@ -227,7 +229,7 @@ private fun ApplyScreenPreview() {
         ApplyScreen(
             postId = 1,
             imeHeight = 200,
-            viewModel = hiltViewModel()
+            viewModel = hiltViewModel(),
         )
     }
 }

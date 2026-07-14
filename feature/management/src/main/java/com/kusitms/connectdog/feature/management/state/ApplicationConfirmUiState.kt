@@ -5,8 +5,9 @@ import com.kusitms.connectdog.core.model.Volunteer
 
 sealed interface ApplicationConfirmUiState {
     object Loading : ApplicationConfirmUiState
+
     data class ApplicationConfirm(
         val application: Application,
-        val volunteer: Volunteer
+        val volunteer: Volunteer,
     ) : ApplicationConfirmUiState
 }

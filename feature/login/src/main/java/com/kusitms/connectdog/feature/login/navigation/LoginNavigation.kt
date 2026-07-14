@@ -7,12 +7,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.kusitms.connectdog.core.util.AccountType
 import com.kusitms.connectdog.core.util.UserType
+import com.kusitms.connectdog.feature.login.screen.EmailAuthForPasswordResetScreen
 import com.kusitms.connectdog.feature.login.screen.EmailSearchResultScreen
 import com.kusitms.connectdog.feature.login.screen.EmailSearchScreen
 import com.kusitms.connectdog.feature.login.screen.LoginRoute
-import com.kusitms.connectdog.feature.login.screen.NormalLoginScreen
-import com.kusitms.connectdog.feature.login.screen.EmailAuthForPasswordResetScreen
 import com.kusitms.connectdog.feature.login.screen.NoAccountScreen
+import com.kusitms.connectdog.feature.login.screen.NormalLoginScreen
 import com.kusitms.connectdog.feature.login.screen.PasswordResetScreen
 
 fun NavController.navigateToLoginRoute() {
@@ -62,7 +62,7 @@ fun NavGraphBuilder.loginNavGraph(
     onNavigateToLoginRoute: () -> Unit,
     onSendMessage: (String) -> Unit,
     onVerifyCode: (String, (Boolean) -> Unit) -> Unit,
-    onNavigateToNoAccount: (AccountType) -> Unit
+    onNavigateToNoAccount: (AccountType) -> Unit,
 ) {
     composable(route = LoginRoute.ROUTE) {
         LoginRoute(
@@ -73,17 +73,18 @@ fun NavGraphBuilder.loginNavGraph(
             onNavigateToIntermediatorHome,
             onNavigateToEmailSearch,
             onNavigateToPasswordSearchAuth,
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 
     composable(
         route = "${LoginRoute.NORMAL_LOGIN}/{type}",
-        arguments = listOf(
-            navArgument("type") {
-                type = NavType.EnumType(UserType::class.java)
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("type") {
+                    type = NavType.EnumType(UserType::class.java)
+                },
+            ),
     ) {
         NormalLoginScreen(
             onBackClick = onBackClick,
@@ -91,17 +92,18 @@ fun NavGraphBuilder.loginNavGraph(
             onNavigateToVolunteerHome = onNavigateToVolunteer,
             onNavigateToEmailSearch = onNavigateToEmailSearch,
             onNavigateToPasswordSearch = onNavigateToPasswordSearchAuth,
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 
     composable(
         route = "${LoginRoute.EMAIL_SEARCH}/{type}",
-        arguments = listOf(
-            navArgument("type") {
-                type = NavType.EnumType(UserType::class.java)
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("type") {
+                    type = NavType.EnumType(UserType::class.java)
+                },
+            ),
     ) {
         EmailSearchScreen(
             imeHeight = imeHeight,
@@ -109,48 +111,51 @@ fun NavGraphBuilder.loginNavGraph(
             navigateToCompleteScreen = onNavigateToEmailSearchComplete,
             userType = it.arguments!!.getSerializable("type") as UserType,
             onSendMessageClick = onSendMessage,
-            onVerifyCodeClick = onVerifyCode
+            onVerifyCodeClick = onVerifyCode,
         )
     }
 
     composable(
         route = "${LoginRoute.email_search_complete}/{email}",
-        arguments = listOf(
-            navArgument("email") { type = NavType.StringType }
-        )
+        arguments =
+            listOf(
+                navArgument("email") { type = NavType.StringType },
+            ),
     ) {
         it.arguments!!.getString("email")?.let { email ->
             EmailSearchResultScreen(
                 onBackClick = onBackClick,
                 email = email,
-                navigateToLoginRoute = onNavigateToLoginRoute
+                navigateToLoginRoute = onNavigateToLoginRoute,
             )
         }
     }
 
     composable(
         route = "${LoginRoute.PASSWORD_SEARCH}/{type}",
-        arguments = listOf(
-            navArgument("type") {
-                type = NavType.EnumType(UserType::class.java)
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("type") {
+                    type = NavType.EnumType(UserType::class.java)
+                },
+            ),
     ) {
         PasswordResetScreen(
             onBackClick = onBackClick,
             userType = it.arguments!!.getSerializable("type") as UserType,
             imeHeight = imeHeight,
-            navigateToLoginRoute = onNavigateToLoginRoute
+            navigateToLoginRoute = onNavigateToLoginRoute,
         )
     }
 
     composable(
         route = "${LoginRoute.password_search_auth}/{type}",
-        arguments = listOf(
-            navArgument("type") {
-                type = NavType.EnumType(UserType::class.java)
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("type") {
+                    type = NavType.EnumType(UserType::class.java)
+                },
+            ),
     ) {
         EmailAuthForPasswordResetScreen(
             onBackClick = onBackClick,
@@ -163,15 +168,16 @@ fun NavGraphBuilder.loginNavGraph(
 
     composable(
         route = "${LoginRoute.NO_ACCOUNT}/{accountType}",
-        arguments = listOf(
-            navArgument("accountType") {
-                type = NavType.EnumType(AccountType::class.java)
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("accountType") {
+                    type = NavType.EnumType(AccountType::class.java)
+                },
+            ),
     ) {
         NoAccountScreen(
             accountType = it.arguments!!.getSerializable("accountType") as AccountType,
-            onNavigateToLoginRoute = onNavigateToLoginRoute
+            onNavigateToLoginRoute = onNavigateToLoginRoute,
         )
     }
 }

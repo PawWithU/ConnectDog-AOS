@@ -46,11 +46,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogCalendar
@@ -83,14 +83,14 @@ internal fun FilterSearchRoute(
     filterArg: Filter? = Filter(),
     viewModel: SearchViewModel = hiltViewModel(),
     imeHeight: Int,
-    onNavigateToSearch: (Filter) -> Unit
+    onNavigateToSearch: (Filter) -> Unit,
 ) {
     Log.d(TAG, "filterArg = $filterArg")
     viewModel.setFilter(filterArg!!)
     FilterSearchScreen(
         onBackClick = onBackClick,
         onNavigateToSearch = onNavigateToSearch,
-        imeHeight = imeHeight
+        imeHeight = imeHeight,
     )
 }
 
@@ -100,7 +100,7 @@ private fun FilterSearchScreen(
     onBackClick: () -> Unit,
     onNavigateToSearch: (Filter) -> Unit,
     imeHeight: Int,
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel(),
 ) {
     val filter by viewModel.filter.collectAsStateWithLifecycle()
     val focusManager = LocalFocusManager.current
@@ -110,18 +110,19 @@ private fun FilterSearchScreen(
     Log.d(TAG, "filter = $filter")
 
     Scaffold(
-        topBar = { TopAppBar(Gray8, onBackClick) }
+        topBar = { TopAppBar(Gray8, onBackClick) },
     ) {
         Column(
-            modifier = Modifier
-                .background(Gray8)
-                .fillMaxSize()
-                .verticalScroll(scrollState)
-                .clickable(
-                    onClick = { focusManager.clearFocus() },
-                    indication = null,
-                    interactionSource = interactionSource
-                )
+            modifier =
+                Modifier
+                    .background(Gray8)
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .clickable(
+                        onClick = { focusManager.clearFocus() },
+                        indication = null,
+                        interactionSource = interactionSource,
+                    ),
         ) {
             LaunchedEffect(imeHeight) {
                 scrollState.animateScrollTo(scrollState.maxValue)
@@ -136,7 +137,7 @@ private fun FilterSearchScreen(
             }
             DetailCard(
                 viewModel,
-                filter.detail
+                filter.detail,
             ) { dogSize: Detail.DogSize?, hasKennel: Boolean?, organization: String? ->
                 viewModel.setFilter(Detail(dogSize, hasKennel, organization))
                 Log.d("FilterSearch", "${filter.detail}")
@@ -150,14 +151,14 @@ private fun FilterSearchScreen(
 @Composable
 private fun TopAppBar(
     containerColor: Color,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         containerColor = containerColor,
         titleRes = R.string.filter_app_bar_title,
         navigationType = TopAppBarNavigationType.CLOSE,
         navigationIconContentDescription = "닫기",
-        onNavigationClick = { onBackClick() }
+        onNavigationClick = { onBackClick() },
     )
 }
 
@@ -166,15 +167,16 @@ private fun BottomBar(
     filter: Filter,
     onNavigateToSearch: (Filter) -> Unit,
     imeHeight: Int,
-    viewModel: SearchViewModel
+    viewModel: SearchViewModel,
 ) {
     BottomBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Color.White)
-            .padding(top = 20.dp, bottom = (imeHeight + 20).dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .background(color = Color.White)
+                .padding(top = 20.dp, bottom = (imeHeight + 20).dp),
         onClickRefresh = { viewModel.clearFilter() },
-        onClickSearch = { onNavigateToSearch(filter) }
+        onClickSearch = { onNavigateToSearch(filter) },
     )
 }
 
@@ -183,14 +185,18 @@ private fun LocationCard(
     viewModel: SearchViewModel,
     depart: String? = null,
     dest: String? = null,
-    onSelectedRegion: (String, String) -> Unit
+    onSelectedRegion: (String, String) -> Unit,
 ) {
     val isExpanded by remember { viewModel.isLocationExpanded }.collectAsState()
     var departure = depart
     Log.d("FilterSearch", "LocationCard : departure = $departure, depart = $depart")
     var destination = dest
     var content =
-        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) { "$depart -> $dest" } else { "" }
+        if (!depart.isNullOrEmpty() && !dest.isNullOrEmpty()) {
+            "$depart -> $dest"
+        } else {
+            ""
+        }
 
     ConnectDogExpandableCard(
         modifier = Modifier.fillMaxWidth(),
@@ -223,17 +229,17 @@ private fun LocationCard(
                         content = "$departure -> $destination"
                         onSelectedRegion(departure!!, destination!!)
                     }
-                }
+                },
             ) {
                 LocationContent(
                     departureLocation = departure,
-                    destinationLocation = destination
+                    destinationLocation = destination,
                 ) { st, end ->
                     departure = st
                     destination = end
                 }
             }
-        }
+        },
     )
 }
 
@@ -242,7 +248,7 @@ private fun ScheduleCard(
     viewModel: SearchViewModel,
     start: LocalDate?,
     end: LocalDate?,
-    onClickNext: (LocalDate, LocalDate) -> Unit
+    onClickNext: (LocalDate, LocalDate) -> Unit,
 ) {
     val isExpanded by remember { viewModel.isScheduleExpanded }.collectAsState()
     var startDate: LocalDate = start ?: LocalDate.now()
@@ -263,11 +269,12 @@ private fun ScheduleCard(
         },
         expandedContent = {
             ExpandedCardContent(
-                modifier = if (!isExpanded) {
-                    Modifier.wrapContentHeight()
-                } else {
-                    Modifier.height(439.dp)
-                },
+                modifier =
+                    if (!isExpanded) {
+                        Modifier.wrapContentHeight()
+                    } else {
+                        Modifier.height(439.dp)
+                    },
                 titleRes = R.string.filter_schedule,
                 spacer = 20,
                 onClickSkip = {
@@ -285,17 +292,17 @@ private fun ScheduleCard(
                     viewModel.updateLocationExpand(false)
                     content = dateRangeDisplay(startDate, endDate)
                     onClickNext(startDate, endDate)
-                }
+                },
             ) {
                 ConnectDogCalendar(
                     startDate = startDate,
-                    endDate = endDate
+                    endDate = endDate,
                 ) { start, end ->
                     startDate = start
                     endDate = end
                 }
             }
-        }
+        },
     )
 }
 
@@ -303,7 +310,7 @@ private fun ScheduleCard(
 private fun DetailCard(
     viewModel: SearchViewModel,
     detail: Detail,
-    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit
+    onClickNext: (Detail.DogSize?, Boolean?, String?) -> Unit,
 ) {
     val isExpanded by remember { viewModel.isDetailExpanded }.collectAsState()
 
@@ -341,7 +348,7 @@ private fun DetailCard(
                         viewModel.updateLocationExpand(false)
                         viewModel.updateScheduleExpand(false)
                         onClickNext(dogSize, hasKennel, organization)
-                    }
+                    },
                 ) {
                     Column {
                         DetailContent(titleRes = R.string.filter_dog_size) {
@@ -362,7 +369,7 @@ private fun DetailCard(
                         }
                     }
                 }
-            }
+            },
         )
     }
 }
@@ -370,30 +377,31 @@ private fun DetailCard(
 @Composable
 private fun DefaultCardContent(
     @StringRes titleRes: Int,
-    content: String?
+    content: String?,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .defaultMinSize(minHeight = 57.dp)
-            .padding(16.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minHeight = 57.dp)
+                .padding(16.dp),
     ) {
         Text(
             text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 14.sp
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
         )
         Text(
             modifier = Modifier.width(200.dp),
             text = if (content.isNullOrEmpty()) stringResource(id = R.string.filter_choose) else content,
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
             color = if (content.isNullOrEmpty()) Gray3 else Gray1,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
         )
     }
 }
@@ -405,15 +413,14 @@ private fun ExpandedCardContent(
     spacer: Int,
     onClickSkip: () -> Unit,
     onClickNext: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(20.dp)
+        modifier = modifier.padding(20.dp),
     ) {
         Text(
             text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleLarge,
-            fontSize = 18.sp
+            style = MaterialTheme.typography.headlineSmall,
         )
         Spacer(modifier = Modifier.size(spacer.dp))
         content()
@@ -427,7 +434,7 @@ private fun ExpandedCardContent(
 private fun LocationContent(
     departureLocation: String? = "",
     destinationLocation: String? = "",
-    onSelectedRegion: (String?, String?) -> Unit
+    onSelectedRegion: (String?, String?) -> Unit,
 ) {
     val departureSheetState = rememberModalBottomSheetState()
     var isDepartureSheetOpen by rememberSaveable {
@@ -444,14 +451,14 @@ private fun LocationContent(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = R.drawable.img_location_path),
-            contentDescription = "출발지-도착지"
+            contentDescription = "출발지-도착지",
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column {
             SelectLocation(
                 titleRes = R.string.filter_departure,
                 place = departure,
-                placeholderRes = R.string.filter_select_departure
+                placeholderRes = R.string.filter_select_departure,
             ) {
                 isDepartureSheetOpen = true
             }
@@ -459,7 +466,7 @@ private fun LocationContent(
             SelectLocation(
                 titleRes = R.string.filter_destination,
                 place = destination,
-                placeholderRes = R.string.filter_select_destination
+                placeholderRes = R.string.filter_select_destination,
             ) {
                 isDestinationSheetOpen = true
             }
@@ -470,7 +477,7 @@ private fun LocationContent(
         RegionBottomSheet(
             sheetState = departureSheetState,
             regionType = RegionType.DEPARTURE,
-            onDismissRequest = { isDepartureSheetOpen = false }
+            onDismissRequest = { isDepartureSheetOpen = false },
         ) {
             Log.d("FilterSearch", "departure = $it")
             departure = it
@@ -483,7 +490,7 @@ private fun LocationContent(
         RegionBottomSheet(
             sheetState = destinationSheetState,
             regionType = RegionType.DESTINATION,
-            onDismissRequest = { isDestinationSheetOpen = false }
+            onDismissRequest = { isDestinationSheetOpen = false },
         ) {
             Log.d("FilterSearch", "destination = $it")
             destination = it
@@ -499,21 +506,22 @@ private fun SelectLocation(
     @StringRes titleRes: Int,
     place: String?,
     @StringRes placeholderRes: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(modifier = modifier.clickable { onClick() }) {
         Text(
             text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 14.sp
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.size(4.dp))
         Text(
             text = if (place.isNullOrEmpty()) stringResource(id = placeholderRes) else place,
             style = MaterialTheme.typography.bodyLarge,
             color = if (place.isNullOrEmpty()) Gray4 else Gray1,
-            modifier = Modifier
-                .padding(vertical = 8.dp)
+            modifier =
+                Modifier
+                    .padding(vertical = 8.dp),
         )
         HorizontalDivider(modifier = Modifier.fillMaxWidth())
     }
@@ -522,36 +530,38 @@ private fun SelectLocation(
 @Composable
 private fun DialogBottomButton(
     onClickSkip: () -> Unit,
-    onClickNext: () -> Unit
+    onClickNext: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
     ) {
         Text(
             text = stringResource(id = R.string.filter_skip),
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier.clickable { onClickSkip() },
-            color = Gray2
+            color = Gray2,
         )
         Button(
             onClick = onClickNext,
             shape = RoundedCornerShape(6.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            modifier = Modifier.size(width = 104.dp, height = 37.dp)
+            colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            modifier = Modifier.size(width = 104.dp, height = 37.dp),
         ) {
             Text(
                 text = stringResource(id = R.string.filter_apply01),
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = 14.sp,
-                color = MaterialTheme.colorScheme.onPrimary
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
     }
@@ -560,13 +570,13 @@ private fun DialogBottomButton(
 @Composable
 private fun DetailContent(
     @StringRes titleRes: Int,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column {
         Text(
             text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 12.sp
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
         )
         Spacer(modifier = Modifier.size(8.dp))
         content()
@@ -577,30 +587,31 @@ private fun DetailContent(
 private fun BottomBar(
     modifier: Modifier = Modifier,
     onClickRefresh: () -> Unit,
-    onClickSearch: () -> Unit
+    onClickSearch: () -> Unit,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(start = 20.dp, end = 16.5.dp)
-                .clickable { onClickRefresh() },
+            modifier =
+                Modifier
+                    .wrapContentSize()
+                    .padding(start = 20.dp, end = 16.5.dp)
+                    .clickable { onClickRefresh() },
             horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 modifier = Modifier.size(24.dp),
                 painter = painterResource(id = R.drawable.ic_refresh),
-                contentDescription = stringResource(id = R.string.filter_button_refresh)
+                contentDescription = stringResource(id = R.string.filter_button_refresh),
             )
             Text(
                 text = stringResource(id = R.string.filter_button_refresh),
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = 14.sp
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
             )
         }
         ConnectDogIconBottomButton(
@@ -608,7 +619,7 @@ private fun BottomBar(
             iconId = R.drawable.ic_search,
             contentDescription = stringResource(id = R.string.filter_button_search),
             onClick = onClickSearch,
-            content = stringResource(id = R.string.filter_button_search)
+            content = stringResource(id = R.string.filter_button_search),
         )
     }
 }
@@ -622,7 +633,10 @@ private fun FilterSearchScreenPreview() {
 /**
  * UI display
  */
-private fun dateRangeDisplay(startDate: LocalDate, endDate: LocalDate): String {
+private fun dateRangeDisplay(
+    startDate: LocalDate,
+    endDate: LocalDate,
+): String {
     val datePattern = "M월 dd일"
     if (startDate == endDate) return startDate.dateFormat(datePattern)
     return startDate.dateFormat(datePattern) + " - " + endDate.dateFormat(datePattern)
@@ -631,10 +645,17 @@ private fun dateRangeDisplay(startDate: LocalDate, endDate: LocalDate): String {
 private fun detailContentDisplay(
     dogSize: Detail.DogSize?,
     hasKennel: Boolean?,
-    organization: String?
+    organization: String?,
 ): String {
     val dogSizeDisplayName = dogSize?.toDisplayName().orEmpty()
-    val kennelStatus = if (hasKennel == null) "" else if (hasKennel) "켄넬 O" else "켄넬 X"
+    val kennelStatus =
+        if (hasKennel == null) {
+            ""
+        } else if (hasKennel) {
+            "켄넬 O"
+        } else {
+            "켄넬 X"
+        }
     val organizationText = organization.orEmpty()
 
     return buildString {

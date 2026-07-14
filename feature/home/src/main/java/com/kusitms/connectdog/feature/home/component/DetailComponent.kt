@@ -18,8 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogCardButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogIconTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
@@ -30,7 +30,7 @@ import com.kusitms.connectdog.feature.home.model.Detail
 @Composable
 internal fun SelectDogSize(
     selected: Detail.DogSize?,
-    onSelectedDogSize: (Detail.DogSize) -> Unit
+    onSelectedDogSize: (Detail.DogSize) -> Unit,
 ) {
     val selectedState = remember { mutableStateOf(selected) }
 
@@ -43,7 +43,7 @@ internal fun SelectDogSize(
                 selectedState.value = Detail.DogSize.BIG
             },
             imageRes = R.drawable.img_big_dog,
-            textRes = R.string.filter_big_dog
+            textRes = R.string.filter_big_dog,
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
@@ -53,7 +53,7 @@ internal fun SelectDogSize(
                 selectedState.value = Detail.DogSize.MIDDLE
             },
             imageRes = R.drawable.img_middle_dog,
-            textRes = R.string.filter_middle_dog
+            textRes = R.string.filter_middle_dog,
         )
         DogSizeButton(
             modifier = Modifier.weight(1f),
@@ -63,7 +63,7 @@ internal fun SelectDogSize(
                 selectedState.value = Detail.DogSize.SMALL
             },
             imageRes = R.drawable.img_small_dog,
-            textRes = R.string.filter_small_dog
+            textRes = R.string.filter_small_dog,
         )
     }
 }
@@ -74,29 +74,31 @@ private fun DogSizeButton(
     isSelected: Boolean,
     onSelected: () -> Unit,
     imageRes: Int,
-    @StringRes textRes: Int
+    @StringRes textRes: Int,
 ) {
     ConnectDogCardButton(
         modifier = modifier.defaultMinSize(minHeight = 102.dp, minWidth = 90.dp),
         isSelected = isSelected,
-        onSelected = { onSelected() }
+        onSelected = { onSelected() },
     ) {
         Box {
             Image(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = 4.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 4.dp),
                 painter = painterResource(id = imageRes),
-                contentDescription = stringResource(id = textRes)
+                contentDescription = stringResource(id = textRes),
             )
             Text(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 10.dp),
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 10.dp),
                 text = stringResource(id = textRes),
-                style = MaterialTheme.typography.titleSmall,
-                fontSize = 12.sp,
-                color = if (isSelected) PetOrange else MaterialTheme.colorScheme.onSurface
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = if (isSelected) PetOrange else MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -105,7 +107,7 @@ private fun DogSizeButton(
 @Composable
 internal fun SelectKennel(
     hasKennel: Boolean?,
-    selectedKennel: (Boolean) -> Unit
+    selectedKennel: (Boolean) -> Unit,
 ) {
     val selectedState = remember { mutableStateOf(hasKennel) }
 
@@ -117,7 +119,7 @@ internal fun SelectKennel(
                 selectedKennel(true)
                 selectedState.value = true
             },
-            textRes = R.string.filter_kennel_no_need
+            textRes = R.string.filter_kennel_no_need,
         )
         KennelButton(
             modifier = Modifier.weight(1f),
@@ -126,7 +128,7 @@ internal fun SelectKennel(
                 selectedKennel(false)
                 selectedState.value = false
             },
-            textRes = R.string.filter_kennel_need
+            textRes = R.string.filter_kennel_need,
         )
     }
 }
@@ -136,18 +138,18 @@ private fun KennelButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean,
     onSelected: () -> Unit,
-    @StringRes textRes: Int
+    @StringRes textRes: Int,
 ) {
     ConnectDogOutlinedButton(
         modifier = modifier,
         isSelected = isSelected,
-        onClick = { onSelected() }
+        onClick = { onSelected() },
     ) {
         Text(
             text = stringResource(id = textRes),
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 12.sp,
-            color = if (isSelected) PetOrange else MaterialTheme.colorScheme.onSurface
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
+            color = if (isSelected) PetOrange else MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -156,7 +158,7 @@ private fun KennelButton(
 internal fun SearchOrganization(
     modifier: Modifier = Modifier,
     organizationText: String?,
-    onSearched: (String?) -> Unit
+    onSearched: (String?) -> Unit,
 ) {
     val (text, onTextChanged) = remember { mutableStateOf(organizationText.orEmpty()) }
     ConnectDogIconTextField(
@@ -171,6 +173,6 @@ internal fun SearchOrganization(
         onImeAction = {
             Log.d("SearchOrganization", "text = $text, onTextChanged = $onTextChanged")
             onSearched(text)
-        }
+        },
     )
 }

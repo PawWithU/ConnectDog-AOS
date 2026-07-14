@@ -6,5 +6,5 @@ data class IntermediatorInfoResponseItem(
     val intro: String,
     val name: String,
     val profileImage: String,
-    val url: String
+    val url: String,
 )

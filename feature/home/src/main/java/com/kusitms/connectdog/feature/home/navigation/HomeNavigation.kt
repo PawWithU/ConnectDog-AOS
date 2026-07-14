@@ -95,7 +95,7 @@ fun NavGraphBuilder.homeNavGraph(
     onVerifyCode: (String, (Boolean) -> Unit) -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     finish: () -> Unit,
-    imeHeight: Int
+    imeHeight: Int,
 ) {
     composable(route = HomeRoute.route) {
         HomeRoute(
@@ -107,7 +107,7 @@ fun NavGraphBuilder.homeNavGraph(
             onShowErrorSnackBar,
             onNavigateToReviewDetail,
             onNavigateToGuideScreen,
-            finish
+            finish,
         )
     }
 
@@ -117,11 +117,12 @@ fun NavGraphBuilder.homeNavGraph(
 
     composable(
         route = "${HomeRoute.search}/{filter}",
-        arguments = listOf(
-            navArgument("filter") {
-                type = NavType.StringType
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("filter") {
+                    type = NavType.StringType
+                },
+            ),
     ) { backStackEntry ->
         val filterJson = backStackEntry.arguments?.getString("filter")
         val filter = localDateGson.fromJson(filterJson, Filter::class.java)
@@ -130,7 +131,7 @@ fun NavGraphBuilder.homeNavGraph(
             onBackClick = onBackClick,
             filterArg = filter ?: Filter(),
             onNavigateToFilter = onNavigateToFilter,
-            onDetailClick = onNavigateToDetail
+            onDetailClick = onNavigateToDetail,
         )
     }
 
@@ -138,17 +139,18 @@ fun NavGraphBuilder.homeNavGraph(
         FilterSearchRoute(
             onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearchWithFilter,
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 
     composable(
         route = "${HomeRoute.filter_search}/{filter}",
-        arguments = listOf(
-            navArgument("filter") {
-                type = NavType.StringType
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("filter") {
+                    type = NavType.StringType
+                },
+            ),
     ) { backStackEntry ->
         val filterJson = backStackEntry.arguments?.getString("filter")
         val filter = localDateGson.fromJson(filterJson, Filter::class.java)
@@ -157,72 +159,75 @@ fun NavGraphBuilder.homeNavGraph(
             onBackClick = onBackClick,
             onNavigateToSearch = onNavigateToSearchWithFilter,
             filterArg = filter,
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 
     composable(route = HomeRoute.review) {
         ReviewScreen(
             onBackClick = onBackClick,
-            onInterProfileClick = onNavigateToIntermediatorProfile
+            onInterProfileClick = onNavigateToIntermediatorProfile,
         )
     }
     composable(
         route = "${HomeRoute.detail}/{postId}",
-        arguments = listOf(
-            navArgument("postId") {
-                type = NavType.LongType
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("postId") {
+                    type = NavType.LongType
+                },
+            ),
     ) {
         DetailScreen(
             onBackClick = onBackClick,
             onApplyClick = { onNavigateToApply(it) },
             onIntermediatorProfileClick = onNavigateToIntermediatorProfile,
-            postId = it.arguments!!.getLong("postId")
+            postId = it.arguments!!.getLong("postId"),
         )
     }
 
     composable(
         route = "${HomeRoute.apply}/{postId}",
-        arguments = listOf(
-            navArgument("postId") {
-                type = NavType.LongType
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("postId") {
+                    type = NavType.LongType
+                },
+            ),
     ) {
         ApplyScreen(
             onBackClick = onBackClick,
             onClick = onNavigateToComplete,
             postId = it.arguments!!.getLong("postId"),
-            imeHeight = imeHeight
+            imeHeight = imeHeight,
         )
     }
 
     composable(route = HomeRoute.complete) {
         CompleteApplyScreen(
-            onClick = onNavigateToSearch
+            onClick = onNavigateToSearch,
         )
     }
 
     composable(
         route = "${HomeRoute.intermediatorProfile}/{intermediaryId}",
-        arguments = listOf(
-            navArgument("intermediaryId") {
-                type = NavType.LongType
-            }
-        )
+        arguments =
+            listOf(
+                navArgument("intermediaryId") {
+                    type = NavType.LongType
+                },
+            ),
     ) {
         IntermediatorProfileScreen(
             onBackClick = onBackClick,
             intermediaryId = it.arguments!!.getLong("intermediaryId"),
-            onDetailClick = onNavigateToDetail
+            onDetailClick = onNavigateToDetail,
         )
     }
 
     composable(route = HomeRoute.guide) {
         GuideScreen(
-            onBackClick = onBackClick
+            onBackClick = onBackClick,
         )
     }
 

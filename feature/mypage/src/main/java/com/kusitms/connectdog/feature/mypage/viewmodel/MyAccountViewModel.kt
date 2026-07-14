@@ -11,40 +11,43 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MyAccountViewModel @Inject constructor(
-    private val repository: MyPageRepository
-) : ViewModel() {
-    private val _name = MutableStateFlow<String>("")
-    val name: StateFlow<String>
-        get() = _name
+class MyAccountViewModel
+    @Inject
+    constructor(
+        private val repository: MyPageRepository,
+    ) : ViewModel() {
+        private val _name = MutableStateFlow<String>("")
+        val name: StateFlow<String>
+            get() = _name
 
-    private val _email = MutableStateFlow<String>("")
-    val email: StateFlow<String>
-        get() = _email
+        private val _email = MutableStateFlow<String>("")
+        val email: StateFlow<String>
+            get() = _email
 
-    private val _phoneNumber = MutableStateFlow<String>("")
-    val phoneNumber: StateFlow<String>
-        get() = _phoneNumber
+        private val _phoneNumber = MutableStateFlow<String>("")
+        val phoneNumber: StateFlow<String>
+            get() = _phoneNumber
 
-    private val _socialType = MutableStateFlow<String?>(null)
-    val socialType: StateFlow<String?>
-        get() = _socialType
+        private val _socialType = MutableStateFlow<String?>(null)
+        val socialType: StateFlow<String?>
+            get() = _socialType
 
-    fun fetchAccountInfo(userType: UserType) = viewModelScope.launch {
-        when (userType) {
-            UserType.INTERMEDIATOR -> {
-                val response = repository.getInterAccountInfo()
-                _name.value = response.realName
-                _email.value = response.email
-                _phoneNumber.value = response.phone
+        fun fetchAccountInfo(userType: UserType) =
+            viewModelScope.launch {
+                when (userType) {
+                    UserType.INTERMEDIATOR -> {
+                        val response = repository.getInterAccountInfo()
+                        _name.value = response.realName
+                        _email.value = response.email
+                        _phoneNumber.value = response.phone
+                    }
+                    else -> {
+                        val response = repository.getVolunteerAccountInfo()
+                        _name.value = response.name
+                        _email.value = response.email ?: ""
+                        _phoneNumber.value = response.phone
+                        _socialType.value = response.socialType
+                    }
+                }
             }
-            else -> {
-                val response = repository.getVolunteerAccountInfo()
-                _name.value = response.name
-                _email.value = response.email ?: ""
-                _phoneNumber.value = response.phone
-                _socialType.value = response.socialType
-            }
-        }
     }
-}

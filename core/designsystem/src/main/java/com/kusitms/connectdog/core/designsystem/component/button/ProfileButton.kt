@@ -17,23 +17,27 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
 
 @Composable
-fun ProfileButton(onClick: () -> Unit, modifier: Modifier) {
+fun ProfileButton(
+    onClick: () -> Unit,
+    modifier: Modifier,
+) {
     val shape = RoundedCornerShape(8.dp)
     Button(
         onClick = onClick,
         shape = shape,
         modifier = modifier,
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = Gray2
-        ),
+        colors =
+            ButtonDefaults.outlinedButtonColors(
+                contentColor = Gray2,
+            ),
         border = BorderStroke(1.dp, Gray5),
-        contentPadding = PaddingValues(all = 8.dp)
+        contentPadding = PaddingValues(all = 8.dp),
     ) {
         Text(
             text = stringResource(id = R.string.profile_button),
             fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Gray2
+            color = Gray2,
         )
     }
 }

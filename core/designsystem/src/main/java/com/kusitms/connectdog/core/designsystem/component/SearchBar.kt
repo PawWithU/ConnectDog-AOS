@@ -29,54 +29,55 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray3
 import com.kusitms.connectdog.core.designsystem.theme.Gray5
 
 @Composable
-fun SearchBar(
-    onClick: () -> Unit,
-) {
+fun SearchBar(onClick: () -> Unit) {
     Row(
-        modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .padding(vertical = 12.dp)
-            .fillMaxWidth()
-            .border(
-                width = 1.dp,
-                color = Gray5,
-                shape = RoundedCornerShape(90.dp)
-            )
-            .clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp)
+                .padding(vertical = 12.dp)
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = Gray5,
+                    shape = RoundedCornerShape(90.dp),
+                )
+                .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .size(24.dp),
+            modifier =
+                Modifier
+                    .padding(start = 20.dp)
+                    .size(24.dp),
             imageVector = Icons.Filled.Search,
             tint = Gray3,
-            contentDescription = "Navigate to Search"
+            contentDescription = "Navigate to Search",
         )
         Spacer(modifier = Modifier.width(5.dp))
         Text(
             modifier = Modifier.padding(vertical = 10.dp),
-            text = buildAnnotatedString {
-                withStyle(
-                    SpanStyle(
-                        color = Gray1,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append(stringResource(id = R.string.search_bar_title))
-                }
-                withStyle(
-                    SpanStyle(
-                        color = Gray3,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append(stringResource(id = R.string.search_bar_subtitle))
-                }
-            },
-            lineHeight = 15.sp
+            text =
+                buildAnnotatedString {
+                    withStyle(
+                        SpanStyle(
+                            color = Gray1,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Medium,
+                        ),
+                    ) {
+                        append(stringResource(id = R.string.search_bar_title))
+                    }
+                    withStyle(
+                        SpanStyle(
+                            color = Gray3,
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Medium,
+                        ),
+                    ) {
+                        append(stringResource(id = R.string.search_bar_subtitle))
+                    }
+                },
+            lineHeight = 15.sp,
         )
     }
 }

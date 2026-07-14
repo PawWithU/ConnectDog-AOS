@@ -1,25 +1,20 @@
-import com.kusitms.connectdog.Configuration
-import org.jetbrains.kotlin.konan.properties.Properties
+import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.com.android.application)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
-    alias(libs.plugins.hilt)
+    id("connectdog.android.application")
+    id("connectdog.android.hilt")
     alias(libs.plugins.ktlint)
 }
 
 android {
     namespace = "com.kusitms.connectdog"
-    compileSdk = Configuration.compileSdk
 
     defaultConfig {
         applicationId = "com.kusitms.connectdog"
-        minSdk = Configuration.minSdk
-        targetSdk = Configuration.targetSdk
-        versionCode = Configuration.versionCode
-        versionName = Configuration.versionName
+        targetSdk = 34
+        versionCode = 15
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -28,7 +23,9 @@ android {
 
         val localProperties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) { localPropertiesFile.inputStream().use { localProperties.load(it) } }
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+        }
 
         val kakaoAppKey: String = localProperties.getProperty("kakao_app_key") ?: ""
         manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
@@ -39,17 +36,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
             signingConfig = signingConfigs.getByName("debug")
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
     buildFeatures {
         buildConfig = true
@@ -68,15 +58,8 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.google.playintegrity)
 
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.android)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.kakao.oauth)
-}
-
-kapt {
-    correctErrorTypes = true
 }

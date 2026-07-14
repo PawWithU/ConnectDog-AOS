@@ -19,6 +19,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalMinimumInteractiveComponentEnforcement
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -37,7 +38,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogDialogButton
@@ -64,7 +64,7 @@ fun CreateApplicationInfoScreen(
     onBackClick: () -> Unit,
     navigateToCreateDog: () -> Unit,
     viewModel: CreateApplicationViewModel,
-    imeHeight: Int
+    imeHeight: Int,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -85,35 +85,36 @@ fun CreateApplicationInfoScreen(
                 showBackDialog = false
                 viewModel.clear()
                 onBackClick()
-            }
+            },
         )
     }
 
     Scaffold(
-        modifier = Modifier
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            ),
+        modifier =
+            Modifier
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.create_announcement,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = { showBackDialog = true }
+                onNavigationClick = { showBackDialog = true },
             )
         },
         bottomBar = {
             BottomBar(
                 navigateToCreateDog = navigateToCreateDog,
                 imeHeight = imeHeight,
-                viewModel = viewModel
+                viewModel = viewModel,
             )
-        }
+        },
     ) {
         Content(
             imeHeight = imeHeight,
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 }
@@ -122,7 +123,7 @@ fun CreateApplicationInfoScreen(
 @Composable
 private fun Content(
     imeHeight: Int,
-    viewModel: CreateApplicationViewModel
+    viewModel: CreateApplicationViewModel,
 ) {
     var isScheduleSheetOpen by rememberSaveable { mutableStateOf(false) }
     var isTimeSheetOpen by rememberSaveable { mutableStateOf(false) }
@@ -152,32 +153,32 @@ private fun Content(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 32.dp, bottom = 120.dp)
-                .verticalScroll(scrollState)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 32.dp, bottom = 120.dp)
+                    .verticalScroll(scrollState),
         ) {
             Spacer(modifier = Modifier.height(48.dp))
             Text(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 text = stringResource(id = R.string.create_announcement_title),
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                style = MaterialTheme.typography.headlineSmall,
             )
             Location(
                 departure = departure.value,
                 destination = destination.value,
                 updateDeparture = viewModel::updateDeparture,
-                updateDestination = viewModel::updateDestination
+                updateDestination = viewModel::updateDestination,
             )
             Divider(
                 Modifier
                     .height(8.dp)
                     .fillMaxWidth(),
-                color = Gray7
+                color = Gray7,
             )
             Spacer(modifier = Modifier.height(32.dp))
             Schedule(
@@ -185,7 +186,7 @@ private fun Content(
                 startDate = startDate.value,
                 endDate = endDate.value,
                 isAdjustable = isAdjustableSchedule.value,
-                updateIsAdjustable = viewModel::updateIsAdjustableSchedule
+                updateIsAdjustable = viewModel::updateIsAdjustableSchedule,
             )
             Spacer(modifier = Modifier.height(40.dp))
             if ((startDate.value == endDate.value) && (startDate.value != null && endDate.value != null)) {
@@ -195,40 +196,42 @@ private fun Content(
                     minute = minute.value,
                     dayTime = dayTime.value,
                     isAdjustable = isAdjustableTime.value,
-                    updateIsAdjustable = viewModel::updateIsAdjustableTime
+                    updateIsAdjustable = viewModel::updateIsAdjustableTime,
                 )
                 Spacer(modifier = Modifier.height(40.dp))
             }
             Kennel(
                 isKennel = isKennel.value,
-                updateHasKennel = viewModel::updateIsKennel
+                updateHasKennel = viewModel::updateIsKennel,
             )
             Spacer(modifier = Modifier.height(32.dp))
             Divider(
                 Modifier
                     .height(8.dp)
                     .fillMaxWidth(),
-                color = Gray7
+                color = Gray7,
             )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
                 text = stringResource(id = R.string.create_announcement_subtitle_5),
+                style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Bold,
-                fontSize = 14.sp
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(bottom = imeHeight.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(bottom = imeHeight.dp),
                 height = 244,
                 text = viewModel.content,
                 onTextChanged = viewModel::updateSignificant,
-                placeholder = "[이동봉사 목적, 이동 동물의 사연, 이동봉사 시간 및 장소 상세, 이동봉사 추가 안내사항 등]을 작성해주세요."
+                placeholder = "[이동봉사 목적, 이동 동물의 사연, 이동봉사 시간 및 장소 상세, 이동봉사 추가 안내사항 등]을 작성해주세요.",
             )
         }
     }
@@ -240,7 +243,7 @@ private fun Content(
             end = endDate.value,
             onDismissClick = { isScheduleSheetOpen = false },
             onStartDateChanged = viewModel::updateStartDate,
-            onEndDateChanged = viewModel::updateEndDate
+            onEndDateChanged = viewModel::updateEndDate,
         )
     }
 
@@ -253,7 +256,7 @@ private fun Content(
             dayTime = dayTime.value,
             updateHour = viewModel::updateHour,
             updateMinute = viewModel::updateMinute,
-            updateDayTime = viewModel::updateDayTime
+            updateDayTime = viewModel::updateDayTime,
         )
     }
 }
@@ -263,22 +266,23 @@ private fun Location(
     destination: String?,
     departure: String?,
     updateDeparture: (String) -> Unit,
-    updateDestination: (String) -> Unit
+    updateDestination: (String) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 40.dp, bottom = 32.dp, start = 20.dp, end = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 40.dp, bottom = 32.dp, start = 20.dp, end = 20.dp),
     ) {
         Text(
             text = stringResource(id = R.string.create_announcement_subtitle_1),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(20.dp))
         LocationContent(
             departureLocation = departure,
-            destinationLocation = destination
+            destinationLocation = destination,
         ) { st, end ->
             st?.let { updateDeparture(it) }
             end?.let { updateDestination(it) }
@@ -292,39 +296,42 @@ private fun Schedule(
     startDate: LocalDate?,
     endDate: LocalDate?,
     isAdjustable: Boolean,
-    updateIsAdjustable: (Boolean) -> Unit
+    updateIsAdjustable: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = R.string.create_announcement_subtitle_2),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogDialogButton(
             onClick = onClick,
-            text = if (startDate == null || endDate == null) {
-                "날짜/기간 선택"
-            } else if (startDate == endDate) {
-                "$startDate"
-            } else {
-                "$startDate ~ $endDate"
-            },
-            textColor = if (startDate == null || endDate == null) {
-                Gray4
-            } else {
-                Gray1
-            }
+            text =
+                if (startDate == null || endDate == null) {
+                    "날짜/기간 선택"
+                } else if (startDate == endDate) {
+                    "$startDate"
+                } else {
+                    "$startDate ~ $endDate"
+                },
+            textColor =
+                if (startDate == null || endDate == null) {
+                    Gray4
+                } else {
+                    Gray1
+                },
         )
         Spacer(modifier = Modifier.height(12.dp))
         AdjustableButton(
             title = "조정 가능",
             isChecked = isAdjustable,
-            updateIsChecked = updateIsAdjustable
+            updateIsChecked = updateIsAdjustable,
         )
     }
 }
@@ -336,39 +343,42 @@ private fun Time(
     dayTime: DayTime?,
     onClick: () -> Unit,
     isAdjustable: Boolean,
-    updateIsAdjustable: (Boolean) -> Unit
+    updateIsAdjustable: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = R.string.create_announcement_subtitle_3),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogDialogButton(
             onClick = { if (!isAdjustable) onClick() },
-            text = if (hour != null && minute != null && dayTime != null && !isAdjustable) {
-                "${dayTime.time} ${String.format("%02d", hour)}:${String.format("%02d", minute)}"
-            } else if (isAdjustable) {
-                "시간 미정"
-            } else {
-                "시간 선택"
-            },
-            textColor = if ((hour != null && minute != null && dayTime != null) || isAdjustable) {
-                Gray1
-            } else {
-                Gray4
-            }
+            text =
+                if (hour != null && minute != null && dayTime != null && !isAdjustable) {
+                    "${dayTime.time} ${String.format("%02d", hour)}:${String.format("%02d", minute)}"
+                } else if (isAdjustable) {
+                    "시간 미정"
+                } else {
+                    "시간 선택"
+                },
+            textColor =
+                if ((hour != null && minute != null && dayTime != null) || isAdjustable) {
+                    Gray1
+                } else {
+                    Gray4
+                },
         )
         Spacer(modifier = Modifier.height(12.dp))
         AdjustableButton(
             title = "시간 미정",
             isChecked = isAdjustable,
-            updateIsChecked = updateIsAdjustable
+            updateIsChecked = updateIsAdjustable,
         )
     }
 }
@@ -376,18 +386,19 @@ private fun Time(
 @Composable
 private fun Kennel(
     isKennel: Boolean?,
-    updateHasKennel: (Boolean) -> Unit
+    updateHasKennel: (Boolean) -> Unit,
 ) {
     var hasKennel by remember { mutableStateOf(isKennel) }
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = R.string.create_announcement_subtitle_4),
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
         SelectKennel(hasKennel) {
@@ -402,11 +413,11 @@ private fun Kennel(
 private fun AdjustableButton(
     title: String,
     isChecked: Boolean,
-    updateIsChecked: (Boolean) -> Unit
+    updateIsChecked: (Boolean) -> Unit,
 ) {
     var checked by remember { mutableStateOf(isChecked) }
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentEnforcement provides false) {
             Checkbox(
@@ -415,14 +426,14 @@ private fun AdjustableButton(
                     checked = it
                     updateIsChecked(it)
                 },
-                colors = CheckboxDefaults.colors(uncheckedColor = Gray5)
+                colors = CheckboxDefaults.colors(uncheckedColor = Gray5),
             )
         }
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = title,
+            style = MaterialTheme.typography.bodyMedium,
             color = Gray2,
-            fontSize = 14.sp
         )
     }
 }
@@ -431,23 +442,36 @@ private fun AdjustableButton(
 private fun BottomBar(
     imeHeight: Int,
     viewModel: CreateApplicationViewModel,
-    navigateToCreateDog: () -> Unit
+    navigateToCreateDog: () -> Unit,
 ) {
     ConnectDogBottomButton(
-        modifier = Modifier.padding(
-            top = 24.dp,
-            bottom = (24 + imeHeight).dp,
-            start = 20.dp,
-            end = 20.dp
-        ),
+        modifier =
+            Modifier.padding(
+                top = 24.dp,
+                bottom = (24 + imeHeight).dp,
+                start = 20.dp,
+                end = 20.dp,
+            ),
         onClick = navigateToCreateDog,
         content = "다음",
-        enabled = viewModel.isKennel.value != null &&
-            viewModel.departure.value != null &&
-            viewModel.destination.value != null &&
-            viewModel.startDate.value != null &&
-            viewModel.endDate.value != null &&
-            (if (viewModel.startDate.value == viewModel.endDate.value) (viewModel.isAdjustableTime.value || (viewModel.dayTime.value != null && viewModel.hour.value != null && viewModel.minute.value != null)) else true) &&
-            viewModel.content != ""
+        enabled =
+            viewModel.isKennel.value != null &&
+                viewModel.departure.value != null &&
+                viewModel.destination.value != null &&
+                viewModel.startDate.value != null &&
+                viewModel.endDate.value != null &&
+                (
+                    if (viewModel.startDate.value == viewModel.endDate.value) {
+                        viewModel.isAdjustableTime.value ||
+                            (
+                                viewModel.dayTime.value != null &&
+                                    viewModel.hour.value != null &&
+                                    viewModel.minute.value != null
+                            )
+                    } else {
+                        true
+                    }
+                ) &&
+                viewModel.content != "",
     )
 }

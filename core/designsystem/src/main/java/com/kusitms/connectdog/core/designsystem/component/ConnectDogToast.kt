@@ -20,25 +20,25 @@ import androidx.compose.ui.unit.sp
 fun ConnectDogToast(
     visible: Boolean,
     message: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideInVertically(initialOffsetY = { it / 2 }),
         exit = fadeOut() + slideOutVertically(targetOffsetY = { it / 2 }),
-        modifier = modifier
+        modifier = modifier,
     ) {
         Box(
-            modifier = Modifier
-                .background(Color(0xFF4B4B4B), shape = RoundedCornerShape(20.dp))
-                .padding(horizontal = 24.dp, vertical = 12.dp)
+            modifier =
+                Modifier
+                    .background(Color(0xFF4B4B4B), shape = RoundedCornerShape(20.dp))
+                    .padding(horizontal = 24.dp, vertical = 12.dp),
         ) {
             Text(
                 text = message,
                 color = Color.White,
-                fontSize = 14.sp
+                fontSize = 14.sp,
             )
         }
     }
 }
-

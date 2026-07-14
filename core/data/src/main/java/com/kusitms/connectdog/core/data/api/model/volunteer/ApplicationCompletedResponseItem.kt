@@ -14,5 +14,5 @@ data class ApplicationCompletedResponseItem(
     val reviewId: Long?,
     val dogName: String,
     val pickUpTime: String,
-    val dogSize: String
+    val dogSize: String,
 )

@@ -33,15 +33,15 @@ fun TimeBottomSheet(
     updateMinute: (Int) -> Unit,
     updateDayTime: (DayTime) -> Unit,
     sheetState: SheetState,
-    onDismissClick: () -> Unit
+    onDismissClick: () -> Unit,
 ) {
     ConnectDogBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = onDismissClick
+        onDismissRequest = onDismissClick,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             var h by remember { mutableStateOf(hour) }
             var m by remember { mutableStateOf(minute) }
@@ -51,7 +51,7 @@ fun TimeBottomSheet(
                 navigationType = TopAppBarNavigationType.CLOSE,
                 navigationIconContentDescription = "close",
                 onNavigationClick = onDismissClick,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 20.dp),
             )
             TimeWheelPicker(
                 m = minute,
@@ -59,7 +59,7 @@ fun TimeBottomSheet(
                 d = dayTime,
                 updateHour = { h = it },
                 updateMinute = { m = it },
-                updateDayTime = { d = it }
+                updateDayTime = { d = it },
             )
             Spacer(modifier = Modifier.height(24.dp))
             ConnectDogBottomButton(
@@ -70,7 +70,7 @@ fun TimeBottomSheet(
                     onDismissClick()
                 },
                 content = "선택 완료",
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(horizontal = 20.dp),
             )
             Spacer(modifier = Modifier.height(32.dp))
         }

@@ -26,26 +26,26 @@ fun Content(
     t1Value: String,
     t2Value: String,
     t3Value: String,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         TitleValue(
             title = stringResource(id = titleRes1),
             value = t1Value,
             style = textStyle,
-            isValid = isValid
+            isValid = isValid,
         )
         TitleValue(
             title = stringResource(id = titleRes2),
             value = t2Value,
             style = textStyle,
-            isValid = isValid
+            isValid = isValid,
         )
         TitleValue(
             title = stringResource(id = titleRes3),
             value = t3Value,
             style = textStyle,
-            isValid = isValid
+            isValid = isValid,
         )
     }
 }
@@ -55,18 +55,18 @@ fun TitleValue(
     title: String,
     value: String,
     style: TextStyle,
-    isValid: Boolean = true
+    isValid: Boolean = true,
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
             text = title,
             style = style,
-            color = if (isValid) Gray3 else Gray6
+            color = if (isValid) Gray3 else Gray6,
         )
         Text(
             text = value,
             style = style,
-            color = if (isValid) Gray2 else Gray6
+            color = if (isValid) Gray2 else Gray6,
         )
     }
 }

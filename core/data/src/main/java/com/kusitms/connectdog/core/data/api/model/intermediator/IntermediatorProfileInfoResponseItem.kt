@@ -7,5 +7,5 @@ data class IntermediatorProfileInfoResponseItem(
     val profileImage: String?,
     val progressingCount: Long,
     val recruitingCount: Long,
-    val waitingCount: Long
+    val waitingCount: Long,
 )

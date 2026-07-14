@@ -31,11 +31,11 @@ import com.kusitms.connectdog.core.designsystem.theme.Red1
 fun ConnectDogAlertDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
-        properties = properties
+        properties = properties,
     ) {
         content()
     }
@@ -51,29 +51,30 @@ fun ConnectDogAlertDialog(
     @StringRes descriptionRes: Int,
     @StringRes okText: Int,
     @StringRes cancelText: Int? = null,
-    onClickOk: () -> Unit
+    onClickOk: () -> Unit,
 ) {
     ConnectDogAlertDialog(onDismissRequest = {}, properties = properties) {
         Column(
-            modifier = modifier
-                .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
-                .padding(20.dp)
-                .wrapContentSize(),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            modifier =
+                modifier
+                    .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
+                    .padding(20.dp)
+                    .wrapContentSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Column(
                 Modifier
                     .padding(vertical = 40.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 if (titleRes != null) {
                     Text(
                         text = stringResource(id = titleRes),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
                     )
                     Spacer(modifier = Modifier.size(12.dp))
                 }
@@ -83,7 +84,7 @@ fun ConnectDogAlertDialog(
                     textAlign = TextAlign.Center,
                     color = Gray2,
                     fontSize = 16.sp,
-                    lineHeight = 23.sp
+                    lineHeight = 23.sp,
                 )
             }
 
@@ -94,7 +95,7 @@ fun ConnectDogAlertDialog(
                         onDismissRequest()
                     },
                     content = stringResource(id = okText),
-                    modifier = modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth(),
                 )
                 if (cancelText != null) {
                     ConnectDogBottomButton(
@@ -103,7 +104,7 @@ fun ConnectDogAlertDialog(
                         enabledColor = MaterialTheme.colorScheme.surface,
                         textColor = Gray2,
                         modifier = modifier.fillMaxWidth(),
-                        border = BorderStroke(width = 1.dp, color = Gray5)
+                        border = BorderStroke(width = 1.dp, color = Gray5),
                     )
                 }
             }
@@ -121,29 +122,30 @@ fun ConnectDogLogOutDialog(
     @StringRes descriptionRes: Int,
     @StringRes okText: Int,
     @StringRes cancelText: Int? = null,
-    onClickOk: () -> Unit
+    onClickOk: () -> Unit,
 ) {
     ConnectDogAlertDialog(onDismissRequest = {}, properties = properties) {
         Column(
-            modifier = modifier
-                .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
-                .padding(20.dp)
-                .wrapContentSize(),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            modifier =
+                modifier
+                    .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
+                    .padding(20.dp)
+                    .wrapContentSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Column(
                 Modifier
                     .padding(vertical = 40.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 if (titleRes != null) {
                     Text(
                         text = stringResource(id = titleRes),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
                     )
                     Spacer(modifier = Modifier.size(12.dp))
                 }
@@ -153,7 +155,7 @@ fun ConnectDogLogOutDialog(
                     textAlign = TextAlign.Center,
                     color = Gray2,
                     fontSize = 16.sp,
-                    lineHeight = 23.sp
+                    lineHeight = 23.sp,
                 )
             }
 
@@ -163,7 +165,7 @@ fun ConnectDogLogOutDialog(
                         onClickOk()
                     },
                     content = stringResource(id = okText),
-                    modifier = modifier.fillMaxWidth()
+                    modifier = modifier.fillMaxWidth(),
                 )
                 if (cancelText != null) {
                     ConnectDogBottomButton(
@@ -172,7 +174,7 @@ fun ConnectDogLogOutDialog(
                         enabledColor = MaterialTheme.colorScheme.surface,
                         textColor = Gray2,
                         modifier = modifier.fillMaxWidth(),
-                        border = BorderStroke(width = 1.dp, color = Gray5)
+                        border = BorderStroke(width = 1.dp, color = Gray5),
                     )
                 }
             }
@@ -190,29 +192,30 @@ fun ConnectDogWithDrawDialog(
     @StringRes descriptionRes: Int,
     @StringRes okText: Int,
     @StringRes cancelText: Int? = null,
-    onClickOk: () -> Unit
+    onClickOk: () -> Unit,
 ) {
     ConnectDogAlertDialog(onDismissRequest = {}, properties = properties) {
         Column(
-            modifier = modifier
-                .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
-                .padding(20.dp)
-                .wrapContentSize(),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            modifier =
+                modifier
+                    .background(color = backgroundColor, shape = RoundedCornerShape(20.dp))
+                    .padding(20.dp)
+                    .wrapContentSize(),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             Column(
                 Modifier
                     .padding(vertical = 40.dp)
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 if (titleRes != null) {
                     Text(
                         text = stringResource(id = titleRes),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
                     )
                     Spacer(modifier = Modifier.size(12.dp))
                 }
@@ -222,7 +225,7 @@ fun ConnectDogWithDrawDialog(
                     textAlign = TextAlign.Center,
                     color = Gray2,
                     fontSize = 16.sp,
-                    lineHeight = 23.sp
+                    lineHeight = 23.sp,
                 )
             }
 
@@ -233,7 +236,7 @@ fun ConnectDogWithDrawDialog(
                     },
                     content = stringResource(id = okText),
                     modifier = modifier.fillMaxWidth(),
-                    enabledColor = Red1
+                    enabledColor = Red1,
                 )
                 if (cancelText != null) {
                     ConnectDogBottomButton(
@@ -242,7 +245,7 @@ fun ConnectDogWithDrawDialog(
                         enabledColor = MaterialTheme.colorScheme.surface,
                         textColor = Gray2,
                         modifier = modifier.fillMaxWidth(),
-                        border = BorderStroke(width = 1.dp, color = Gray5)
+                        border = BorderStroke(width = 1.dp, color = Gray5),
                     )
                 }
             }

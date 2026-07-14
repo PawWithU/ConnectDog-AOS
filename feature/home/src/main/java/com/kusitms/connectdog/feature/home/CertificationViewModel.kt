@@ -14,56 +14,58 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CertificationViewModel @Inject constructor(
-    private val applyRepository: ApplyRepository
-) : ViewModel() {
-    private val _isCertified: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isCertified: StateFlow<Boolean> = _isCertified
+class CertificationViewModel
+    @Inject
+    constructor(
+        private val applyRepository: ApplyRepository,
+    ) : ViewModel() {
+        private val _isCertified: MutableStateFlow<Boolean> = MutableStateFlow(false)
+        val isCertified: StateFlow<Boolean> = _isCertified
 
-    private val _isSendNumber: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isSendNumber: StateFlow<Boolean> = _isSendNumber
+        private val _isSendNumber: MutableStateFlow<Boolean> = MutableStateFlow(false)
+        val isSendNumber: StateFlow<Boolean> = _isSendNumber
 
-    private val _name: MutableState<String> = mutableStateOf("")
-    val name: String
-        get() = _name.value
+        private val _name: MutableState<String> = mutableStateOf("")
+        val name: String
+            get() = _name.value
 
-    private val _phoneNumber: MutableState<String> = mutableStateOf("")
-    val phoneNumber: String
-        get() = _phoneNumber.value
+        private val _phoneNumber: MutableState<String> = mutableStateOf("")
+        val phoneNumber: String
+            get() = _phoneNumber.value
 
-    private val _certificationNumber: MutableState<String> = mutableStateOf("")
-    val certificationNumber: String
-        get() = _certificationNumber.value
+        private val _certificationNumber: MutableState<String> = mutableStateOf("")
+        val certificationNumber: String
+            get() = _certificationNumber.value
 
-    fun updateName(name: String) {
-        _name.value = name
-    }
+        fun updateName(name: String) {
+            _name.value = name
+        }
 
-    fun updatePhoneNumber(phoneNumber: String) {
-        _phoneNumber.value = phoneNumber
-    }
+        fun updatePhoneNumber(phoneNumber: String) {
+            _phoneNumber.value = phoneNumber
+        }
 
-    fun updateCertificationNumber(certificationNumber: String) {
-        _certificationNumber.value = certificationNumber
-    }
+        fun updateCertificationNumber(certificationNumber: String) {
+            _certificationNumber.value = certificationNumber
+        }
 
-    fun updateIsCertified(isCertified: Boolean) {
-        _isCertified.value = isCertified
-    }
+        fun updateIsCertified(isCertified: Boolean) {
+            _isCertified.value = isCertified
+        }
 
-    fun updateIsSendNumber(value: Boolean) {
-        _isSendNumber.value = value
-    }
+        fun updateIsSendNumber(value: Boolean) {
+            _isSendNumber.value = value
+        }
 
-    fun postAdditionalAuth() {
-        val body = AdditionalAuthBody(name = _name.value, phone = _phoneNumber.value)
-        viewModelScope.launch {
-            try {
-                val response = applyRepository.postAdditionalAuth(body)
-                Log.d("testtts", response.toString())
-            } catch (e: Exception) {
-                Log.d("testttserror", e.message.toString())
+        fun postAdditionalAuth() {
+            val body = AdditionalAuthBody(name = _name.value, phone = _phoneNumber.value)
+            viewModelScope.launch {
+                try {
+                    val response = applyRepository.postAdditionalAuth(body)
+                    Log.d("testtts", response.toString())
+                } catch (e: Exception) {
+                    Log.d("testttserror", e.message.toString())
+                }
             }
         }
     }
-}

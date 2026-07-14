@@ -4,9 +4,11 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.com.android.library) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.hilt) apply false
+    alias(libs.plugins.ksp) apply false
     alias(libs.plugins.ktlint)
     alias(libs.plugins.org.jetbrains.kotlin.jvm) apply false
 }
@@ -15,13 +17,9 @@ true // Needed to make the Suppress annotation work for the plugins block
 
 buildscript {
     repositories {
-        maven("https://oss.sonatype.org/content/repositories/snapshots")
         mavenCentral()
     }
     dependencies {
-        classpath(libs.dependency.graph)
         classpath(libs.google.service)
     }
 }
-
-apply(plugin = "com.vanniktech.dependency.graph.generator")

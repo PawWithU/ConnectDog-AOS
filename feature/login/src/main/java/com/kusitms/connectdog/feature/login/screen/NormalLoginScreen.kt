@@ -27,9 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.kusitms.connectdog.core.designsystem.R as DR
 import com.kusitms.connectdog.core.designsystem.component.ActionRow
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
@@ -44,7 +42,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-import androidx.compose.foundation.layout.imePadding
+import com.kusitms.connectdog.core.designsystem.R as DR
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -55,7 +53,7 @@ internal fun NormalLoginScreen(
     onNavigateToEmailSearch: (UserType) -> Unit,
     onNavigateToPasswordSearch: (UserType) -> Unit,
     imeHeight: Int = 0,
-    viewModel: LoginViewModel = hiltViewModel()
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -79,20 +77,21 @@ internal fun NormalLoginScreen(
     }
 
     Scaffold(
-        modifier = Modifier
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            ),
+        modifier =
+            Modifier
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = DR.string.volunteer_login,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Content(
@@ -105,9 +104,10 @@ internal fun NormalLoginScreen(
             ConnectDogToast(
                 visible = showToast,
                 message = toastMessage,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = (if (imeHeight > 0) imeHeight + 16 else 50).dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = (if (imeHeight > 0) imeHeight + 16 else 50).dp),
             )
         }
     }
@@ -123,14 +123,16 @@ private fun Content(
     val uiState by viewModel.collectAsState()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 98.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 98.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
         ) {
             ConnectDogTextField(
                 text = uiState.email,
@@ -138,7 +140,7 @@ private fun Content(
                 placeholder = stringResource(id = R.string.email),
                 keyboardType = KeyboardType.Text,
                 onTextChanged = viewModel::onEmailChanged,
-                isError = uiState.isLoginSuccessful?.let { !it } ?: run { false }
+                isError = uiState.isLoginSuccessful?.let { !it } ?: run { false },
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogTextField(
@@ -147,16 +149,17 @@ private fun Content(
                 placeholder = stringResource(id = R.string.input_password),
                 keyboardType = KeyboardType.Password,
                 onTextChanged = viewModel::onPasswordChanged,
-                isError = uiState.isLoginSuccessful?.let { !it } ?: run { false }
+                isError = uiState.isLoginSuccessful?.let { !it } ?: run { false },
             )
             Spacer(modifier = Modifier.height(12.dp))
             ConnectDogNormalButton(
                 content = stringResource(id = R.string.login),
                 color = MaterialTheme.colorScheme.primary,
                 onClick = viewModel::initVolunteerLogin,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
             )
             Spacer(modifier = Modifier.height(30.dp))
             ActionRow(
@@ -164,22 +167,23 @@ private fun Content(
                 stringResource(id = R.string.email_search) to { onNavigateToEmailSearch(UserType.NORMAL_VOLUNTEER) },
                 stringResource(id = R.string.password_search) to {
                     onNavigateToPasswordSearch(
-                        UserType.NORMAL_VOLUNTEER
+                        UserType.NORMAL_VOLUNTEER,
                     )
-                }
+                },
             )
         }
         Spacer(modifier = Modifier.height(30.dp))
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Image(
                 painter = painterResource(id = DR.drawable.ic_main_large),
                 contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .aspectRatio(1f)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .aspectRatio(1f),
             )
         }
     }

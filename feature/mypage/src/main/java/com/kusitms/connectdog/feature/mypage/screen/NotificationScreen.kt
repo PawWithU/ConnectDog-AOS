@@ -9,18 +9,16 @@ import com.kusitms.connectdog.feature.mypage.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun NotificationScreen(
-    onBackClick: () -> Unit
-) {
+fun NotificationScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             ConnectDogTopAppBar(
                 titleRes = R.string.notification,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = null,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content()
     }

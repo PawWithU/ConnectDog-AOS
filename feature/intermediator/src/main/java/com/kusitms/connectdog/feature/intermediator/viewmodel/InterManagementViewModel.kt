@@ -25,183 +25,186 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class InterManagementViewModel @Inject constructor(
-    private val managementRepository: InterManagementRepository
-) : ViewModel() {
-    private val TAG = "InterManagementViewModel"
+class InterManagementViewModel
+    @Inject
+    constructor(
+        private val managementRepository: InterManagementRepository,
+    ) : ViewModel() {
+        private val TAG = "InterManagementViewModel"
 
-    private val _errorFlow = MutableSharedFlow<Throwable>()
-    val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+        private val _errorFlow = MutableSharedFlow<Throwable>()
+        val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
-    private val _recruitingUiState =
-        MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
-    val recruitingUiState: StateFlow<InterApplicationUiState> = _recruitingUiState
+        private val _recruitingUiState =
+            MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+        val recruitingUiState: StateFlow<InterApplicationUiState> = _recruitingUiState
 
-    private val _waitingUiState =
-        MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
-    val waitingUiState: StateFlow<InterApplicationUiState> = _waitingUiState
+        private val _waitingUiState =
+            MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+        val waitingUiState: StateFlow<InterApplicationUiState> = _waitingUiState
 
-    private val _progressUiState =
-        MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
-    val progressUiState: StateFlow<InterApplicationUiState> = _progressUiState
+        private val _progressUiState =
+            MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+        val progressUiState: StateFlow<InterApplicationUiState> = _progressUiState
 
-    private val _completedUiState =
-        MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
-    val completedUiState: StateFlow<InterApplicationUiState> = _completedUiState
+        private val _completedUiState =
+            MutableStateFlow<InterApplicationUiState>(InterApplicationUiState.Loading)
+        val completedUiState: StateFlow<InterApplicationUiState> = _completedUiState
 
-    val getVolunteerUiState: StateFlow<VolunteerBottomSheetUiState> =
-        createVolunteerUiStateFlow { id -> managementRepository.getApplicationVolunteer(id) }
+        val getVolunteerUiState: StateFlow<VolunteerBottomSheetUiState> =
+            createVolunteerUiStateFlow { id -> managementRepository.getApplicationVolunteer(id) }
 
-    private val _selectedApplication = MutableStateFlow<InterApplication?>(null)
-    val selectedApplication: StateFlow<InterApplication?> get() = _selectedApplication
+        private val _selectedApplication = MutableStateFlow<InterApplication?>(null)
+        val selectedApplication: StateFlow<InterApplication?> get() = _selectedApplication
 
-    private val _pendingDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
-    val pendingDataState = _pendingDataState.asStateFlow()
+        private val _pendingDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
+        val pendingDataState = _pendingDataState.asStateFlow()
 
-    private val _progressDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
-    val progressDataState = _progressDataState.asStateFlow()
+        private val _progressDataState = MutableStateFlow<DataUiState>(DataUiState.Yet)
+        val progressDataState = _progressDataState.asStateFlow()
 
-    init {
-        refreshRecruitingUiState()
-        refreshWaitingUiState()
-        refreshInProgressUiState()
-        refreshCompletedUiState()
-    }
+        init {
+            refreshRecruitingUiState()
+            refreshWaitingUiState()
+            refreshInProgressUiState()
+            refreshCompletedUiState()
+        }
 
-    fun updateSelectedApplication(application: InterApplication) {
-        _selectedApplication.value = application
-    }
+        fun updateSelectedApplication(application: InterApplication) {
+            _selectedApplication.value = application
+        }
 
-    fun confirmVolunteer(applicationId: Long) {
-        _pendingDataState.value = DataUiState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                managementRepository.confirmApplicationVolunteer(applicationId).let {
-                    if (it.isSuccess) _pendingDataState.value = DataUiState.Success
+        fun confirmVolunteer(applicationId: Long) {
+            _pendingDataState.value = DataUiState.Loading
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    managementRepository.confirmApplicationVolunteer(applicationId).let {
+                        if (it.isSuccess) _pendingDataState.value = DataUiState.Success
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "confirmVolunteer ${e.message}")
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "confirmVolunteer ${e.message}")
             }
         }
-    }
 
-    fun rejectVolunteer(applicationId: Long) {
-        _pendingDataState.value = DataUiState.Loading
-        viewModelScope.launch {
-            try {
-                managementRepository.rejectApplicationVolunteer(applicationId).let {
-                    if (it.isSuccess) _pendingDataState.value = DataUiState.Success
+        fun rejectVolunteer(applicationId: Long) {
+            _pendingDataState.value = DataUiState.Loading
+            viewModelScope.launch {
+                try {
+                    managementRepository.rejectApplicationVolunteer(applicationId).let {
+                        if (it.isSuccess) _pendingDataState.value = DataUiState.Success
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "rejectVolunteer ${e.message}")
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, "rejectVolunteer ${e.message}")
             }
         }
-    }
 
-    fun completeApplication(applicationId: Long) {
-        _progressDataState.value = DataUiState.Loading
-        viewModelScope.launch {
-            try {
-                managementRepository.completeApplication(applicationId).let {
-                    if (it.isSuccess) _progressDataState.value = DataUiState.Success
+        fun completeApplication(applicationId: Long) {
+            _progressDataState.value = DataUiState.Loading
+            viewModelScope.launch {
+                try {
+                    managementRepository.completeApplication(applicationId).let {
+                        if (it.isSuccess) _progressDataState.value = DataUiState.Success
+                    }
+                } catch (e: Exception) {
+                    Log.e(TAG, "completeApplication ${e.message}")
                 }
+            }
+        }
+
+        fun refreshRecruitingUiState() {
+            viewModelScope.launch {
+                refreshUiState(
+                    getApplications = { managementRepository.getApplicationRecruiting() },
+                    uiState = _recruitingUiState,
+                    tag = "recruitingWaitingUiState",
+                )
+            }
+        }
+
+        fun refreshWaitingUiState() {
+            viewModelScope.launch {
+                refreshUiState(
+                    getApplications = { managementRepository.getApplicationWaiting() },
+                    uiState = _waitingUiState,
+                    tag = "refreshWaitingUiState",
+                )
+            }
+        }
+
+        fun refreshInProgressUiState() {
+            viewModelScope.launch {
+                refreshUiState(
+                    getApplications = { managementRepository.getApplicationInProgress() },
+                    uiState = _progressUiState,
+                    tag = "refreshCompletedUiState",
+                )
+            }
+        }
+
+        fun refreshCompletedUiState() {
+            viewModelScope.launch {
+                refreshUiState(
+                    getApplications = { managementRepository.getApplicationCompleted() },
+                    uiState = _completedUiState,
+                    tag = "refreshCompletedUiState",
+                )
+            }
+        }
+
+        private fun createVolunteerUiStateFlow(getVolunteer: suspend (Long) -> Volunteer): StateFlow<VolunteerBottomSheetUiState> =
+            flow {
+                _selectedApplication.value?.applicationId?.let { emit(getVolunteer(it)) }
+            }.map {
+                VolunteerBottomSheetUiState.VolunteerInfo(
+                    application = _selectedApplication.value!!,
+                    volunteer = it,
+                )
+            }.catch {
+                _errorFlow.emit(it)
+                Log.e("InterManagementViewModel", "${it.message}")
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = VolunteerBottomSheetUiState.Loading,
+            )
+
+        private suspend fun refreshUiState(
+            getApplications: suspend () -> List<InterApplication>,
+            uiState: MutableStateFlow<InterApplicationUiState>,
+            tag: String,
+        ) {
+            try {
+                val applications = getApplications()
+                uiState.value =
+                    if (applications.isNotEmpty()) {
+                        InterApplicationUiState.InterApplications(applications)
+                    } else {
+                        InterApplicationUiState.Empty
+                    }
+                Log.d(TAG, "$tag = $applications")
             } catch (e: Exception) {
-                Log.e(TAG, "completeApplication ${e.message}")
+                _errorFlow.emit(e)
+                Log.e("InterManagementViewModel", "${e.message}")
             }
         }
-    }
 
-    fun refreshRecruitingUiState() {
-        viewModelScope.launch {
-            refreshUiState(
-                getApplications = { managementRepository.getApplicationRecruiting() },
-                uiState = _recruitingUiState,
-                tag = "recruitingWaitingUiState"
+        private fun createUiStateFlow(getApplication: suspend () -> List<InterApplication>): StateFlow<InterApplicationUiState> =
+            flow {
+                emit(getApplication())
+            }.map {
+                if (it.isNotEmpty()) {
+                    InterApplicationUiState.InterApplications(it)
+                } else {
+                    InterApplicationUiState.Empty
+                }
+            }.catch {
+                _errorFlow.emit(it)
+                Log.e("InterManagementViewModel", "${it.message}")
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = InterApplicationUiState.Loading,
             )
-        }
     }
-
-    fun refreshWaitingUiState() {
-        viewModelScope.launch {
-            refreshUiState(
-                getApplications = { managementRepository.getApplicationWaiting() },
-                uiState = _waitingUiState,
-                tag = "refreshWaitingUiState"
-            )
-        }
-    }
-
-    fun refreshInProgressUiState() {
-        viewModelScope.launch {
-            refreshUiState(
-                getApplications = { managementRepository.getApplicationInProgress() },
-                uiState = _progressUiState,
-                tag = "refreshCompletedUiState"
-            )
-        }
-    }
-
-    fun refreshCompletedUiState() {
-        viewModelScope.launch {
-            refreshUiState(
-                getApplications = { managementRepository.getApplicationCompleted() },
-                uiState = _completedUiState,
-                tag = "refreshCompletedUiState"
-            )
-        }
-    }
-
-    private fun createVolunteerUiStateFlow(getVolunteer: suspend (Long) -> Volunteer): StateFlow<VolunteerBottomSheetUiState> =
-        flow {
-            _selectedApplication.value?.applicationId?.let { emit(getVolunteer(it)) }
-        }.map {
-            VolunteerBottomSheetUiState.VolunteerInfo(
-                application = _selectedApplication.value!!,
-                volunteer = it
-            )
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e("InterManagementViewModel", "${it.message}")
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = VolunteerBottomSheetUiState.Loading
-        )
-
-    private suspend fun refreshUiState(
-        getApplications: suspend () -> List<InterApplication>,
-        uiState: MutableStateFlow<InterApplicationUiState>,
-        tag: String
-    ) {
-        try {
-            val applications = getApplications()
-            uiState.value = if (applications.isNotEmpty()) {
-                InterApplicationUiState.InterApplications(applications)
-            } else {
-                InterApplicationUiState.Empty
-            }
-            Log.d(TAG, "$tag = $applications")
-        } catch (e: Exception) {
-            _errorFlow.emit(e)
-            Log.e("InterManagementViewModel", "${e.message}")
-        }
-    }
-
-    private fun createUiStateFlow(getApplication: suspend () -> List<InterApplication>): StateFlow<InterApplicationUiState> =
-        flow {
-            emit(getApplication())
-        }.map {
-            if (it.isNotEmpty()) {
-                InterApplicationUiState.InterApplications(it)
-            } else {
-                InterApplicationUiState.Empty
-            }
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e("InterManagementViewModel", "${it.message}")
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = InterApplicationUiState.Loading
-        )
-}

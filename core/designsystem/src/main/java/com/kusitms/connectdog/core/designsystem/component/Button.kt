@@ -45,26 +45,28 @@ fun ConnectDogBottomButton(
     content: String,
     enabled: Boolean = true,
     fontSize: Int = 16,
-    radius: Int = 12
+    radius: Int = 12,
 ) {
     Button(
         onClick = { if (enabled) onClick() },
         contentPadding = paddingValues,
         shape = RoundedCornerShape(radius.dp),
-        modifier = modifier
-            .height(height.dp)
-            .fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = if (enabled) enabledColor else disabledColor,
-            contentColor = textColor
-        ),
-        border = border
+        modifier =
+            modifier
+                .height(height.dp)
+                .fillMaxWidth(),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = if (enabled) enabledColor else disabledColor,
+                contentColor = textColor,
+            ),
+        border = border,
     ) {
         Text(
             text = content,
             style = Typography.titleSmall,
             color = textColor,
-            fontSize = fontSize.sp
+            fontSize = fontSize.sp,
         )
     }
 }
@@ -77,19 +79,19 @@ fun ConnectDogIconBottomButton(
     color: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     onClick: () -> Unit,
-    content: String
+    content: String,
 ) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
     ) {
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = contentDescription,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(text = content, color = textColor, style = Typography.titleSmall)
@@ -103,10 +105,11 @@ fun ConnectDogNormalButton(
     onClick: () -> Unit = {},
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
     fontSize: Int = 16,
-    modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .height(56.dp),
-    enabled: Boolean = true
+    modifier: Modifier =
+        Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+    enabled: Boolean = true,
 ) {
     ConnectDogBottomButton(
         onClick = onClick,
@@ -115,7 +118,7 @@ fun ConnectDogNormalButton(
         modifier = modifier,
         textColor = textColor,
         fontSize = fontSize,
-        enabled = enabled
+        enabled = enabled,
     )
 }
 
@@ -129,26 +132,28 @@ fun ConnectDogOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     borderColor: Color = MaterialTheme.colorScheme.primary,
-    fontColor: Color = MaterialTheme.colorScheme.primary
+    fontColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier
-            .width(width.dp)
-            .height(height.dp),
+        modifier =
+            modifier
+                .width(width.dp)
+                .height(height.dp),
         border = BorderStroke(1.dp, borderColor),
-        contentPadding = PaddingValues(
-            top = verticalPadding.dp,
-            bottom = verticalPadding.dp,
-            start = padding.dp,
-            end = padding.dp
-        )
+        contentPadding =
+            PaddingValues(
+                top = verticalPadding.dp,
+                bottom = verticalPadding.dp,
+                start = padding.dp,
+                end = padding.dp,
+            ),
     ) {
         Text(
             text = text,
             fontSize = 12.sp,
             color = fontColor,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
     }
 }
@@ -162,26 +167,28 @@ fun ConnectDogFilledButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.White,
-    fontColor: Color = MaterialTheme.colorScheme.primary
+    fontColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .width(width.dp)
-            .height(height.dp),
-        contentPadding = PaddingValues(
-            top = 1.dp,
-            bottom = 1.dp,
-            start = padding.dp,
-            end = padding.dp
-        ),
-        colors = ButtonDefaults.buttonColors(backgroundColor)
+        modifier =
+            modifier
+                .width(width.dp)
+                .height(height.dp),
+        contentPadding =
+            PaddingValues(
+                top = 1.dp,
+                bottom = 1.dp,
+                start = padding.dp,
+                end = padding.dp,
+            ),
+        colors = ButtonDefaults.buttonColors(backgroundColor),
     ) {
         Text(
             text = text,
             fontSize = 8.sp,
             color = fontColor,
-            fontWeight = FontWeight.SemiBold
+            fontWeight = FontWeight.SemiBold,
         )
     }
 }
@@ -191,14 +198,18 @@ fun ConnectDogOutlinedButton(
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     onClick: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
-        border = BorderStroke(width = 1.dp, color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline),
-        colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) Orange10 else MaterialTheme.colorScheme.surface)
+        border =
+            BorderStroke(
+                width = 1.dp,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
+            ),
+        colors = ButtonDefaults.buttonColors(containerColor = if (isSelected) Orange10 else MaterialTheme.colorScheme.surface),
     ) {
         content()
     }
@@ -211,23 +222,24 @@ fun ConnectDogSecondaryButton(
     textColor: Color = MaterialTheme.colorScheme.primary,
     borderColor: Color = MaterialTheme.colorScheme.primary,
     @StringRes contentRes: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Button(
         onClick = onClick,
         contentPadding = PaddingValues(vertical = 11.dp),
         shape = RoundedCornerShape(6.dp),
         border = BorderStroke(1.dp, borderColor),
-        modifier = modifier
-            .fillMaxWidth()
-            .height(40.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(40.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
     ) {
         Text(
             text = stringResource(id = contentRes),
             style = Typography.titleSmall,
             color = textColor,
-            fontSize = 12.sp
+            fontSize = 12.sp,
         )
     }
 }
@@ -239,28 +251,29 @@ fun ConnectDogDialogButton(
     borderColor: Color = Gray5,
     modifier: Modifier = Modifier,
     textColor: Color = Gray4,
-    color: Color = Color.White
+    color: Color = Color.White,
 ) {
     Button(
         onClick = onClick,
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(1.dp, borderColor),
-        modifier = modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(56.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = textColor),
     ) {
         Spacer(modifier = Modifier.width(3.dp))
         Text(
             text = text,
             style = Typography.titleSmall,
             color = textColor,
-            fontSize = 16.sp
+            fontSize = 16.sp,
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
             painter = painterResource(id = R.drawable.ic_down_triangle),
-            contentDescription = ""
+            contentDescription = "",
         )
         Spacer(modifier = Modifier.width(7.dp))
     }
@@ -281,7 +294,7 @@ private fun BottomButtonPreview() {
         ConnectDogBottomButton(
             onClick = {},
             content = "간편 회원가입하기",
-            modifier = Modifier.size(230.dp, 56.dp)
+            modifier = Modifier.size(230.dp, 56.dp),
         )
     }
 }
@@ -295,7 +308,7 @@ private fun ConnectDogIconButton() {
             contentDescription = "네이버 로그인",
             onClick = {},
             content = "네이버로 계속하기",
-            modifier = Modifier.size(230.dp, 56.dp)
+            modifier = Modifier.size(230.dp, 56.dp),
         )
     }
 }
@@ -309,7 +322,7 @@ private fun OutlinedButton() {
             height = 30,
             text = "프로필 사진 선택",
             padding = 10,
-            onClick = {}
+            onClick = {},
         )
     }
 }
@@ -323,7 +336,7 @@ private fun FilledButton() {
             height = 14,
             text = "프로필 보기",
             padding = 1,
-            onClick = {}
+            onClick = {},
         )
     }
 }

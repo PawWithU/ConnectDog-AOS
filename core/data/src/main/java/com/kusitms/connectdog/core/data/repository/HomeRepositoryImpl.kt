@@ -9,49 +9,54 @@ import com.kusitms.connectdog.core.model.AnnouncementHome
 import com.kusitms.connectdog.core.model.Review
 import javax.inject.Inject
 
-internal class HomeRepositoryImpl @Inject constructor(
-    private val api: ApiService
-) : HomeRepository {
-    override suspend fun getAnnouncementList(): List<AnnouncementHome> {
-        return api.getAnnouncementPostsHome().map { it.toData() }
-    }
-
-    override suspend fun getAnnouncementListWithFilter(
-        postStatus: String?,
-        departureLoc: String?,
-        arrivalLoc: String?,
-        startDate: String?,
-        endDate: String?,
-        dogSize: String?,
-        isKennel: Boolean?,
-        intermediaryName: String?,
-        orderCondition: String?,
-        page: Int?,
-        size: Int?
-    ): List<Announcement> {
-        var depart = departureLoc
-        if (depart != null) {
-            if ("전체" in depart) depart = depart.take(2)
+internal class HomeRepositoryImpl
+    @Inject
+    constructor(
+        private val api: ApiService,
+    ) : HomeRepository {
+        override suspend fun getAnnouncementList(): List<AnnouncementHome> {
+            return api.getAnnouncementPostsHome().map { it.toData() }
         }
-        var dest = arrivalLoc
-        if (dest != null) {
-            if ("전체" in dest) dest = dest.take(2)
+
+        override suspend fun getAnnouncementListWithFilter(
+            postStatus: String?,
+            departureLoc: String?,
+            arrivalLoc: String?,
+            startDate: String?,
+            endDate: String?,
+            dogSize: String?,
+            isKennel: Boolean?,
+            intermediaryName: String?,
+            orderCondition: String?,
+            page: Int?,
+            size: Int?,
+        ): List<Announcement> {
+            var depart = departureLoc
+            if (depart != null) {
+                if ("전체" in depart) depart = depart.take(2)
+            }
+            var dest = arrivalLoc
+            if (dest != null) {
+                if ("전체" in dest) dest = dest.take(2)
+            }
+            return api.getAnnouncementFilterPosts(
+                postStatus,
+                depart, dest,
+                startDate, endDate,
+                dogSize, isKennel, intermediaryName,
+                orderCondition,
+                page ?: 0, size ?: 50,
+            ).map { it.toData() }
         }
-        return api.getAnnouncementFilterPosts(
-            postStatus,
-            depart, dest,
-            startDate, endDate,
-            dogSize, isKennel, intermediaryName,
-            orderCondition,
-            page ?: 0, size ?: 50
-        ).map { it.toData() }
-    }
 
-    override suspend fun getReviewList(page: Int?, size: Int?): List<Review> {
-        return api.getReviewsHome(page ?: 0, size ?: 5).map { it.toData() }
-    }
+        override suspend fun getReviewList(
+            page: Int?,
+            size: Int?,
+        ): List<Review> {
+            return api.getReviewsHome(page ?: 0, size ?: 5).map { it.toData() }
+        }
 
-    override suspend fun postFcmToken(fcmToken: FcmTokenRequestBody) {
-        api.postFcmToken(fcmToken)
+        override suspend fun postFcmToken(fcmToken: FcmTokenRequestBody) {
+            api.postFcmToken(fcmToken)
+        }
     }
-}

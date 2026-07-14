@@ -8,18 +8,26 @@ import com.kusitms.connectdog.core.model.Announcement
 import com.kusitms.connectdog.core.model.Review
 import javax.inject.Inject
 
-internal class InterProfileRepositoryImpl @Inject constructor(
-    private val apiService: InterApiService
-) : InterProfileRepository {
-    override suspend fun getInterReview(page: Int?, size: Int?): List<Review> {
-        return apiService.getIntermediatorReview(page, size).map { it.toData() }
-    }
+internal class InterProfileRepositoryImpl
+    @Inject
+    constructor(
+        private val apiService: InterApiService,
+    ) : InterProfileRepository {
+        override suspend fun getInterReview(
+            page: Int?,
+            size: Int?,
+        ): List<Review> {
+            return apiService.getIntermediatorReview(page, size).map { it.toData() }
+        }
 
-    override suspend fun getInterFinding(page: Int, size: Int?): List<Announcement> {
-        return apiService.getFindingApplication(page, size).map { it.toData() }
-    }
+        override suspend fun getInterFinding(
+            page: Int,
+            size: Int?,
+        ): List<Announcement> {
+            return apiService.getFindingApplication(page, size).map { it.toData() }
+        }
 
-    override suspend fun getInterProfileInfo(): InterProfileInfoResponse {
-        return apiService.getIntermediatorInfo()
+        override suspend fun getInterProfileInfo(): InterProfileInfoResponse {
+            return apiService.getIntermediatorInfo()
+        }
     }
-}

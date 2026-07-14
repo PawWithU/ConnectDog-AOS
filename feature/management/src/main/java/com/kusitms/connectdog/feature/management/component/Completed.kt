@@ -22,12 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementItem
 import com.kusitms.connectdog.core.designsystem.component.Empty
-import com.kusitms.connectdog.core.designsystem.theme.Gray1
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
 import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.util.UserType
@@ -39,15 +38,16 @@ import com.kusitms.connectdog.feature.management.state.ApplicationUiState
 fun Completed(
     uiState: ApplicationUiState,
     onCreateReviewClick: (Application) -> Unit,
-    onCheckReviewClick: (Long, UserType) -> Unit
+    onCheckReviewClick: (Long, UserType) -> Unit,
 ) {
     when (uiState) {
         is ApplicationUiState.Applications -> {
             LazyColumn(
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = 80.dp)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(bottom = 80.dp),
             ) {
                 items(uiState.applications) {
                     CompletedContent(
@@ -56,9 +56,9 @@ fun Completed(
                         onCheckReviewClick = {
                             onCheckReviewClick(
                                 it.reviewId!!,
-                                UserType.NORMAL_VOLUNTEER
+                                UserType.NORMAL_VOLUNTEER,
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -76,18 +76,20 @@ fun Completed(
 private fun CompletedContent(
     application: Application,
     onCreateReviewClick: () -> Unit,
-    onCheckReviewClick: () -> Unit
+    onCheckReviewClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
     ) {
         Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Top
+            modifier =
+                Modifier
+                    .padding(20.dp)
+                    .fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
         ) {
             AnnouncementItem(
                 imageUrl = application.imageUrl,
@@ -96,14 +98,14 @@ private fun CompletedContent(
                 isKennel = application.hasKennel,
                 dogSize = application.dogSize!!,
                 date = application.date,
-                pickUpTime = application.pickUpTime!!
+                pickUpTime = application.pickUpTime!!,
             )
             Spacer(modifier = Modifier.size(20.dp))
             ReviewButton(
                 modifier = Modifier.height(40.dp),
                 hasReview = application.reviewId != null,
                 onCreateReviewClick = onCreateReviewClick,
-                onCheckReviewClick = onCheckReviewClick
+                onCheckReviewClick = onCheckReviewClick,
             )
         }
         Divider(thickness = 8.dp, color = Gray7)
@@ -115,25 +117,25 @@ private fun ReviewButton(
     modifier: Modifier = Modifier,
     hasReview: Boolean,
     onCreateReviewClick: () -> Unit,
-    onCheckReviewClick: () -> Unit
+    onCheckReviewClick: () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .border(
-                shape = RoundedCornerShape(6.dp),
-                color = MaterialTheme.colorScheme.outline,
-                width = 1.dp
-            )
-            .clickable { if (hasReview) onCheckReviewClick() else onCreateReviewClick() },
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .fillMaxSize()
+                .border(
+                    shape = RoundedCornerShape(6.dp),
+                    color = MaterialTheme.colorScheme.outline,
+                    width = 1.dp,
+                )
+                .clickable { if (hasReview) onCheckReviewClick() else onCreateReviewClick() },
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = stringResource(id = if (hasReview) R.string.check_review else R.string.create_review),
-            style = MaterialTheme.typography.titleSmall,
-            fontSize = 12.sp,
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.SemiBold,
             textAlign = TextAlign.Center,
-            color = Gray1
         )
     }
 }

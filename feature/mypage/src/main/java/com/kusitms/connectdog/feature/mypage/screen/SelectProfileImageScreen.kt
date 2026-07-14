@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,9 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.R
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
@@ -41,40 +40,41 @@ import com.kusitms.connectdog.feature.mypage.viewmodel.EditProfileViewModel
 @Composable
 fun SelectProfileImageScreen(
     onBackClick: () -> Unit,
-    viewModel: EditProfileViewModel
+    viewModel: EditProfileViewModel,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
     val selectedImageIndex by viewModel.selectedImageIndex.collectAsState()
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(bottom = 32.dp)
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            )
-    ) {
-        Column(
-            modifier = Modifier
+        modifier =
+            Modifier
                 .fillMaxSize()
                 .background(Color.White)
+                .padding(bottom = 32.dp)
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
+    ) {
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.White),
         ) {
             ConnectDogTopAppBar(
                 titleRes = R.string.select_image,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "프로필 이미지를\n선택해주세요",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 20.dp)
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(horizontal = 20.dp),
             )
             Spacer(modifier = Modifier.height(40.dp))
             ProfileImageGrid(selectedImageIndex, viewModel)
@@ -82,16 +82,22 @@ fun SelectProfileImageScreen(
 
         ConnectDogNormalButton(
             content = "선택",
-            color = if (selectedImageIndex != -1) { PetOrange } else { Orange_40 },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp)
-                .align(Alignment.BottomCenter)
-                .padding(horizontal = 20.dp),
+            color =
+                if (selectedImageIndex != -1) {
+                    PetOrange
+                } else {
+                    Orange_40
+                },
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .align(Alignment.BottomCenter)
+                    .padding(horizontal = 20.dp),
             onClick = {
                 viewModel.updateProfileImageIndex(selectedImageIndex)
                 onBackClick()
-            }
+            },
         )
     }
 }
@@ -99,15 +105,16 @@ fun SelectProfileImageScreen(
 @Composable
 fun ProfileImageGrid(
     selectedImageIndex: Int,
-    viewModel: EditProfileViewModel
+    viewModel: EditProfileViewModel,
 ) {
-    val modifier = Modifier
-        .padding(15.dp)
-        .aspectRatio(1f)
-        .clip(CircleShape)
+    val modifier =
+        Modifier
+            .padding(15.dp)
+            .aspectRatio(1f)
+            .clip(CircleShape)
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         for (i in 0 until 3) {
             Row {
@@ -116,21 +123,22 @@ fun ProfileImageGrid(
                     Image(
                         painter = painterResource(id = getProfileImageId(index)),
                         contentDescription = "description for accessibility",
-                        modifier = Modifier
-                            .weight(1f)
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() }
-                            ) {
-                                viewModel.updateProfileImageIndex(index)
-                            }
-                            .then(
-                                if (selectedImageIndex == index) {
-                                    modifier.border(4.dp, PetOrange, CircleShape)
-                                } else {
-                                    modifier
+                        modifier =
+                            Modifier
+                                .weight(1f)
+                                .clickable(
+                                    indication = null,
+                                    interactionSource = remember { MutableInteractionSource() },
+                                ) {
+                                    viewModel.updateProfileImageIndex(index)
                                 }
-                            )
+                                .then(
+                                    if (selectedImageIndex == index) {
+                                        modifier.border(4.dp, PetOrange, CircleShape)
+                                    } else {
+                                        modifier
+                                    },
+                                ),
                     )
                 }
             }

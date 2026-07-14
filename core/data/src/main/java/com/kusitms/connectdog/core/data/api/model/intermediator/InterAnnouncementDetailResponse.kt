@@ -19,9 +19,27 @@ data class InterAnnouncementDetailResponse(
     val postId: Int,
     val postStatus: String,
     val specifics: String?,
-    val startDate: String
+    val startDate: String,
 ) {
-    fun toData() = NoticeDetailResponseItem(
-        arrivalLoc, content, departureLoc, dogName, dogSize, endDate, images, intermediaryId, intermediaryName, intermediaryProfileImage, isBookmark = false, isKennel, mainImage, pickUpTime, postId, postStatus, specifics, startDate
-    )
+    fun toData() =
+        NoticeDetailResponseItem(
+            arrivalLoc,
+            content,
+            departureLoc,
+            dogName,
+            dogSize,
+            endDate,
+            images,
+            intermediaryId,
+            intermediaryName,
+            intermediaryProfileImage,
+            isBookmark = false,
+            isKennel,
+            mainImage,
+            pickUpTime,
+            postId,
+            postStatus,
+            specifics,
+            startDate,
+        )
 }

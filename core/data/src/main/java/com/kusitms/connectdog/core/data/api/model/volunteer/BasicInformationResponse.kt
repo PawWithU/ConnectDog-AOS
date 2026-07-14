@@ -2,5 +2,5 @@ package com.kusitms.connectdog.core.data.api.model.volunteer
 
 data class BasicInformationResponse(
     val name: String,
-    val phone: String
+    val phone: String,
 )

@@ -35,33 +35,34 @@ fun CheckBox(
     checked: Boolean,
     onClick: () -> Unit,
     hasDetail: Boolean,
-    onDetailClick: () -> Unit = {}
+    onDetailClick: () -> Unit = {},
 ) {
     var isChecked by remember { mutableStateOf(checked) }
     if (checked != isChecked) isChecked = checked
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .clickable {
-                onClick()
-                isChecked = !isChecked
-            },
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .clickable {
+                    onClick()
+                    isChecked = !isChecked
+                },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_checked),
             contentDescription = null,
             tint = if (isChecked) PetOrange else Gray4,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = text,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
-            color = if (isChecked) Color.Black else Gray2
+            color = if (isChecked) Color.Black else Gray2,
         )
         Spacer(modifier = Modifier.weight(1f))
         if (hasDetail) {

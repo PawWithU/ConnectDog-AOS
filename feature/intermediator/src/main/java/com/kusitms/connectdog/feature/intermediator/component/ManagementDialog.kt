@@ -16,51 +16,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogAlertDialog
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 import com.kusitms.connectdog.feature.intermediator.R
 
 @Composable
-internal fun CompletedDialog(
-    onDismissRequest: () -> Unit
-) {
+internal fun CompletedDialog(onDismissRequest: () -> Unit) {
     ConnectDogAlertDialog(onDismissRequest = onDismissRequest) {
         Column(
-            modifier = Modifier
-                .background(
-                    color = MaterialTheme.colorScheme.surface,
-                    shape = RoundedCornerShape(20.dp)
-                )
-                .padding(20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                Modifier
+                    .background(
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = RoundedCornerShape(20.dp),
+                    )
+                    .padding(20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.img_dog_running),
-                contentDescription = stringResource(id = R.string.dialog_completed_volunteer)
+                contentDescription = stringResource(id = R.string.dialog_completed_volunteer),
             )
             Spacer(modifier = Modifier.size(30.dp))
             Column(
                 verticalArrangement = Arrangement.spacedBy(9.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = stringResource(id = R.string.dialog_completed_volunteer),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontSize = 18.sp
+                    style = MaterialTheme.typography.headlineSmall,
                 )
                 Text(
                     text = stringResource(id = R.string.dialog_completed_description),
                     color = Gray2,
                     style = MaterialTheme.typography.bodyMedium,
-                    fontSize = 14.sp
                 )
             }
             Spacer(modifier = Modifier.size(40.dp))
             ConnectDogBottomButton(
                 onClick = onDismissRequest,
-                content = stringResource(id = R.string.ok)
+                content = stringResource(id = R.string.ok),
             )
         }
     }
@@ -69,7 +65,7 @@ internal fun CompletedDialog(
 @Composable
 internal fun CompletedCheckDialog(
     onCompleteClick: () -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     ConnectDogAlertDialog(
         onDismissRequest = onDismissRequest,
@@ -80,6 +76,6 @@ internal fun CompletedCheckDialog(
         onClickOk = {
             onCompleteClick()
             onDismissRequest()
-        }
+        },
     )
 }

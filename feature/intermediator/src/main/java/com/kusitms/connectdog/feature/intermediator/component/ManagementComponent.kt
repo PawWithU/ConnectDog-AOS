@@ -29,9 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementItem
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogSecondaryButton
@@ -56,19 +56,23 @@ internal fun RecruitingContent(application: InterApplication) {
         date = application.date,
         location = application.location,
         volunteerName = application.volunteerName,
-        isValid = !(application.postStatus != null && application.postStatus == "모집 마감")
+        isValid = !(application.postStatus != null && application.postStatus == "모집 마감"),
     )
     Divider(thickness = 8.dp, color = Gray7)
 }
 
 @Composable
-internal fun PendingContent(application: InterApplication, onClick: () -> Unit) {
+internal fun PendingContent(
+    application: InterApplication,
+    onClick: () -> Unit,
+) {
     val diffTime = application.applicationTime?.calDateTimeDifference()
     Column(
-        modifier = Modifier
-            .padding(20.dp)
-            .fillMaxWidth()
-            .wrapContentSize()
+        modifier =
+            Modifier
+                .padding(20.dp)
+                .fillMaxWidth()
+                .wrapContentSize(),
     ) {
         Row(
             Modifier
@@ -76,18 +80,18 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
                 .height(40.dp)
                 .background(shape = RoundedCornerShape(6.dp), color = Red2)
                 .padding(horizontal = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_info),
                 contentDescription = "info",
-                tint = MaterialTheme.colorScheme.error
+                tint = MaterialTheme.colorScheme.error,
             )
             Spacer(modifier = Modifier.size(5.dp))
             Text(
                 text = stringResource(id = R.string.will_be_canceled, "$diffTime"),
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.error
+                color = MaterialTheme.colorScheme.error,
             )
         }
         AnnouncementItem(
@@ -98,10 +102,10 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
             isKennel = application.isKennel ?: false,
             dogSize = application.dogSize ?: "",
             date = application.date,
-            pickUpTime = application.pickUpTime ?: ""
+            pickUpTime = application.pickUpTime ?: "",
         )
         ConnectDogSecondaryButton(
-            contentRes = R.string.check_volunteer
+            contentRes = R.string.check_volunteer,
         ) { onClick() }
     }
     Divider(thickness = 8.dp, color = Gray7)
@@ -111,12 +115,13 @@ internal fun PendingContent(application: InterApplication, onClick: () -> Unit) 
 internal fun InProgressContent(
     application: InterApplication,
     onCheckVolunteerClick: () -> Unit,
-    onCompleteClick: () -> Unit
+    onCompleteClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentSize(),
     ) {
         ListForOrganizationItem(
             modifier = Modifier.padding(20.dp),
@@ -124,15 +129,15 @@ internal fun InProgressContent(
             dogName = application.dogName,
             date = application.date,
             location = application.location,
-            volunteerName = application.volunteerName
+            volunteerName = application.volunteerName,
         )
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             ConnectDogSecondaryButton(
                 modifier = Modifier.padding(start = 20.dp, bottom = 20.dp).weight(1f),
                 contentRes = R.string.check_volunteer,
-                onClick = onCheckVolunteerClick
+                onClick = onCheckVolunteerClick,
             )
             Spacer(modifier = Modifier.width(8.dp))
             ConnectDogSecondaryButton(
@@ -140,7 +145,7 @@ internal fun InProgressContent(
                 textColor = Color.White,
                 modifier = Modifier.padding(end = 20.dp, bottom = 20.dp).weight(1f),
                 contentRes = R.string.make_complete,
-                onClick = onCompleteClick
+                onClick = onCompleteClick,
             )
         }
     }
@@ -150,12 +155,13 @@ internal fun InProgressContent(
 @Composable
 internal fun CompletedContent(
     application: InterApplication,
-    onClickReview: () -> Unit
+    onClickReview: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             AnnouncementItem(
@@ -166,7 +172,7 @@ internal fun CompletedContent(
                 isKennel = application.isKennel ?: false,
                 dogSize = application.dogSize ?: "",
                 date = application.date,
-                pickUpTime = application.pickUpTime ?: ""
+                pickUpTime = application.pickUpTime ?: "",
             )
             ConnectDogBottomButton(
                 height = 40,
@@ -179,7 +185,7 @@ internal fun CompletedContent(
                 border = BorderStroke(1.dp, Gray5),
                 fontSize = 12,
                 paddingValues = PaddingValues(vertical = 11.dp),
-                radius = 6
+                radius = 6,
             )
         }
         Divider(thickness = 8.dp, color = Gray7)
@@ -192,59 +198,63 @@ private fun ReviewRecentButton(
     hasReview: Boolean,
     hasRecent: Boolean,
     onClickReview: () -> Unit,
-    onClickRecent: () -> Unit
+    onClickRecent: () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .border(
-                shape = RoundedCornerShape(6.dp),
-                color = MaterialTheme.colorScheme.outline,
-                width = 1.dp
-            )
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .border(
+                    shape = RoundedCornerShape(6.dp),
+                    color = MaterialTheme.colorScheme.outline,
+                    width = 1.dp,
+                ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
             Box(
-                modifier = modifier
-                    .fillMaxHeight()
-                    .weight(0.5f)
-                    .clickable(enabled = hasReview) { onClickReview() },
-                contentAlignment = Alignment.Center
+                modifier =
+                    modifier
+                        .fillMaxHeight()
+                        .weight(0.5f)
+                        .clickable(enabled = hasReview) { onClickReview() },
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = stringResource(id = R.string.create_review),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
-                    color = if (!hasReview) Gray4 else Gray1
+                    color = if (!hasReview) Gray4 else Gray1,
                 )
             }
             Box(
-                modifier = modifier
-                    .fillMaxHeight()
-                    .weight(0.5f)
-                    .clickable(enabled = hasRecent) { onClickRecent() },
-                contentAlignment = Alignment.Center
+                modifier =
+                    modifier
+                        .fillMaxHeight()
+                        .weight(0.5f)
+                        .clickable(enabled = hasRecent) { onClickRecent() },
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = stringResource(id = R.string.check_recent),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontSize = 12.sp,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center,
-                    color = if (!hasRecent) Gray4 else Gray1
+                    color = if (!hasRecent) Gray4 else Gray1,
                 )
             }
         }
         Divider(
             color = MaterialTheme.colorScheme.outline,
-            modifier = modifier
-                .align(Alignment.Center)
-                .width(1.dp)
-                .fillMaxHeight()
-                .padding(vertical = 8.dp)
+            modifier =
+                modifier
+                    .align(Alignment.Center)
+                    .width(1.dp)
+                    .fillMaxHeight()
+                    .padding(vertical = 8.dp),
         )
     }
 }

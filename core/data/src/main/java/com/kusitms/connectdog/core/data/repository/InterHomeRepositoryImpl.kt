@@ -9,20 +9,27 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-internal class InterHomeRepositoryImpl @Inject constructor(
-    private val api: InterApiService
-) : InterHomeRepository {
-    override suspend fun createApplication(body: CreateApplicationDto, images: List<File>) {
-        val jsonBody = RequestBody.create(
-            "application/json; charset=utf-8".toMediaTypeOrNull(),
-            Gson().toJson(body)
-        )
+internal class InterHomeRepositoryImpl
+    @Inject
+    constructor(
+        private val api: InterApiService,
+    ) : InterHomeRepository {
+        override suspend fun createApplication(
+            body: CreateApplicationDto,
+            images: List<File>,
+        ) {
+            val jsonBody =
+                RequestBody.create(
+                    "application/json; charset=utf-8".toMediaTypeOrNull(),
+                    Gson().toJson(body),
+                )
 
-        val files = images.map { file ->
-            val fileBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-            MultipartBody.Part.createFormData("files", file.name, fileBody)
+            val files =
+                images.map { file ->
+                    val fileBody = RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+                    MultipartBody.Part.createFormData("files", file.name, fileBody)
+                }
+
+            api.postApplication(jsonBody, files)
         }
-
-        api.postApplication(jsonBody, files)
     }
-}

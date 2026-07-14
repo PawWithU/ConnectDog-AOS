@@ -37,7 +37,7 @@ fun ManageAccountScreen(
     userType: UserType,
     onBackClick: () -> Unit,
     onNavigateToPasswordChange: (UserType) -> Unit,
-    viewModel: MyAccountViewModel = hiltViewModel()
+    viewModel: MyAccountViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
         viewModel.fetchAccountInfo(userType)
@@ -54,9 +54,9 @@ fun ManageAccountScreen(
                 titleRes = R.string.manage_account,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = null,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             userType = userType,
@@ -64,7 +64,7 @@ fun ManageAccountScreen(
             phone = phone,
             email = email,
             socialType = socialType,
-            onNavigateToPasswordChange = onNavigateToPasswordChange
+            onNavigateToPasswordChange = onNavigateToPasswordChange,
         )
     }
 }
@@ -76,16 +76,17 @@ private fun Content(
     phone: String,
     email: String,
     socialType: String?,
-    onNavigateToPasswordChange: (UserType) -> Unit
+    onNavigateToPasswordChange: (UserType) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 20.dp, top = 68.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 20.dp, top = 68.dp),
     ) {
         Text(
             text = "회원 정보",
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(30.dp))
         Information(title = "이름", content = name)
@@ -113,18 +114,20 @@ private fun Content(
                     Text(
                         text = "SNS 연동",
                         style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.width(80.dp)
+                        modifier = Modifier.width(80.dp),
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Image(
-                        painter = painterResource(
-                            id = when (socialType) {
-                                "KAKAO" -> R.drawable.ic_kakao_linking
-                                "NAVER" -> R.drawable.ic_naver_linkking
-                                else -> R.drawable.ic_naver_linkking
-                            }
-                        ),
-                        contentDescription = null
+                        painter =
+                            painterResource(
+                                id =
+                                    when (socialType) {
+                                        "KAKAO" -> R.drawable.ic_kakao_linking
+                                        "NAVER" -> R.drawable.ic_naver_linkking
+                                        else -> R.drawable.ic_naver_linkking
+                                    },
+                            ),
+                        contentDescription = null,
                     )
                 }
             }
@@ -136,12 +139,12 @@ private fun Content(
 private fun ChangePassword(onClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = "비밀번호",
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier.width(80.dp),
         )
         Spacer(modifier = Modifier.width(20.dp))
         ConnectDogOutlinedButton(
@@ -149,7 +152,7 @@ private fun ChangePassword(onClick: () -> Unit) {
             height = 26,
             text = "변경",
             padding = 3,
-            onClick = onClick
+            onClick = onClick,
         )
     }
 }
@@ -157,21 +160,21 @@ private fun ChangePassword(onClick: () -> Unit) {
 @Composable
 private fun Information(
     title: String,
-    content: String
+    content: String,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.width(80.dp)
+            modifier = Modifier.width(80.dp),
         )
         Spacer(modifier = Modifier.width(20.dp))
         Text(
             text = content,
             style = MaterialTheme.typography.bodyLarge,
-            color = Gray2
+            color = Gray2,
         )
     }
 }

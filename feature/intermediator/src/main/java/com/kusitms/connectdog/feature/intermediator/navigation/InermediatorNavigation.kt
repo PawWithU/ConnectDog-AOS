@@ -70,7 +70,7 @@ fun NavGraphBuilder.intermediatorNavGraph(
     onNavigateToAnnouncementManagement: (Long) -> Unit,
     onNavigateToCreateDog: () -> Unit,
     onNavigateToInterHome: () -> Unit,
-    onNavigateToCreateComplete: () -> Unit
+    onNavigateToCreateComplete: () -> Unit,
 ) {
     composable(route = IntermediatorRoute.route) {
         InterHomeScreen(
@@ -78,19 +78,19 @@ fun NavGraphBuilder.intermediatorNavGraph(
             onSettingClick = onSettingClick,
             onManageClick = onManagementClick,
             onProfileClick = onProfileClick,
-            onNavigateToCreateAnnouncementScreen = onNavigateToCreateAnnouncement
+            onNavigateToCreateAnnouncementScreen = onNavigateToCreateAnnouncement,
         )
     }
 
     composable(
         "${IntermediatorRoute.management}?tabIndex={tabIndex}",
-        arguments = listOf(navArgument("tabIndex") { defaultValue = 0 })
+        arguments = listOf(navArgument("tabIndex") { defaultValue = 0 }),
     ) {
         InterManagementRoute(
             onBackClick = onBackClick,
             tabIndex = it.arguments?.getInt("tabIndex") ?: 0,
             onNavigateToReview = onNavigateToReview,
-            onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement
+            onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement,
         )
     }
 
@@ -98,7 +98,7 @@ fun NavGraphBuilder.intermediatorNavGraph(
         InterProfileScreen(
             onBackClick = onBackClick,
             onNavigateToInterProfileEdit = onNavigateToInterProfileEdit,
-            onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement
+            onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement,
         )
     }
 
@@ -107,18 +107,18 @@ fun NavGraphBuilder.intermediatorNavGraph(
             onBackClick = onBackClick,
             navigateToCreateDog = onNavigateToCreateDog,
             imeHeight = imeHeight,
-            viewModel = createApplicationViewModel
+            viewModel = createApplicationViewModel,
         )
     }
 
     composable(
         route = "${IntermediatorRoute.inter_profile_edit}/{profileImage}",
-        arguments = listOf(navArgument("profileImage") { type = NavType.StringType })
+        arguments = listOf(navArgument("profileImage") { type = NavType.StringType }),
     ) {
         InterProfileEditScreen(
             imeHeight = imeHeight,
             onBackClick = onBackClick,
-            profileImage = it.arguments?.getString("profileImage") ?: ""
+            profileImage = it.arguments?.getString("profileImage") ?: "",
         )
     }
 
@@ -127,18 +127,18 @@ fun NavGraphBuilder.intermediatorNavGraph(
             imeHeight = imeHeight,
             onBackClick = onBackClick,
             viewModel = createApplicationViewModel,
-            onNavigateToCreateComplete = onNavigateToCreateComplete
+            onNavigateToCreateComplete = onNavigateToCreateComplete,
         )
     }
 
     composable(
         route = "${IntermediatorRoute.announce_management}/{postId}",
-        arguments = listOf(navArgument("postId") { type = NavType.LongType })
+        arguments = listOf(navArgument("postId") { type = NavType.LongType }),
     ) {
         AnnouncementManageScreen(
             postId = it.arguments!!.getLong("postId"),
             onBackClick = onBackClick,
-            onIntermediatorProfileClick = {}
+            onIntermediatorProfileClick = {},
         )
     }
 

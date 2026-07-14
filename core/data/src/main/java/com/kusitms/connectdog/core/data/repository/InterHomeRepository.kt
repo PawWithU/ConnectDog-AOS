@@ -4,5 +4,8 @@ import com.kusitms.connectdog.core.data.api.model.intermediator.CreateApplicatio
 import java.io.File
 
 interface InterHomeRepository {
-    suspend fun createApplication(body: CreateApplicationDto, images: List<File>)
+    suspend fun createApplication(
+        body: CreateApplicationDto,
+        images: List<File>,
+    )
 }

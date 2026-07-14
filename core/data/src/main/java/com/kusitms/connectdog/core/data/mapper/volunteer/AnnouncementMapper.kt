@@ -13,7 +13,7 @@ internal fun AnnouncementHomeResponseItem.toData(): AnnouncementHome {
         date = dateRangeFormat(startDate, endDate),
         postId = this.postId,
         dogName = this.dogName,
-        pickUpTime = this.pickUpTime
+        pickUpTime = this.pickUpTime,
     )
 }
 
@@ -26,6 +26,6 @@ internal fun AnnouncementSearchResponseItem.toData(): Announcement {
         pickUpTime = this.pickUpTime,
         postId = this.postId,
         isKennel = this.isKennel,
-        dogSize = this.dogSize
+        dogSize = this.dogSize,
     )
 }

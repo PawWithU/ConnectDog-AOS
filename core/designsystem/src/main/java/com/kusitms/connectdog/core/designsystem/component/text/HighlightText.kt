@@ -21,26 +21,27 @@ import kotlinx.collections.immutable.ImmutableList
 private fun rememberDecorationAnnotatedString(
     text: String,
     decorationTexts: ImmutableList<String>,
-    decorationStyle: SpanStyle
+    decorationStyle: SpanStyle,
 ): AnnotatedString {
     return remember(
         key1 = text,
         key2 = decorationTexts,
-        key3 = decorationStyle
+        key3 = decorationStyle,
     ) {
         buildAnnotatedString {
             append(
-                text = text
+                text = text,
             )
             decorationTexts.forEach { annotatedText ->
-                val annotatedStartIndex = text.indexOf(
-                    string = annotatedText
-                )
+                val annotatedStartIndex =
+                    text.indexOf(
+                        string = annotatedText,
+                    )
                 if (annotatedStartIndex != -1) {
                     addStyle(
                         style = decorationStyle,
                         start = annotatedStartIndex,
-                        end = annotatedStartIndex + annotatedText.length
+                        end = annotatedStartIndex + annotatedText.length,
                     )
                 }
             }
@@ -58,22 +59,24 @@ fun HighlightText(
     align: TextAlign = TextAlign.Start,
     overflow: TextOverflow = TextOverflow.Ellipsis,
     style: TextStyle,
-    decorationStyle: SpanStyle = SpanStyle(
-        fontWeight = FontWeight.SemiBold,
-        letterSpacing = 0.sp,
-        color = highlightColor
-    )
+    decorationStyle: SpanStyle =
+        SpanStyle(
+            fontWeight = FontWeight.SemiBold,
+            letterSpacing = 0.sp,
+            color = highlightColor,
+        ),
 ) {
     Text(
         modifier = modifier,
-        text = rememberDecorationAnnotatedString(
-            text = text,
-            decorationTexts = highlightTexts,
-            decorationStyle = decorationStyle
-        ),
+        text =
+            rememberDecorationAnnotatedString(
+                text = text,
+                decorationTexts = highlightTexts,
+                decorationStyle = decorationStyle,
+            ),
         style = style,
         overflow = overflow,
         color = color,
-        textAlign = align
+        textAlign = align,
     )
 }

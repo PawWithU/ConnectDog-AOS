@@ -16,5 +16,5 @@ data class ReviewDetailWithId(
     val arrivalLoc: String,
     val intermediaryId: Long,
     val intermediaryName: String,
-    val reviewId: Long
+    val reviewId: Long,
 )

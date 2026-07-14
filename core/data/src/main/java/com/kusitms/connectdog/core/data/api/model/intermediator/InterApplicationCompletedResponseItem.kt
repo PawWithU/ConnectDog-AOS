@@ -14,5 +14,5 @@ data class InterApplicationCompletedResponseItem(
     val startDate: String,
     val isKennel: Boolean,
     val pickUpTime: String,
-    val dogSize: String
+    val dogSize: String,
 )

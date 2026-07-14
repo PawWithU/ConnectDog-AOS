@@ -63,7 +63,7 @@ fun ConnectDogTextField(
     height: Int = 65,
     showCharCount: Boolean = false,
     maxLength: Int = Int.MAX_VALUE,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val visualTransformation =
         if (keyboardType == KeyboardType.Password) {
@@ -79,23 +79,26 @@ fun ConnectDogTextField(
 
         LaunchedEffect(text) {
             if (textFieldValue.text != text) {
-                textFieldValue = TextFieldValue(
-                    text = text,
-                    selection = TextRange(text.length)
-                )
+                textFieldValue =
+                    TextFieldValue(
+                        text = text,
+                        selection = TextRange(text.length),
+                    )
             }
         }
 
         Box(
-            modifier = Modifier
-                .height(height.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .height(height.dp)
+                    .fillMaxWidth(),
         ) {
             OutlinedTextField(
                 visualTransformation = visualTransformation,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .fillMaxSize(),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopStart)
+                        .fillMaxSize(),
                 value = textFieldValue,
                 onValueChange = { newValue ->
                     if (newValue.text.length <= maxLength) {
@@ -106,27 +109,29 @@ fun ConnectDogTextField(
                 label = {
                     Text(
                         text = label,
-                        color = Gray3
+                        color = Gray3,
                     )
                 },
                 placeholder = {
                     Text(
                         text = placeholder,
-                        color = Gray4
+                        color = Gray4,
                     )
                 },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = keyboardType,
-                    imeAction = imeAction
-                ),
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = keyboardType,
+                        imeAction = imeAction,
+                    ),
                 singleLine = (height == 65),
                 shape = RoundedCornerShape(12.dp),
                 isError = isError,
                 enabled = enabled,
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = borderColor,
-                    errorBorderColor = MaterialTheme.colorScheme.error
-                )
+                colors =
+                    OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = borderColor,
+                        errorBorderColor = MaterialTheme.colorScheme.error,
+                    ),
             )
         }
         if (showCharCount) {
@@ -134,9 +139,10 @@ fun ConnectDogTextField(
                 text = "${text.length} / 200",
                 color = Gray4,
                 fontSize = 12.sp,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(top = 4.dp, end = 4.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.End)
+                        .padding(top = 4.dp, end = 4.dp),
             )
         }
     }
@@ -156,7 +162,7 @@ fun ConnectDogTextField(
     @SuppressLint("PrivateResource") @StringRes errorMessageRes: Int = R.string.default_error_message,
     height: Int = 65,
     showCharCount: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val visualTransformation =
         if (keyboardType == KeyboardType.Password) {
@@ -167,37 +173,39 @@ fun ConnectDogTextField(
 
     Column(modifier = modifier.fillMaxWidth()) {
         Box(
-            modifier = Modifier
-                .height(height.dp)
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .height(height.dp)
+                    .fillMaxWidth(),
         ) {
             OutlinedTextField(
                 visualTransformation = visualTransformation,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .fillMaxSize(),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopStart)
+                        .fillMaxSize(),
                 value = text,
                 onValueChange = { onTextChanged(it) },
                 placeholder = {
                     Text(
                         text = placeholder,
-                        color = Gray4
+                        color = Gray4,
                     )
                 },
                 keyboardOptions =
-                KeyboardOptions(
-                    keyboardType = keyboardType,
-                    imeAction = imeAction
-                ),
+                    KeyboardOptions(
+                        keyboardType = keyboardType,
+                        imeAction = imeAction,
+                    ),
                 singleLine = (height == 65),
                 shape = RoundedCornerShape(12.dp),
                 isError = isError,
                 enabled = enabled,
                 colors =
-                OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = borderColor,
-                    errorBorderColor = MaterialTheme.colorScheme.error
-                )
+                    OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = borderColor,
+                        errorBorderColor = MaterialTheme.colorScheme.error,
+                    ),
             )
         }
         if (showCharCount) {
@@ -205,9 +213,10 @@ fun ConnectDogTextField(
                 text = "${text.length} / 200",
                 color = Gray4,
                 fontSize = 12.sp,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(top = 4.dp, end = 4.dp)
+                modifier =
+                    Modifier
+                        .align(Alignment.End)
+                        .padding(top = 4.dp, end = 4.dp),
             )
         }
     }
@@ -223,7 +232,7 @@ fun ConnectDogIconTextField(
     imeAction: ImeAction = ImeAction.Done,
     onImeAction: () -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -237,7 +246,7 @@ fun ConnectDogIconTextField(
                 painter = painterResource(id = iconRes),
                 contentDescription = "icon",
                 tint = Gray4,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp),
             )
         },
         textStyle = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp),
@@ -245,19 +254,21 @@ fun ConnectDogIconTextField(
             Text(
                 text = stringResource(id = placeholderRes),
                 style = MaterialTheme.typography.titleSmall.copy(fontSize = 14.sp),
-                color = Gray4
+                color = Gray4,
             )
         },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType,
-            imeAction = imeAction
-        ),
-        keyboardActions = KeyboardActions(onDone = {
-            keyboardController?.hide()
-            onImeAction.invoke()
-        }),
-        visualTransformation = visualTransformation
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = imeAction,
+            ),
+        keyboardActions =
+            KeyboardActions(onDone = {
+                keyboardController?.hide()
+                onImeAction.invoke()
+            }),
+        visualTransformation = visualTransformation,
     )
 }
 
@@ -274,7 +285,7 @@ fun ConnectDogTextFieldWithButton(
     keyboardType: KeyboardType = KeyboardType.Text,
     padding: Int,
     onClick: (String) -> Unit = {},
-    isError: Boolean = false
+    isError: Boolean = false,
 ) {
     Box {
         ConnectDogTextField(
@@ -284,7 +295,7 @@ fun ConnectDogTextFieldWithButton(
             keyboardType = keyboardType,
             onTextChanged = { onTextChanged(it) },
             borderColor = borderColor,
-            isError = isError
+            isError = isError,
         )
 
         ConnectDogOutlinedButton(
@@ -292,12 +303,13 @@ fun ConnectDogTextFieldWithButton(
             height = height,
             text = buttonLabel,
             padding = padding,
-            modifier = Modifier
-                .padding(top = 6.dp, end = 16.dp)
-                .align(Alignment.CenterEnd),
+            modifier =
+                Modifier
+                    .padding(top = 6.dp, end = 16.dp)
+                    .align(Alignment.CenterEnd),
             onClick = {
                 onClick(text)
-            }
+            },
         )
     }
 }
@@ -314,7 +326,7 @@ fun ConnectDogTextFieldWithTimer(
     borderColor: Color = Gray5,
     keyboardType: KeyboardType = KeyboardType.Text,
     isError: Boolean = false,
-    maxLength: Int = Int.MAX_VALUE
+    maxLength: Int = Int.MAX_VALUE,
 ) {
     var minute by remember { mutableIntStateOf(initialMinute) }
     var second by remember { mutableIntStateOf(initialSecond) }
@@ -334,7 +346,7 @@ fun ConnectDogTextFieldWithTimer(
     }
 
     Box(
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         ConnectDogTextField(
             text = text,
@@ -344,15 +356,16 @@ fun ConnectDogTextFieldWithTimer(
             onTextChanged = { if (it.length <= maxLength) onTextChanged(it) },
             borderColor = borderColor,
             isError = isError,
-            maxLength = maxLength
+            maxLength = maxLength,
         )
         Text(
             text = String.format("%02d:%02d", minute, second),
             fontSize = 12.sp,
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 16.dp),
-            color = PetOrange
+            modifier =
+                Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 16.dp),
+            color = PetOrange,
         )
     }
 }
@@ -369,7 +382,7 @@ private fun ConnectDogTextFieldPreview() {
             text = text,
             onTextChanged = onTextChanged,
             label = "텍스트",
-            placeholder = "비밀번호"
+            placeholder = "비밀번호",
         )
     }
 }

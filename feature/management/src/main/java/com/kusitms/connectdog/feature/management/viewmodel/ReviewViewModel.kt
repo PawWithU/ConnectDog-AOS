@@ -28,75 +28,82 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ReviewViewModel @Inject constructor(
-    private val repository: ManagementRepository
-) : ViewModel() {
-    private val _errorFlow = MutableSharedFlow<Throwable>()
-    val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+class ReviewViewModel
+    @Inject
+    constructor(
+        private val repository: ManagementRepository,
+    ) : ViewModel() {
+        private val _errorFlow = MutableSharedFlow<Throwable>()
+        val errorFlow: SharedFlow<Throwable> get() = _errorFlow
 
-    private val _uriList = MutableStateFlow<MutableList<Uri>>(mutableListOf())
-    val uriList: StateFlow<List<Uri>>
-        get() = _uriList
+        private val _uriList = MutableStateFlow<MutableList<Uri>>(mutableListOf())
+        val uriList: StateFlow<List<Uri>>
+            get() = _uriList
 
-    private val _review: MutableState<String> = mutableStateOf("")
-    val review: String
-        get() = _review.value
+        private val _review: MutableState<String> = mutableStateOf("")
+        val review: String
+            get() = _review.value
 
-    private val _postId = MutableStateFlow<Long?>(null)
+        private val _postId = MutableStateFlow<Long?>(null)
 
-    private val _reviewId = MutableStateFlow<Long?>(null)
-    private val _userType = MutableStateFlow<UserType?>(null)
+        private val _reviewId = MutableStateFlow<Long?>(null)
+        private val _userType = MutableStateFlow<UserType?>(null)
 
-    fun updateReview(review: String) {
-        _review.value = review
-    }
+        fun updateReview(review: String) {
+            _review.value = review
+        }
 
-    fun updateUriList(uri: Uri) {
-        _uriList.value = _uriList.value.toMutableList().apply { add(uri) }
-    }
+        fun updateUriList(uri: Uri) {
+            _uriList.value = _uriList.value.toMutableList().apply { add(uri) }
+        }
 
-    fun removeUriList(uri: Uri) {
-        _uriList.value = _uriList.value.toMutableList().apply { remove(uri) }
-    }
+        fun removeUriList(uri: Uri) {
+            _uriList.value = _uriList.value.toMutableList().apply { remove(uri) }
+        }
 
-    fun updateReviewId(reviewId: Long) = viewModelScope.launch {
-        _reviewId.emit(reviewId)
-    }
-
-    fun updatePostId(postId: Long) = viewModelScope.launch {
-        _postId.value = postId
-    }
-
-    val reviewUiState: StateFlow<ReviewUiState> =
-        flow {
-            _reviewId.collect {
-                it?.let { emit(repository.getReview(it).toData()) }
+        fun updateReviewId(reviewId: Long) =
+            viewModelScope.launch {
+                _reviewId.emit(reviewId)
             }
-        }.map {
-            ReviewUiState.Reviews(it)
-        }.catch {
-            _errorFlow.emit(it)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewUiState.Loading
-        )
 
-    fun createReview(context: Context) = viewModelScope.launch {
-        val files = _uriList.value.mapNotNull { uri ->
-            uriToFile(context, uri, 80)
-        }
+        fun updatePostId(postId: Long) =
+            viewModelScope.launch {
+                _postId.value = postId
+            }
 
-        val body = ReviewBody(
-            content = _review.value
-        )
+        val reviewUiState: StateFlow<ReviewUiState> =
+            flow {
+                _reviewId.collect {
+                    it?.let { emit(repository.getReview(it).toData()) }
+                }
+            }.map {
+                ReviewUiState.Reviews(it)
+            }.catch {
+                _errorFlow.emit(it)
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ReviewUiState.Loading,
+            )
 
-        try {
-            repository.postReview(_postId.value!!, body, files)
-        } catch (e: CancellationException) {
-            Log.d("createReview", "Coroutine was cancelled", e)
-        } catch (e: Exception) {
-            Log.d("createReview", "An error occurred", e)
-        }
+        fun createReview(context: Context) =
+            viewModelScope.launch {
+                val files =
+                    _uriList.value.mapNotNull { uri ->
+                        uriToFile(context, uri, 80)
+                    }
+
+                val body =
+                    ReviewBody(
+                        content = _review.value,
+                    )
+
+                try {
+                    repository.postReview(_postId.value!!, body, files)
+                } catch (e: CancellationException) {
+                    Log.d("createReview", "Coroutine was cancelled", e)
+                } catch (e: Exception) {
+                    Log.d("createReview", "An error occurred", e)
+                }
+            }
     }
-}

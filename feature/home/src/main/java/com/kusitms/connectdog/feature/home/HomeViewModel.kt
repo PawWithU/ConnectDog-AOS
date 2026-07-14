@@ -23,76 +23,79 @@ import javax.inject.Inject
 private val TAG = "HomeViewModel"
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val homeRepository: HomeRepository,
-    private val getFcmTokenUseCase: GetFcmTokenUseCase,
-) : ViewModel() {
-    init {
+class HomeViewModel
+    @Inject
+    constructor(
+        private val homeRepository: HomeRepository,
+        private val getFcmTokenUseCase: GetFcmTokenUseCase,
+    ) : ViewModel() {
+        init {
 //        postFcmToken()
-    }
-
-    private val _errorFlow = MutableSharedFlow<Throwable>()
-    val errorFlow: SharedFlow<Throwable> get() = _errorFlow
-
-    val announcementUiState: StateFlow<AnnouncementUiState> =
-        flow {
-            emit(homeRepository.getAnnouncementList())
-        }.map {
-            Log.d(TAG, "announcementUiState = ${it.size}")
-            if (it.isNotEmpty()) {
-                AnnouncementUiState.Announcements(it)
-            } else {
-                AnnouncementUiState.Empty
-            }
-        }.catch {
-            _errorFlow.emit(it)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = AnnouncementUiState.Loading
-        )
-
-    val reviewUiState: StateFlow<ReviewUiState> =
-        flow {
-            emit(homeRepository.getReviewList(0, 100))
-        }.map {
-            Log.d(TAG, "reviewUiState = ${it.size}")
-            if (it.isNotEmpty()) {
-                ReviewUiState.Reviews(it)
-            } else {
-                ReviewUiState.Empty
-            }
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e(TAG, "reviewUiState = ${it.message}")
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewUiState.Loading
-        )
-
-    val homeReviewUiState: StateFlow<ReviewUiState> =
-        flow {
-            emit(homeRepository.getReviewList(0, 100))
-        }.map {
-            Log.d(TAG, "reviewUiState = ${it.size}")
-            if (it.isNotEmpty()) {
-                ReviewUiState.Reviews(it)
-            } else {
-                ReviewUiState.Empty
-            }
-        }.catch {
-            _errorFlow.emit(it)
-            Log.e(TAG, "reviewUiState = ${it.message}")
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReviewUiState.Loading
-        )
-
-    private fun postFcmToken() = viewModelScope.launch {
-        getFcmTokenUseCase().collect {
-            it?.let { homeRepository.postFcmToken(FcmTokenRequestBody(it)) }
         }
+
+        private val _errorFlow = MutableSharedFlow<Throwable>()
+        val errorFlow: SharedFlow<Throwable> get() = _errorFlow
+
+        val announcementUiState: StateFlow<AnnouncementUiState> =
+            flow {
+                emit(homeRepository.getAnnouncementList())
+            }.map {
+                Log.d(TAG, "announcementUiState = ${it.size}")
+                if (it.isNotEmpty()) {
+                    AnnouncementUiState.Announcements(it)
+                } else {
+                    AnnouncementUiState.Empty
+                }
+            }.catch {
+                _errorFlow.emit(it)
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = AnnouncementUiState.Loading,
+            )
+
+        val reviewUiState: StateFlow<ReviewUiState> =
+            flow {
+                emit(homeRepository.getReviewList(0, 100))
+            }.map {
+                Log.d(TAG, "reviewUiState = ${it.size}")
+                if (it.isNotEmpty()) {
+                    ReviewUiState.Reviews(it)
+                } else {
+                    ReviewUiState.Empty
+                }
+            }.catch {
+                _errorFlow.emit(it)
+                Log.e(TAG, "reviewUiState = ${it.message}")
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ReviewUiState.Loading,
+            )
+
+        val homeReviewUiState: StateFlow<ReviewUiState> =
+            flow {
+                emit(homeRepository.getReviewList(0, 100))
+            }.map {
+                Log.d(TAG, "reviewUiState = ${it.size}")
+                if (it.isNotEmpty()) {
+                    ReviewUiState.Reviews(it)
+                } else {
+                    ReviewUiState.Empty
+                }
+            }.catch {
+                _errorFlow.emit(it)
+                Log.e(TAG, "reviewUiState = ${it.message}")
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = ReviewUiState.Loading,
+            )
+
+        private fun postFcmToken() =
+            viewModelScope.launch {
+                getFcmTokenUseCase().collect {
+                    it?.let { homeRepository.postFcmToken(FcmTokenRequestBody(it)) }
+                }
+            }
     }
-}

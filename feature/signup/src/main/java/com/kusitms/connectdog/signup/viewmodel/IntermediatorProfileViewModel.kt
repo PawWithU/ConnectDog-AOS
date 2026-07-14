@@ -14,45 +14,49 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class IntermediatorProfileViewModel @Inject constructor(
-    private val signUpRepository: SignUpRepository
-) : ViewModel() {
-    private val _name: MutableState<String> = mutableStateOf("")
-    val name: String
-        get() = _name.value
+class IntermediatorProfileViewModel
+    @Inject
+    constructor(
+        private val signUpRepository: SignUpRepository,
+    ) : ViewModel() {
+        private val _name: MutableState<String> = mutableStateOf("")
+        val name: String
+            get() = _name.value
 
-    private val _introduce: MutableState<String> = mutableStateOf("")
-    val introduce: String
-        get() = _introduce.value
+        private val _introduce: MutableState<String> = mutableStateOf("")
+        val introduce: String
+            get() = _introduce.value
 
-    private val _isDuplicateName = MutableStateFlow<Boolean?>(null)
-    val isDuplicateName: StateFlow<Boolean?>
-        get() = _isDuplicateName
+        private val _isDuplicateName = MutableStateFlow<Boolean?>(null)
+        val isDuplicateName: StateFlow<Boolean?>
+            get() = _isDuplicateName
 
-    private val _uri: MutableState<Uri?> = mutableStateOf(null)
-    val uri: Uri?
-        get() = _uri.value
+        private val _uri: MutableState<Uri?> = mutableStateOf(null)
+        val uri: Uri?
+            get() = _uri.value
 
-    fun updateName(name: String) {
-        _name.value = name
-    }
+        fun updateName(name: String) {
+            _name.value = name
+        }
 
-    fun updateIntroduce(introduce: String) {
-        _introduce.value = introduce
-    }
+        fun updateIntroduce(introduce: String) {
+            _introduce.value = introduce
+        }
 
-    fun updateUri(uri: Uri) {
-        _uri.value = uri
-    }
+        fun updateUri(uri: Uri) {
+            _uri.value = uri
+        }
 
-    fun checkNickNameDuplicate() = viewModelScope.launch {
-        val body = NameDto(
-            name = _name.value
-        )
-        try {
+        fun checkNickNameDuplicate() =
+            viewModelScope.launch {
+                val body =
+                    NameDto(
+                        name = _name.value,
+                    )
+                try {
 //            val response = signUpRepository.isDuplicateInterNickName(body)
 //            _isDuplicateName.value = response.isDuplicated
-        } catch (e: Exception) {
-        }
+                } catch (e: Exception) {
+                }
+            }
     }
-}

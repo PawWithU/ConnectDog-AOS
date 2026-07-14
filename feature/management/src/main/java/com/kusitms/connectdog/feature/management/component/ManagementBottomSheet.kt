@@ -27,7 +27,7 @@ internal fun MyApplicationBottomSheet(
     sheetState: SheetState,
     volunteer: Volunteer,
     onDismissRequest: () -> Unit,
-    onDeleteClick: (Long) -> Unit
+    onDeleteClick: (Long) -> Unit,
 ) {
     var isCancelDialogVisible by remember { mutableStateOf(false) }
 
@@ -36,7 +36,7 @@ internal fun MyApplicationBottomSheet(
         application = application,
         volunteer = volunteer,
         sheetState = sheetState,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = onDismissRequest,
     ) {
         ConnectDogBottomButton(
             onClick = { isCancelDialogVisible = true },
@@ -44,7 +44,7 @@ internal fun MyApplicationBottomSheet(
             textColor = MaterialTheme.colorScheme.error,
             enabledColor = MaterialTheme.colorScheme.surface,
             border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.error),
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 52.dp)
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 24.dp, bottom = 52.dp),
         )
     }
 
@@ -59,14 +59,14 @@ internal fun MyApplicationBottomSheet(
 @Composable
 private fun CancelDialog(
     onDismiss: () -> Unit,
-    onOkClick: () -> Unit
+    onOkClick: () -> Unit,
 ) {
     ConnectDogAlertDialog(
         onDismissRequest = onDismiss,
         titleRes = R.string.question_cancel,
         descriptionRes = R.string.question_cancel_description,
         okText = R.string.ok_cancel,
-        cancelText = R.string.cancel_back
+        cancelText = R.string.cancel_back,
     ) {
         onOkClick()
     }

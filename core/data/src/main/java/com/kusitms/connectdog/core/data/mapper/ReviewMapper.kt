@@ -16,7 +16,7 @@ internal fun ReviewResponseItem.toData(): Review {
         date = if (startDate == endDate) startDate else dateRangeFormat(startDate, endDate),
         location = "$departureLoc → $arrivalLoc",
         organization = intermediaryName,
-        content = content
+        content = content,
     )
 }
 
@@ -32,7 +32,7 @@ fun ReviewDetailResponse.toData(): Review {
         organization = intermediaryName,
         content = content,
         intermediaryId = intermediaryId,
-        postMainImage = postMainImage
+        postMainImage = postMainImage,
     )
 }
 
@@ -49,6 +49,6 @@ fun ReviewDetailWithId.toData(): Review {
         content = content,
         intermediaryId = intermediaryId,
         postMainImage = postMainImage,
-        reviewId = reviewId
+        reviewId = reviewId,
     )
 }

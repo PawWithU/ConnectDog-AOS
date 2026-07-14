@@ -34,19 +34,35 @@ fun Loading() {
 fun Empty(
     modifier: Modifier = Modifier,
     @StringRes titleRes: Int,
-    @StringRes descriptionRes: Int
+    @StringRes descriptionRes: Int,
 ) {
-    Column(modifier = modifier.fillMaxSize().offset(y = (-60).dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Image(painter = painterResource(id = R.drawable.img_dog_sad), contentDescription = "empty", modifier.size(width = 65.dp, height = 139.dp))
+    Column(
+        modifier = modifier.fillMaxSize().offset(y = (-60).dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.img_dog_sad),
+            contentDescription = "empty",
+            modifier.size(width = 65.dp, height = 139.dp),
+        )
         Spacer(modifier = Modifier.size(20.dp))
-        Text(text = stringResource(id = titleRes), style = MaterialTheme.typography.bodyMedium, color = Gray2, fontWeight = FontWeight.Medium)
+        Text(
+            text = stringResource(id = titleRes),
+            style = MaterialTheme.typography.bodyMedium,
+            color = Gray2,
+            fontWeight = FontWeight.Medium,
+        )
         Spacer(modifier = Modifier.size(6.dp))
         Text(text = stringResource(id = descriptionRes), style = MaterialTheme.typography.labelLarge, color = Gray2)
     }
 }
 
 @Composable
-fun UiState(dataUiState: DataUiState, onSuccess: () -> Unit) {
+fun UiState(
+    dataUiState: DataUiState,
+    onSuccess: () -> Unit,
+) {
     when (dataUiState) {
         is DataUiState.Loading -> Loading()
         is DataUiState.Success -> onSuccess()

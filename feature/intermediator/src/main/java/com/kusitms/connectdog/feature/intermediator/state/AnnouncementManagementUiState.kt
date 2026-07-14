@@ -4,7 +4,8 @@ import com.kusitms.connectdog.core.data.api.model.volunteer.NoticeDetailResponse
 
 sealed interface AnnouncementManagementUiState {
     object Loading : AnnouncementManagementUiState
+
     data class AnnouncementDetail(
-        val announcement: NoticeDetailResponseItem
+        val announcement: NoticeDetailResponseItem,
     ) : AnnouncementManagementUiState
 }

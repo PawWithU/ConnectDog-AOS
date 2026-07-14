@@ -11,61 +11,65 @@ import com.kusitms.connectdog.core.model.signup.SocialVolunteerDetail
 import com.kusitms.connectdog.domain.repository.SignUpRepository
 import javax.inject.Inject
 
-internal class SignUpRepositoryImpl @Inject constructor(
-    private val volunteerApi: ApiService,
-    private val intermediatorApi: InterApiService
-) : SignUpRepository, com.kusitms.connectdog.core.data.repository.SignUpRepository {
-    override suspend fun getVolunteerNicknameDuplication(
-        nickname: String
-    ): Result<IsDuplicated> = runCatching {
-        val body = Nickname(nickname)
-        return@runCatching volunteerApi.postNickname(body)
-    }
+internal class SignUpRepositoryImpl
+    @Inject
+    constructor(
+        private val volunteerApi: ApiService,
+        private val intermediatorApi: InterApiService,
+    ) : SignUpRepository, com.kusitms.connectdog.core.data.repository.SignUpRepository {
+        override suspend fun getVolunteerNicknameDuplication(nickname: String): Result<IsDuplicated> =
+            runCatching {
+                val body = Nickname(nickname)
+                return@runCatching volunteerApi.postNickname(body)
+            }
 
-    override suspend fun getIntermediatorNicknameDuplication(
-        name: String
-    ): Result<IsDuplicated> = runCatching {
-        val body = Name(name)
-        return@runCatching intermediatorApi.checkIsDuplicateName(body)
-    }
+        override suspend fun getIntermediatorNicknameDuplication(name: String): Result<IsDuplicated> =
+            runCatching {
+                val body = Name(name)
+                return@runCatching intermediatorApi.checkIsDuplicateName(body)
+            }
 
-    override suspend fun initNormalVolunteerSignUp(
-        email: String,
-        password: String,
-        nickname: String,
-        profileImageNum: Int,
-        isOptionAgr: Boolean,
-        phone: String,
-        name: String
-    ): Result<Unit> = runCatching {
-        val body = NormalVolunteerDetail(
-            email = email,
-            password = password,
-            nickname = nickname,
-            profileImageNum = profileImageNum,
-            isOptionAgr = isOptionAgr,
-            phone = phone,
-            name = name
-        )
-        volunteerApi.postNormalVolunteerSignUp(body)
-    }
+        override suspend fun initNormalVolunteerSignUp(
+            email: String,
+            password: String,
+            nickname: String,
+            profileImageNum: Int,
+            isOptionAgr: Boolean,
+            phone: String,
+            name: String,
+        ): Result<Unit> =
+            runCatching {
+                val body =
+                    NormalVolunteerDetail(
+                        email = email,
+                        password = password,
+                        nickname = nickname,
+                        profileImageNum = profileImageNum,
+                        isOptionAgr = isOptionAgr,
+                        phone = phone,
+                        name = name,
+                    )
+                volunteerApi.postNormalVolunteerSignUp(body)
+            }
 
-    override suspend fun initSocialVolunteerSignUp(
-        nickname: String,
-        profileImageNum: Int,
-        isOptionAgr: Boolean,
-        phone: String,
-        name: String
-    ): Result<Unit> = runCatching {
-        val body = SocialVolunteerDetail(
-            nickname = nickname,
-            profileImageNum = profileImageNum,
-            isOptionAgr = isOptionAgr,
-            phone = phone,
-            name = name
-        )
-        return@runCatching volunteerApi.postSocialVolunteerSignUp(body)
-    }
+        override suspend fun initSocialVolunteerSignUp(
+            nickname: String,
+            profileImageNum: Int,
+            isOptionAgr: Boolean,
+            phone: String,
+            name: String,
+        ): Result<Unit> =
+            runCatching {
+                val body =
+                    SocialVolunteerDetail(
+                        nickname = nickname,
+                        profileImageNum = profileImageNum,
+                        isOptionAgr = isOptionAgr,
+                        phone = phone,
+                        name = name,
+                    )
+                return@runCatching volunteerApi.postSocialVolunteerSignUp(body)
+            }
 
 //    override suspend fun postIntermediatorSignUp(signUp: IntermediatorSignUpBody, image: File) {
 //        val jsonBody = RequestBody.create(
@@ -107,19 +111,19 @@ internal class SignUpRepositoryImpl @Inject constructor(
 //        intermediatorApi.changeInterPassword(body)
 //    }
 
-    override suspend fun checkVolunteerPassword(password: String): PasswordCheckResponse {
-        TODO("Not yet implemented")
-    }
+        override suspend fun checkVolunteerPassword(password: String): PasswordCheckResponse {
+            TODO("Not yet implemented")
+        }
 
-    override suspend fun checkInterPassword(password: String): PasswordCheckResponse {
-        TODO("Not yet implemented")
-    }
+        override suspend fun checkInterPassword(password: String): PasswordCheckResponse {
+            TODO("Not yet implemented")
+        }
 
-    override suspend fun changeVolunteerPassword(password: String) {
-        TODO("Not yet implemented")
-    }
+        override suspend fun changeVolunteerPassword(password: String) {
+            TODO("Not yet implemented")
+        }
 
-    override suspend fun changeInterPassword(password: String) {
-        TODO("Not yet implemented")
+        override suspend fun changeInterPassword(password: String) {
+            TODO("Not yet implemented")
+        }
     }
-}

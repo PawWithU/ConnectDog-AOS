@@ -54,7 +54,7 @@ internal fun MainScreen(
     verifyCode: (String, (Boolean) -> Unit) -> Unit,
     finish: () -> Unit,
     openWebBrowser: (String) -> Unit,
-    imeHeight: Int
+    imeHeight: Int,
 ) {
     val editProfileViewModel: EditProfileViewModel = hiltViewModel()
     val createApplicationViewModel: CreateApplicationViewModel = hiltViewModel()
@@ -62,16 +62,17 @@ internal fun MainScreen(
     Scaffold(
         content = {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        shape = RectangleShape
-                    )
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .background(
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            shape = RectangleShape,
+                        ),
             ) {
                 NavHost(
                     navController = navigator.navController,
-                    startDestination = navigator.startDestination
+                    startDestination = navigator.startDestination,
                 ) {
                     loginNavGraph(
                         imeHeight = imeHeight,
@@ -88,7 +89,7 @@ internal fun MainScreen(
                         onSendMessage = { sendVerificationCode(it) },
                         onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
                         onNavigateToLoginRoute = navigator::onLogoutClick,
-                        onNavigateToNoAccount = navigator::navigateNoAccount
+                        onNavigateToNoAccount = navigator::navigateNoAccount,
                     )
                     signUpGraph(
                         navController = navigator.navController,
@@ -107,7 +108,7 @@ internal fun MainScreen(
                         onSendMessage = { sendVerificationCode(it) },
                         onVerifyCode = { code, callback -> verifyCode(code) { callback(it) } },
                         navigateToLogin = { navigator.onLogoutClick() },
-                        openWebBrowser = openWebBrowser
+                        openWebBrowser = openWebBrowser,
                     )
                     homeNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -129,7 +130,7 @@ internal fun MainScreen(
                         imeHeight = imeHeight,
                         finish = finish,
                         onNavigateToGuideScreen = navigator::navigateToGuide,
-                        onNavigateToReviewDetail = { navigator.navigateCheckReview(it, UserType.NORMAL_VOLUNTEER) }
+                        onNavigateToReviewDetail = { navigator.navigateCheckReview(it, UserType.NORMAL_VOLUNTEER) },
                     )
                     managementNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
@@ -141,7 +142,7 @@ internal fun MainScreen(
                         onNavigateToCreateReview = {
                             val jsonData = Uri.encode(Gson().toJson(it))
                             navigator.navigateCreateReview(jsonData)
-                        }
+                        },
                     )
                     mypageNavGraph(
                         padding = it,
@@ -162,7 +163,7 @@ internal fun MainScreen(
                         },
                         onShowErrorSnackbar = {},
                         onNavigateToHome = navigator::navigateToHomeClearBackStack,
-                        onNavigateToPasswordChange = navigator::navigatePasswordChange
+                        onNavigateToPasswordChange = navigator::navigatePasswordChange,
                     )
                     intermediatorNavGraph(
                         imeHeight = imeHeight,
@@ -178,7 +179,7 @@ internal fun MainScreen(
                         onNavigateToCreateDog = { navigator.navigateToCreateDog() },
                         onNavigateToAnnouncementManagement = navigator::navigateToAnnouncementManagement,
                         onNavigateToInterHome = navigator::navigateIntermediatorHome,
-                        onNavigateToCreateComplete = navigator::navigateToCompleteCreate
+                        onNavigateToCreateComplete = navigator::navigateToCompleteCreate,
                     )
                 }
             }
@@ -187,15 +188,15 @@ internal fun MainScreen(
             AnimatedVisibility(
                 visible = navigator.shouldShowBottomBar(),
                 enter = fadeIn() + slideIn { IntOffset(0, it.height) },
-                exit = fadeOut() + slideOut { IntOffset(0, it.height) }
+                exit = fadeOut() + slideOut { IntOffset(0, it.height) },
             ) {
                 Column(
-                    modifier = Modifier.height(68.dp)
+                    modifier = Modifier.height(68.dp),
                 ) {
                     HorizontalDivider(thickness = 1.dp, color = MaterialTheme.colorScheme.outline)
                     NavigationBar(
                         containerColor = Color.Transparent,
-                        modifier = Modifier.background(Color.White)
+                        modifier = Modifier.background(Color.White),
                     ) {
                         MainTab.values().toList().toPersistentList().forEach {
                             NavigationBarItem(
@@ -204,28 +205,28 @@ internal fun MainScreen(
                                 icon = {
                                     NavigationIcon(
                                         tab = it,
-                                        selected = navigator.currentTab == it
+                                        selected = navigator.currentTab == it,
                                     )
                                 },
                                 label = {
                                     NavigationLabel(
                                         tab = it,
-                                        selected = navigator.currentTab == it
+                                        selected = navigator.currentTab == it,
                                     )
-                                }
+                                },
                             )
                         }
                     }
                 }
             }
-        }
+        },
     )
 }
 
 @Composable
 private fun NavigationIcon(
     tab: MainTab,
-    selected: Boolean
+    selected: Boolean,
 ) {
     Icon(
         modifier = Modifier.size(24.dp),
@@ -238,17 +239,17 @@ private fun NavigationIcon(
 @Composable
 private fun NavigationLabel(
     tab: MainTab,
-    selected: Boolean
+    selected: Boolean,
 ) {
     Text(
         text = tab.contentDescription,
         style = MaterialTheme.typography.labelLarge,
         color =
-        if (selected) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        }
+            if (selected) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
     )
 }
 
@@ -258,14 +259,14 @@ private fun MainScreenPreview() {
     ConnectDogTheme {
         NavigationBar(
             containerColor = Color.Transparent,
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(Color.White),
         ) {
             MainTab.values().toList().toPersistentList().forEach {
                 NavigationBarItem(
                     selected = it == MainTab.HOME,
                     onClick = { },
                     icon = { NavigationIcon(tab = it, selected = it == MainTab.HOME) },
-                    label = { NavigationLabel(tab = it, selected = it == MainTab.HOME) }
+                    label = { NavigationLabel(tab = it, selected = it == MainTab.HOME) },
                 )
             }
         }

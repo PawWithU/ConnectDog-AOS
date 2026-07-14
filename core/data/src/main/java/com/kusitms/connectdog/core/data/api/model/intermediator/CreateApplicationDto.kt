@@ -13,5 +13,5 @@ data class CreateApplicationDto(
     val content: String,
     val dogName: String,
     val dogSize: String,
-    val specifics: String
+    val specifics: String,
 )

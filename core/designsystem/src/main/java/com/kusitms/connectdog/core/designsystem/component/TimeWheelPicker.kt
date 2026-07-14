@@ -47,8 +47,11 @@ enum class DayTime(val time: String) { AM("오전"), PM("오후") }
 
 const val loopingRealCount = 1000000000
 const val halfLoopingRealCount = loopingRealCount / 2
-fun getLoopingStartIndex(startIndex: Int, count: Int) =
-    halfLoopingRealCount - halfLoopingRealCount % count + startIndex
+
+fun getLoopingStartIndex(
+    startIndex: Int,
+    count: Int,
+) = halfLoopingRealCount - halfLoopingRealCount % count + startIndex
 
 @Composable
 fun TimeWheelPicker(
@@ -57,7 +60,7 @@ fun TimeWheelPicker(
     d: DayTime?,
     updateDayTime: (DayTime) -> Unit,
     updateHour: (Int) -> Unit,
-    updateMinute: (Int) -> Unit
+    updateMinute: (Int) -> Unit,
 ) {
     var hour by remember { mutableIntStateOf(h ?: 0) }
     var minute by remember { mutableIntStateOf(m ?: 0) }
@@ -73,7 +76,7 @@ fun TimeWheelPicker(
                 onDayTimeChange = {
                     dayTime = it
                     updateDayTime(it)
-                }
+                },
             )
             LoopingNumberPicker(
                 modifier = Modifier.weight(1F),
@@ -83,7 +86,7 @@ fun TimeWheelPicker(
                 onCurrentNumberChange = {
                     hour = it
                     updateHour(it)
-                }
+                },
             )
             LoopingNumberPicker(
                 modifier = Modifier.weight(1F),
@@ -93,14 +96,15 @@ fun TimeWheelPicker(
                 onCurrentNumberChange = {
                     minute = it
                     updateMinute(it)
-                }
+                },
             )
             Spacer(modifier = Modifier.width(70.dp))
         }
         HoursBackground(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(itemHeight)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(itemHeight),
         )
     }
 }
@@ -110,7 +114,7 @@ private fun DayTimePicker(
     modifier: Modifier = Modifier,
     itemHeight: Dp,
     currentDayTime: DayTime,
-    onDayTimeChange: (DayTime) -> Unit
+    onDayTimeChange: (DayTime) -> Unit,
 ) {
     val state = rememberLazyListState(currentDayTime.ordinal)
     val scope = rememberCoroutineScope()
@@ -122,32 +126,35 @@ private fun DayTimePicker(
         visibleItemCount = 3,
         onScrollFinish = { index ->
             onDayTimeChange(DayTime.values()[index % 2])
-        }
+        },
     ) { index ->
         val dayTime = DayTime.values()[index % 2]
         val text = dayTime.time
         Box(
-            modifier = Modifier
-                .height(itemHeight),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .height(itemHeight),
+            contentAlignment = Alignment.Center,
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { scope.launch { state.animateScrollToItem(index) } }
-                    ),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { scope.launch { state.animateScrollToItem(index) } },
+                        ),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = text,
-                    style = TextStyle(
-                        fontSize = if (dayTime == currentDayTime) 23.sp else 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = if (dayTime == currentDayTime) Gray1 else Gray9
-                    )
+                    style =
+                        TextStyle(
+                            fontSize = if (dayTime == currentDayTime) 23.sp else 18.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = if (dayTime == currentDayTime) Gray1 else Gray9,
+                        ),
                 )
             }
         }
@@ -160,7 +167,7 @@ private fun LoopingNumberPicker(
     range: IntProgression,
     currentNumber: Int,
     itemHeight: Dp,
-    onCurrentNumberChange: (Int) -> Unit
+    onCurrentNumberChange: (Int) -> Unit,
 ) {
 //    require(currentNumber in range)
     val rangeList = range.toList()
@@ -187,41 +194,54 @@ private fun LoopingNumberPicker(
             val differ2 = currentIndex == index - 2 || currentIndex == index + 2
 
             Box(
-                modifier = Modifier
-                    .height(itemHeight),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .height(itemHeight),
+                contentAlignment = Alignment.Center,
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { scope.launch { state.animateScrollToItem(index) } }
-                        ),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { scope.launch { state.animateScrollToItem(index) } },
+                            ),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = String.format("%02d", number),
-                        style = TextStyle(
-                            fontSize = if (currentText) 23.sp else if (differ1) 18.sp else if (differ2) 14.sp else 12.sp,
-                            fontWeight = if (currentIndex == index) FontWeight(500) else FontWeight(400),
-                            color = if (currentIndex == index) Color.Black else Color.Gray
-                        )
+                        style =
+                            TextStyle(
+                                fontSize =
+                                    if (currentText) {
+                                        23.sp
+                                    } else if (differ1) {
+                                        18.sp
+                                    } else if (differ2) {
+                                        14.sp
+                                    } else {
+                                        12.sp
+                                    },
+                                fontWeight = if (currentIndex == index) FontWeight(500) else FontWeight(400),
+                                color = if (currentIndex == index) Color.Black else Color.Gray,
+                            ),
                     )
                 }
             }
-        }
+        },
     )
 }
 
 @Composable
 private fun HoursBackground(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color(0f, 0f, 0f, 0.1f))
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(Color(0f, 0f, 0f, 0.1f)),
     )
 }
 
@@ -233,7 +253,7 @@ fun VerticalWheelPicker(
     itemHeight: Dp,
     visibleItemCount: Int,
     onScrollFinish: (index: Int) -> Unit,
-    content: @Composable (index: Int) -> Unit
+    content: @Composable (index: Int) -> Unit,
 ) {
     val itemHalfHeightToPx = with(LocalDensity.current) { itemHeight.toPx() / 2 }
 
@@ -259,7 +279,7 @@ fun VerticalWheelPicker(
     LazyColumn(
         modifier = modifier.height(itemHeight * visibleItemCount),
         state = state,
-        contentPadding = PaddingValues(vertical = itemHeight * (visibleItemCount / 2))
+        contentPadding = PaddingValues(vertical = itemHeight * (visibleItemCount / 2)),
     ) {
         items(count = count, key = { it }) { index ->
             content(index)

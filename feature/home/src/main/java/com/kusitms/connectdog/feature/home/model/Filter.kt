@@ -7,7 +7,7 @@ data class Filter(
     var arrival: String = "",
     var startDate: LocalDate? = null,
     var endDate: LocalDate? = null,
-    var detail: Detail = Detail()
+    var detail: Detail = Detail(),
 ) {
     fun isNotEmpty(): Boolean {
         return departure.isNotEmpty() || arrival.isNotEmpty() || startDate != null || endDate != null || detail.isNotEmpty()
@@ -17,14 +17,17 @@ data class Filter(
 data class Detail(
     val dogSize: DogSize? = null,
     val hasKennel: Boolean? = null,
-    val organization: String? = null
+    val organization: String? = null,
 ) {
     fun isNotEmpty(): Boolean {
         return dogSize != null || hasKennel != null || organization != null
     }
 
     enum class DogSize {
-        BIG, MIDDLE, SMALL;
+        BIG,
+        MIDDLE,
+        SMALL,
+        ;
 
         fun toDisplayName(): String {
             return when (this) {

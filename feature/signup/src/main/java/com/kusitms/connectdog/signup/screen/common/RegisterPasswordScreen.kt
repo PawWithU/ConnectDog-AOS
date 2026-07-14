@@ -1,16 +1,15 @@
 package com.kusitms.connectdog.signup.screen.common
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,12 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
-import com.kusitms.connectdog.core.designsystem.component.ConnectDogNormalButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextField
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTopAppBar
 import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationType
@@ -45,12 +41,12 @@ fun RegisterPasswordScreen(
     onNavigateToVolunteerProfile: () -> Unit,
     onNavigateToIntermediatorProfile: () -> Unit,
     imeHeight: Int,
-    viewModel: SignUpViewModel
+    viewModel: SignUpViewModel,
 ) {
     val uiState by viewModel.collectAsState()
 
     viewModel.collectSideEffect {
-        when(it) {
+        when (it) {
             is SignUpSideEffect.NavigateToProfile -> onNavigateToVolunteerProfile()
             else -> Unit
         }
@@ -61,18 +57,17 @@ fun RegisterPasswordScreen(
                 titleRes = uiState.userType.topBarTitleRes,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(
             viewModel = viewModel,
             imeHeight = imeHeight,
-            uiState = uiState
+            uiState = uiState,
         )
     }
 }
-
 
 @Composable
 private fun Content(
@@ -84,22 +79,21 @@ private fun Content(
     val interactionSource = remember { MutableInteractionSource() }
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 20.dp)
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            )
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(horizontal = 20.dp)
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
     ) {
         Spacer(modifier = Modifier.height(80.dp))
         Text(
             text = stringResource(id = R.string.register_password_title),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            lineHeight = 30.sp
+            style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextField(
@@ -108,16 +102,15 @@ private fun Content(
             placeholder = stringResource(id = R.string.input_passwrod),
             keyboardType = KeyboardType.Password,
             isError = (uiState.isValidPassword == false),
-            onTextChanged = viewModel::onPasswordChanged
+            onTextChanged = viewModel::onPasswordChanged,
         )
         if (uiState.isValidPassword == false) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "비밀번호는 8자 이상 입력해주세요.",
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.labelMedium,
                 color = Red1,
-                modifier = Modifier.padding(start = 4.dp)
+                modifier = Modifier.padding(start = 4.dp),
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -127,30 +120,29 @@ private fun Content(
             placeholder = stringResource(id = R.string.confirm_password),
             keyboardType = KeyboardType.Password,
             isError = uiState.isValidConfirmPassword == false,
-            onTextChanged = viewModel::onConfirmPasswordChanged
+            onTextChanged = viewModel::onConfirmPasswordChanged,
         )
         if (uiState.isValidConfirmPassword == false) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "비밀번호가 일치하지 않습니다.",
-                fontSize = 10.sp,
-                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.labelMedium,
                 color = Red1,
-                modifier = Modifier.padding(start = 4.dp)
+                modifier = Modifier.padding(start = 4.dp),
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = stringResource(id = R.string.password_requirement),
             modifier = Modifier.padding(start = 8.dp),
-            fontSize = 11.sp,
-            color = Gray3
+            style = MaterialTheme.typography.labelMedium,
+            color = Gray3,
         )
         Spacer(modifier = Modifier.weight(1f))
         ConnectDogBottomButton(
             content = stringResource(id = R.string.next),
             enabled = uiState.enablePasswordRegister,
-            onClick = viewModel::onPasswordRegisterNextButtonClick
+            onClick = viewModel::onPasswordRegisterNextButtonClick,
         )
         Spacer(modifier = Modifier.height((imeHeight + 32).dp))
     }

@@ -37,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.kusitms.connectdog.core.designsystem.component.BannerGuideline
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
@@ -46,7 +45,6 @@ import com.kusitms.connectdog.core.designsystem.component.TopAppBarNavigationTyp
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.designsystem.theme.Gray50
 import com.kusitms.connectdog.core.designsystem.theme.Gray7
-import com.kusitms.connectdog.core.designsystem.theme.Gray80
 import com.kusitms.connectdog.core.designsystem.theme.PetOrange
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.core.util.getProfileImageId
@@ -61,7 +59,7 @@ internal fun MypageRoute(
     onBadgeClick: () -> Unit,
     onBookmarkClick: () -> Unit,
     onNavigateToHome: (String) -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit
+    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     BackHandler {
         onNavigateToHome(com.kusitms.connectdog.feature.mypage.navigation.MypageRoute.route)
@@ -72,14 +70,14 @@ internal fun MypageRoute(
         onSettingClick = onSettingClick,
         onNotificationClick = onNotificationClick,
         onBadgeClick = onBadgeClick,
-        onBookmarkClick = onBookmarkClick
+        onBookmarkClick = onBookmarkClick,
     )
 }
 
 @Composable
 private fun TopBar(
     onManageAccountClick: (UserType) -> Unit,
-    onNotificationClick: () -> Unit
+    onNotificationClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = R.string.my_page,
@@ -90,17 +88,17 @@ private fun TopBar(
                 Icon(
                     imageVector = Icons.Outlined.Notifications,
                     contentDescription = "Navigate to Search",
-                    modifier = Modifier.clickable { onNotificationClick() }
+                    modifier = Modifier.clickable { onNotificationClick() },
                 )
             }
             IconButton(onClick = {}) {
                 Icon(
                     imageVector = Icons.Outlined.Settings,
                     contentDescription = "Navigate to Search",
-                    modifier = Modifier.clickable { onManageAccountClick(UserType.NORMAL_VOLUNTEER) }
+                    modifier = Modifier.clickable { onManageAccountClick(UserType.NORMAL_VOLUNTEER) },
                 )
             }
-        }
+        },
     )
 }
 
@@ -111,7 +109,7 @@ private fun MypageScreen(
     onSettingClick: (UserType) -> Unit,
     onBadgeClick: () -> Unit,
     onBookmarkClick: () -> Unit,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) {
         viewModel.fetchUserInfo()
@@ -134,21 +132,21 @@ private fun MypageScreen(
         Text(
             text = "나의 이동봉사",
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(horizontal = 20.dp)
+            modifier = Modifier.padding(horizontal = 20.dp),
         )
         Spacer(modifier = Modifier.height(20.dp))
         MypageTab(
             painter = R.drawable.ic_bookmark,
             title = stringResource(id = R.string.bookmark),
             onClick = onBookmarkClick,
-            count = bookmarkCount?.size ?: 0
+            count = bookmarkCount?.size ?: 0,
         )
         Spacer(modifier = Modifier.height(20.dp))
         MypageTab(
             painter = R.drawable.ic_badge,
             title = stringResource(id = R.string.badge),
             onClick = onBadgeClick,
-            count = (badgeList?.count { it.image != null }) ?: 0
+            count = (badgeList?.count { it.image != null }) ?: 0,
         )
     }
 }
@@ -156,30 +154,32 @@ private fun MypageScreen(
 @Composable
 private fun MyInformation(
     onEditProfileClick: (Int, String) -> Unit,
-    viewModel: MyPageViewModel
+    viewModel: MyPageViewModel,
 ) {
     val userInfo by viewModel.myInfo.observeAsState(null)
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         userInfo?.let {
             Image(
-                painter = painterResource(
-                    id = getProfileImageId(it.profileImageNum)
-                ),
+                painter =
+                    painterResource(
+                        id = getProfileImageId(it.profileImageNum),
+                    ),
                 contentDescription = null,
-                modifier = Modifier.size(80.dp)
+                modifier = Modifier.size(80.dp),
             )
             Spacer(modifier = Modifier.width(20.dp))
             Column {
                 Text(
                     text = it.nickname,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.SemiBold,
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 ConnectDogOutlinedButton(
@@ -187,7 +187,7 @@ private fun MyInformation(
                     height = 26,
                     text = "프로필 수정",
                     padding = 5,
-                    onClick = { onEditProfileClick(userInfo!!.profileImageNum, userInfo!!.nickname) }
+                    onClick = { onEditProfileClick(userInfo!!.profileImageNum, userInfo!!.nickname) },
                 )
             }
         }
@@ -199,56 +199,56 @@ private fun MypageTab(
     @DrawableRes painter: Int,
     title: String,
     onClick: () -> Unit,
-    count: Int?
+    count: Int?,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(32.dp)
-            .padding(horizontal = 20.dp)
-            .clickable { onClick() },
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(32.dp)
+                .padding(horizontal = 20.dp)
+                .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             painter = painterResource(id = painter),
             contentDescription = null,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = count?.toString() ?: "",
             style = MaterialTheme.typography.bodyLarge,
             color = PetOrange,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(
             painter = painterResource(id = R.drawable.ic_right_arrow),
             contentDescription = null,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(24.dp),
         )
     }
 }
 
 @Composable
-private fun InformationBox(
-    viewModel: MyPageViewModel = hiltViewModel()
-) {
+private fun InformationBox(viewModel: MyPageViewModel = hiltViewModel()) {
     val myInformation by viewModel.myInfo.observeAsState(null)
 
     val shape = RoundedCornerShape(12.dp)
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .height(80.dp)
-            .clip(shape)
-            .background(Gray7)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .height(80.dp)
+                .clip(shape)
+                .background(Gray7),
     ) {
         myInformation?.let {
             Row {
@@ -265,25 +265,25 @@ private fun InformationBox(
 private fun Information(
     count: Int,
     title: String,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Text(
             text = "${count}회",
+            style = MaterialTheme.typography.titleLarge,
             color = Gray50,
-            fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Text(
             text = title,
+            style = MaterialTheme.typography.labelLarge,
             color = Gray50,
-            fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         )
     }
 }

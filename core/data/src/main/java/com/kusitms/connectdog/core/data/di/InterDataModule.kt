@@ -16,7 +16,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 internal class InterDataModule {
-
     @Provides
     @Singleton
     fun provideInterHomeRepository(apiService: InterApiService): InterHomeRepository {

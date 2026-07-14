@@ -13,26 +13,24 @@ import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.theme.Gray2
 
 @Composable
-fun ActionRow(
-    vararg items: Pair<String, () -> Unit>
-) {
+fun ActionRow(vararg items: Pair<String, () -> Unit>) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         items.forEachIndexed { index, item ->
             Text(
                 modifier = Modifier.clickable { item.second() },
                 text = item.first,
                 fontSize = 12.sp,
-                color = Gray2
+                color = Gray2,
             )
             if (index != items.lastIndex) {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
                     text = "|",
                     fontSize = 12.sp,
-                    color = Gray2
+                    color = Gray2,
                 )
             }
         }

@@ -53,7 +53,7 @@ fun ConnectDogCalendar(
     config: CalendarConfig = CalendarConfig(),
     startDate: LocalDate = LocalDate.now(),
     endDate: LocalDate = startDate,
-    onSelectedDate: (LocalDate, LocalDate) -> Unit
+    onSelectedDate: (LocalDate, LocalDate) -> Unit,
 ) {
     val initialPage = (startDate.year - config.yearRange.first) * 12 + startDate.monthValue - 1
     Log.d("Calendar", "initialPage = $initialPage")
@@ -61,11 +61,12 @@ fun ConnectDogCalendar(
     var currentSelectedEndDate by remember { mutableStateOf(endDate) }
     var currentMonth by remember { mutableStateOf(YearMonth.now()) }
     var currentPage by remember { mutableIntStateOf(initialPage) }
-    val pagerState = rememberPagerState(
-        initialPage = initialPage,
-        initialPageOffsetFraction = 0f,
-        pageCount = { (config.yearRange.last - config.yearRange.first) * 12 }
-    )
+    val pagerState =
+        rememberPagerState(
+            initialPage = initialPage,
+            initialPageOffsetFraction = 0f,
+            pageCount = { (config.yearRange.last - config.yearRange.first) * 12 },
+        )
     Log.d("Calendar", "currentMonth = $currentMonth")
 
     LaunchedEffect(pagerState.currentPage) {
@@ -93,7 +94,7 @@ fun ConnectDogCalendar(
                 currentMonth = currentMonth.plusMonths(1)
                 currentPage += 1
                 scope.launch { pagerState.animateScrollToPage(currentPage) }
-            }
+            },
         )
         HorizontalPager(state = pagerState) { page ->
             val date = LocalDate.of(config.yearRange.first + page / 12, page % 12 + 1, 1)
@@ -109,7 +110,7 @@ fun ConnectDogCalendar(
                     onSelectedEndDate = {
                         currentSelectedEndDate = it
                         Log.d("Calendar", "currentSelectedEndDate = $currentSelectedEndDate")
-                    }
+                    },
                 )
             }
         }
@@ -123,7 +124,7 @@ private fun CalendarMonth(
     selectedStartDate: LocalDate,
     selectedEndDate: LocalDate,
     onSelectedStartDate: (LocalDate) -> Unit,
-    onSelectedEndDate: (LocalDate) -> Unit
+    onSelectedEndDate: (LocalDate) -> Unit,
 ) {
     val lastDay by remember { mutableIntStateOf(currentDate.lengthOfMonth()) }
     val firstDayOfWeek by remember { mutableIntStateOf(currentDate.dayOfWeek.value) } // 요일
@@ -139,12 +140,14 @@ private fun CalendarMonth(
             }
             items(days) { day ->
                 val date = currentDate.withDayOfMonth(day)
-                val isSelectedStart = remember(selectedStartDate) {
-                    selectedStartDate.compareTo(date) == 0
-                }
-                val isSelectedEnd = remember(selectedEndDate) {
-                    selectedEndDate.compareTo(date) == 0
-                }
+                val isSelectedStart =
+                    remember(selectedStartDate) {
+                        selectedStartDate.compareTo(date) == 0
+                    }
+                val isSelectedEnd =
+                    remember(selectedEndDate) {
+                        selectedEndDate.compareTo(date) == 0
+                    }
 
                 val calendarDayType =
                     if (isSelectedStart && isSelectedEnd && selectedStartDate == selectedEndDate) {
@@ -171,9 +174,10 @@ private fun CalendarMonth(
                             onSelectedStartDate(it)
                         } else if (it.isAfter(selectedEndDate)) {
                             onSelectedEndDate(it)
-                        } else if (dayDiff(it, selectedStartDate) < dayDiff(
+                        } else if (dayDiff(it, selectedStartDate) <
+                            dayDiff(
                                 it,
-                                selectedEndDate
+                                selectedEndDate,
                             )
                         ) {
                             onSelectedStartDate(it)
@@ -182,9 +186,9 @@ private fun CalendarMonth(
                         }
                         Log.d(
                             "Calendar",
-                            "CalendarMonth startDate = $selectedStartDate, endDate = $selectedEndDate, selected = $it"
+                            "CalendarMonth startDate = $selectedStartDate, endDate = $selectedEndDate, selected = $it",
                         )
-                    }
+                    },
                 )
             }
         }
@@ -192,9 +196,7 @@ private fun CalendarMonth(
 }
 
 @Composable
-private fun DayOfWeekBar(
-    modifier: Modifier = Modifier
-) {
+private fun DayOfWeekBar(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         DayOfWeek.values().forEach {
             Text(
@@ -202,7 +204,7 @@ private fun DayOfWeekBar(
                 style = MaterialTheme.typography.labelLarge,
                 color = Gray2,
                 modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -213,30 +215,32 @@ private fun CalendarDay(
     modifier: Modifier = Modifier,
     date: LocalDate,
     dayType: CalendarDayType = CalendarDayType.NONE,
-    onSelectedDate: (LocalDate) -> Unit
+    onSelectedDate: (LocalDate) -> Unit,
 ) {
-    val image: Painter = when (dayType) {
-        CalendarDayType.START -> painterResource(id = R.drawable.ic_range_start)
-        CalendarDayType.END -> painterResource(id = R.drawable.ic_range_end)
-        CalendarDayType.MIDDLE -> painterResource(id = R.drawable.ic_rectangle)
-        CalendarDayType.ONE -> painterResource(id = R.drawable.ic_circle_small)
-        CalendarDayType.NONE -> painterResource(id = R.drawable.ic_rectangle_transparent)
-    }
+    val image: Painter =
+        when (dayType) {
+            CalendarDayType.START -> painterResource(id = R.drawable.ic_range_start)
+            CalendarDayType.END -> painterResource(id = R.drawable.ic_range_end)
+            CalendarDayType.MIDDLE -> painterResource(id = R.drawable.ic_rectangle)
+            CalendarDayType.ONE -> painterResource(id = R.drawable.ic_circle_small)
+            CalendarDayType.NONE -> painterResource(id = R.drawable.ic_rectangle_transparent)
+        }
 
     Box(
-        modifier = modifier
-            .size(41.dp)
-            .clickable {
-                onSelectedDate(date)
-                Log.d("Calendar", "CalendarDay selectedDate = $date")
-            },
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(41.dp)
+                .clickable {
+                    onSelectedDate(date)
+                    Log.d("Calendar", "CalendarDay selectedDate = $date")
+                },
+        contentAlignment = Alignment.Center,
     ) {
         Image(painter = image, contentDescription = "selected date", modifier = Modifier.fillMaxSize())
         Text(
             text = date.dayOfMonth.toString(),
             textAlign = TextAlign.Center,
-            color = if (dayType != CalendarDayType.NONE) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+            color = if (dayType != CalendarDayType.NONE) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -246,19 +250,19 @@ private fun CalendarHeader(
     modifier: Modifier = Modifier,
     yearMonth: YearMonth,
     onClickLeftBtn: () -> Unit,
-    onClickRightBtn: () -> Unit
+    onClickRightBtn: () -> Unit,
 ) {
     val headerMonth = yearMonth.dateFormat("yyyy년 M월")
     Row(
         modifier = modifier.padding(bottom = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onClickLeftBtn) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_left_small),
                 contentDescription = "이전 달",
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
         }
         Text(text = headerMonth, style = MaterialTheme.typography.titleSmall, fontSize = 18.sp)
@@ -266,27 +270,30 @@ private fun CalendarHeader(
             Icon(
                 painter = painterResource(id = R.drawable.ic_right),
                 contentDescription = "다음 달",
-                modifier = Modifier.size(16.dp)
+                modifier = Modifier.size(16.dp),
             )
         }
     }
 }
 
 data class CalendarConfig(
-    val yearRange: YearRange = YearRange()
+    val yearRange: YearRange = YearRange(),
 ) {
     data class YearRange(
         val first: Int = 2023,
-        val last: Int = 2030
+        val last: Int = 2030,
     )
 }
 
 enum class CalendarDayType {
-    ONE, MIDDLE, START, END, NONE
+    ONE,
+    MIDDLE,
+    START,
+    END,
+    NONE,
 }
 
-private fun YearMonth.dateFormat(pattern: String) =
-    this.format(DateTimeFormatter.ofPattern(pattern))
+private fun YearMonth.dateFormat(pattern: String) = this.format(DateTimeFormatter.ofPattern(pattern))
 
 private fun DayOfWeek.getDayOfWeekKor(): String {
     return when (this) {
@@ -300,5 +307,7 @@ private fun DayOfWeek.getDayOfWeekKor(): String {
     }
 }
 
-private fun dayDiff(date1: LocalDate, date2: LocalDate): Long =
-    abs(ChronoUnit.DAYS.between(date1, date2))
+private fun dayDiff(
+    date1: LocalDate,
+    date2: LocalDate,
+): Long = abs(ChronoUnit.DAYS.between(date1, date2))

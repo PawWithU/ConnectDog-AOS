@@ -14,10 +14,13 @@ import javax.inject.Inject
 private const val TAG = "VolunteerProfileViewModel"
 
 @HiltViewModel
-class SelectProfileImageViewModel @Inject constructor(): ContainerHost<SelectProfileImageUiState, SelectProfileImageSideEffect>, ViewModel() {
-    override val container: Container<SelectProfileImageUiState, SelectProfileImageSideEffect> = container(SelectProfileImageUiState.empty())
-    private val state: SelectProfileImageUiState
-        get() = container.stateFlow.value
+class SelectProfileImageViewModel
+    @Inject
+    constructor() : ContainerHost<SelectProfileImageUiState, SelectProfileImageSideEffect>, ViewModel() {
+        override val container: Container<SelectProfileImageUiState, SelectProfileImageSideEffect> =
+            container(SelectProfileImageUiState.empty())
+        private val state: SelectProfileImageUiState
+            get() = container.stateFlow.value
 
-    fun updateProfileImageIndex(imageIndex: Int) = intent { reduce { state.copy(selectedImageId = imageIndex) } }
-}
+        fun updateProfileImageIndex(imageIndex: Int) = intent { reduce { state.copy(selectedImageId = imageIndex) } }
+    }

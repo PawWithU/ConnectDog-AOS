@@ -17,12 +17,12 @@ internal fun RegionBottomSheet(
     sheetState: SheetState,
     regionType: RegionType,
     onDismissRequest: () -> Unit,
-    onSelectedRegion: (String) -> Unit
+    onSelectedRegion: (String) -> Unit,
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         val titleRes =
             if (regionType == RegionType.DEPARTURE) {
@@ -40,16 +40,17 @@ internal fun RegionBottomSheet(
 @Composable
 private fun RegionHeader(
     @StringRes titleRes: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = titleRes,
         navigationType = TopAppBarNavigationType.CLOSE,
         navigationIconContentDescription = "닫기",
-        onNavigationClick = { onBackClick() }
+        onNavigationClick = { onBackClick() },
     )
 }
 
 enum class RegionType {
-    DEPARTURE, DESTINATION
+    DEPARTURE,
+    DESTINATION,
 }

@@ -19,7 +19,7 @@ internal fun InterApplicationRecruitingResponseItem.toData(): InterApplication =
         postStatus = postStatus,
         pickUpTime = pickUpTime,
         isKennel = isKennel,
-        dogSize = dogSize
+        dogSize = dogSize,
     )
 
 internal fun InterApplicationWaitingResponseItem.toData(): InterApplication =
@@ -33,7 +33,7 @@ internal fun InterApplicationWaitingResponseItem.toData(): InterApplication =
         isKennel = isKennel,
         dogSize = dogSize,
         applicationId = applicationId,
-        applicationTime = applicationTime
+        applicationTime = applicationTime,
     )
 
 internal fun InterApplicationInProgressResponseItem.toData(): InterApplication =
@@ -46,7 +46,7 @@ internal fun InterApplicationInProgressResponseItem.toData(): InterApplication =
         pickUpTime = pickUpTime,
         isKennel = isKennel,
         dogSize = dogSize,
-        applicationId = applicationId
+        applicationId = applicationId,
     )
 
 internal fun InterApplicationCompletedResponseItem.toData(): InterApplication =
@@ -59,7 +59,7 @@ internal fun InterApplicationCompletedResponseItem.toData(): InterApplication =
         pickUpTime = pickUpTime,
         isKennel = isKennel,
         dogSize = dogSize,
-        reviewId = reviewId
+        reviewId = reviewId,
     )
 
 internal fun InterProfileFindingResponseItem.toData(): Announcement =
@@ -71,5 +71,5 @@ internal fun InterProfileFindingResponseItem.toData(): Announcement =
         postId = postId.toInt(),
         dogName = dogName,
         dogSize = dogSize,
-        pickUpTime = pickUpTime
+        pickUpTime = pickUpTime,
     )

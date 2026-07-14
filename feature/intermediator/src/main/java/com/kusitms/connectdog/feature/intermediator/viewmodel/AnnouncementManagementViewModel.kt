@@ -20,36 +20,40 @@ import javax.inject.Inject
 private const val TAG = "AnnouncementManagementViewModel"
 
 @HiltViewModel
-class AnnouncementManagementViewModel @Inject constructor(
-    private val repository: InterManagementRepository
-) : ViewModel() {
-    private val _postId = MutableStateFlow<Long?>(null)
-    private val _errorFlow = MutableSharedFlow<Throwable>()
+class AnnouncementManagementViewModel
+    @Inject
+    constructor(
+        private val repository: InterManagementRepository,
+    ) : ViewModel() {
+        private val _postId = MutableStateFlow<Long?>(null)
+        private val _errorFlow = MutableSharedFlow<Throwable>()
 
-    fun initializePostId(postId: Long) = viewModelScope.launch {
-        _postId.emit(postId)
-    }
-
-    val announcementDetailState: StateFlow<AnnouncementManagementUiState> =
-        flow {
-            _postId.collect {
-                it?.let { emit(repository.getAnnouncementDetail(it)) }
+        fun initializePostId(postId: Long) =
+            viewModelScope.launch {
+                _postId.emit(postId)
             }
-        }.map {
-            AnnouncementManagementUiState.AnnouncementDetail(it)
-        }.catch {
-            _errorFlow.emit(it)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = AnnouncementManagementUiState.Loading
-        )
 
-    fun deleteAnnouncement() = viewModelScope.launch {
-        try {
-            _postId.value?.let { repository.deleteAnnouncement(it) }
-        } catch (e: Exception) {
-            Log.d(TAG, e.message.toString())
-        }
+        val announcementDetailState: StateFlow<AnnouncementManagementUiState> =
+            flow {
+                _postId.collect {
+                    it?.let { emit(repository.getAnnouncementDetail(it)) }
+                }
+            }.map {
+                AnnouncementManagementUiState.AnnouncementDetail(it)
+            }.catch {
+                _errorFlow.emit(it)
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = AnnouncementManagementUiState.Loading,
+            )
+
+        fun deleteAnnouncement() =
+            viewModelScope.launch {
+                try {
+                    _postId.value?.let { repository.deleteAnnouncement(it) }
+                } catch (e: Exception) {
+                    Log.d(TAG, e.message.toString())
+                }
+            }
     }
-}

@@ -24,20 +24,21 @@ import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 @Composable
 fun ConnectDogTag(
     text: String,
-    color: Color = MaterialTheme.colorScheme.primary
+    color: Color = MaterialTheme.colorScheme.primary,
 ) {
     Text(
         text = text,
         style = MaterialTheme.typography.labelMedium,
         fontWeight = FontWeight.SemiBold,
         color = color,
-        modifier = Modifier
-            .background(
-                shape = RoundedCornerShape(4.dp),
-                color = MaterialTheme.colorScheme.primaryContainer
-            )
-            .padding(horizontal = 8.dp, vertical = 4.dp),
-        fontSize = 10.sp
+        modifier =
+            Modifier
+                .background(
+                    shape = RoundedCornerShape(4.dp),
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                )
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+        fontSize = 10.sp,
     )
 }
 
@@ -46,18 +47,19 @@ fun ConnectDogTagWithIcon(
     iconId: Int,
     text: String,
     contentColor: Color,
-    backgroundColor: Color
+    backgroundColor: Color,
 ) {
     Box(
-        modifier = Modifier
-            .background(
-                shape = RoundedCornerShape(4.dp),
-                color = backgroundColor
-            )
-            .padding(horizontal = 6.dp, vertical = 4.dp)
+        modifier =
+            Modifier
+                .background(
+                    shape = RoundedCornerShape(4.dp),
+                    color = backgroundColor,
+                )
+                .padding(horizontal = 6.dp, vertical = 4.dp),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(painter = painterResource(id = iconId), contentDescription = null, tint = contentColor)
             Spacer(modifier = Modifier.width(3.dp))

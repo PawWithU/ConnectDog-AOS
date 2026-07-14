@@ -31,7 +31,7 @@ import com.kusitms.connectdog.feature.mypage.viewmodel.MyPageViewModel
 fun BookmarkScreen(
     onBackClick: () -> Unit,
     onDetailClick: (Long) -> Unit,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val bookmarkItem by viewModel.bookmark.observeAsState(null)
 
@@ -44,9 +44,9 @@ fun BookmarkScreen(
             ConnectDogTopAppBar(
                 titleRes = R.string.bookmark,
                 navigationType = TopAppBarNavigationType.BACK,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         bookmarkItem?.let { Content(it, onDetailClick) }
     }
@@ -55,14 +55,14 @@ fun BookmarkScreen(
 @Composable
 private fun Content(
     item: List<BookmarkResponseItem>,
-    onDetailClick: (Long) -> Unit
+    onDetailClick: (Long) -> Unit,
 ) {
     if (item.isEmpty()) {
         // TODO 저장된 공고가 비어있는 경우 표시될 UI 추가
     } else {
         LazyColumn(
             modifier = Modifier.padding(top = 48.dp),
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.Top,
         ) {
             items(item) {
                 val data = it.toData()
@@ -75,7 +75,7 @@ private fun Content(
                     dogSize = data.dogSize,
                     date = data.date,
                     pickUpTime = data.pickUpTime,
-                    onClick = onDetailClick
+                    onClick = onDetailClick,
                 )
             }
         }
@@ -85,19 +85,20 @@ private fun Content(
 @Composable
 private fun BookmarkContent(
     item: BookmarkResponseItem,
-    onDetailClick: (Long) -> Unit
+    onDetailClick: (Long) -> Unit,
 ) {
     ListForUserItem(
-        modifier = Modifier
-            .padding(20.dp)
-            .clickable(
-                onClick = { onDetailClick(item.postId) }
-            ),
+        modifier =
+            Modifier
+                .padding(20.dp)
+                .clickable(
+                    onClick = { onDetailClick(item.postId) },
+                ),
         imageUrl = item.mainImage,
         location = "${item.departureLoc} → ${item.arrivalLoc}",
         date = "${item.startDate} - ${item.endDate}",
         organization = item.dogName,
-        hasKennel = item.isKennel
+        hasKennel = item.isKennel,
     )
     Divider(thickness = 8.dp, color = Gray7)
 }

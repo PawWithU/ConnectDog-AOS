@@ -17,62 +17,64 @@ import javax.inject.Inject
 private const val TAG = "MyPageViewModel"
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(
-    private val myPageRepository: MyPageRepository
-) : ViewModel() {
-    private val _myInfo = MutableLiveData<MyInfoResponseItem?>()
-    val myInfo: LiveData<MyInfoResponseItem?> = _myInfo
+class MyPageViewModel
+    @Inject
+    constructor(
+        private val myPageRepository: MyPageRepository,
+    ) : ViewModel() {
+        private val _myInfo = MutableLiveData<MyInfoResponseItem?>()
+        val myInfo: LiveData<MyInfoResponseItem?> = _myInfo
 
-    private val _badge = MutableLiveData<List<BadgeResponse>>()
-    val badge: LiveData<List<BadgeResponse>> = _badge
+        private val _badge = MutableLiveData<List<BadgeResponse>>()
+        val badge: LiveData<List<BadgeResponse>> = _badge
 
-    private val _bookmark = MutableLiveData<List<BookmarkResponseItem>>()
-    val bookmark: LiveData<List<BookmarkResponseItem>> = _bookmark
+        private val _bookmark = MutableLiveData<List<BookmarkResponseItem>>()
+        val bookmark: LiveData<List<BookmarkResponseItem>> = _bookmark
 
-    private val _showBottomSheet = MutableLiveData(false)
-    val showBottomSheet: LiveData<Boolean> = _showBottomSheet
+        private val _showBottomSheet = MutableLiveData(false)
+        val showBottomSheet: LiveData<Boolean> = _showBottomSheet
 
-    private val _badgeItem = MutableLiveData<BadgeItem>()
-    val badgeItem: LiveData<BadgeItem> = _badgeItem
+        private val _badgeItem = MutableLiveData<BadgeItem>()
+        val badgeItem: LiveData<BadgeItem> = _badgeItem
 
-    fun fetchUserInfo() {
-        viewModelScope.launch {
-            try {
-                val myInfoResponse = myPageRepository.getMyInfo()
-                _myInfo.postValue(myInfoResponse)
-            } catch (e: Exception) {
-                Log.d(TAG, e.message.toString())
+        fun fetchUserInfo() {
+            viewModelScope.launch {
+                try {
+                    val myInfoResponse = myPageRepository.getMyInfo()
+                    _myInfo.postValue(myInfoResponse)
+                } catch (e: Exception) {
+                    Log.d(TAG, e.message.toString())
+                }
             }
         }
-    }
 
-    fun fetchBadge() {
-        viewModelScope.launch {
-            try {
-                val response = myPageRepository.getBadge()
-                _badge.postValue(response)
-            } catch (e: Exception) {
-                Log.d(TAG, e.message.toString())
+        fun fetchBadge() {
+            viewModelScope.launch {
+                try {
+                    val response = myPageRepository.getBadge()
+                    _badge.postValue(response)
+                } catch (e: Exception) {
+                    Log.d(TAG, e.message.toString())
+                }
             }
         }
-    }
 
-    fun fetchBookmark() {
-        viewModelScope.launch {
-            try {
-                val response = myPageRepository.getBookmarkData()
-                _bookmark.postValue(response)
-            } catch (e: Exception) {
-                Log.d(TAG, e.message.toString())
+        fun fetchBookmark() {
+            viewModelScope.launch {
+                try {
+                    val response = myPageRepository.getBookmarkData()
+                    _bookmark.postValue(response)
+                } catch (e: Exception) {
+                    Log.d(TAG, e.message.toString())
+                }
             }
         }
-    }
 
-    fun updateBottomSheet() {
-        _showBottomSheet.value = !_showBottomSheet.value!!
-    }
+        fun updateBottomSheet() {
+            _showBottomSheet.value = !_showBottomSheet.value!!
+        }
 
-    fun updateBottomSheetData(badgeItem: BadgeItem) {
-        _badgeItem.value = badgeItem
+        fun updateBottomSheetData(badgeItem: BadgeItem) {
+            _badgeItem.value = badgeItem
+        }
     }
-}

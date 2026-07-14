@@ -20,20 +20,22 @@ fun NetworkImage(
     modifier: Modifier = Modifier,
     placeholder: Painter? = null,
     contentScale: ContentScale = ContentScale.Crop,
-    contentDescription: String? = null
+    contentDescription: String? = null,
 ) {
     CoilImage(
         imageModel = { imageUrl },
         modifier = modifier,
-        component = rememberImageComponent {
-            +PlaceholderPlugin.Loading(placeholder)
-            +PlaceholderPlugin.Failure(placeholder)
-        },
-        imageOptions = ImageOptions(
-            contentScale = contentScale,
-            alignment = Alignment.Center,
-            contentDescription = contentDescription
-        )
+        component =
+            rememberImageComponent {
+                +PlaceholderPlugin.Loading(placeholder)
+                +PlaceholderPlugin.Failure(placeholder)
+            },
+        imageOptions =
+            ImageOptions(
+                contentScale = contentScale,
+                alignment = Alignment.Center,
+                contentDescription = contentDescription,
+            ),
     )
 }
 
@@ -42,6 +44,6 @@ fun NetworkImage(
 private fun NetworkImagePreview() {
     NetworkImage(
         imageUrl = "",
-        placeholder = painterResource(id = Color(0xFFFFFFFF).toArgb())
+        placeholder = painterResource(id = Color(0xFFFFFFFF).toArgb()),
     )
 }

@@ -30,7 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.AnnouncementContent
@@ -59,7 +59,7 @@ internal fun InterManagementRoute(
     onNavigateToReview: (Long, UserType) -> Unit,
     onNavigateToAnnouncementManagement: (Long) -> Unit,
     tabIndex: Int = 0,
-    viewModel: InterManagementViewModel = hiltViewModel()
+    viewModel: InterManagementViewModel = hiltViewModel(),
 ) {
     val recruitingUiState by viewModel.recruitingUiState.collectAsStateWithLifecycle()
     val waitingUiState by viewModel.waitingUiState.collectAsStateWithLifecycle()
@@ -98,7 +98,7 @@ internal fun InterManagementRoute(
             firstContent = {
                 Recruiting(
                     uiState = recruitingUiState,
-                    onClick = onNavigateToAnnouncementManagement
+                    onClick = onNavigateToAnnouncementManagement,
                 )
             },
             secondContent = {
@@ -117,15 +117,15 @@ internal fun InterManagementRoute(
                     onCompleteClick = { application ->
                         viewModel.updateSelectedApplication(application)
                         isCompleteCheckDialogVisible = true
-                    }
+                    },
                 )
             },
             fourthContent = {
                 Completed(
                     uiState = completedUiState,
-                    onNavigateToCheckReview = { reviewId, userType -> onNavigateToReview(reviewId, userType) }
+                    onNavigateToCheckReview = { reviewId, userType -> onNavigateToReview(reviewId, userType) },
                 )
-            }
+            },
         )
     }
 
@@ -134,7 +134,7 @@ internal fun InterManagementRoute(
             interApplication = selectedApplication!!,
             sheetState = sheetState,
             onDismissRequest = { isSheetOpen = false },
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 
@@ -147,7 +147,7 @@ internal fun InterManagementRoute(
             },
             onDismissRequest = {
                 isCompleteCheckDialogVisible = false
-            }
+            },
         )
     }
 
@@ -161,20 +161,20 @@ internal fun InterManagementRoute(
 @Composable
 private fun TopAppBar(
     @StringRes titleRes: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = titleRes,
         navigationType = TopAppBarNavigationType.BACK,
         navigationIconContentDescription = "back",
-        onNavigationClick = onBackClick
+        onNavigationClick = onBackClick,
     )
 }
 
 @Composable
 private fun Recruiting(
     uiState: InterApplicationUiState,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     when (uiState) {
         is InterApplicationUiState.InterApplications -> {
@@ -189,7 +189,7 @@ private fun Recruiting(
                         dogSize = it.dogSize ?: "",
                         date = it.date,
                         pickUpTime = it.pickUpTime ?: "",
-                        onClick = onClick
+                        onClick = onClick,
                     )
                 }
             }
@@ -206,7 +206,7 @@ private fun Recruiting(
 @Composable
 private fun PendingApproval(
     uiState: InterApplicationUiState,
-    onCheckVolunteerClick: (InterApplication) -> Unit
+    onCheckVolunteerClick: (InterApplication) -> Unit,
 ) {
     when (uiState) {
         is InterApplicationUiState.InterApplications -> {
@@ -229,7 +229,7 @@ private fun PendingApproval(
 private fun InProgress(
     uiState: InterApplicationUiState,
     onCheckVolunteerClick: (InterApplication) -> Unit,
-    onCompleteClick: (InterApplication) -> Unit
+    onCompleteClick: (InterApplication) -> Unit,
 ) {
     when (uiState) {
         is InterApplicationUiState.InterApplications -> {
@@ -238,7 +238,7 @@ private fun InProgress(
                     InProgressContent(
                         application = it,
                         onCheckVolunteerClick = { onCheckVolunteerClick(it) },
-                        onCompleteClick = { onCompleteClick(it) }
+                        onCompleteClick = { onCompleteClick(it) },
                     )
                 }
             }
@@ -255,7 +255,7 @@ private fun InProgress(
 @Composable
 private fun Completed(
     uiState: InterApplicationUiState,
-    onNavigateToCheckReview: (Long, UserType) -> Unit
+    onNavigateToCheckReview: (Long, UserType) -> Unit,
 ) {
     when (uiState) {
         is InterApplicationUiState.InterApplications -> {
@@ -263,7 +263,7 @@ private fun Completed(
                 items(uiState.applications) {
                     CompletedContent(
                         application = it,
-                        onClickReview = { onNavigateToCheckReview(it.reviewId!!, UserType.INTERMEDIATOR) }
+                        onClickReview = { onNavigateToCheckReview(it.reviewId!!, UserType.INTERMEDIATOR) },
                     )
                 }
             }
@@ -284,21 +284,23 @@ private fun ManagementScreen(
     firstContent: @Composable () -> Unit,
     secondContent: @Composable () -> Unit,
     thirdContent: @Composable () -> Unit,
-    fourthContent: @Composable () -> Unit
+    fourthContent: @Composable () -> Unit,
 ) {
     Log.d("InterManagementScreen", "ManagementScreen: tabIndex = $tabIndex")
-    val tabItems = listOf(
-        stringResource(id = R.string.recruit),
-        stringResource(id = R.string.waiting),
-        stringResource(id = R.string.progress),
-        stringResource(id = R.string.complete)
-    )
+    val tabItems =
+        listOf(
+            stringResource(id = R.string.recruit),
+            stringResource(id = R.string.waiting),
+            stringResource(id = R.string.progress),
+            stringResource(id = R.string.complete),
+        )
 
     Surface(modifier = Modifier.fillMaxSize()) {
         var selectedTabIndex by remember { mutableIntStateOf(tabIndex) }
-        val pagerState = rememberPagerState(initialPage = tabIndex) {
-            tabItems.size
-        }
+        val pagerState =
+            rememberPagerState(initialPage = tabIndex) {
+                tabItems.size
+            }
         LaunchedEffect(selectedTabIndex) {
             pagerState.animateScrollToPage(selectedTabIndex)
         }
@@ -317,20 +319,21 @@ private fun ManagementScreen(
                         text = {
                             Text(
                                 text = title,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontSize = 13.sp,
-                                color = if (index == selectedTabIndex) MaterialTheme.colorScheme.primary else Gray2
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
+                                color = if (index == selectedTabIndex) MaterialTheme.colorScheme.primary else Gray2,
                             )
-                        }
+                        },
                     )
                 }
             }
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalAlignment = Alignment.Top
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                verticalAlignment = Alignment.Top,
             ) { index ->
                 when (index) {
                     0 -> firstContent()

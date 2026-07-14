@@ -38,7 +38,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kusitms.connectdog.core.designsystem.component.BannerGuideline
@@ -70,7 +69,7 @@ internal fun HomeRoute(
     onNavigateToReviewDetail: (Long) -> Unit,
     onNavigateToGuide: () -> Unit,
     finish: () -> Unit,
-    viewModel: HomeViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val announcementUiState by viewModel.announcementUiState.collectAsStateWithLifecycle()
     val reviewUiState by viewModel.homeReviewUiState.collectAsStateWithLifecycle()
@@ -90,7 +89,7 @@ internal fun HomeRoute(
         onNavigateToReview = onNavigateToReview,
         onNavigateToDetail = onNavigateToDetail,
         onNavigateToGuide = onNavigateToGuide,
-        onNavigateToReviewDetail = onNavigateToReviewDetail
+        onNavigateToReviewDetail = onNavigateToReviewDetail,
     )
 }
 
@@ -104,7 +103,7 @@ private fun HomeScreen(
     onNavigateToReview: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToGuide: () -> Unit,
-    onNavigateToReviewDetail: (Long) -> Unit
+    onNavigateToReviewDetail: (Long) -> Unit,
 ) {
     val scrollState = rememberScrollState()
 
@@ -118,18 +117,19 @@ private fun HomeScreen(
                         Icon(
                             imageVector = Icons.Outlined.Notifications,
                             contentDescription = "Navigate to Search",
-                            modifier = Modifier.clickable {  }
+                            modifier = Modifier.clickable { },
                         )
                     }
-                }
+                },
             )
-        }
+        },
     ) {
         Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .fillMaxSize()
-                .padding(top = 48.dp, bottom = 90.dp)
+            modifier =
+                Modifier
+                    .verticalScroll(scrollState)
+                    .fillMaxSize()
+                    .padding(top = 48.dp, bottom = 90.dp),
         ) {
             SearchBar(onClick = onNavigateToFilterSearch)
             BannerGuideline(onNavigateToGuide)
@@ -141,37 +141,39 @@ private fun HomeScreen(
     }
 }
 
-
 @Composable
 fun MoveContent(
     onClick: () -> Unit,
-    titleRes: Int
+    titleRes: Int,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .padding(horizontal = 20.dp, vertical = 20.dp)
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .padding(horizontal = 20.dp, vertical = 20.dp)
+                .fillMaxWidth(),
     ) {
         Text(
             text = stringResource(id = titleRes),
-            style = MaterialTheme.typography.titleMedium,
-            fontSize = 18.sp
+            style = MaterialTheme.typography.headlineSmall,
         )
         IconButton(onClick = { onClick() }) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_right_arrow),
                 contentDescription = "move to another screen",
                 modifier = Modifier.size(24.dp),
-                tint = Gray2
+                tint = Gray2,
             )
         }
     }
 }
 
 @Composable
-private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: (Long) -> Unit) {
+private fun AnnouncementContent(
+    uiState: AnnouncementUiState,
+    onClick: (Long) -> Unit,
+) {
     val modifier = Modifier.padding(horizontal = 20.dp)
     when (uiState) {
         is AnnouncementUiState.Announcements -> {
@@ -179,21 +181,22 @@ private fun AnnouncementContent(uiState: AnnouncementUiState, onClick: (Long) ->
                 list = uiState.announcementHomes,
                 modifier = modifier,
                 arrangement = Arrangement.spacedBy(12.dp),
-                onClick = onClick
+                onClick = onClick,
             )
         }
 
-        else -> AnnouncementLoading(
-            modifier = modifier,
-            arrangement = Arrangement.spacedBy(12.dp)
-        )
+        else ->
+            AnnouncementLoading(
+                modifier = modifier,
+                arrangement = Arrangement.spacedBy(12.dp),
+            )
     }
 }
 
 @Composable
 private fun ReviewContent(
     uiState: ReviewUiState,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     val modifier = Modifier.padding(horizontal = 20.dp)
     when (uiState) {
@@ -202,7 +205,7 @@ private fun ReviewContent(
                 list = uiState.reviews,
                 modifier = modifier,
                 arrangement = Arrangement.spacedBy(12.dp),
-                onClick = onClick
+                onClick = onClick,
             )
         }
 
@@ -215,13 +218,13 @@ fun AnnouncementListContent(
     list: List<AnnouncementHome>,
     modifier: Modifier,
     arrangement: Arrangement.Horizontal,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list.take(10)) {
             AnnouncementCardContent(
                 announcementHome = it,
-                onClick = { onClick(it.postId.toLong()) }
+                onClick = { onClick(it.postId.toLong()) },
             )
         }
     }
@@ -230,7 +233,7 @@ fun AnnouncementListContent(
 @Composable
 fun AnnouncementLoading(
     modifier: Modifier,
-    arrangement: Arrangement.Horizontal
+    arrangement: Arrangement.Horizontal,
 ) {
     val list = List(4) { AnnouncementHome.loading() }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
@@ -245,33 +248,37 @@ private fun ReviewListContent(
     list: List<Review>,
     modifier: Modifier,
     arrangement: Arrangement.Horizontal,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list.take(10)) {
             ReviewCardContent(
                 review = it,
-                onClick = onClick
+                onClick = onClick,
             )
         }
     }
 }
 
 @Composable
-private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizontal) {
-    val list = List(4) {
-        Review(
-            profileNum = 0,
-            dogName = "멍멍이",
-            userName = "츄",
-            date = "23.10.19(목)",
-            location = "서울 강남구 -> 서울 도봉구",
-            organization = "단체이름",
-            content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><",
-            contentImages = null,
-            mainImage = ""
-        )
-    }
+private fun ReviewLoading(
+    modifier: Modifier,
+    arrangement: Arrangement.Horizontal,
+) {
+    val list =
+        List(4) {
+            Review(
+                profileNum = 0,
+                dogName = "멍멍이",
+                userName = "츄",
+                date = "23.10.19(목)",
+                location = "서울 강남구 -> 서울 도봉구",
+                organization = "단체이름",
+                content = "진짜 천사같은 아기와 하루를 함께해서 행복했습니다 너무 감사드려요 봉사 또 해야징 ><",
+                contentImages = null,
+                mainImage = "",
+            )
+        }
     LazyRow(horizontalArrangement = arrangement, modifier = modifier) {
         items(list) {
             ReviewCardContent(review = it, onClick = { })
@@ -282,38 +289,39 @@ private fun ReviewLoading(modifier: Modifier, arrangement: Arrangement.Horizonta
 @Composable
 private fun AnnouncementCardContent(
     announcementHome: AnnouncementHome,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .width(150.dp)
-            .clickable { onClick() }
+        modifier =
+            Modifier
+                .width(150.dp)
+                .clickable { onClick() },
     ) {
         NetworkImage(
             imageUrl = announcementHome.imageUrl,
             placeholder = ColorPainter(MaterialTheme.colorScheme.primaryContainer),
-            modifier = Modifier
-                .size(150.dp)
-                .shadow(shape = RoundedCornerShape(12.dp), elevation = 1.dp)
+            modifier =
+                Modifier
+                    .size(150.dp)
+                    .shadow(shape = RoundedCornerShape(12.dp), elevation = 1.dp),
         )
         Text(
             text = announcementHome.dogName,
             maxLines = 2,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = 1.dp, top = 10.dp, bottom = 8.dp)
+            modifier = Modifier.padding(start = 1.dp, top = 10.dp, bottom = 8.dp),
         )
         Text(
             text = announcementHome.location,
+            style = MaterialTheme.typography.labelLarge,
             color = Gray3,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Normal
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextWithIcon(
             text = announcementHome.date.substringBefore(" "),
-            iconId = R.drawable.ic_calendar
+            iconId = R.drawable.ic_calendar,
         )
         Spacer(modifier = Modifier.height(5.dp))
         TextWithIcon(text = announcementHome.pickUpTime, iconId = R.drawable.ic_clock)
@@ -323,13 +331,13 @@ private fun AnnouncementCardContent(
 @Composable
 private fun ReviewCardContent(
     review: Review,
-    onClick: (Long) -> Unit
+    onClick: (Long) -> Unit,
 ) {
     Surface(
         color = MaterialTheme.colorScheme.surface,
         shape = RoundedCornerShape(12.dp),
         border = BorderStroke(width = 1.dp, color = MaterialTheme.colorScheme.outline),
-        modifier = Modifier.clickable { review.reviewId?.let { onClick(it) } }
+        modifier = Modifier.clickable { review.reviewId?.let { onClick(it) } },
     ) {
         ConnectDogReview(review = review, modifier = Modifier.width(272.dp), type = ReviewType.HOME)
     }

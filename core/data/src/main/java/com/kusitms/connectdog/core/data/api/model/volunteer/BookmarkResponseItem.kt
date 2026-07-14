@@ -12,16 +12,17 @@ data class BookmarkResponseItem(
     val mainImage: String,
     val postId: Long,
     val startDate: String,
-    val isKennel: Boolean
+    val isKennel: Boolean,
 ) {
-    fun toData() = Announcement(
-        imageUrl = mainImage,
-        location = "$departureLoc → $arrivalLoc",
-        date = startDate,
-        postId = postId.toInt(),
-        dogName = dogName,
-        dogSize = dogSize,
-        isKennel = isKennel,
-        pickUpTime = pickUpTime
-    )
+    fun toData() =
+        Announcement(
+            imageUrl = mainImage,
+            location = "$departureLoc → $arrivalLoc",
+            date = startDate,
+            postId = postId.toInt(),
+            dogName = dogName,
+            dogSize = dogSize,
+            isKennel = isKennel,
+            pickUpTime = pickUpTime,
+        )
 }

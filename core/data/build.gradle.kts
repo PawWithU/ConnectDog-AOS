@@ -1,25 +1,21 @@
-import com.kusitms.connectdog.Configuration
-import org.jetbrains.kotlin.konan.properties.Properties
+import java.util.Properties
 
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.com.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    kotlin("kapt")
-    alias(libs.plugins.hilt)
+    id("connectdog.android.library")
+    id("connectdog.android.hilt")
     alias(libs.plugins.ktlint)
 }
 
 android {
     namespace = "com.kusitms.connectdog.core.data"
-    compileSdk = Configuration.compileSdk
 
     defaultConfig {
-        minSdk = Configuration.minSdk
-
         val localProperties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) { localPropertiesFile.inputStream().use { localProperties.load(it) } }
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+        }
 
         val baseUrl: String = localProperties.getProperty("BASE_URL") ?: ""
 
@@ -34,16 +30,9 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
     buildFeatures {
         buildConfig = true
@@ -55,24 +44,12 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:util"))
 
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.android)
-
     implementation(libs.kotlinx.coroutines.core)
 
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlin.serialization)
-    implementation(libs.retrofit.converter.moshi)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.okhttp.logging)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.network)
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.datastore)
 
     implementation(libs.naver.oauth)
     implementation(libs.kakao.oauth)
-}
-
-kapt {
-    correctErrorTypes = true
 }

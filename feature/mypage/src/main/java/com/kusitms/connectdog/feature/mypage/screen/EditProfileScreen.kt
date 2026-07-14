@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogBottomButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogOutlinedButton
 import com.kusitms.connectdog.core.designsystem.component.ConnectDogTextFieldWithButton
@@ -45,7 +44,7 @@ fun EditProfileScreen(
     onEditProfileImageClick: () -> Unit,
     nickName: String,
     profileImageId: Int,
-    viewModel: EditProfileViewModel
+    viewModel: EditProfileViewModel,
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.fetchProfileInformation(profileImageId, nickName)
@@ -56,9 +55,9 @@ fun EditProfileScreen(
                 titleRes = R.string.edit_profile,
                 navigationType = TopAppBarNavigationType.BACK,
                 navigationIconContentDescription = null,
-                onNavigationClick = onBackClick
+                onNavigationClick = onBackClick,
             )
-        }
+        },
     ) {
         Content(onEditProfileImageClick, onBackClick, viewModel)
     }
@@ -68,7 +67,7 @@ fun EditProfileScreen(
 private fun Content(
     onEditProfileImageClick: () -> Unit,
     onBackClick: () -> Unit,
-    viewModel: EditProfileViewModel
+    viewModel: EditProfileViewModel,
 ) {
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -77,20 +76,21 @@ private fun Content(
     val isDuplicate by viewModel.isDuplicatedNickname.collectAsState()
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 20.dp, end = 20.dp, top = 80.dp, bottom = 32.dp)
-            .clickable(
-                onClick = { focusManager.clearFocus() },
-                indication = null,
-                interactionSource = interactionSource
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(start = 20.dp, end = 20.dp, top = 80.dp, bottom = 32.dp)
+                .clickable(
+                    onClick = { focusManager.clearFocus() },
+                    indication = null,
+                    interactionSource = interactionSource,
+                ),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(id = getProfileImageId(profileImageIndex)),
             contentDescription = null,
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(100.dp),
         )
         Spacer(modifier = Modifier.height(12.dp))
         ConnectDogOutlinedButton(
@@ -99,7 +99,7 @@ private fun Content(
             text = "프로필 이미지 변경",
             padding = 10,
             verticalPadding = 6,
-            onClick = onEditProfileImageClick
+            onClick = onEditProfileImageClick,
         )
         Spacer(modifier = Modifier.height(40.dp))
         ConnectDogTextFieldWithButton(
@@ -111,28 +111,35 @@ private fun Content(
             buttonLabel = "중복 확인",
             onTextChanged = { viewModel.updateNickname(it) },
             onClick = { viewModel.updateNicknameAvailability() },
-            borderColor = when (isDuplicate) {
-                true -> MaterialTheme.colorScheme.error
-                false -> PetOrange
-                else -> Gray5
-            },
+            borderColor =
+                when (isDuplicate) {
+                    true -> MaterialTheme.colorScheme.error
+                    false -> PetOrange
+                    else -> Gray5
+                },
             isError = isDuplicate ?: false,
-            padding = 5
+            padding = 5,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text = isDuplicate?.let {
-                    if (it) { "이미 사용중인 닉네임 입니다." } else { "사용할 수 있는 닉네임 입니다." }
-                } ?: run { "" },
-                color = when (isDuplicate) {
-                    false -> PetOrange
-                    else -> Red1
-                },
-                fontSize = 11.sp,
-                modifier = Modifier.padding(top = 4.dp, start = 8.dp)
+                text =
+                    isDuplicate?.let {
+                        if (it) {
+                            "이미 사용중인 닉네임 입니다."
+                        } else {
+                            "사용할 수 있는 닉네임 입니다."
+                        }
+                    } ?: run { "" },
+                color =
+                    when (isDuplicate) {
+                        false -> PetOrange
+                        else -> Red1
+                    },
+                style = MaterialTheme.typography.labelMedium,
+                modifier = Modifier.padding(top = 4.dp, start = 8.dp),
             )
             Spacer(modifier = Modifier.weight(1f))
         }
@@ -143,7 +150,7 @@ private fun Content(
                 viewModel.updateUserInfo()
                 onBackClick()
             },
-            enabled = isDuplicate != true
+            enabled = isDuplicate != true,
         )
     }
 }

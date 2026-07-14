@@ -48,7 +48,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 internal interface ApiService {
-
     /**
      * 홈
      */
@@ -67,13 +66,13 @@ internal interface ApiService {
         @Query("intermediaryName") intermediaryName: String?,
         @Query("orderCondition") orderCondition: String?,
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
     ): List<AnnouncementSearchResponseItem>
 
     @GET("/volunteers/reviews")
     suspend fun getReviewsHome(
         @Query("page") page: Int,
-        @Query("size") size: Int
+        @Query("size") size: Int,
     ): List<ReviewDetailWithId>
 
     /**
@@ -81,27 +80,27 @@ internal interface ApiService {
      */
     @POST("/volunteers/nickname/isDuplicated")
     suspend fun postNickname(
-        @Body body: Nickname
+        @Body body: Nickname,
     ): IsDuplicated
 
     @POST("/volunteers/sign-up/email")
     suspend fun getEmailAuthCode(
-        @Body body: Email
+        @Body body: Email,
     ): EmailAuthCode
 
     @POST("/volunteers/sign-up")
     suspend fun postNormalVolunteerSignUp(
-        @Body body: NormalVolunteerDetail
+        @Body body: NormalVolunteerDetail,
     )
 
     @PATCH("/volunteers/sign-up/social")
     suspend fun postSocialVolunteerSignUp(
-        @Body socialVolunteerSignUpBody: SocialVolunteerDetail
+        @Body socialVolunteerSignUpBody: SocialVolunteerDetail,
     )
 
     @POST("/volunteers/phone/isDuplicated")
     suspend fun getPhoneNumberDuplication(
-        @Body body: Phone
+        @Body body: Phone,
     ): PhoneNumberDuplication
 
     /**
@@ -110,34 +109,34 @@ internal interface ApiService {
     @GET("/volunteers/applications/waiting")
     suspend fun getApplicationWaiting(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<ApplicationWaitingResponseItem>
 
     @GET("/volunteers/applications/progressing")
     suspend fun getApplicationInProgress(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<ApplicationInProgressResponseItem>
 
     @GET("/volunteers/applications/completed")
     suspend fun getApplicationCompleted(
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<ApplicationCompletedResponseItem>
 
     @GET("/volunteers/applications/{applicationId}")
     suspend fun getMyApplication(
-        @Path("applicationId") applicationId: Long
+        @Path("applicationId") applicationId: Long,
     ): VolunteerResponse
 
     @DELETE("/volunteers/applications/{applicationId}")
     suspend fun deleteMyApplication(
-        @Path("applicationId") applicationId: Long
+        @Path("applicationId") applicationId: Long,
     ): Response
 
     @GET("/volunteers/reviews/{reviewId}")
     suspend fun getReviewDetail(
-        @Path("reviewId") reviewId: Long
+        @Path("reviewId") reviewId: Long,
     ): ReviewDetailResponse
 
     /**
@@ -146,17 +145,17 @@ internal interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("/volunteers/login")
     suspend fun normalLogin(
-        @Body loginBody: NormalLogin
+        @Body loginBody: NormalLogin,
     ): LoginResult
 
     @POST("/volunteers/login/social")
     suspend fun postSocialLoginData(
-        @Body socialLoginBody: SocialLogin
+        @Body socialLoginBody: SocialLogin,
     ): LoginResult
 
     @POST("/volunteers/search/send-email")
     suspend fun volunteerPasswordSearchAuth(
-        @Body body: Email
+        @Body body: Email,
     ): AuthCodeWithAccessToken
 
     /**s
@@ -176,7 +175,7 @@ internal interface ApiService {
 
     @PATCH("/volunteers/my/profile")
     suspend fun updateUserInfo(
-        @Body userInfo: UserInfoResponse
+        @Body userInfo: UserInfoResponse,
     )
 
     @DELETE("/volunteers/logout")
@@ -187,22 +186,22 @@ internal interface ApiService {
      */
     @GET("/volunteers/posts/{postId}")
     suspend fun getNoticeDetail(
-        @Path("postId") postId: Long
+        @Path("postId") postId: Long,
     ): NoticeDetailResponseItem
 
     @POST("/volunteers/posts/{postId}/bookmarks")
     suspend fun postBookmark(
-        @Path("postId") postId: Long
+        @Path("postId") postId: Long,
     )
 
     @DELETE("/volunteers/posts/{postId}/bookmarks")
     suspend fun deleteBookmark(
-        @Path("postId") postId: Long
+        @Path("postId") postId: Long,
     )
 
     @POST("/volunteers/additional-auth")
     suspend fun postAdditionalAuth(
-        @Body additionalAuthBody: AdditionalAuthBody
+        @Body additionalAuthBody: AdditionalAuthBody,
     )
 
     @GET("/volunteers/applications/my-info")
@@ -219,25 +218,25 @@ internal interface ApiService {
      */
     @GET("/volunteers/intermediaries/{intermediaryId}")
     suspend fun getIntermediatorInfo(
-        @Path("intermediaryId") intermediaryId: Long
+        @Path("intermediaryId") intermediaryId: Long,
     ): IntermediatorInfoResponseItem
 
     @GET("/volunteers/intermediaries/{intermediaryId}/posts")
     suspend fun getIntermediatorNotice(
-        @Path("intermediaryId") intermediaryId: Long
+        @Path("intermediaryId") intermediaryId: Long,
     ): List<BookmarkResponseItem>
 
     @POST("/volunteers/posts/{postId}/applications")
     suspend fun postApplyVolunteer(
         @Path("postId") postId: Long,
-        @Body applyBody: ApplyBody
+        @Body applyBody: ApplyBody,
     )
 
     @GET("/volunteers/intermediaries/{intermediaryId}/reviews")
     suspend fun getIntermediatorReview(
         @Path("intermediaryId") intermediaryId: Long,
         @Query("page") page: Int?,
-        @Query("size") size: Int?
+        @Query("size") size: Int?,
     ): List<ReviewDetailResponse>
 
     @Multipart
@@ -245,17 +244,17 @@ internal interface ApiService {
     suspend fun postReview(
         @Path("postId") postId: Long,
         @Part("request") json: RequestBody,
-        @Part files: List<MultipartBody.Part>
+        @Part files: List<MultipartBody.Part>,
     )
 
     @POST("/volunteers/password/check")
     suspend fun checkVolunteerPassword(
-        @Body password: PasswordDto
+        @Body password: PasswordDto,
     ): PasswordCheckResponse
 
     @PATCH("/volunteers/password")
     suspend fun changeVolunteerPassword(
-        @Body password: PasswordDto
+        @Body password: PasswordDto,
     )
 
     @DELETE("/volunteers/my")
@@ -266,7 +265,7 @@ internal interface ApiService {
      */
     @POST("/volunteers/fcm")
     suspend fun postFcmToken(
-        @Body fcmToken: FcmTokenRequestBody
+        @Body fcmToken: FcmTokenRequestBody,
     )
 
     @PATCH("/volunteers/notifications/setting")
@@ -277,6 +276,6 @@ internal interface ApiService {
 
     @POST("/volunteers/search/email")
     suspend fun searchVolunteerEmail(
-        @Body body: Phone
+        @Body body: Phone,
     ): Email
 }

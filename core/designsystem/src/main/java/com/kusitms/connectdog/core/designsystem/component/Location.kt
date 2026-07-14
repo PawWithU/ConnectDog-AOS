@@ -38,7 +38,7 @@ import com.kusitms.connectdog.core.designsystem.theme.Gray4
 fun LocationContent(
     departureLocation: String?,
     destinationLocation: String?,
-    onSelectedRegion: (String?, String?) -> Unit
+    onSelectedRegion: (String?, String?) -> Unit,
 ) {
     val departureSheetState = rememberModalBottomSheetState()
     var isDepartureSheetOpen by rememberSaveable {
@@ -55,14 +55,14 @@ fun LocationContent(
     Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
             painter = painterResource(id = R.drawable.img_location_path),
-            contentDescription = "출발지-도착지"
+            contentDescription = "출발지-도착지",
         )
         Spacer(modifier = Modifier.size(12.dp))
         Column {
             SelectLocation(
                 titleRes = R.string.filter_departure,
                 place = departure,
-                placeholderRes = R.string.filter_select_departure
+                placeholderRes = R.string.filter_select_departure,
             ) {
                 isDepartureSheetOpen = true
             }
@@ -70,7 +70,7 @@ fun LocationContent(
             SelectLocation(
                 titleRes = R.string.filter_destination,
                 place = destination,
-                placeholderRes = R.string.filter_select_destination
+                placeholderRes = R.string.filter_select_destination,
             ) {
                 isDestinationSheetOpen = true
             }
@@ -81,7 +81,7 @@ fun LocationContent(
         RegionBottomSheet(
             sheetState = departureSheetState,
             regionType = RegionType.DEPARTURE,
-            onDismissRequest = { isDepartureSheetOpen = false }
+            onDismissRequest = { isDepartureSheetOpen = false },
         ) {
             Log.d("FilterSearch", "departure = $it")
             departure = it
@@ -94,7 +94,7 @@ fun LocationContent(
         RegionBottomSheet(
             sheetState = destinationSheetState,
             regionType = RegionType.DESTINATION,
-            onDismissRequest = { isDestinationSheetOpen = false }
+            onDismissRequest = { isDestinationSheetOpen = false },
         ) {
             Log.d("FilterSearch", "destination = $it")
             destination = it
@@ -110,20 +110,20 @@ private fun SelectLocation(
     @StringRes titleRes: Int,
     place: String?,
     @StringRes placeholderRes: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(modifier = modifier.clickable { onClick() }) {
         Text(
             text = stringResource(id = titleRes),
             style = MaterialTheme.typography.titleMedium,
-            fontSize = 14.sp
+            fontSize = 14.sp,
         )
         Spacer(modifier = Modifier.size(4.dp))
         Text(
             text = if (place.isNullOrEmpty()) stringResource(id = placeholderRes) else place,
             style = MaterialTheme.typography.bodyLarge,
             color = if (place.isNullOrEmpty()) Gray4 else Gray1,
-            modifier = Modifier.padding(vertical = 8.dp)
+            modifier = Modifier.padding(vertical = 8.dp),
         )
         Divider(modifier = Modifier.fillMaxWidth())
     }
@@ -135,12 +135,12 @@ internal fun RegionBottomSheet(
     sheetState: SheetState,
     regionType: RegionType,
     onDismissRequest: () -> Unit,
-    onSelectedRegion: (String) -> Unit
+    onSelectedRegion: (String) -> Unit,
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismissRequest,
-        containerColor = MaterialTheme.colorScheme.surface
+        containerColor = MaterialTheme.colorScheme.surface,
     ) {
         val titleRes =
             if (regionType == RegionType.DEPARTURE) {
@@ -158,16 +158,17 @@ internal fun RegionBottomSheet(
 @Composable
 private fun RegionHeader(
     @StringRes titleRes: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     ConnectDogTopAppBar(
         titleRes = titleRes,
         navigationType = TopAppBarNavigationType.CLOSE,
         navigationIconContentDescription = "닫기",
-        onNavigationClick = { onBackClick() }
+        onNavigationClick = { onBackClick() },
     )
 }
 
 enum class RegionType {
-    DEPARTURE, DESTINATION
+    DEPARTURE,
+    DESTINATION,
 }
