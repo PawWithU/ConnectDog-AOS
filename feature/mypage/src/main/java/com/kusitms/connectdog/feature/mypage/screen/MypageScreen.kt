@@ -58,11 +58,11 @@ internal fun MypageRoute(
     onSettingClick: (UserType) -> Unit,
     onBadgeClick: () -> Unit,
     onBookmarkClick: () -> Unit,
-    onNavigateToHome: (String) -> Unit,
+    onNavigateToHome: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     BackHandler {
-        onNavigateToHome(com.kusitms.connectdog.feature.mypage.navigation.MypageRoute.route)
+        onNavigateToHome()
     }
 
     MypageScreen(

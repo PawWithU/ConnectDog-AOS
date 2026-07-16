@@ -1,5 +1,8 @@
 package com.kusitms.connectdog.core.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Application(
     val imageUrl: String,
     val location: String,

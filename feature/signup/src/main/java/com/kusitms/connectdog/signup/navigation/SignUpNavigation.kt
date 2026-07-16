@@ -7,10 +7,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.navOptions
+import androidx.navigation.toRoute
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.signup.screen.common.CertificationScreen
 import com.kusitms.connectdog.signup.screen.common.CompleteSignUpScreen
@@ -21,30 +20,31 @@ import com.kusitms.connectdog.signup.screen.intermediator.IntermediatorInformati
 import com.kusitms.connectdog.signup.screen.intermediator.IntermediatorProfileScreen
 import com.kusitms.connectdog.signup.screen.volunteer.SelectProfileImageScreen
 import com.kusitms.connectdog.signup.screen.volunteer.VolunteerProfileScreen
+import kotlinx.serialization.Serializable
 
-fun NavController.navigateSignup(userType: UserType) = navigate("${SignUpRoute.ROUTE}/$userType")
+fun NavController.navigateSignup(userType: UserType) = navigate(SignUpRoute.SignUp(userType))
 
-fun NavController.navigateToIntermediatorProfile() = navigate(SignUpRoute.INTERMEDIATOR_PROFILE)
+fun NavController.navigateToIntermediatorProfile() = navigate(SignUpRoute.IntermediatorProfile)
 
-fun NavController.navigateToCertification() = navigate(SignUpRoute.CERTIFICATION)
+fun NavController.navigateToCertification() = navigate(SignUpRoute.Certification)
 
-fun NavController.navigateToVolunteerProfile() = navigate(SignUpRoute.VOLUNTEER_PROFILE)
+fun NavController.navigateToVolunteerProfile() = navigate(SignUpRoute.VolunteerProfile)
 
-fun NavController.navigateRegisterEmail() = navigate(SignUpRoute.REGISTER_EMAIL)
+fun NavController.navigateRegisterEmail() = navigate(SignUpRoute.RegisterEmail)
 
-fun NavController.navigateRegisterPassword() = navigate(SignUpRoute.REGISTER_PASSWORD)
+fun NavController.navigateRegisterPassword() = navigate(SignUpRoute.RegisterPassword)
 
-fun NavController.navigateSelectProfileImage() = navigate(SignUpRoute.SELECT_PROFILE_IMAGE)
+fun NavController.navigateSelectProfileImage() = navigate(SignUpRoute.SelectProfileImage)
 
-fun NavController.navigateIntermediatorInformation() = navigate(SignUpRoute.INTERMEDIATOR_INFORMATION)
+fun NavController.navigateIntermediatorInformation() = navigate(SignUpRoute.IntermediatorInformation)
 
 fun NavController.navigateCompleteSignUp() =
     navigate(
-        route = SignUpRoute.COMPLETE_SIGNUP,
+        route = SignUpRoute.CompleteSignUp,
         navOptions =
-            NavOptions.Builder()
-                .setPopUpTo(SignUpRoute.ROUTE, false)
-                .build(),
+            navOptions {
+                popUpTo<SignUpRoute.SignUp> { inclusive = false }
+            },
     )
 
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -68,27 +68,18 @@ fun NavGraphBuilder.signUpGraph(
     openWebBrowser: (String) -> Unit,
     imeHeight: Int,
 ) {
-    val signUpRoute = "${SignUpRoute.ROUTE}/{userType}"
-
-    composable(
-        route = signUpRoute,
-        arguments =
-            listOf(
-                navArgument("userType") {
-                    type = NavType.EnumType(UserType::class.java)
-                },
-            ),
-    ) {
+    composable<SignUpRoute.SignUp> { backStackEntry ->
+        val route: SignUpRoute.SignUp = backStackEntry.toRoute()
         SignUpRoute(
             onBackClick = navigateToLogin,
-            userType = it.arguments?.getSerializable("userType", UserType::class.java) ?: UserType.NORMAL_VOLUNTEER,
+            userType = route.userType,
             navigateToCertification = navigateToCertification,
             openWebBrowser = openWebBrowser,
-            signUpViewModel = hiltViewModel(it),
+            signUpViewModel = hiltViewModel(backStackEntry),
         )
     }
 
-    composable(route = SignUpRoute.CERTIFICATION) {
+    composable<SignUpRoute.Certification> {
         CertificationScreen(
             onBackClick = onBackClick,
             onNavigateToRegisterEmail = navigateToRegisterEmail,
@@ -96,69 +87,67 @@ fun NavGraphBuilder.signUpGraph(
             onSendMessageClick = onSendMessage,
             onVerifyCodeClick = onVerifyCode,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            viewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(route = SignUpRoute.REGISTER_EMAIL) {
+    composable<SignUpRoute.RegisterEmail> {
         RegisterEmailScreen(
             onBackClick = onBackClick,
             onNavigateToRegisterPassword = navigateToRegisterPassword,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            viewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(route = SignUpRoute.REGISTER_PASSWORD) {
+    composable<SignUpRoute.RegisterPassword> {
         RegisterPasswordScreen(
             onBackClick = onBackClick,
             onNavigateToIntermediatorProfile = navigateToIntermediatorProfile,
             onNavigateToVolunteerProfile = navigateToVolunteerProfile,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            viewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(route = SignUpRoute.VOLUNTEER_PROFILE) {
+    composable<SignUpRoute.VolunteerProfile> {
         VolunteerProfileScreen(
             onBackClick = onBackClick,
             onNavigateToSelectProfileImage = navigateToSelectProfileImage,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
             imeHeight = imeHeight,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            viewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(route = SignUpRoute.INTERMEDIATOR_PROFILE) {
+    composable<SignUpRoute.IntermediatorProfile> {
         IntermediatorProfileScreen(
             onBackClick = onBackClick,
             imeHeight = imeHeight,
             navigateToIntermediatorInfo = navigateToIntermediatorInformation,
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            viewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(route = SignUpRoute.INTERMEDIATOR_INFORMATION) {
+    composable<SignUpRoute.IntermediatorInformation> {
         IntermediatorInformationScreen(
             onBackClick = onBackClick,
             imeHeight = imeHeight,
             onNavigateToCompleteSignUp = navigateToCompleteSignUp,
-            signUpViewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            signUpViewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(route = SignUpRoute.SELECT_PROFILE_IMAGE) {
+    composable<SignUpRoute.SelectProfileImage> {
         SelectProfileImageScreen(
             onBackClick = onBackClick,
-            signUpViewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            signUpViewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
         )
     }
 
-    composable(
-        route = SignUpRoute.COMPLETE_SIGNUP,
-    ) {
+    composable<SignUpRoute.CompleteSignUp> {
         CompleteSignUpScreen(
-            viewModel = hiltViewModel(navController.getBackStackEntry(signUpRoute)),
+            viewModel = hiltViewModel(navController.getBackStackEntry<SignUpRoute.SignUp>()),
             navigateToVolunteerHome = navigateToVolunteerHome,
             navigateToIntermediatorHome = navigateToIntermediatorHome,
         )
@@ -166,13 +155,30 @@ fun NavGraphBuilder.signUpGraph(
 }
 
 object SignUpRoute {
-    const val ROUTE = "sign_up"
-    const val VOLUNTEER_PROFILE = "volunteer_profile"
-    const val INTERMEDIATOR_PROFILE = "intermediator_profile"
-    const val INTERMEDIATOR_INFORMATION = "intermediator_information"
-    const val REGISTER_EMAIL = "register_email"
-    const val REGISTER_PASSWORD = "register_password"
-    const val SELECT_PROFILE_IMAGE = "profile_image"
-    const val COMPLETE_SIGNUP = "complete_signup"
-    const val CERTIFICATION = "certification"
+    @Serializable
+    data class SignUp(val userType: UserType)
+
+    @Serializable
+    data object VolunteerProfile
+
+    @Serializable
+    data object IntermediatorProfile
+
+    @Serializable
+    data object IntermediatorInformation
+
+    @Serializable
+    data object RegisterEmail
+
+    @Serializable
+    data object RegisterPassword
+
+    @Serializable
+    data object SelectProfileImage
+
+    @Serializable
+    data object CompleteSignUp
+
+    @Serializable
+    data object Certification
 }

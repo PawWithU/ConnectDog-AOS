@@ -1,38 +1,37 @@
 package com.kusitms.connectdog.feature.main
 
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import com.kusitms.connectdog.feature.home.navigation.HomeRoute
 import com.kusitms.connectdog.feature.management.navigation.ManagementRoute
 import com.kusitms.connectdog.feature.mypage.navigation.MypageRoute
+import kotlin.reflect.KClass
 
 internal enum class MainTab(
     val iconResId: Int,
     internal val contentDescription: String,
-    val route: String,
+    val route: KClass<out Any>,
 ) {
     HOME(
         iconResId = R.drawable.ic_home,
         contentDescription = "홈",
-        route = HomeRoute.route,
+        route = HomeRoute.Home::class,
     ),
     MANAGEMENT(
         iconResId = R.drawable.ic_list,
         contentDescription = "봉사 관리",
-        route = ManagementRoute.route,
+        route = ManagementRoute.Management::class,
     ),
     MYPAGE(
         iconResId = R.drawable.ic_profile,
         contentDescription = "마이페이지",
-        route = MypageRoute.route,
+        route = MypageRoute.Mypage::class,
     ),
     ;
 
     companion object {
-        operator fun contains(route: String): Boolean {
-            return values().map { it.route }.contains(route)
-        }
-
-        fun find(route: String): MainTab? {
-            return values().find { it.route == route }
+        fun find(destination: NavDestination?): MainTab? {
+            return values().find { tab -> destination?.hasRoute(tab.route) == true }
         }
     }
 }

@@ -3,11 +3,13 @@ package com.kusitms.connectdog.feature.main
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.kusitms.connectdog.core.model.Application
 import com.kusitms.connectdog.core.util.AccountType
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.domain.usecase.login.AppMode
@@ -24,6 +26,7 @@ import com.kusitms.connectdog.feature.home.navigation.navigateIntermediatorProfi
 import com.kusitms.connectdog.feature.home.navigation.navigateReview
 import com.kusitms.connectdog.feature.home.navigation.navigateSearch
 import com.kusitms.connectdog.feature.home.navigation.navigateSearchWithFilter
+import com.kusitms.connectdog.feature.home.navigation.navigateToHomeClearBackStack
 import com.kusitms.connectdog.feature.intermediator.navigation.IntermediatorRoute
 import com.kusitms.connectdog.feature.intermediator.navigation.navigateInterHome
 import com.kusitms.connectdog.feature.intermediator.navigation.navigateInterManagement
@@ -41,9 +44,11 @@ import com.kusitms.connectdog.feature.login.navigation.navigatePasswordSearch
 import com.kusitms.connectdog.feature.login.navigation.navigatePasswordSearchAuth
 import com.kusitms.connectdog.feature.login.navigation.navigateToLoginRoute
 import com.kusitms.connectdog.feature.login.navigation.navigateToNoAccount
+import com.kusitms.connectdog.feature.management.navigation.ManagementRoute
 import com.kusitms.connectdog.feature.management.navigation.navigateCheckReview
 import com.kusitms.connectdog.feature.management.navigation.navigateCreateReview
 import com.kusitms.connectdog.feature.management.navigation.navigateManagement
+import com.kusitms.connectdog.feature.mypage.navigation.MypageRoute
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBadge
 import com.kusitms.connectdog.feature.mypage.navigation.navigateBookmark
 import com.kusitms.connectdog.feature.mypage.navigation.navigateEditProfile
@@ -70,18 +75,15 @@ internal class MainNavigator(
     private val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
-    val startDestination =
+    val startDestination: Any =
         when (mode) {
-            AppMode.VOLUNTEER -> MainTab.HOME.route
-            AppMode.INTERMEDIATOR -> IntermediatorRoute.route
-            AppMode.LOGIN -> LoginRoute.ROUTE
+            AppMode.VOLUNTEER -> HomeRoute.Home
+            AppMode.INTERMEDIATOR -> IntermediatorRoute.InterHome
+            AppMode.LOGIN -> LoginRoute.Login
         }
 
     val currentTab: MainTab?
-        @Composable get() =
-            currentDestination
-                ?.route
-                ?.let(MainTab::find)
+        @Composable get() = MainTab.find(currentDestination)
 
     fun navigate(tab: MainTab) {
         val navOptions =
@@ -173,7 +175,7 @@ internal class MainNavigator(
 
     fun navigateEditProfileImage() = navController.navigateEditProfileImage()
 
-    fun navigateCreateReview(application: String) = navController.navigateCreateReview(application)
+    fun navigateCreateReview(application: Application) = navController.navigateCreateReview(application)
 
     fun navigateCheckReview(
         reviewId: Long,
@@ -202,24 +204,17 @@ internal class MainNavigator(
     fun navigateToCompleteCreate() = navController.navigateToCreateComplete()
 
     fun popBackStackIfNotHome() {
-        if (!isSameCurrentDestination(HomeRoute.route)) {
+        if (navController.currentDestination?.hasRoute(HomeRoute.Home::class) != true) {
             navController.popBackStack()
         }
     }
 
-    fun navigateToHomeClearBackStack(current: String) {
-        navController.navigate(HomeRoute.route) {
-            popUpTo(current) { inclusive = true }
-        }
-    }
+    fun navigateHomeFromManagement() = navController.navigateToHomeClearBackStack<ManagementRoute.Management>()
 
-    private fun isSameCurrentDestination(route: String) = navController.currentDestination?.route == route
+    fun navigateHomeFromMypage() = navController.navigateToHomeClearBackStack<MypageRoute.Mypage>()
 
     @Composable
-    fun shouldShowBottomBar(): Boolean {
-        val currentRoute = currentDestination?.route ?: return false
-        return currentRoute in MainTab
-    }
+    fun shouldShowBottomBar(): Boolean = MainTab.find(currentDestination) != null
 }
 
 @Composable

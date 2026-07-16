@@ -1,7 +1,9 @@
 package com.kusitms.connectdog.core.util
 
 import androidx.annotation.DrawableRes
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class UserType(
     @DrawableRes val topBarTitleRes: Int,
 ) {
@@ -15,6 +17,7 @@ enum class SocialType {
     VOLUNTEER
 }
 
+@Serializable
 enum class AccountType {
     EMAIL, PASSWORD
 }

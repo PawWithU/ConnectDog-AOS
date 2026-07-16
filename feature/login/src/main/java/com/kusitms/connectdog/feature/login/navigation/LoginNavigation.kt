@@ -2,9 +2,8 @@ package com.kusitms.connectdog.feature.login.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.kusitms.connectdog.core.util.AccountType
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.login.screen.EmailAuthForPasswordResetScreen
@@ -14,9 +13,10 @@ import com.kusitms.connectdog.feature.login.screen.LoginRoute
 import com.kusitms.connectdog.feature.login.screen.NoAccountScreen
 import com.kusitms.connectdog.feature.login.screen.NormalLoginScreen
 import com.kusitms.connectdog.feature.login.screen.PasswordResetScreen
+import kotlinx.serialization.Serializable
 
 fun NavController.navigateToLoginRoute() {
-    navigate(LoginRoute.ROUTE) {
+    navigate(LoginRoute.Login) {
         popUpTo(graph.id) {
             inclusive = true
         }
@@ -24,27 +24,27 @@ fun NavController.navigateToLoginRoute() {
 }
 
 fun NavController.navigateNormalLogin(userType: UserType) {
-    navigate("${LoginRoute.NORMAL_LOGIN}/$userType")
+    navigate(LoginRoute.NormalLogin(userType))
 }
 
 fun NavController.navigateEmailSearch(userType: UserType) {
-    navigate("${LoginRoute.EMAIL_SEARCH}/$userType")
+    navigate(LoginRoute.EmailSearch(userType))
 }
 
 fun NavController.navigateEmailSearchComplete(email: String) {
-    navigate("${LoginRoute.email_search_complete}/$email")
+    navigate(LoginRoute.EmailSearchComplete(email))
 }
 
 fun NavController.navigatePasswordSearchAuth(userType: UserType) {
-    navigate("${LoginRoute.password_search_auth}/$userType")
+    navigate(LoginRoute.PasswordSearchAuth(userType))
 }
 
 fun NavController.navigatePasswordSearch(userType: UserType) {
-    navigate("${LoginRoute.PASSWORD_SEARCH}/$userType")
+    navigate(LoginRoute.PasswordSearch(userType))
 }
 
 fun NavController.navigateToNoAccount(accountType: AccountType) {
-    navigate("${LoginRoute.NO_ACCOUNT}/$accountType")
+    navigate(LoginRoute.NoAccount(accountType))
 }
 
 fun NavGraphBuilder.loginNavGraph(
@@ -64,7 +64,7 @@ fun NavGraphBuilder.loginNavGraph(
     onVerifyCode: (String, (Boolean) -> Unit) -> Unit,
     onNavigateToNoAccount: (AccountType) -> Unit,
 ) {
-    composable(route = LoginRoute.ROUTE) {
+    composable<LoginRoute.Login> {
         LoginRoute(
             finish,
             onNavigateToNormalLogin,
@@ -77,15 +77,8 @@ fun NavGraphBuilder.loginNavGraph(
         )
     }
 
-    composable(
-        route = "${LoginRoute.NORMAL_LOGIN}/{type}",
-        arguments =
-            listOf(
-                navArgument("type") {
-                    type = NavType.EnumType(UserType::class.java)
-                },
-            ),
-    ) {
+    composable<LoginRoute.NormalLogin> { backStackEntry ->
+        val route: LoginRoute.NormalLogin = backStackEntry.toRoute()
         NormalLoginScreen(
             onBackClick = onBackClick,
             onNavigateToSignUp = onNavigateToSignup,
@@ -96,98 +89,76 @@ fun NavGraphBuilder.loginNavGraph(
         )
     }
 
-    composable(
-        route = "${LoginRoute.EMAIL_SEARCH}/{type}",
-        arguments =
-            listOf(
-                navArgument("type") {
-                    type = NavType.EnumType(UserType::class.java)
-                },
-            ),
-    ) {
+    composable<LoginRoute.EmailSearch> { backStackEntry ->
+        val route: LoginRoute.EmailSearch = backStackEntry.toRoute()
         EmailSearchScreen(
             imeHeight = imeHeight,
             onBackClick = onBackClick,
             navigateToCompleteScreen = onNavigateToEmailSearchComplete,
-            userType = it.arguments!!.getSerializable("type") as UserType,
+            userType = route.userType,
             onSendMessageClick = onSendMessage,
             onVerifyCodeClick = onVerifyCode,
         )
     }
 
-    composable(
-        route = "${LoginRoute.email_search_complete}/{email}",
-        arguments =
-            listOf(
-                navArgument("email") { type = NavType.StringType },
-            ),
-    ) {
-        it.arguments!!.getString("email")?.let { email ->
-            EmailSearchResultScreen(
-                onBackClick = onBackClick,
-                email = email,
-                navigateToLoginRoute = onNavigateToLoginRoute,
-            )
-        }
+    composable<LoginRoute.EmailSearchComplete> { backStackEntry ->
+        val route: LoginRoute.EmailSearchComplete = backStackEntry.toRoute()
+        EmailSearchResultScreen(
+            onBackClick = onBackClick,
+            email = route.email,
+            navigateToLoginRoute = onNavigateToLoginRoute,
+        )
     }
 
-    composable(
-        route = "${LoginRoute.PASSWORD_SEARCH}/{type}",
-        arguments =
-            listOf(
-                navArgument("type") {
-                    type = NavType.EnumType(UserType::class.java)
-                },
-            ),
-    ) {
+    composable<LoginRoute.PasswordSearch> { backStackEntry ->
+        val route: LoginRoute.PasswordSearch = backStackEntry.toRoute()
         PasswordResetScreen(
             onBackClick = onBackClick,
-            userType = it.arguments!!.getSerializable("type") as UserType,
+            userType = route.userType,
             imeHeight = imeHeight,
             navigateToLoginRoute = onNavigateToLoginRoute,
         )
     }
 
-    composable(
-        route = "${LoginRoute.password_search_auth}/{type}",
-        arguments =
-            listOf(
-                navArgument("type") {
-                    type = NavType.EnumType(UserType::class.java)
-                },
-            ),
-    ) {
+    composable<LoginRoute.PasswordSearchAuth> { backStackEntry ->
+        val route: LoginRoute.PasswordSearchAuth = backStackEntry.toRoute()
         EmailAuthForPasswordResetScreen(
             onBackClick = onBackClick,
             imeHeight = imeHeight,
             onNavigateToPasswordSearch = onNavigateToPasswordSearch,
             onNavigateToNoAccount = onNavigateToNoAccount,
-            userType = it.arguments!!.getSerializable("type") as UserType,
+            userType = route.userType,
         )
     }
 
-    composable(
-        route = "${LoginRoute.NO_ACCOUNT}/{accountType}",
-        arguments =
-            listOf(
-                navArgument("accountType") {
-                    type = NavType.EnumType(AccountType::class.java)
-                },
-            ),
-    ) {
+    composable<LoginRoute.NoAccount> { backStackEntry ->
+        val route: LoginRoute.NoAccount = backStackEntry.toRoute()
         NoAccountScreen(
-            accountType = it.arguments!!.getSerializable("accountType") as AccountType,
+            accountType = route.accountType,
             onNavigateToLoginRoute = onNavigateToLoginRoute,
         )
     }
 }
 
 object LoginRoute {
-    const val ROUTE = "login"
-    const val NORMAL_LOGIN = "normal_login"
-    const val EMAIL_SEARCH = "email_search"
-    const val PASSWORD_SEARCH = "password_search"
-    const val email_search_complete = "email_search_complete"
-    const val password_search_auth = "password_search_auth"
-    const val NO_ACCOUNT = "no_account"
+    @Serializable
+    data object Login
+
+    @Serializable
+    data class NormalLogin(val userType: UserType)
+
+    @Serializable
+    data class EmailSearch(val userType: UserType)
+
+    @Serializable
+    data class PasswordSearch(val userType: UserType)
+
+    @Serializable
+    data class EmailSearchComplete(val email: String)
+
+    @Serializable
+    data class PasswordSearchAuth(val userType: UserType)
+
+    @Serializable
+    data class NoAccount(val accountType: AccountType)
 }

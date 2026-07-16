@@ -6,6 +6,7 @@ plugins {
     id("connectdog.android.compose")
     id("connectdog.android.hilt")
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -68,6 +69,7 @@ dependencies {
     implementation(libs.androidx.compose.runtime.livedata)
 
     implementation(libs.kotlinx.collection.imuutable)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.kakao.oauth)
     implementation(libs.naver.oauth)

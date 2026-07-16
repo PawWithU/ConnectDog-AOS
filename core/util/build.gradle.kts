@@ -1,6 +1,7 @@
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("connectdog.android.library")
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -23,6 +24,7 @@ android {
 
 dependencies {
     implementation(libs.google.gson)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

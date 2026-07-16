@@ -52,7 +52,7 @@ internal fun ManagementRoute(
     onBackClick: () -> Unit,
     onNavigateToCreateReview: (Application) -> Unit,
     onNavigateToCheckReview: (Long, UserType) -> Unit,
-    onNavigateToHome: (String) -> Unit,
+    onNavigateToHome: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: ManagementViewModel = hiltViewModel(),
@@ -69,7 +69,7 @@ internal fun ManagementRoute(
 
     val deleteDataState by viewModel.deleteDataUiState.collectAsStateWithLifecycle()
 
-    BackHandler { onNavigateToHome(com.kusitms.connectdog.feature.management.navigation.ManagementRoute.route) }
+    BackHandler { onNavigateToHome() }
 
     LaunchedEffect(deleteDataState) {
         if (deleteDataState is com.kusitms.connectdog.core.model.DataUiState.Success) {

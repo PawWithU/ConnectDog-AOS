@@ -2,9 +2,8 @@ package com.kusitms.connectdog.feature.intermediator.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.feature.intermediator.screen.AnnouncementManageScreen
 import com.kusitms.connectdog.feature.intermediator.screen.CompleteCreateScreen
@@ -15,11 +14,10 @@ import com.kusitms.connectdog.feature.intermediator.screen.InterManagementRoute
 import com.kusitms.connectdog.feature.intermediator.screen.InterProfileEditScreen
 import com.kusitms.connectdog.feature.intermediator.screen.InterProfileScreen
 import com.kusitms.connectdog.feature.intermediator.viewmodel.CreateApplicationViewModel
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+import kotlinx.serialization.Serializable
 
 fun NavController.navigateInterHome() {
-    navigate(IntermediatorRoute.route) {
+    navigate(IntermediatorRoute.InterHome) {
         popUpTo(graph.id) {
             inclusive = true
         }
@@ -27,33 +25,31 @@ fun NavController.navigateInterHome() {
 }
 
 fun NavController.navigateInterManagement(tabIndex: Int) {
-    val route = "${IntermediatorRoute.management}?tabIndex=$tabIndex"
-    navigate(route)
+    navigate(IntermediatorRoute.Management(tabIndex))
 }
 
 fun NavController.navigateInterProfile() {
-    navigate(IntermediatorRoute.inter_profile)
+    navigate(IntermediatorRoute.InterProfile)
 }
 
 fun NavController.navigateToCreateAnnouncementScreen() {
-    navigate(IntermediatorRoute.create_announcement)
+    navigate(IntermediatorRoute.CreateAnnouncement)
 }
 
 fun NavController.navigateToInterProfileEdit(url: String) {
-    val profileImage = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-    navigate("${IntermediatorRoute.inter_profile_edit}/$profileImage")
+    navigate(IntermediatorRoute.InterProfileEdit(url))
 }
 
 fun NavController.navigateToCreateDog() {
-    navigate(IntermediatorRoute.create_application_dog)
+    navigate(IntermediatorRoute.CreateApplicationDog)
 }
 
 fun NavController.navigateToAnnouncementManagement(postId: Long) {
-    navigate("${IntermediatorRoute.announce_management}/$postId")
+    navigate(IntermediatorRoute.AnnouncementManagement(postId))
 }
 
 fun NavController.navigateToCreateComplete() {
-    navigate(IntermediatorRoute.create_complete)
+    navigate(IntermediatorRoute.CreateComplete)
 }
 
 fun NavGraphBuilder.intermediatorNavGraph(
@@ -72,7 +68,7 @@ fun NavGraphBuilder.intermediatorNavGraph(
     onNavigateToInterHome: () -> Unit,
     onNavigateToCreateComplete: () -> Unit,
 ) {
-    composable(route = IntermediatorRoute.route) {
+    composable<IntermediatorRoute.InterHome> {
         InterHomeScreen(
             onNotificationClick = onNotificationClick,
             onSettingClick = onSettingClick,
@@ -82,19 +78,17 @@ fun NavGraphBuilder.intermediatorNavGraph(
         )
     }
 
-    composable(
-        "${IntermediatorRoute.management}?tabIndex={tabIndex}",
-        arguments = listOf(navArgument("tabIndex") { defaultValue = 0 }),
-    ) {
+    composable<IntermediatorRoute.Management> { backStackEntry ->
+        val route: IntermediatorRoute.Management = backStackEntry.toRoute()
         InterManagementRoute(
             onBackClick = onBackClick,
-            tabIndex = it.arguments?.getInt("tabIndex") ?: 0,
+            tabIndex = route.tabIndex,
             onNavigateToReview = onNavigateToReview,
             onNavigateToAnnouncementManagement = onNavigateToAnnouncementManagement,
         )
     }
 
-    composable(route = IntermediatorRoute.inter_profile) {
+    composable<IntermediatorRoute.InterProfile> {
         InterProfileScreen(
             onBackClick = onBackClick,
             onNavigateToInterProfileEdit = onNavigateToInterProfileEdit,
@@ -102,7 +96,7 @@ fun NavGraphBuilder.intermediatorNavGraph(
         )
     }
 
-    composable(route = IntermediatorRoute.create_announcement) {
+    composable<IntermediatorRoute.CreateAnnouncement> {
         CreateApplicationInfoScreen(
             onBackClick = onBackClick,
             navigateToCreateDog = onNavigateToCreateDog,
@@ -111,18 +105,16 @@ fun NavGraphBuilder.intermediatorNavGraph(
         )
     }
 
-    composable(
-        route = "${IntermediatorRoute.inter_profile_edit}/{profileImage}",
-        arguments = listOf(navArgument("profileImage") { type = NavType.StringType }),
-    ) {
+    composable<IntermediatorRoute.InterProfileEdit> { backStackEntry ->
+        val route: IntermediatorRoute.InterProfileEdit = backStackEntry.toRoute()
         InterProfileEditScreen(
             imeHeight = imeHeight,
             onBackClick = onBackClick,
-            profileImage = it.arguments?.getString("profileImage") ?: "",
+            profileImage = route.profileImage,
         )
     }
 
-    composable(route = IntermediatorRoute.create_application_dog) {
+    composable<IntermediatorRoute.CreateApplicationDog> {
         CreateApplicationDogScreen(
             imeHeight = imeHeight,
             onBackClick = onBackClick,
@@ -131,18 +123,16 @@ fun NavGraphBuilder.intermediatorNavGraph(
         )
     }
 
-    composable(
-        route = "${IntermediatorRoute.announce_management}/{postId}",
-        arguments = listOf(navArgument("postId") { type = NavType.LongType }),
-    ) {
+    composable<IntermediatorRoute.AnnouncementManagement> { backStackEntry ->
+        val route: IntermediatorRoute.AnnouncementManagement = backStackEntry.toRoute()
         AnnouncementManageScreen(
-            postId = it.arguments!!.getLong("postId"),
+            postId = route.postId,
             onBackClick = onBackClick,
             onIntermediatorProfileClick = {},
         )
     }
 
-    composable(route = IntermediatorRoute.create_complete) {
+    composable<IntermediatorRoute.CreateComplete> {
         CompleteCreateScreen {
             onNavigateToInterHome()
         }
@@ -150,12 +140,27 @@ fun NavGraphBuilder.intermediatorNavGraph(
 }
 
 object IntermediatorRoute {
-    const val route = "inter_home"
-    const val management = "inter_management"
-    const val inter_profile = "inter_profile"
-    const val create_announcement = "create_announcement"
-    const val inter_profile_edit = "inter_profile_edit"
-    const val create_application_dog = "create_application_dog"
-    const val announce_management = "announcement_management"
-    const val create_complete = "complete_create"
+    @Serializable
+    data object InterHome
+
+    @Serializable
+    data class Management(val tabIndex: Int = 0)
+
+    @Serializable
+    data object InterProfile
+
+    @Serializable
+    data object CreateAnnouncement
+
+    @Serializable
+    data class InterProfileEdit(val profileImage: String)
+
+    @Serializable
+    data object CreateApplicationDog
+
+    @Serializable
+    data class AnnouncementManagement(val postId: Long)
+
+    @Serializable
+    data object CreateComplete
 }

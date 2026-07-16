@@ -1,6 +1,5 @@
 package com.kusitms.connectdog.feature.main
 
-import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
@@ -31,7 +30,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
-import com.google.gson.Gson
 import com.kusitms.connectdog.core.designsystem.theme.ConnectDogTheme
 import com.kusitms.connectdog.core.util.UserType
 import com.kusitms.connectdog.domain.usecase.login.AppMode
@@ -137,12 +135,9 @@ internal fun MainScreen(
                         onShowErrorSnackbar = {},
                         onNavigateToCheckReview = navigator::navigateCheckReview,
                         onNavigateToInterProfile = navigator::navigateIntermediatorProfile,
-                        onNavigateToHome = navigator::navigateToHomeClearBackStack,
+                        onNavigateToHome = navigator::navigateHomeFromManagement,
                         onNavigateToDetail = navigator::navigateHomeDetail,
-                        onNavigateToCreateReview = {
-                            val jsonData = Uri.encode(Gson().toJson(it))
-                            navigator.navigateCreateReview(jsonData)
-                        },
+                        onNavigateToCreateReview = { navigator.navigateCreateReview(it) },
                     )
                     mypageNavGraph(
                         padding = it,
@@ -162,7 +157,7 @@ internal fun MainScreen(
                             navigator.navigateIntermediatorProfile(it)
                         },
                         onShowErrorSnackbar = {},
-                        onNavigateToHome = navigator::navigateToHomeClearBackStack,
+                        onNavigateToHome = navigator::navigateHomeFromMypage,
                         onNavigateToPasswordChange = navigator::navigatePasswordChange,
                     )
                     intermediatorNavGraph(

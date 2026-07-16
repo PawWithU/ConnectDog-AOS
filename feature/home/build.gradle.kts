@@ -4,6 +4,7 @@ plugins {
     id("connectdog.android.compose")
     id("connectdog.android.hilt")
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -36,6 +37,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.google.gson)
     implementation(libs.kotlinx.collection.imuutable)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
